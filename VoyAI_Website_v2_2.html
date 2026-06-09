@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voyai — Your trip, planned & booked in minutes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ───────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --accent:#E8192C; --accent-light:#FFF0F1; --accent-mid:#FCCDD0;
+  --green:#1D9E75;  --green-light:#E1F5EE;  --green-mid:#9FE1CB;
+  --blue:#378ADD;   --blue-light:#E6F1FB;
+  --amber:#BA7517;  --amber-light:#FAEEDA;
+  --purple:#7F77DD; --purple-light:#EEEDFE;
+  --bg:#FFFFFF; --bg2:#F7F6F3; --bg3:#F0EEE9;
+  --border:rgba(0,0,0,0.08); --border-mid:rgba(0,0,0,0.13);
+  --text:#1A1A1A; --text-muted:#6B6B6B; --text-dim:#ADADAD;
+  --radius:12px; --radius-sm:8px; --radius-lg:16px;
+  --shadow-sm:0 1px 4px rgba(0,0,0,0.06);
+  --shadow:0 4px 20px rgba(0,0,0,0.09);
+  --shadow-lg:0 16px 48px rgba(0,0,0,0.13);
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.fu{animation:fadeUp .5s ease both}
+.fu1{animation:fadeUp .5s .1s ease both}
+.fu2{animation:fadeUp .5s .2s ease both}
+.fu3{animation:fadeUp .5s .3s ease both}
+html{scroll-behavior:smooth}
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+a { text-decoration:none; color:inherit; }
+button { cursor:pointer; font-family:'DM Sans',sans-serif; }
+
+/* ── NAV ────────────────────────────────────────────────── */
+nav {
+  position:sticky; top:0; z-index:200;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 48px; height:64px;
+  background:rgba(255,255,255,0.97); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-sm);
+}
+.nav-logo { display:flex; align-items:center; gap:9px; }
+.nav-logo .icon { width:32px; height:32px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-size:16px; }
+.nav-logo .wm  { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; letter-spacing:-0.02em; }
+.nav-logo .wm span { color:var(--accent); }
+.nav-links { display:flex; gap:4px; list-style:none; }
+.nav-links a { font-size:14px; color:var(--text-muted); padding:7px 14px; border-radius:var(--radius-sm); transition:background .15s,color .15s; }
+.nav-links a:hover, .nav-links a.active { background:var(--accent-light); color:var(--accent); }
+.nav-cta { background:var(--accent); color:white; border:none; padding:10px 22px; border-radius:var(--radius-sm); font-size:14px; font-weight:500; transition:opacity .2s; }
+.nav-cta:hover { opacity:.88; }
+
+/* ── PAGE SECTIONS ──────────────────────────────────────── */
+.page { display:none; }
+.page.active { display:block; }
+
+/* ══════════════════════════════════════════════════════════
+   LANDING PAGE
+══════════════════════════════════════════════════════════ */
+
+/* HERO */
+.hero { padding:88px 48px 72px; max-width:880px; margin:0 auto; text-align:center; }
+.hero-pill {
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--accent-light); border:1px solid var(--accent-mid);
+  border-radius:20px; padding:5px 16px;
+  font-size:12px; font-weight:500; color:var(--accent); margin-bottom:28px;
+}
+.hero-pill .dot { width:6px; height:6px; background:var(--accent); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.35} }
+.hero h1 { font-family:'Syne',sans-serif; font-size:clamp(38px,5.5vw,64px); font-weight:800; line-height:1.06; letter-spacing:-.03em; margin-bottom:20px; }
+.hero h1 .red { color:var(--accent); }
+.hero p { font-size:18px; line-height:1.65; color:var(--text-muted); max-width:520px; margin:0 auto 36px; }
+.hero-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.btn-primary { background:var(--accent); color:white; border:none; padding:14px 30px; border-radius:10px; font-size:15px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(232,25,44,.3); }
+.btn-primary:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 6px 22px rgba(232,25,44,.42); }
+.btn-secondary { background:white; color:var(--text); border:1.5px solid var(--border-mid); padding:14px 28px; border-radius:10px; font-size:15px; transition:border-color .2s; }
+.btn-secondary:hover { border-color:#aaa; }
+
+/* TRUST BAR */
+.trust-bar { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); display:flex; justify-content:center; }
+.trust-item { flex:1; max-width:200px; padding:20px 16px; text-align:center; border-right:1px solid var(--border); }
+.trust-item:last-child { border-right:none; }
+.trust-num { font-family:'Syne',sans-serif; font-size:24px; font-weight:700; margin-bottom:3px; }
+.trust-num span { color:var(--accent); }
+.trust-label { font-size:12px; color:var(--text-muted); }
+
+/* HOW IT WORKS */
+.section { padding:72px 48px; max-width:1100px; margin:0 auto; }
+.section-hd { text-align:center; margin-bottom:48px; }
+.section-hd h2 { font-family:'Syne',sans-serif; font-size:34px; font-weight:800; letter-spacing:-.02em; margin-bottom:8px; }
+.section-hd p { font-size:15px; color:var(--text-muted); }
+.steps-grid { display:grid; grid-template-columns:repeat(4,1fr); border:1.5px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+.step { background:white; padding:32px 26px; border-right:1.5px solid var(--border); transition:background .2s; }
+.step:hover { background:var(--accent-light); }
+.step:last-child { border-right:none; }
+.step-num { font-family:'Syne',sans-serif; font-size:42px; font-weight:800; color:var(--accent-mid); line-height:1; margin-bottom:14px; }
+.step-icon { width:40px; height:40px; background:var(--accent-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:12px; }
+.step h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:7px; }
+.step p  { font-size:13px; color:var(--text-muted); line-height:1.6; }
+
+/* VIBES */
+.vibes-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.vibe-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); padding:26px; transition:all .2s; box-shadow:var(--shadow-sm); }
+.vibe-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
+.vibe-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.vibe-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.vibe-card h3   { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; }
+.vibe-card .sub { font-size:12px; color:var(--text-dim); margin-top:2px; }
+.vibe-card p    { font-size:13px; color:var(--text-muted); line-height:1.55; margin-bottom:14px; }
+.tags { display:flex; gap:6px; flex-wrap:wrap; }
+.tag  { font-size:11px; padding:3px 9px; border-radius:20px; border:1px solid var(--border-mid); color:var(--text-muted); background:var(--bg2); }
+hr { border:none; border-top:1px solid var(--border); }
+
+/* ── ITINERARY SHARED STYLES ───────────────────────────── */
+.itin-wrap { padding:0 48px 72px; max-width:1100px; margin:0 auto; }
+.itin-intro { text-align:center; margin-bottom:36px; }
+.itin-intro h2 { font-family:'Syne',sans-serif; font-size:34px; font-weight:800; letter-spacing:-.02em; margin-bottom:8px; }
+.itin-intro p  { font-size:15px; color:var(--text-muted); }
+
+.route-bar {
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  flex-wrap:wrap; margin-bottom:24px;
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:50px; padding:10px 24px; width:fit-content;
+  margin-left:auto; margin-right:auto;
+}
+.route-stop { display:flex; align-items:center; gap:6px; }
+.route-dot  { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.route-name { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; }
+.route-nights { font-size:11px; color:var(--text-muted); padding-left:15px; }
+.route-arrow  { font-size:14px; color:var(--text-dim); margin:0 6px; }
+.vibe-pill { font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; }
+
+.sum-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:24px; }
+.sum-card { background:var(--bg2); border-radius:10px; padding:14px 12px; text-align:center; }
+.sum-card.total { background:var(--accent-light); border:1px solid var(--accent-mid); }
+.sum-lbl { font-size:10px; color:var(--text-dim); margin-bottom:4px; text-transform:uppercase; letter-spacing:.08em; }
+.sum-lbl.red { color:var(--accent); }
+.sum-val { font-family:'Syne',sans-serif; font-size:19px; font-weight:700; }
+.sum-val.red { color:var(--accent); }
+.sum-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
+.sum-sub.red { color:var(--accent); }
+
+.itin-block { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; }
+.itin-hdr { padding:14px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.itin-hdr.sight { background:#FFFDF7; }
+.itin-hdr.party { background:var(--accent-light); }
+.itin-hdr-l { display:flex; align-items:center; gap:10px; }
+.dest-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.dest-icon.sight { background:var(--amber-light); }
+.dest-icon.party { background:var(--accent-mid); }
+.itin-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
+.itin-sub   { font-size:12px; color:var(--text-muted); margin-top:1px; }
+.all-booked { background:var(--green-light); color:#0F6E56; border:1px solid var(--green-mid); font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
+
+.day-block { padding:16px 22px; border-bottom:1px solid var(--border); }
+.day-block:last-child { border-bottom:none; }
+.day-lbl { font-size:10px; font-weight:600; letter-spacing:.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:12px; }
+.evt-list { display:flex; flex-direction:column; gap:8px; }
+.evt { display:flex; align-items:center; gap:10px; }
+.evt-time { font-size:11px; color:var(--text-dim); min-width:44px; font-family:'Syne',sans-serif; font-weight:600; }
+.evt-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.evt-name { font-size:13px; flex:1; line-height:1.35; }
+.evt-price{ font-size:11px; color:var(--green); font-weight:600; font-family:'Syne',sans-serif; white-space:nowrap; }
+.ebadge   { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:600; white-space:nowrap; }
+.eb-ok  { background:var(--green-light); color:#0F6E56; }
+.eb-res { background:var(--blue-light);  color:#185FA5; }
+.eb-wait{ background:var(--accent-light);color:var(--accent); }
+.tip { display:flex; align-items:flex-start; gap:6px; padding:7px 10px; background:var(--bg2); border-radius:8px; margin-top:2px; }
+.tip-dot { width:5px; height:5px; border-radius:50%; background:var(--text-dim); flex-shrink:0; margin-top:5px; }
+.tip span { font-size:11px; color:var(--text-muted); font-style:italic; line-height:1.5; }
+
+.connector { display:flex; align-items:center; gap:12px; padding:14px 20px; background:var(--blue-light); border:1.5px solid #B5D4F4; border-radius:var(--radius); margin-bottom:14px; }
+.conn-icon  { font-size:20px; }
+.conn-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#185FA5; }
+.conn-sub   { font-size:12px; color:var(--blue); margin-top:1px; }
+.conn-price { font-size:13px; font-weight:700; font-family:'Syne',sans-serif; color:#185FA5; white-space:nowrap; }
+.conn-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; background:#B5D4F4; color:#0C447C; white-space:nowrap; }
+
+.legend { display:flex; gap:18px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+.leg { display:flex; align-items:center; gap:5px; }
+.leg-dot { width:8px; height:8px; border-radius:50%; }
+.leg span { font-size:12px; color:var(--text-muted); }
+
+/* WAITLIST */
+.waitlist { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 48px; text-align:center; }
+.waitlist-inner { max-width:500px; margin:0 auto; }
+.waitlist h2 { font-family:'Syne',sans-serif; font-size:34px; font-weight:800; letter-spacing:-.02em; margin-bottom:10px; }
+.waitlist p  { font-size:15px; color:var(--text-muted); margin-bottom:28px; line-height:1.6; }
+.wl-form { display:flex; gap:8px; margin-bottom:10px; }
+.wl-form input { flex:1; background:white; border:1.5px solid var(--border-mid); border-radius:10px; padding:13px 16px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); outline:none; transition:border-color .2s; }
+.wl-form input::placeholder { color:var(--text-dim); }
+.wl-form input:focus { border-color:var(--accent); }
+.wl-form button { background:var(--accent); color:white; border:none; padding:13px 22px; border-radius:10px; font-size:14px; font-weight:500; transition:opacity .2s; white-space:nowrap; }
+.wl-form button:hover { opacity:.88; }
+.wl-note { font-size:12px; color:var(--text-dim); }
+
+/* ══════════════════════════════════════════════════════════
+   INSPIRATION PAGE
+══════════════════════════════════════════════════════════ */
+.inspo-header { background:white; border-bottom:1px solid var(--border); padding:32px 48px 0; }
+.inspo-header h1 { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; letter-spacing:-.02em; margin-bottom:6px; }
+.inspo-header p  { font-size:14px; color:var(--text-muted); margin-bottom:24px; }
+.cat-tabs { display:flex; gap:0; overflow-x:auto; }
+.cat-tab { display:flex; align-items:center; gap:7px; padding:12px 18px; font-size:13px; font-weight:500; color:var(--text-muted); border-bottom:2.5px solid transparent; white-space:nowrap; border:none; background:none; transition:color .15s,border-color .15s; }
+.cat-tab:hover { color:var(--text); }
+.cat-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.cat-tab .tc { font-size:11px; background:var(--bg3); color:var(--text-dim); padding:1px 6px; border-radius:10px; font-weight:400; }
+.cat-tab.active .tc { background:var(--accent-light); color:var(--accent); }
+
+.filter-bar { padding:14px 48px; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.filter-lbl { font-size:12px; font-weight:500; color:var(--text-dim); }
+.f-chip { display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:20px; border:1.5px solid var(--border-mid); background:white; font-size:12px; color:var(--text-muted); transition:all .15s; white-space:nowrap; }
+.f-chip:hover { border-color:var(--accent); color:var(--accent); }
+.f-chip.active { background:var(--accent-light); border-color:var(--accent-mid); color:var(--accent); font-weight:500; }
+.f-divider { width:1px; height:20px; background:var(--border-mid); margin:0 2px; }
+.f-select { padding:6px 28px 6px 12px; border-radius:20px; border:1.5px solid var(--border-mid); background:white; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; outline:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23ADADAD'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
+.results-count { margin-left:auto; font-size:12px; color:var(--text-dim); }
+
+.cards-grid { padding:28px 48px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1200px; margin:0 auto; }
+.trip-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .2s; box-shadow:var(--shadow-sm); }
+.trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
+.trip-card.featured { grid-column:span 2; }
+.card-img { height:180px; display:flex; align-items:flex-end; padding:12px; position:relative; background-size:cover!important; background-position:center!important; }
+.trip-card.featured .card-img { height:220px; }
+.card-img-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:56px; background:rgba(0,0,0,0.12); }
+.card-vibe-pill { position:relative; z-index:1; font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; }
+.card-save { position:absolute; top:10px; right:10px; width:28px; height:28px; background:rgba(255,255,255,.9); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; z-index:1; border:none; background:rgba(255,255,255,.9); transition:transform .15s; }
+.card-save:hover { transform:scale(1.1); }
+.card-body { padding:14px 16px; }
+.card-dest { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:3px; }
+.card-sub  { font-size:12px; color:var(--text-muted); margin-bottom:10px; }
+.card-meta { display:flex; gap:6px; flex-wrap:wrap; }
+.ctag { font-size:11px; padding:2px 8px; border-radius:10px; font-weight:400; }
+.card-footer { padding:10px 16px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--bg2); }
+.card-price { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+.card-price span { font-size:11px; font-weight:400; color:var(--text-muted); font-family:'DM Sans',sans-serif; }
+.card-btn { font-size:11px; font-weight:600; padding:6px 12px; border-radius:8px; background:var(--accent); color:white; border:none; transition:opacity .15s; }
+.card-btn:hover { opacity:.85; }
+.load-more-wrap { text-align:center; padding:8px 48px 48px; }
+.load-more { background:white; border:1.5px solid var(--border-mid); color:var(--text-muted); padding:11px 30px; border-radius:10px; font-size:13px; transition:border-color .2s,color .2s; }
+.load-more:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+footer { padding:36px 48px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); background:var(--bg2); }
+footer p { font-size:13px; color:var(--text-dim); }
+.footer-links { display:flex; gap:24px; }
+.footer-links a { font-size:13px; color:var(--text-dim); transition:color .2s; }
+.footer-links a:hover { color:var(--text); }
+
+/* ── SOCIAL STRIP ──────────────────────────────────────── */
+.social-strip { background:var(--accent); padding:9px 0; overflow:hidden; }
+.social-strip-inner { display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; padding:0 48px; }
+.ss-item { display:flex; align-items:center; gap:7px; font-size:13px; color:rgba(255,255,255,.9); white-space:nowrap; }
+.ss-item strong { color:#fff; font-weight:600; }
+
+/* ── AFFILIATE STRIP ────────────────────────────────────── */
+.aff-strip { padding:28px 48px; background:var(--bg2); border-top:1px solid var(--border); text-align:center; }
+.aff-strip-label { font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em; margin-bottom:14px; }
+.aff-logos { display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+.aff-logo { font-size:12px; font-weight:600; color:var(--text-muted); padding:7px 16px; border:1.5px solid var(--border-mid); border-radius:8px; background:white; letter-spacing:.01em; white-space:nowrap; }
+
+/* ── FREE BADGE ─────────────────────────────────────────── */
+.free-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-light); border:1px solid var(--green-mid); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; color:var(--green); margin-bottom:12px; }
+
+/* ── PRICING SECTION ────────────────────────────────────── */
+#pricing { padding:80px 48px; background:var(--bg2); }
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:960px; margin:0 auto; }
+.price-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius-lg); padding:32px 28px; position:relative; box-shadow:var(--shadow-sm); transition:all .2s; }
+.price-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.price-card.featured { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-mid),var(--shadow); }
+.price-popular { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--accent); color:white; font-size:11px; font-weight:600; padding:4px 16px; border-radius:20px; white-space:nowrap; letter-spacing:.04em; }
+.price-tier { font-size:12px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; }
+.price-amount { font-family:'Syne',sans-serif; font-size:40px; font-weight:800; line-height:1; margin-bottom:4px; }
+.price-amount span { font-size:16px; font-weight:400; color:var(--text-muted); font-family:'DM Sans',sans-serif; }
+.price-desc { font-size:13px; color:var(--text-muted); margin-bottom:24px; line-height:1.5; }
+.price-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.price-features li { display:flex; align-items:flex-start; gap:9px; font-size:13px; line-height:1.45; }
+.price-features li::before { content:"✓"; color:var(--green); font-weight:700; font-size:13px; flex-shrink:0; margin-top:1px; }
+.price-btn { width:100%; padding:13px; border-radius:10px; font-size:14px; font-weight:500; border:1.5px solid var(--border-mid); background:white; color:var(--text); transition:all .2s; }
+.price-btn:hover { border-color:var(--accent); color:var(--accent); }
+.price-btn.primary { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 14px rgba(232,25,44,.28); }
+.price-btn.primary:hover { opacity:.9; transform:translateY(-1px); }
+.price-note { text-align:center; font-size:12px; color:var(--text-dim); margin-top:20px; max-width:960px; margin-left:auto; margin-right:auto; }
+
+/* ── DESTINATIONS SECTION ───────────────────────────────── */
+#destinations { padding:80px 48px; }
+.dest-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.dest-card { border-radius:var(--radius-lg); overflow:hidden; position:relative; cursor:pointer; box-shadow:var(--shadow-sm); transition:all .2s; aspect-ratio:3/4; background-size:cover; background-position:center; }
+.dest-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.dest-card.wide { grid-column:span 2; aspect-ratio:16/9; }
+.dest-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.7) 0%,rgba(0,0,0,.1) 55%,transparent 100%); }
+.dest-info { position:absolute; bottom:0; left:0; right:0; padding:20px; }
+.dest-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:white; margin-bottom:2px; }
+.dest-sub { font-size:12px; color:rgba(255,255,255,.8); }
+.dest-badge { position:absolute; top:12px; right:12px; background:rgba(255,255,255,.95); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; }
+
+/* ── PHOTO CARD STYLES ──────────────────────────────────── */
+.card-img-photo { position:absolute; inset:0; background-size:cover; background-position:center; }
+.card-img-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 60%); }
+
+/* ── MOBILE ─────────────────────────────────────────────── */
+@media(max-width:900px){
+  .pricing-grid{grid-template-columns:1fr}
+  .dest-grid{grid-template-columns:repeat(2,1fr)}
+  .dest-card.wide{grid-column:span 2}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .vibes-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  nav{padding:0 16px}
+  .nav-links{display:none}
+  .hero{padding:56px 20px 48px}
+  .hero h1{font-size:34px}
+  .hero-actions{flex-direction:column}
+  .section{padding:48px 20px}
+  .itin-wrap{padding:0 20px 48px}
+  .sum-grid{grid-template-columns:1fr 1fr}
+  .sum-card.total{grid-column:span 2}
+  .cards-grid{padding:16px;grid-template-columns:1fr}
+  .trip-card.featured{grid-column:span 1}
+  .inspo-header{padding:20px 20px 0}
+  .filter-bar{padding:12px 16px}
+  .waitlist{padding:48px 20px}
+  .wl-form{flex-direction:column}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:24px 20px}
+  .footer-links{justify-content:center}
+  .dest-grid{grid-template-columns:1fr 1fr}
+  #pricing{padding:48px 20px}
+  #destinations{padding:48px 20px}
+  .social-strip-inner{gap:20px}
+  .aff-strip{padding:20px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo">
+    <div class="icon">✈</div>
+    <div class="wm">Voy<span>ai</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="showPage('landing',this)">Home</a></li>
+    <li><a href="#" onclick="showPage('landing',this);scrollTo('how')">How it works</a></li>
+    <li><a href="#" onclick="showPage('landing',this);scrollTo('vibes')">Vibes</a></li>
+    <li><a href="#" onclick="showPage('inspo',this)">Inspiration</a></li>
+    <li><a href="#" onclick="showPage('landing',this);setTimeout(()=>document.getElementById('pricing').scrollIntoView({behavior:'smooth'}),50)">Pricing</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('landing',this);scrollTo('waitlist')">Join waitlist</button>
+</nav>
+
+<!-- ══ LANDING PAGE ══════════════════════════════════════ -->
+<div id="page-landing" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-pill fu"><div class="dot"></div>Now open — Australia &amp; UK early access</div>
+    <h1 class="fu1">Your whole trip.<br><span class="red">Planned &amp; booked</span><br>in minutes.</h1>
+    <p class="fu2">Tell us your vibe, your dates, and who you're travelling with. Voyai builds you a free personalised itinerary — then when you're ready, we handle all the bookings too.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('inspo')">Get my free itinerary →</button>
+      <button class="btn-secondary" onclick="scrollTo('how')">See how it works</button>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-item"><div class="trust-num">2<span>min</span></div><div class="trust-label">Average plan time</div></div>
+    <div class="trust-item"><div class="trust-num">15<span>+</span></div><div class="trust-label">Booking integrations</div></div>
+    <div class="trust-item"><div class="trust-num">190<span>+</span></div><div class="trust-label">Destinations</div></div>
+    <div class="trust-item"><div class="trust-num">$<span>0</span></div><div class="trust-label">Platform fee</div></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div id="how" class="section">
+    <div class="section-hd"><h2>How Voyai works</h2><p>Four steps from idea to fully booked holiday</p></div>
+    <div class="steps-grid">
+      <div class="step"><div class="step-num">01</div><div class="step-icon">🎯</div><h3>Pick your vibe</h3><p>Party crew, romantic escape, adventure, or sightseeing — or mix and match across cities.</p></div>
+      <div class="step"><div class="step-num">02</div><div class="step-icon">📅</div><h3>Add your details</h3><p>Dates, group size, budget, and anything you've already got booked. We fill the gaps.</p></div>
+      <div class="step"><div class="step-num">03</div><div class="step-icon">🤖</div><h3>AI builds it</h3><p>A complete day-by-day itinerary across one or multiple countries — no wasted days, no dead time.</p></div>
+      <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, dinner and event books instantly.</p></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- VIBES -->
+  <div id="vibes" class="section">
+    <div class="section-hd"><h2>Choose your vibe</h2><p>Voyai builds a completely different itinerary for each trip type</p></div>
+    <div class="vibes-grid">
+      <div class="vibe-card">
+        <div class="vibe-top"><div class="vibe-icon" style="background:var(--accent-light);">🔥</div><div><h3>Party crew</h3><div class="sub">Best for groups of 4–12</div></div></div>
+        <p>Pre-parties, club nights, pool days, recovery brunches and late checkouts. Built for the boys — or anyone chasing a big one.</p>
+        <div class="tags"><span class="tag">Club bookings</span><span class="tag">Guest list</span><span class="tag">Pre-events</span><span class="tag">Ibiza / Amsterdam</span></div>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-top"><div class="vibe-icon" style="background:#FDF0F7;">🌹</div><div><h3>Romantic getaway</h3><div class="sub">Built for couples</div></div></div>
+        <p>Rooftop dinners, spa days, sunset cruises, and private experiences designed entirely around the two of you.</p>
+        <div class="tags"><span class="tag">Fine dining</span><span class="tag">Couples spa</span><span class="tag">Sunset bookings</span><span class="tag">Honeymoon ready</span></div>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-top"><div class="vibe-icon" style="background:#EAF3DE;">⛰️</div><div><h3>Adventure</h3><div class="sub">Solo or groups</div></div></div>
+        <p>Hikes, skydiving, surf lessons and adrenaline-packed days. Every hour optimised for maximum experience.</p>
+        <div class="tags"><span class="tag">Outdoor activities</span><span class="tag">Group tours</span><span class="tag">Local guides</span><span class="tag">Golf trips</span></div>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-top"><div class="vibe-icon" style="background:var(--blue-light);">🗺️</div><div><h3>Sightseeing</h3><div class="sub">Families &amp; culture lovers</div></div></div>
+        <p>Landmarks, local culture, museums and neighbourhood gems — with skip-the-line bookings already included.</p>
+        <div class="tags"><span class="tag">Skip-the-line</span><span class="tag">Local food</span><span class="tag">Hidden gems</span><span class="tag">Efficient routing</span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ POPULAR DESTINATIONS ══════════════════════════════ -->
+  <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
+    <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — VoyAI builds your perfect itinerary for any of them</p></div>
+    <div class="dest-grid">
+      <div class="dest-card wide" style="background-image:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Santorini, Greece</div><div class="dest-sub">From $4,200 AUD · 7 days</div></div>
+        <span class="dest-badge" style="color:#993556;">🌅 Most romantic</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Tokyo, Japan</div><div class="dest-sub">From $4,800 AUD · 10 days</div></div>
+        <span class="dest-badge" style="color:#854F0B;">🗺️ Top rated</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Bali, Indonesia</div><div class="dest-sub">From $2,800 AUD · 10 days</div></div>
+        <span class="dest-badge" style="color:#0F6E56;">🌺 Best value</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Ibiza, Spain</div><div class="dest-sub">From $3,200 AUD · 7 days</div></div>
+        <span class="dest-badge" style="color:var(--accent);">🔥 Party</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Paris, France</div><div class="dest-sub">From $4,900 AUD · 7 days</div></div>
+        <span class="dest-badge" style="color:#7F77DD;">💍 Honeymoon</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Maldives</div><div class="dest-sub">From $7,500 AUD · 7 days</div></div>
+        <span class="dest-badge" style="color:#0F6E56;">🤿 Luxury</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Dubai, UAE</div><div class="dest-sub">From $3,600 AUD · 5 days</div></div>
+        <span class="dest-badge" style="color:#BA7517;">✨ Luxury</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Thailand</div><div class="dest-sub">From $2,400 AUD · 10 days</div></div>
+        <span class="dest-badge" style="color:#378ADD;">🏄 Adventure</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Iceland</div><div class="dest-sub">From $5,800 AUD · 10 days</div></div>
+        <span class="dest-badge" style="color:#185FA5;">🌌 Northern Lights</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Kenya Safari</div><div class="dest-sub">From $7,200 AUD · 9 days</div></div>
+        <span class="dest-badge" style="color:#3B6D11;">🦁 Safari</span>
+      </div>
+      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&q=80');" onclick="showPage('inspo')">
+        <div class="dest-overlay"></div>
+        <div class="dest-info"><div class="dest-name">Croatia</div><div class="dest-sub">From $4,400 AUD · 9 days</div></div>
+        <span class="dest-badge" style="color:#993556;">⛵ Island Hop</span>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══ PRICING ══════════════════════════════════════════ -->
+  <div id="pricing">
+    <div class="section-hd"><h2>Simple, transparent pricing</h2><p>Start free — upgrade only when you need more. No subscriptions, no surprises.</p></div>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount">$0 <span>/ itinerary</span></div>
+        <p class="price-desc">Perfect for getting started. A complete personalised itinerary delivered to your inbox.</p>
+        <ul class="price-features">
+          <li>Full day-by-day itinerary</li>
+          <li>Personalised to your travel style</li>
+          <li>Delivered to your email in minutes</li>
+          <li>Curated restaurant &amp; activity picks</li>
+          <li>Affiliate booking links included</li>
+          <li>Unlimited itineraries</li>
+        </ul>
+        <button class="price-btn" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Get started free</button>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-popular">MOST POPULAR</div>
+        <div class="price-tier">Essential</div>
+        <div class="price-amount">$39 <span>/ trip</span></div>
+        <p class="price-desc">For travellers who want a premium itinerary with every detail researched and curated.</p>
+        <ul class="price-features">
+          <li>Everything in Free</li>
+          <li>Detailed hour-by-hour daily plan</li>
+          <li>Top-rated hotel recommendations</li>
+          <li>Restaurant reservations guidance</li>
+          <li>Skip-the-line booking advice</li>
+          <li>Interactive PDF with maps</li>
+          <li>3 rounds of revisions</li>
+        </ul>
+        <button class="price-btn primary" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Join waitlist →</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">Concierge</div>
+        <div class="price-amount">$149 <span>/ trip</span></div>
+        <p class="price-desc">The full VoyAI experience. We plan everything and handle all your bookings end-to-end.</p>
+        <ul class="price-features">
+          <li>Everything in Essential</li>
+          <li>Flights searched &amp; recommended</li>
+          <li>Hotels booked on your behalf</li>
+          <li>Activities &amp; tours pre-booked</li>
+          <li>Restaurant reservations made</li>
+          <li>Transfers &amp; logistics handled</li>
+          <li>Dedicated support throughout</li>
+        </ul>
+        <button class="price-btn" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Join waitlist →</button>
+      </div>
+
+    </div>
+    <p class="price-note">All prices in AUD. Concierge plan launching Phase 2 — join the waitlist for early access and founding member pricing.</p>
+  </div>
+
+  <hr>
+  <!-- ITINERARY EXAMPLE -->
+  <div class="itin-wrap">
+    <div class="itin-intro">
+      <h2>A real Voyai itinerary</h2>
+      <p>Rome + Ibiza — 8 days — Multi-vibe — $5,800 AUD budget · Departing Sydney</p>
+    </div>
+
+    <!-- Route bar -->
+    <div class="route-bar">
+      <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-stop" style="flex-direction:column;align-items:flex-start;gap:3px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Rome, Italy</div><span class="vibe-pill" style="background:#FAEEDA;color:#854F0B;">Sightseeing</span></div>
+        <div class="route-nights">4 nights</div>
+      </div>
+      <div class="route-arrow">→</div>
+      <div class="route-stop" style="flex-direction:column;align-items:flex-start;gap:3px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div class="route-dot" style="background:var(--accent);"></div><div class="route-name">Ibiza, Spain</div><span class="vibe-pill" style="background:var(--accent-light);color:var(--accent);">Party</span></div>
+        <div class="route-nights">4 nights</div>
+      </div>
+      <div class="route-arrow">→</div>
+      <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
+    </div>
+
+    <!-- Summary -->
+    <div class="sum-grid">
+      <div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$2,140</div><div class="sum-sub">return + connection</div></div>
+      <div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$1,680</div><div class="sum-sub">8 nights</div></div>
+      <div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$720</div><div class="sum-sub">all booked</div></div>
+      <div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$880</div><div class="sum-sub">all reserved</div></div>
+      <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$5,420</div><div class="sum-sub red">$380 under budget</div></div>
+    </div>
+
+    <!-- ROME -->
+    <div class="itin-block">
+      <div class="itin-hdr sight">
+        <div class="itin-hdr-l"><div class="dest-icon sight">🏛️</div><div><div class="itin-title">Rome, Italy — 10–14 September</div><div class="itin-sub">Sightseeing · Efficient routing · Skip-the-line throughout</div></div></div>
+        <div class="all-booked">ALL BOOKED</div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 1 — Wed · Arrival</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">06:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Fly SYD → FCO — Emirates EK415 via Dubai</div><div class="evt-price">$1,480pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">19:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Private transfer FCO → Hotel</div><div class="evt-price">$48</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Hotel Campo de' Fiori, Centro Storico</div><div class="evt-price">$220/n</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">21:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Osteria del Pegno (3 min walk)</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
+        </div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 2 — Thu · Vatican &amp; Trastevere</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">08:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Vatican Museums + Sistine Chapel — skip-the-line</div><div class="evt-price">$38pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: 8am entry avoids 90% of crowds. Most tourists arrive at 10am.</span></div>
+          <div class="evt"><div class="evt-time">11:30</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">St Peter's Basilica + dome climb</div><div class="evt-price">Free</div><div class="ebadge eb-ok">Confirmed</div></div>
+          <div class="evt"><div class="evt-time">14:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Lunch — Pizzarium Bonci, Prati</div><div class="evt-price">$18pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">16:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Castel Sant'Angelo — guided tour</div><div class="evt-price">$22pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">19:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Da Enzo al 29, Trastevere</div><div class="evt-price">$62pp</div><div class="ebadge eb-res">Reserved</div></div>
+        </div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 3 — Fri · Ancient Rome &amp; Hidden gems</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">07:45</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Colosseum + Roman Forum — priority access, guided</div><div class="evt-price">$52pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Colosseum sells out 3 weeks ahead. Pre-booked for you automatically.</span></div>
+          <div class="evt"><div class="evt-time">12:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Lunch — Supplì Roma, street food near Forum</div><div class="evt-price">$12pp</div><div class="ebadge eb-ok">Confirmed</div></div>
+          <div class="evt"><div class="evt-time">15:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Borghese Gallery — timed entry (must pre-book)</div><div class="evt-price">$28pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">20:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Il Sorpasso, aperitivo + dinner</div><div class="evt-price">$48pp</div><div class="ebadge eb-res">Reserved</div></div>
+        </div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 4 — Sat · Final morning then fly to Ibiza</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">09:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Trevi Fountain + Pantheon — early, no crowds</div><div class="evt-price">Free</div><div class="ebadge eb-ok">Confirmed</div></div>
+          <div class="evt"><div class="evt-time">11:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Brunch — Antico Caffè Greco (since 1760)</div><div class="evt-price">$24pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">13:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Transfer to FCO — pre-booked, tracked in app</div><div class="evt-price">$48</div><div class="ebadge eb-ok">Booked</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONNECTOR FLIGHT -->
+    <div class="connector">
+      <div class="conn-icon">✈️</div>
+      <div style="flex:1;">
+        <div class="conn-title">Rome FCO → Ibiza IBZ — Vueling VY6241</div>
+        <div class="conn-sub">Saturday 14 Sep · Departs 16:20 · Arrives 18:35 · 2h 15m direct</div>
+      </div>
+      <div class="conn-price">$186pp</div>
+      <div class="conn-badge">Booked</div>
+    </div>
+
+    <!-- IBIZA -->
+    <div class="itin-block">
+      <div class="itin-hdr party">
+        <div class="itin-hdr-l"><div class="dest-icon party">🎉</div><div><div class="itin-title">Ibiza, Spain — 14–18 September</div><div class="itin-sub">Party · Club bookings · Pre-events · Recovery built in</div></div></div>
+        <div class="all-booked">ALL BOOKED</div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 5 — Sat · Arrival &amp; first night out</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">18:35</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Ushuaïa Beach Hotel, Playa d'en Bossa</div><div class="evt-price">$280/n</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Ushuaïa sits directly on the beach with its own open-air club — no transport needed on night 1.</span></div>
+          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Jockey Club Sunset Beach (beachfront)</div><div class="evt-price">$68pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">23:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Ushuaïa Ibiza Beach Club — Tiësto closing party</div><div class="evt-price">$75pp</div><div class="ebadge eb-ok">Booked</div></div>
+        </div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 6 — Sun · Pool day &amp; Pacha</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">13:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Recovery brunch — La Paloma, San Lorenzo</div><div class="evt-price">$38pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">15:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Sunset catamaran — 3hr, open bar</div><div class="evt-price">$85pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Catamaran departs Ibiza Town marina — perfect sunset views of Dalt Vila. Sells out fast in September.</span></div>
+          <div class="evt"><div class="evt-time">21:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — El Chiringuito, Es Cavallet beach</div><div class="evt-price">$72pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">00:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Pacha Ibiza — Eric Prydz presents HOLO</div><div class="evt-price">$90pp</div><div class="ebadge eb-ok">Booked</div></div>
+        </div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 7 — Mon · Beach &amp; DC10</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">14:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Cala Comte beach — taxi pre-booked, sunbeds reserved</div><div class="evt-price">$22pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Cala Comte has the clearest water on the island. Sunbed reservation avoids the 9am queue.</span></div>
+          <div class="evt"><div class="evt-time">18:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Sunset drinks — Café del Mar, San Antonio</div><div class="evt-price">$30pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Can Pilot, traditional Ibizan grill</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">23:30</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">DC10 — Circoloco Monday (legendary weekly)</div><div class="evt-price">$55pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: DC10 Circoloco is one of Ibiza's most iconic nights. Arrives late on purpose — doors from midnight.</span></div>
+        </div>
+      </div>
+      <div class="day-block">
+        <div class="day-lbl">Day 8 — Tue · Final day &amp; departure</div>
+        <div class="evt-list">
+          <div class="evt"><div class="evt-time">13:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Final brunch — Babylon Beach, Es Canar</div><div class="evt-price">$30pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt"><div class="evt-time">15:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Transfer to IBZ airport — pre-booked taxi</div><div class="evt-price">$32</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">18:10</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Fly IBZ → DXB → SYD — Emirates connecting</div><div class="evt-price">Included</div><div class="ebadge eb-ok">Booked</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--blue);"></div><span>Flights &amp; transfers</span></div>
+      <div class="leg"><div class="leg-dot" style="background:var(--amber);"></div><span>Attractions</span></div>
+      <div class="leg"><div class="leg-dot" style="background:var(--accent);"></div><span>Food &amp; dining</span></div>
+      <div class="leg"><div class="leg-dot" style="background:var(--green);"></div><span>Accommodation</span></div>
+      <div class="leg"><div class="leg-dot" style="background:var(--purple);"></div><span>Clubs &amp; events</span></div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="btn-primary" onclick="showPage('inspo')">See more trip inspiration →</button>
+    </div>
+  </div>
+
+  <!-- WAITLIST -->
+  <div id="waitlist" class="waitlist">
+    <div class="waitlist-inner">
+      <div class="free-badge">✓ 100% free — no credit card needed</div>
+      <h2>Be first to travel smarter</h2>
+      <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking launches.</p>
+      <div class="wl-form">
+        <input type="email" placeholder="your@email.com" />
+        <button>Get my free itinerary →</button>
+      </div>
+      <div class="wl-note">Free forever. No spam. 🇦🇺 Australia &amp; 🇬🇧 UK launch Q3 2026.</div>
+    </div>
+  </div>
+
+</div><!-- end landing -->
+
+<!-- ══ INSPIRATION PAGE ══════════════════════════════════ -->
+<div id="page-inspo" class="page">
+
+  <div class="inspo-header">
+    <h1>Trip inspiration</h1>
+    <p>Real itineraries built by Voyai. Find your trip, then book it in minutes.</p>
+    <div class="cat-tabs">
+      <button class="cat-tab active" onclick="setCat(this)">✨ All trips <span class="tc">48</span></button>
+      <button class="cat-tab" onclick="setCat(this)">🔥 Partying <span class="tc">12</span></button>
+      <button class="cat-tab" onclick="setCat(this)">💍 Honeymoon <span class="tc">9</span></button>
+      <button class="cat-tab" onclick="setCat(this)">🗺️ Sightseeing <span class="tc">11</span></button>
+      <button class="cat-tab" onclick="setCat(this)">⛰️ Hiking <span class="tc">7</span></button>
+      <button class="cat-tab" onclick="setCat(this)">⛳ Golf <span class="tc">5</span></button>
+      <button class="cat-tab" onclick="setCat(this)">🌹 Romantic <span class="tc">8</span></button>
+      <button class="cat-tab" onclick="setCat(this)">🏄 Adventure <span class="tc">6</span></button>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-lbl">Budget</span>
+    <button class="f-chip active" onclick="toggleF(this,'budget')">Any budget</button>
+    <button class="f-chip" onclick="toggleF(this,'budget')">Under $3k</button>
+    <button class="f-chip" onclick="toggleF(this,'budget')">$3k – $6k</button>
+    <button class="f-chip" onclick="toggleF(this,'budget')">$6k – $12k</button>
+    <button class="f-chip" onclick="toggleF(this,'budget')">$12k+</button>
+    <div class="f-divider"></div>
+    <span class="filter-lbl">Duration</span>
+    <button class="f-chip" onclick="toggleF(this,'duration')">Weekend</button>
+    <button class="f-chip" onclick="toggleF(this,'duration')">1 week</button>
+    <button class="f-chip" onclick="toggleF(this,'duration')">2 weeks</button>
+    <button class="f-chip" onclick="toggleF(this,'duration')">1 month+</button>
+    <div class="f-divider"></div>
+    <select class="f-select"><option>Any region</option><option>Europe</option><option>Asia</option><option>Americas</option><option>Middle East</option><option>Africa</option><option>Pacific</option></select>
+    <select class="f-select"><option>Any group size</option><option>Solo</option><option>Couple</option><option>Small group (3–6)</option><option>Large group (7+)</option></select>
+    <div class="results-count">Showing 18 of 48 trips</div>
+  </div>
+
+  <div class="cards-grid">
+    <!-- Featured -->
+    <div class="trip-card featured">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80') center/cover;">
+        <div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🏛️🎉</div>
+        <button class="card-save">♡</button>
+        <span class="card-vibe-pill" style="background:white;color:var(--accent);">Multi-vibe · Multi-stop</span>
+      </div>
+      <div class="card-body">
+        <div class="card-dest">Rome + Ibiza, Europe</div>
+        <div class="card-sub">8 days · 2 adults · Sightseeing then Party</div>
+        <div class="card-meta">
+          <span class="ctag" style="background:var(--amber-light);color:#854F0B;">🏛️ Sightseeing</span>
+          <span class="ctag" style="background:var(--accent-light);color:var(--accent);">🔥 Party</span>
+          <span class="ctag" style="background:var(--bg2);color:var(--text-muted);">✈️ 2 countries</span>
+          <span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⚡ Skip-the-line</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="card-price">$5,420 <span>per person from SYD</span></div>
+        <button class="card-btn">Book this trip →</button>
+      </div>
+    </div>
+    <!-- Bali -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🌺</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Bali, Indonesia</div><div class="card-sub">10 days · Couple · Luxury &amp; romance</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">💍 Honeymoon</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🧖 Spa included</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,200 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Ibiza -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🎧</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Ibiza, Spain</div><div class="card-sub">5 days · Group of 6 · Full send</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🎧 Club nights</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛥️ Boat trip</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,890 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Japan -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🗼</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Tokyo + Kyoto, Japan</div><div class="card-sub">12 days · 2 adults · Culture &amp; food</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🗺️ Sightseeing</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍜 Food tours</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚅 Rail pass</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,100 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Scotland Golf -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">⛳</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">St Andrews + Edinburgh, Scotland</div><div class="card-sub">7 days · Group of 4 · Links golf</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 4 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏰 Castle stays</span></div></div>
+      <div class="card-footer"><div class="card-price">$7,400 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Patagonia -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">⛰️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
+      <div class="card-body"><div class="card-dest">Patagonia, Chile + Argentina</div><div class="card-sub">14 days · Solo or duo · Torres del Paine</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">⛰️ Multi-day trek</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏕️ Camping</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,800 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Amsterdam -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🌷</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Amsterdam, Netherlands</div><div class="card-sub">4 days · Group of 5 · Techno &amp; canals</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">🎧 Techno</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛶 Canal boat</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,400 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Maldives -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🏝️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Maldives</div><div class="card-sub">7 days · Couple · Overwater villa</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🤿 Diving</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🌅 Sunsets</span></div></div>
+      <div class="card-footer"><div class="card-price">$8,900 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Morocco -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🕌</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Marrakech + Sahara, Morocco</div><div class="card-sub">9 days · 2–4 people · Culture &amp; desert</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🐪 Desert camp</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛍️ Souks</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,200 <span>per person</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+  </div>
+
+
+    <!-- Santorini -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🌅</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Romantic</span></div>
+      <div class="card-body"><div class="card-dest">Santorini, Greece</div><div class="card-sub">7 days · Couple · Caldera views &amp; sunsets</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌅 Oia sunsets</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚢 Catamaran</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Paris -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🗼</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#7F77DD;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Paris, France</div><div class="card-sub">7 days · Couple · Romance &amp; culture</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:#7F77DD;">🥂 Fine dining</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🖼️ Louvre</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,900 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Vietnam -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🛵</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-body"><div class="card-dest">Vietnam — Hanoi to Hoi An</div><div class="card-sub">14 days · Solo or couple · Food &amp; culture</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🍜 Street food</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛶 Ha Long Bay</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,900 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Dubai -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🏙️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#BA7517;">✨ Luxury</span></div>
+      <div class="card-body"><div class="card-dest">Dubai, UAE</div><div class="card-sub">5 days · 2 adults · Ultra-luxury stopover</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🏨 Burj Al Arab</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛥️ Desert safari</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Peru Machu Picchu -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🏔️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">⛰️ Adventure</span></div>
+      <div class="card-body"><div class="card-dest">Peru — Lima &amp; Machu Picchu</div><div class="card-sub">10 days · Small group · Inca trail &amp; culture</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🥾 Inca Trail</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍽️ Ceviche</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,100 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Iceland -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🌌</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">🌌 Northern Lights</span></div>
+      <div class="card-body"><div class="card-dest">Iceland — Ring Road</div><div class="card-sub">10 days · 2–4 people · Northern lights &amp; glaciers</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🌌 Aurora</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🧊 Glacier hike</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,800 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Kenya Safari -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🦁</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">🦁 Safari</span></div>
+      <div class="card-body"><div class="card-dest">Masai Mara, Kenya</div><div class="card-sub">9 days · Couple · Great Migration safari</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">🦁 Big Five</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎈 Hot air balloon</span></div></div>
+      <div class="card-footer"><div class="card-price">$7,200 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Croatia -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">⛵</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">🌹 Romantic</span></div>
+      <div class="card-body"><div class="card-dest">Dubrovnik + Hvar, Croatia</div><div class="card-sub">9 days · Couple · Adriatic island hopping</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">⛵ Island hop</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏰 Old Town</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,400 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+    <!-- Amalfi Coast -->
+    <div class="trip-card">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1612698093158-e07ac200d44e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🍋</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Amalfi Coast, Italy</div><div class="card-sub">8 days · 2–4 adults · Clifftop villages &amp; sea</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🍋 Positano</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛵ Boat hire</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,300 <span>per person from SYD</span></div><button class="card-btn">Book this trip →</button></div>
+    </div>
+
+  <div class="load-more-wrap">
+    <button class="load-more">Load more trips (30 remaining)</button>
+  </div>
+
+  <!-- WAITLIST ON INSPO PAGE -->
+  <div class="waitlist">
+    <div class="waitlist-inner">
+      <div class="free-badge">✓ Free itinerary — no card needed</div>
+      <h2>Found your trip?</h2>
+      <p>Get your free personalised itinerary now. 2,400+ travellers already signed up for early access.</p>
+      <div class="wl-form">
+        <input type="email" placeholder="your@email.com" />
+        <button>Get my free itinerary →</button>
+      </div>
+      <div class="wl-note">Free forever. No spam. 🇦🇺 Australia &amp; 🇬🇧 UK launch Q3 2026.</div>
+    </div>
+  </div>
+
+</div><!-- end inspo -->
+
+<!-- ══ FOOTER ════════════════════════════════════════════ -->
+<footer>
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="width:26px;height:26px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;">✈</div>
+      <span style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;">Voy<span style="color:var(--accent);">ai</span></span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);">© 2026 Voyai Pty Ltd — Sydney, Australia</p>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:2px;">ABN registered · voyai.travel</p>
+  </div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">hello@voyai.com</a>
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+  </div>
+</footer>
+
+<script>
+function showPage(id, linkEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+function scrollTo(id) {
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 50);
+}
+function setCat(el) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function toggleF(el, group) {
+  document.querySelectorAll('.f-chip[onclick*="' + group + '"]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
