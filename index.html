@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voyai — Your trip, planned & booked in minutes</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23E8192C'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='20' fill='white'>✈</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ───────────────────────────────────────── */
@@ -33,7 +33,7 @@ html{scroll-behavior:smooth}
 body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
 a { text-decoration:none; color:inherit; }
 button { cursor:pointer; font-family:'DM Sans',sans-serif; }
- 
+
 /* ── NAV ────────────────────────────────────────────────── */
 nav {
   position:sticky; top:0; z-index:200;
@@ -52,15 +52,15 @@ nav {
 .nav-links a:hover, .nav-links a.active { background:var(--accent-light); color:var(--accent); }
 .nav-cta { background:var(--accent); color:white; border:none; padding:10px 22px; border-radius:var(--radius-sm); font-size:14px; font-weight:500; transition:opacity .2s; }
 .nav-cta:hover { opacity:.88; }
- 
+
 /* ── PAGE SECTIONS ──────────────────────────────────────── */
 .page { display:none; }
 .page.active { display:block; }
- 
+
 /* ══════════════════════════════════════════════════════════
    LANDING PAGE
 ══════════════════════════════════════════════════════════ */
- 
+
 /* HERO */
 .hero { padding:88px 48px 72px; max-width:880px; margin:0 auto; text-align:center; }
 .hero-pill {
@@ -79,7 +79,7 @@ nav {
 .btn-primary:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 6px 22px rgba(232,25,44,.42); }
 .btn-secondary { background:white; color:var(--text); border:1.5px solid var(--border-mid); padding:14px 28px; border-radius:10px; font-size:15px; transition:border-color .2s; }
 .btn-secondary:hover { border-color:#aaa; }
- 
+
 /* TRUST BAR */
 .trust-bar { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); display:flex; justify-content:center; }
 .trust-item { flex:1; max-width:200px; padding:20px 16px; text-align:center; border-right:1px solid var(--border); }
@@ -87,7 +87,7 @@ nav {
 .trust-num { font-family:'Syne',sans-serif; font-size:24px; font-weight:700; margin-bottom:3px; }
 .trust-num span { color:var(--accent); }
 .trust-label { font-size:12px; color:var(--text-muted); }
- 
+
 /* HOW IT WORKS */
 .section { padding:72px 48px; max-width:1100px; margin:0 auto; }
 .section-hd { text-align:center; margin-bottom:48px; }
@@ -101,7 +101,7 @@ nav {
 .step-icon { width:40px; height:40px; background:var(--accent-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:12px; }
 .step h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:7px; }
 .step p  { font-size:13px; color:var(--text-muted); line-height:1.6; }
- 
+
 /* VIBES */
 .vibes-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
 .vibe-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); padding:26px; transition:all .2s; box-shadow:var(--shadow-sm); }
@@ -114,13 +114,13 @@ nav {
 .tags { display:flex; gap:6px; flex-wrap:wrap; }
 .tag  { font-size:11px; padding:3px 9px; border-radius:20px; border:1px solid var(--border-mid); color:var(--text-muted); background:var(--bg2); }
 hr { border:none; border-top:1px solid var(--border); }
- 
+
 /* ── ITINERARY SHARED STYLES ───────────────────────────── */
 .itin-wrap { padding:0 48px 72px; max-width:1100px; margin:0 auto; }
 .itin-intro { text-align:center; margin-bottom:36px; }
 .itin-intro h2 { font-family:'Syne',sans-serif; font-size:34px; font-weight:800; letter-spacing:-.02em; margin-bottom:8px; }
 .itin-intro p  { font-size:15px; color:var(--text-muted); }
- 
+
 .route-bar {
   display:flex; align-items:center; justify-content:center; gap:6px;
   flex-wrap:wrap; margin-bottom:24px;
@@ -134,7 +134,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .route-nights { font-size:11px; color:var(--text-muted); padding-left:15px; }
 .route-arrow  { font-size:14px; color:var(--text-dim); margin:0 6px; }
 .vibe-pill { font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; }
- 
+
 .sum-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:24px; }
 .sum-card { background:var(--bg2); border-radius:10px; padding:14px 12px; text-align:center; }
 .sum-card.total { background:var(--accent-light); border:1px solid var(--accent-mid); }
@@ -144,7 +144,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .sum-val.red { color:var(--accent); }
 .sum-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
 .sum-sub.red { color:var(--accent); }
- 
+
 .itin-block { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; }
 .itin-hdr { padding:14px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
 .itin-hdr.sight { background:#FFFDF7; }
@@ -156,7 +156,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .itin-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
 .itin-sub   { font-size:12px; color:var(--text-muted); margin-top:1px; }
 .all-booked { background:var(--green-light); color:#0F6E56; border:1px solid var(--green-mid); font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
- 
+
 .day-block { padding:16px 22px; border-bottom:1px solid var(--border); }
 .day-block:last-child { border-bottom:none; }
 .day-lbl { font-size:10px; font-weight:600; letter-spacing:.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:12px; }
@@ -173,19 +173,19 @@ hr { border:none; border-top:1px solid var(--border); }
 .tip { display:flex; align-items:flex-start; gap:6px; padding:7px 10px; background:var(--bg2); border-radius:8px; margin-top:2px; }
 .tip-dot { width:5px; height:5px; border-radius:50%; background:var(--text-dim); flex-shrink:0; margin-top:5px; }
 .tip span { font-size:11px; color:var(--text-muted); font-style:italic; line-height:1.5; }
- 
+
 .connector { display:flex; align-items:center; gap:12px; padding:14px 20px; background:var(--blue-light); border:1.5px solid #B5D4F4; border-radius:var(--radius); margin-bottom:14px; }
 .conn-icon  { font-size:20px; }
 .conn-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#185FA5; }
 .conn-sub   { font-size:12px; color:var(--blue); margin-top:1px; }
 .conn-price { font-size:13px; font-weight:700; font-family:'Syne',sans-serif; color:#185FA5; white-space:nowrap; }
 .conn-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; background:#B5D4F4; color:#0C447C; white-space:nowrap; }
- 
+
 .legend { display:flex; gap:18px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
 .leg { display:flex; align-items:center; gap:5px; }
 .leg-dot { width:8px; height:8px; border-radius:50%; }
 .leg span { font-size:12px; color:var(--text-muted); }
- 
+
 /* WAITLIST */
 .waitlist { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 48px; text-align:center; }
 .waitlist-inner { max-width:500px; margin:0 auto; }
@@ -198,7 +198,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .wl-form button { background:var(--accent); color:white; border:none; padding:13px 22px; border-radius:10px; font-size:14px; font-weight:500; transition:opacity .2s; white-space:nowrap; }
 .wl-form button:hover { opacity:.88; }
 .wl-note { font-size:12px; color:var(--text-dim); }
- 
+
 /* ══════════════════════════════════════════════════════════
    INSPIRATION PAGE
 ══════════════════════════════════════════════════════════ */
@@ -211,7 +211,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .cat-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 .cat-tab .tc { font-size:11px; background:var(--bg3); color:var(--text-dim); padding:1px 6px; border-radius:10px; font-weight:400; }
 .cat-tab.active .tc { background:var(--accent-light); color:var(--accent); }
- 
+
 .filter-bar { padding:14px 48px; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .filter-lbl { font-size:12px; font-weight:500; color:var(--text-dim); }
 .f-chip { display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:20px; border:1.5px solid var(--border-mid); background:white; font-size:12px; color:var(--text-muted); transition:all .15s; white-space:nowrap; }
@@ -220,7 +220,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .f-divider { width:1px; height:20px; background:var(--border-mid); margin:0 2px; }
 .f-select { padding:6px 28px 6px 12px; border-radius:20px; border:1.5px solid var(--border-mid); background:white; font-size:12px; color:var(--text-muted); font-family:'DM Sans',sans-serif; outline:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23ADADAD'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
 .results-count { margin-left:auto; font-size:12px; color:var(--text-dim); }
- 
+
 .cards-grid { padding:28px 48px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1200px; margin:0 auto; }
 .trip-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .2s; box-shadow:var(--shadow-sm); }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
@@ -244,7 +244,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .load-more-wrap { text-align:center; padding:8px 48px 48px; }
 .load-more { background:white; border:1.5px solid var(--border-mid); color:var(--text-muted); padding:11px 30px; border-radius:10px; font-size:13px; transition:border-color .2s,color .2s; }
 .load-more:hover { border-color:var(--accent); color:var(--accent); }
- 
+
 /* ── ITINERARY FORM PAGE ────────────────────────────────── */
 .form-page { max-width:720px; margin:0 auto; padding:56px 32px 80px; }
 .form-progress { display:flex; align-items:center; gap:0; margin-bottom:48px; }
@@ -299,29 +299,29 @@ hr { border:none; border-top:1px solid var(--border); }
   .form-options{grid-template-columns:repeat(2,1fr)}
   .form-options.two-col{grid-template-columns:1fr 1fr}
 }
- 
+
 /* ── FOOTER ─────────────────────────────────────────────── */
 footer { padding:36px 48px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); background:var(--bg2); }
 footer p { font-size:13px; color:var(--text-dim); }
 .footer-links { display:flex; gap:24px; }
 .footer-links a { font-size:13px; color:var(--text-dim); transition:color .2s; }
 .footer-links a:hover { color:var(--text); }
- 
+
 /* ── SOCIAL STRIP ──────────────────────────────────────── */
 .social-strip { background:var(--accent); padding:9px 0; overflow:hidden; }
 .social-strip-inner { display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; padding:0 48px; }
 .ss-item { display:flex; align-items:center; gap:7px; font-size:13px; color:rgba(255,255,255,.9); white-space:nowrap; }
 .ss-item strong { color:#fff; font-weight:600; }
- 
+
 /* ── AFFILIATE STRIP ────────────────────────────────────── */
 .aff-strip { padding:28px 48px; background:var(--bg2); border-top:1px solid var(--border); text-align:center; }
 .aff-strip-label { font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em; margin-bottom:14px; }
 .aff-logos { display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
 .aff-logo { font-size:12px; font-weight:600; color:var(--text-muted); padding:7px 16px; border:1.5px solid var(--border-mid); border-radius:8px; background:white; letter-spacing:.01em; white-space:nowrap; }
- 
+
 /* ── FREE BADGE ─────────────────────────────────────────── */
 .free-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-light); border:1px solid var(--green-mid); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; color:var(--green); margin-bottom:12px; }
- 
+
 /* ── PRICING SECTION ────────────────────────────────────── */
 #pricing { padding:80px 48px; background:var(--bg2); }
 .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:960px; margin:0 auto; }
@@ -341,7 +341,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 .price-btn.primary { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 14px rgba(232,25,44,.28); }
 .price-btn.primary:hover { opacity:.9; transform:translateY(-1px); }
 .price-note { text-align:center; font-size:12px; color:var(--text-dim); margin-top:20px; max-width:960px; margin-left:auto; margin-right:auto; }
- 
+
 /* ── DESTINATIONS SECTION ───────────────────────────────── */
 #destinations { padding:80px 48px; }
 .dest-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
@@ -353,11 +353,11 @@ footer p { font-size:13px; color:var(--text-dim); }
 .dest-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:white; margin-bottom:2px; }
 .dest-sub { font-size:12px; color:rgba(255,255,255,.8); }
 .dest-badge { position:absolute; top:12px; right:12px; background:rgba(255,255,255,.95); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; }
- 
+
 /* ── PHOTO CARD STYLES ──────────────────────────────────── */
 .card-img-photo { position:absolute; inset:0; background-size:cover; background-position:center; }
 .card-img-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 60%); }
- 
+
 /* ── MOBILE ─────────────────────────────────────────────── */
 @media(max-width:900px){
   .pricing-grid{grid-template-columns:1fr}
@@ -390,11 +390,11 @@ footer p { font-size:13px; color:var(--text-dim); }
   .social-strip-inner{gap:20px}
   .aff-strip{padding:20px}
 }
- 
+
 </style>
 </head>
 <body>
- 
+
 <!-- ══ NAV ══════════════════════════════════════════════ -->
 <nav>
   <div class="nav-logo">
@@ -410,10 +410,10 @@ footer p { font-size:13px; color:var(--text-dim); }
   </ul>
   <button class="nav-cta" onclick="showPage('landing',this);scrollToSection('waitlist')">Join waitlist</button>
 </nav>
- 
+
 <!-- ══ LANDING PAGE ══════════════════════════════════════ -->
 <div id="page-landing" class="page active">
- 
+
   <!-- HERO -->
   <div class="hero">
     <div class="hero-pill fu"><div class="dot"></div>Bookings Handled by Voyai Coming Soon</div>
@@ -424,7 +424,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button class="btn-secondary" onclick="scrollToSection('how')">See how it works</button>
     </div>
   </div>
- 
+
   <!-- TRUST BAR -->
   <div class="trust-bar">
     <div class="trust-item"><div class="trust-num">&lt;5<span>min</span></div><div class="trust-label">Average plan time</div></div>
@@ -432,7 +432,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="trust-item"><div class="trust-num">190<span>+</span></div><div class="trust-label">Destinations</div></div>
     <div class="trust-item"><div class="trust-num">$<span>0</span></div><div class="trust-label">Itinerary Fee</div></div>
   </div>
- 
+
   <!-- HOW IT WORKS -->
   <div id="how" class="section">
     <div class="section-hd"><h2>How Voyai works</h2><p>Four steps from idea to fully booked holiday</p></div>
@@ -443,9 +443,9 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, hotel, dinner and event can be booked with VOYAI.</p></div>
     </div>
   </div>
- 
+
   <hr>
- 
+
   <!-- VIBES -->
   <div id="vibes" class="section">
     <div class="section-hd"><h2>Choose your vibe</h2><p>Voyai builds a completely different itinerary for each trip type</p></div>
@@ -472,8 +472,8 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
   </div>
- 
- 
+
+
   <!-- ══ POPULAR DESTINATIONS ══════════════════════════════ -->
   <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
     <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — VoyAI builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
@@ -535,14 +535,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
   </div>
- 
+
   <hr>
- 
+
   <!-- ══ PRICING ══════════════════════════════════════════ -->
   <div id="pricing">
     <div class="section-hd"><h2>Simple, transparent pricing</h2><p>Start free — upgrade only when you need more. No subscriptions, no surprises.</p></div>
     <div class="pricing-grid">
- 
+
       <div class="price-card">
         <div class="price-tier">Free</div>
         <div class="price-amount">$0 <span>/ itinerary</span></div>
@@ -556,7 +556,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </ul>
         <button class="price-btn" onclick="showPage('landing');scrollToSection('waitlist')">Get started free</button>
       </div>
- 
+
       <div class="price-card featured">
         <div class="price-popular">MOST POPULAR</div>
         <div class="price-tier">Essential</div>
@@ -572,7 +572,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </ul>
         <button class="price-btn primary" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Join waitlist →</button>
       </div>
- 
+
       <div class="price-card">
         <div class="price-tier">Concierge</div>
         <div class="price-amount">$149 <span>/ trip</span></div>
@@ -589,11 +589,11 @@ footer p { font-size:13px; color:var(--text-dim); }
         </ul>
         <button class="price-btn" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Join waitlist →</button>
       </div>
- 
+
     </div>
     <p class="price-note">All prices in AUD. Join Voyai waitlist for bookings handled by us.</p>
   </div>
- 
+
   <hr>
   <!-- ITINERARY EXAMPLE -->
   <div class="itin-wrap">
@@ -601,7 +601,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>A sample Voyai itinerary</h2>
       <p>Rome + Ibiza — 8 days — Multi-vibe — $5,800 AUD budget · Departing Sydney</p>
     </div>
- 
+
     <!-- Route bar -->
     <div class="route-bar">
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
@@ -618,7 +618,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="route-arrow">→</div>
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
     </div>
- 
+
     <!-- Summary -->
     <div class="sum-grid">
       <div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$2,140</div><div class="sum-sub">return + connection</div></div>
@@ -627,7 +627,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$880</div><div class="sum-sub">all reserved</div></div>
       <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$5,420</div><div class="sum-sub red">$380 under budget</div></div>
     </div>
- 
+
     <!-- ROME -->
     <div class="itin-block">
       <div class="itin-hdr sight">
@@ -673,7 +673,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
- 
+
     <!-- CONNECTOR FLIGHT -->
     <div class="connector">
       <div class="conn-icon">✈️</div>
@@ -684,7 +684,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="conn-price">$186pp</div>
       <div class="conn-badge">Booked</div>
     </div>
- 
+
     <!-- IBIZA -->
     <div class="itin-block">
       <div class="itin-hdr party">
@@ -730,7 +730,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
- 
+
     <div class="legend">
       <div class="leg"><div class="leg-dot" style="background:var(--blue);"></div><span>Flights &amp; transfers</span></div>
       <div class="leg"><div class="leg-dot" style="background:var(--amber);"></div><span>Attractions</span></div>
@@ -738,12 +738,12 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="leg"><div class="leg-dot" style="background:var(--green);"></div><span>Accommodation</span></div>
       <div class="leg"><div class="leg-dot" style="background:var(--purple);"></div><span>Clubs &amp; events</span></div>
     </div>
- 
+
     <div style="text-align:center;margin-top:32px;">
       <button class="btn-primary" onclick="showPage('inspo')">See more trip inspiration →</button>
     </div>
   </div>
- 
+
   <!-- WAITLIST -->
   <div id="waitlist" class="waitlist">
     <div class="waitlist-inner">
@@ -757,12 +757,12 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="wl-note">Free forever. No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
- 
+
 </div><!-- end landing -->
- 
+
 <!-- ══ INSPIRATION PAGE ══════════════════════════════════ -->
 <div id="page-inspo" class="page">
- 
+
   <div class="inspo-header">
     <h1>Trip inspiration</h1>
     <p>Real itineraries built by Voyai. Find your trip, then book it in minutes.</p>
@@ -777,7 +777,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button class="cat-tab" onclick="setCat(this)">🏄 Adventure <span class="tc">6</span></button>
     </div>
   </div>
- 
+
   <div class="filter-bar">
     <span class="filter-lbl">Budget</span>
     <button class="f-chip active" data-group="budget" data-budget="any"     onclick="toggleF(this,'budget')">Any budget</button>
@@ -797,7 +797,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <select class="f-select" data-group="groupsize"><option>Any group size</option><option>Solo</option><option>Couple</option><option>Small group (3–6)</option><option>Large group (7+)</option></select>
     <div class="results-count">Showing 18 trips</div>
   </div>
- 
+
   <div class="cards-grid">
     <!-- Featured -->
     <div class="trip-card featured" data-cat="party sightseeing" data-budget="5420" data-dur="8" data-region="Europe" data-group="Couple">
@@ -869,7 +869,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-body"><div class="card-dest">Marrakech + Sahara, Morocco</div><div class="card-sub">9 days · 2–4 people · Culture &amp; desert</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🐪 Desert camp</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛍️ Souks</span></div></div>
       <div class="card-footer"><div class="card-price">$3,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
     </div>
- 
+
     <!-- Santorini -->
     <div class="trip-card" data-cat="honeymoon romantic" data-budget="4200" data-dur="7" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🌅</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Romantic</span></div>
@@ -924,13 +924,13 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-body"><div class="card-dest">Amalfi Coast, Italy</div><div class="card-sub">8 days · 2–4 adults · Clifftop villages &amp; sea</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🍋 Positano</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛵ Boat hire</span></div></div>
       <div class="card-footer"><div class="card-price">$5,300 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
     </div>
- 
+
   </div><!-- end cards-grid -->
- 
+
   <div class="load-more-wrap">
     <button class="load-more" onclick="loadMore(this)">Load more trips (30 remaining)</button>
   </div>
- 
+
   <!-- WAITLIST ON INSPO PAGE -->
   <div class="waitlist">
     <div class="waitlist-inner">
@@ -944,13 +944,13 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="wl-note">Free forever. No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
- 
+
 </div><!-- end inspo -->
- 
+
 <!-- ══ ITINERARY FORM PAGE ══════════════════════════════════ -->
 <div id="page-form" class="page">
   <div class="form-page">
- 
+
     <!-- Progress bar -->
     <div class="form-progress">
       <div class="form-progress-step"><div class="fp-dot active" id="fp1">1</div><div class="fp-line" id="fl1"></div></div>
@@ -960,7 +960,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-progress-step"><div class="fp-dot" id="fp5">5</div><div class="fp-line" id="fl5"></div></div>
       <div class="form-progress-step"><div class="fp-dot" id="fp6">6</div></div>
     </div>
- 
+
     <!-- STEP 1 — Where & When -->
     <div class="form-step active" id="step1">
       <div class="form-eyebrow">Step 1 of 6</div>
@@ -989,7 +989,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(1)">Next →</button>
       </div>
     </div>
- 
+
     <!-- STEP 2 — Who's travelling -->
     <div class="form-step" id="step2">
       <div class="form-eyebrow">Step 2 of 6</div>
@@ -1031,7 +1031,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(2)">Next →</button>
       </div>
     </div>
- 
+
     <!-- STEP 3 — Vibe & Experience -->
     <div class="form-step" id="step3">
       <div class="form-eyebrow">Step 3 of 6</div>
@@ -1065,7 +1065,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(3)">Next →</button>
       </div>
     </div>
- 
+
     <!-- STEP 4 — Existing bookings -->
     <div class="form-step" id="step4">
       <div class="form-eyebrow">Step 4 of 6</div>
@@ -1078,7 +1078,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 — Hotel: W Barcelona booked 14–17 Sep
 — Already bought tickets to Primavera Sound festival on 16 Sep
 — Friend is meeting us in Ibiza on the 18th
- 
+
 ...or leave blank if you're starting from scratch"></textarea>
       </div>
       <div class="form-group">
@@ -1093,7 +1093,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
- 
+
     <!-- STEP 5 — Budget & Style -->
     <div class="form-step" id="step5">
       <div class="form-eyebrow">Step 5 of 6</div>
@@ -1132,7 +1132,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(5)">Next →</button>
       </div>
     </div>
- 
+
     <!-- STEP 6 — Email -->
     <div class="form-step" id="step6">
       <div class="form-eyebrow">Step 6 of 6 — Almost done!</div>
@@ -1158,7 +1158,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" style="padding:14px 40px;font-size:15px;" onclick="submitForm()">Send my itinerary ✈</button>
       </div>
     </div>
- 
+
     <!-- SUCCESS STATE -->
     <div class="form-step" id="step-success">
       <div class="form-success">
@@ -1175,10 +1175,10 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="btn-primary" onclick="showPage('landing')">Back to home</button>
       </div>
     </div>
- 
+
   </div>
 </div><!-- end form page -->
- 
+
 <!-- ══ FOOTER ════════════════════════════════════════════ -->
 <footer>
   <div>
@@ -1197,7 +1197,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <a href="#">TikTok</a>
   </div>
 </footer>
- 
+
 <script>
 // ── PAGE NAVIGATION ─────────────────────────────────────
 function showPage(id, linkEl) {
@@ -1207,14 +1207,14 @@ function showPage(id, linkEl) {
   if (linkEl) linkEl.classList.add('active');
   window.scrollTo(0, 0);
 }
- 
+
 function scrollToSection(id) {
   setTimeout(() => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
   }, 80);
 }
- 
+
 // ── CATEGORY TABS ────────────────────────────────────────
 function setCat(el) {
   document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
@@ -1222,14 +1222,14 @@ function setCat(el) {
   const label = el.textContent.trim();
   filterCards();
 }
- 
+
 // ── BUDGET / DURATION FILTERS ────────────────────────────
 function toggleF(el, group) {
   document.querySelectorAll('.f-chip[data-group="' + group + '"]').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   filterCards();
 }
- 
+
 // ── CARD FILTERING LOGIC ─────────────────────────────────
 function filterCards() {
   const activeCat   = document.querySelector('.cat-tab.active');
@@ -1237,13 +1237,13 @@ function filterCards() {
   const activeDur   = document.querySelector('.f-chip[data-group="duration"].active');
   const activeRegion= document.querySelector('.f-select[data-group="region"]');
   const activeGroup = document.querySelector('.f-select[data-group="groupsize"]');
- 
+
   const cat    = activeCat    ? activeCat.dataset.cat       : 'all';
   const budget = activeBudget ? activeBudget.dataset.budget : 'any';
   const dur    = activeDur    ? activeDur.dataset.dur       : 'any';
   const region = activeRegion ? activeRegion.value          : 'any';
   const grp    = activeGroup  ? activeGroup.value           : 'any';
- 
+
   let visible = 0;
   document.querySelectorAll('.trip-card').forEach(card => {
     const cardCat    = card.dataset.cat    || '';
@@ -1251,32 +1251,32 @@ function filterCards() {
     const cardDur    = parseInt(card.dataset.dur    || '0');
     const cardRegion = card.dataset.region || '';
     const cardGroup  = card.dataset.group  || '';
- 
+
     let show = true;
- 
+
     if (cat !== 'all' && !cardCat.includes(cat)) show = false;
- 
+
     if (budget === 'under3k'  && cardBudget >= 3000)  show = false;
     if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  show = false;
     if (budget === '6to12k'   && (cardBudget < 6000  || cardBudget >= 12000)) show = false;
     if (budget === 'over12k'  && cardBudget < 12000)  show = false;
- 
+
     if (dur === 'weekend' && cardDur > 3)   show = false;
     if (dur === '1week'   && (cardDur < 4  || cardDur > 9))  show = false;
     if (dur === '2weeks'  && (cardDur < 10 || cardDur > 20)) show = false;
     if (dur === '1month'  && cardDur < 21)  show = false;
- 
+
     if (region !== 'Any region' && region !== 'any' && cardRegion !== region) show = false;
     if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) show = false;
- 
+
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
- 
+
   const counter = document.querySelector('.results-count');
   if (counter) counter.textContent = 'Showing ' + visible + ' trips';
 }
- 
+
 // ── SAVE / WISHLIST HEARTS ───────────────────────────────
 document.addEventListener('click', function(e) {
   if (e.target.classList.contains('card-save')) {
@@ -1285,7 +1285,7 @@ document.addEventListener('click', function(e) {
     e.target.style.color = saved ? 'var(--accent)' : '';
   }
 });
- 
+
 // ── "BOOK THIS TRIP" BUTTONS ─────────────────────────────
 function bookTrip(dest) {
   showPage('landing');
@@ -1295,60 +1295,60 @@ function bookTrip(dest) {
     document.querySelector('#waitlist h2').textContent = 'Book your ' + dest + ' trip';
   }, 100);
 }
- 
+
 // ── WAITLIST FORM SUBMISSION ─────────────────────────────
 function submitWaitlist(btn) {
   const form  = btn.closest('.wl-form');
   const input = form.querySelector('input[type="email"]');
   const email = input.value.trim();
- 
+
   if (!email || !email.includes('@')) {
     input.style.borderColor = 'var(--accent)';
     input.placeholder = 'Please enter a valid email';
     input.focus();
     return;
   }
- 
+
   btn.textContent = '✓ You\'re on the list!';
   btn.style.background = 'var(--green)';
   btn.disabled = true;
   input.disabled = true;
   input.value = '';
   input.placeholder = email + ' — confirmed!';
- 
+
   // 👉 Replace with your Mailchimp / Make.com webhook URL:
   // fetch('YOUR_WEBHOOK_URL', { method:'POST', body: JSON.stringify({ email }) });
 }
- 
+
 // ── FREE ITINERARY FORM ──────────────────────────────────
 function getItinerary(btn) {
   const form  = btn.closest('.wl-form');
   const input = form.querySelector('input[type="email"]');
   const email = input.value.trim();
- 
+
   if (!email || !email.includes('@')) {
     input.style.borderColor = 'var(--accent)';
     input.placeholder = 'Please enter a valid email';
     input.focus();
     return;
   }
- 
+
   // Show loading state
   btn.textContent = '⏳ Sending...';
   btn.disabled = true;
- 
+
   setTimeout(() => {
     btn.textContent = '✓ Check your inbox!';
     btn.style.background = 'var(--green)';
     input.disabled = true;
     input.value = '';
     input.placeholder = 'Itinerary sent to ' + email;
- 
+
     // 👉 Replace with your Make.com webhook URL:
     // fetch('YOUR_MAKE_WEBHOOK_URL', { method:'POST', body: JSON.stringify({ email }) });
   }, 1200);
 }
- 
+
 // ── LOAD MORE ────────────────────────────────────────────
 function loadMore(btn) {
   btn.textContent = 'Loading...';
@@ -1359,11 +1359,11 @@ function loadMore(btn) {
     btn.style.borderColor = 'var(--green)';
   }, 800);
 }
- 
+
 // ── FORM STEPS ───────────────────────────────────────────
 let currentStep = 1;
 const totalSteps = 6;
- 
+
 function nextStep(from) {
   if (from === 1 && !document.getElementById('f-dest').value.trim()) {
     document.getElementById('f-dest').focus();
@@ -1373,11 +1373,11 @@ function nextStep(from) {
   if (from === 6) { submitForm(); return; }
   goToStep(from + 1);
 }
- 
+
 function prevStep(from) {
   goToStep(from - 1);
 }
- 
+
 function goToStep(n) {
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step' + n).classList.add('active');
@@ -1385,7 +1385,7 @@ function goToStep(n) {
   updateProgress(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
- 
+
 function updateProgress(n) {
   for (let i = 1; i <= totalSteps; i++) {
     const dot  = document.getElementById('fp' + i);
@@ -1397,18 +1397,18 @@ function updateProgress(n) {
     if (line) line.classList.toggle('done', i < n);
   }
 }
- 
+
 function selectOpt(el, group) {
   el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => {
     if (!o.classList.contains('multi')) o.classList.remove('selected');
   });
   el.classList.add('selected');
 }
- 
+
 function toggleVibe(el) {
   el.classList.toggle('selected');
 }
- 
+
 function submitForm() {
   const email = document.getElementById('f-email').value.trim();
   if (!email || !email.includes('@')) {
@@ -1416,7 +1416,7 @@ function submitForm() {
     document.getElementById('f-email').focus();
     return;
   }
- 
+
   // Collect all form data
   const formData = {
     destination:  document.getElementById('f-dest').value,
@@ -1435,30 +1435,30 @@ function submitForm() {
     email:        email,
     phone:        document.getElementById('f-phone').value,
   };
- 
+
   console.log('Itinerary request:', formData);
- 
+
   // 👉 Plug in your Make.com webhook URL here:
   fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
   });
- 
+
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-success').classList.add('active');
   document.querySelectorAll('.fp-dot').forEach(d => d.classList.add('done'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
- 
+
 // ── REGION / GROUP SIZE SELECTS ──────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.f-select').forEach(sel => {
     sel.addEventListener('change', filterCards);
   });
 });
- 
+
 const _origShowPage = showPage;
 window.showPage = function(id, linkEl) {
   _origShowPage(id, linkEl);
