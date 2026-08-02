@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Voyai — Your trip, planned & booked in minutes</title>
+<title>TripMade — My trip. Made.</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23E8192C'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='20' fill='white'>✈</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ───────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --accent:#E8192C; --accent-light:#FFF0F1; --accent-mid:#FCCDD0;
+  --accent:#0D7377; --accent-light:#E1F5EE; --accent-mid:#9FE1CB;
   --green:#1D9E75;  --green-light:#E1F5EE;  --green-mid:#9FE1CB;
   --blue:#378ADD;   --blue-light:#E6F1FB;
   --amber:#BA7517;  --amber-light:#FAEEDA;
   --purple:#7F77DD; --purple-light:#EEEDFE;
-  --bg:#FFFFFF; --bg2:#F7F6F3; --bg3:#F0EEE9;
+  --bg:#F5F5F5; --bg2:#FFFFFF; --bg3:#F5F5F5;
   --border:rgba(0,0,0,0.08); --border-mid:rgba(0,0,0,0.13);
   --text:#1A1A1A; --text-muted:#6B6B6B; --text-dim:#ADADAD;
   --radius:12px; --radius-sm:8px; --radius-lg:16px;
@@ -75,8 +75,8 @@ nav {
 .hero h1 .red { color:var(--accent); }
 .hero p { font-size:18px; line-height:1.65; color:var(--text-muted); max-width:520px; margin:0 auto 36px; }
 .hero-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-.btn-primary { background:var(--accent); color:white; border:none; padding:14px 30px; border-radius:10px; font-size:15px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(232,25,44,.3); }
-.btn-primary:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 6px 22px rgba(232,25,44,.42); }
+.btn-primary { background:var(--accent); color:white; border:none; padding:14px 30px; border-radius:10px; font-size:15px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(13,115,119,.3); }
+.btn-primary:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 6px 22px rgba(13,115,119,.42); }
 .btn-secondary { background:white; color:var(--text); border:1.5px solid var(--border-mid); padding:14px 28px; border-radius:10px; font-size:15px; transition:border-color .2s; }
 .btn-secondary:hover { border-color:#aaa; }
 
@@ -283,7 +283,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .form-nav { display:flex; align-items:center; justify-content:space-between; margin-top:36px; padding-top:24px; border-top:1px solid var(--border); }
 .form-back { background:none; border:1.5px solid var(--border-mid); color:var(--text-muted); padding:12px 24px; border-radius:10px; font-size:14px; transition:all .2s; }
 .form-back:hover { border-color:var(--text-muted); color:var(--text); }
-.form-next { background:var(--accent); color:white; border:none; padding:13px 32px; border-radius:10px; font-size:14px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(232,25,44,.25); }
+.form-next { background:var(--accent); color:white; border:none; padding:13px 32px; border-radius:10px; font-size:14px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(13,115,119,.25); }
 .form-next:hover { opacity:.9; transform:translateY(-1px); }
 .form-skip { font-size:13px; color:var(--text-dim); text-decoration:underline; cursor:pointer; background:none; border:none; }
 .form-success { text-align:center; padding:48px 0; }
@@ -338,7 +338,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 .price-features li::before { content:"✓"; color:var(--green); font-weight:700; font-size:13px; flex-shrink:0; margin-top:1px; }
 .price-btn { width:100%; padding:13px; border-radius:10px; font-size:14px; font-weight:500; border:1.5px solid var(--border-mid); background:white; color:var(--text); transition:all .2s; }
 .price-btn:hover { border-color:var(--accent); color:var(--accent); }
-.price-btn.primary { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 14px rgba(232,25,44,.28); }
+.price-btn.primary { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 14px rgba(13,115,119,.28); }
 .price-btn.primary:hover { opacity:.9; transform:translateY(-1px); }
 .price-note { text-align:center; font-size:12px; color:var(--text-dim); margin-top:20px; max-width:960px; margin-left:auto; margin-right:auto; }
 
@@ -399,7 +399,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 <nav>
   <div class="nav-logo">
     <div class="icon">✈</div>
-    <div class="wm">Voy<span>ai</span></div>
+    <div class="wm">Trip<span>Made</span></div>
   </div>
   <ul class="nav-links">
     <li><a href="#" class="active" onclick="showPage('landing',this)">Home</a></li>
@@ -416,9 +416,9 @@ footer p { font-size:13px; color:var(--text-dim); }
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-pill fu"><div class="dot"></div>Bookings Handled by Voyai Coming Soon</div>
-    <h1 class="fu1">Your whole trip.<br><span class="red">Planned &amp; booked</span><br>in minutes.</h1>
-    <p class="fu2">Tell us your vibe, your dates, and how many people you are travelling with. Voyai builds you a free personalised itinerary — then when you're ready, we handle all the bookings too.</p>
+    <div class="hero-pill fu"><div class="dot"></div>Bookings Handled by TripMade Coming Soon</div>
+    <h1 class="fu1">My Trip...<br><span class="red">Made.</span></h1>
+    <p class="fu2">Tell us your vibe, your dates, and how many people you are travelling with. TripMade builds you a free personalised itinerary — then when you're ready, we handle all the bookings too.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="showPage('form')">Get my free itinerary →</button>
       <button class="btn-secondary" onclick="scrollToSection('how')">See how it works</button>
@@ -435,11 +435,11 @@ footer p { font-size:13px; color:var(--text-dim); }
 
   <!-- HOW IT WORKS -->
   <div id="how" class="section">
-    <div class="section-hd"><h2>How Voyai works</h2><p>Four steps from idea to fully booked holiday</p></div>
+    <div class="section-hd"><h2>How TripMade works</h2><p>Four steps from idea to fully booked holiday</p></div>
     <div class="steps-grid">
       <div class="step"><div class="step-num">01</div><div class="step-icon">🎯</div><h3>Pick your vibe</h3><p>Party trip, romantic escape, adventure, or sightseeing — or mix and match vibes / interests across cities.</p></div>
       <div class="step"><div class="step-num">02</div><div class="step-icon">📅</div><h3>Add your details</h3><p>Dates. Group size / number of people. Budget. And anything you've already got booked. We fill the gaps.</p></div>
-      <div class="step"><div class="step-num">03</div><div class="step-icon">🤖</div><h3>Voyai Builds it:</h3><p>A complete day-by-day itinerary across one or multiple countries — no wasted days, no dead time.</p></div>
+      <div class="step"><div class="step-num">03</div><div class="step-icon">🤖</div><h3>TripMade Builds it:</h3><p>A complete day-by-day itinerary across one or multiple countries — no wasted days, no dead time.</p></div>
       <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, hotel, dinner and event can be booked with VOYAI.</p></div>
     </div>
   </div>
@@ -448,7 +448,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 
   <!-- VIBES -->
   <div id="vibes" class="section">
-    <div class="section-hd"><h2>Choose your vibe</h2><p>Voyai builds a completely different itinerary for each trip type</p></div>
+    <div class="section-hd"><h2>Choose your vibe</h2><p>TripMade builds a completely different itinerary for each trip type</p></div>
     <div class="vibes-grid">
       <div class="vibe-card" style="cursor:pointer" onclick="showPage('inspo');setTimeout(()=>document.querySelectorAll('.cat-tab')[1].click(),100)">
         <div class="vibe-top"><div class="vibe-icon" style="background:var(--accent-light);">🔥</div><div><h3>Party crew</h3><div class="sub">Best for groups of 4–12</div></div></div>
@@ -476,7 +476,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 
   <!-- ══ POPULAR DESTINATIONS ══════════════════════════════ -->
   <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
-    <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — VoyAI builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
+    <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — TripMade builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
     <div class="dest-grid">
       <div class="dest-card wide" style="background-image:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&q=80');" onclick="showPage('inspo')">
         <div class="dest-overlay"></div>
@@ -576,7 +576,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="price-card">
         <div class="price-tier">Concierge</div>
         <div class="price-amount">$149 <span>/ trip</span></div>
-        <p class="price-desc">The full VoyAI experience. We plan everything and handle all your bookings end-to-end.</p>
+        <p class="price-desc">The full TripMade experience. We plan everything and handle all your bookings end-to-end.</p>
         <ul class="price-features">
           <li>All inclusive booking experience</li>
           <li>Flights searched, recommended &amp; booked</li>
@@ -591,14 +591,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
 
     </div>
-    <p class="price-note">All prices in AUD. Join Voyai waitlist for bookings handled by us.</p>
+    <p class="price-note">All prices in AUD. Join TripMade waitlist for bookings handled by us.</p>
   </div>
 
   <hr>
   <!-- ITINERARY EXAMPLE -->
   <div class="itin-wrap">
     <div class="itin-intro">
-      <h2>A sample Voyai itinerary</h2>
+      <h2>A sample TripMade itinerary</h2>
       <p>Rome + Ibiza — 8 days — Multi-vibe — $5,800 AUD budget · Departing Sydney</p>
     </div>
 
@@ -647,7 +647,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="day-lbl">Day 2 — Thu · Vatican &amp; Trastevere</div>
         <div class="evt-list">
           <div class="evt"><div class="evt-time">08:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Vatican Museums + Sistine Chapel — skip-the-line</div><div class="evt-price">$38pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: 8am entry avoids 90% of crowds. Most tourists arrive at 10am.</span></div>
+          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: 8am entry avoids 90% of crowds. Most tourists arrive at 10am.</span></div>
           <div class="evt"><div class="evt-time">11:30</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">St Peter's Basilica + dome climb</div><div class="evt-price">Free</div><div class="ebadge eb-ok">Confirmed</div></div>
           <div class="evt"><div class="evt-time">14:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Lunch — Pizzarium Bonci, Prati</div><div class="evt-price">$18pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">16:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Castel Sant'Angelo — guided tour</div><div class="evt-price">$22pp</div><div class="ebadge eb-ok">Booked</div></div>
@@ -658,7 +658,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="day-lbl">Day 3 — Fri · Ancient Rome &amp; Hidden gems</div>
         <div class="evt-list">
           <div class="evt"><div class="evt-time">07:45</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Colosseum + Roman Forum — priority access, guided</div><div class="evt-price">$52pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Colosseum sells out 3 weeks ahead. Pre-booked for you automatically.</span></div>
+          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Colosseum sells out 3 weeks ahead. Pre-booked for you automatically.</span></div>
           <div class="evt"><div class="evt-time">12:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Lunch — Supplì Roma, street food near Forum</div><div class="evt-price">$12pp</div><div class="ebadge eb-ok">Confirmed</div></div>
           <div class="evt"><div class="evt-time">15:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Borghese Gallery — timed entry (must pre-book)</div><div class="evt-price">$28pp</div><div class="ebadge eb-ok">Booked</div></div>
           <div class="evt"><div class="evt-time">20:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Il Sorpasso, aperitivo + dinner</div><div class="evt-price">$48pp</div><div class="ebadge eb-res">Reserved</div></div>
@@ -695,7 +695,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="day-lbl">Day 5 — Sat · Arrival &amp; first night out</div>
         <div class="evt-list">
           <div class="evt"><div class="evt-time">18:35</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Ushuaïa Beach Hotel, Playa d'en Bossa</div><div class="evt-price">$280/n</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Ushuaïa sits directly on the beach with its own open-air club — no transport needed on night 1.</span></div>
+          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Ushuaïa sits directly on the beach with its own open-air club — no transport needed on night 1.</span></div>
           <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Jockey Club Sunset Beach (beachfront)</div><div class="evt-price">$68pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">23:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Ushuaïa Ibiza Beach Club — Tiësto closing party</div><div class="evt-price">$75pp</div><div class="ebadge eb-ok">Booked</div></div>
         </div>
@@ -705,7 +705,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="evt-list">
           <div class="evt"><div class="evt-time">13:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Recovery brunch — La Paloma, San Lorenzo</div><div class="evt-price">$38pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">15:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Sunset catamaran — 3hr, open bar</div><div class="evt-price">$85pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Catamaran departs Ibiza Town marina — perfect sunset views of Dalt Vila. Sells out fast in September.</span></div>
+          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Catamaran departs Ibiza Town marina — perfect sunset views of Dalt Vila. Sells out fast in September.</span></div>
           <div class="evt"><div class="evt-time">21:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — El Chiringuito, Es Cavallet beach</div><div class="evt-price">$72pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">00:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Pacha Ibiza — Eric Prydz presents HOLO</div><div class="evt-price">$90pp</div><div class="ebadge eb-ok">Booked</div></div>
         </div>
@@ -714,11 +714,11 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="day-lbl">Day 7 — Mon · Beach &amp; DC10</div>
         <div class="evt-list">
           <div class="evt"><div class="evt-time">14:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Cala Comte beach — taxi pre-booked, sunbeds reserved</div><div class="evt-price">$22pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: Cala Comte has the clearest water on the island. Sunbed reservation avoids the 9am queue.</span></div>
+          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Cala Comte has the clearest water on the island. Sunbed reservation avoids the 9am queue.</span></div>
           <div class="evt"><div class="evt-time">18:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Sunset drinks — Café del Mar, San Antonio</div><div class="evt-price">$30pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Can Pilot, traditional Ibizan grill</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">23:30</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">DC10 — Circoloco Monday (legendary weekly)</div><div class="evt-price">$55pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>Voyai tip: DC10 Circoloco is one of Ibiza's most iconic nights. Arrives late on purpose — doors from midnight.</span></div>
+          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: DC10 Circoloco is one of Ibiza's most iconic nights. Arrives late on purpose — doors from midnight.</span></div>
         </div>
       </div>
       <div class="day-block">
@@ -765,7 +765,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 
   <div class="inspo-header">
     <h1>Trip inspiration</h1>
-    <p>Real itineraries built by Voyai. Find your trip, then book it in minutes.</p>
+    <p>Real itineraries built by TripMade. Find your trip, then book it in minutes.</p>
     <div class="cat-tabs">
       <button class="cat-tab active" onclick="setCat(this)">✨ All trips <span class="tc">48</span></button>
       <button class="cat-tab" onclick="setCat(this)">🔥 Partying <span class="tc">12</span></button>
@@ -1151,7 +1151,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <input class="form-input" id="f-phone" type="tel" placeholder="+61 4XX XXX XXX" />
       </div>
       <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:10px;padding:14px 16px;margin-bottom:24px;font-size:13px;color:var(--accent);line-height:1.6;">
-        ✓ <strong>100% free.</strong> No credit card. No catch. Your itinerary will be hand-reviewed by the Voyai team before it lands in your inbox.
+        ✓ <strong>100% free.</strong> No credit card. No catch. Your itinerary will be hand-reviewed by the TripMade team before it lands in your inbox.
       </div>
       <div class="form-nav">
         <button class="form-back" onclick="prevStep(6)">← Back</button>
@@ -1168,7 +1168,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div style="background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:28px;text-align:left;font-size:13px;line-height:1.8;color:var(--text-muted);">
           <strong style="color:var(--text);display:block;margin-bottom:8px;">What happens next:</strong>
           🔍 Our AI reviews your brief and builds your day-by-day plan<br>
-          ✍️ A Voyai team member checks everything before it goes out<br>
+          ✍️ A TripMade team member checks everything before it goes out<br>
           📧 Your itinerary lands in your inbox — usually within 60 min<br>
           💬 Reply to the email with any tweaks — we'll update it for free
         </div>
@@ -1184,15 +1184,15 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
       <div style="width:26px;height:26px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;">✈</div>
-      <span style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;">Voy<span style="color:var(--accent);">ai</span></span>
+      <span style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
     </div>
-    <p style="font-size:12px;color:var(--text-dim);">© 2026 Voyai Pty Ltd — Sydney, Australia</p>
-    <p style="font-size:12px;color:var(--text-dim);margin-top:2px;">ABN registered · voyai.travel</p>
+    <p style="font-size:12px;color:var(--text-dim);">© 2026 TripMade Pty Ltd — Sydney, Australia</p>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:2px;">ABN registered · tripmade.com</p>
   </div>
   <div class="footer-links">
     <a href="#">Privacy</a>
     <a href="#">Terms</a>
-    <a href="#">hello@voyai.com</a>
+    <a href="#">hello@tripmade.com</a>
     <a href="#">Instagram</a>
     <a href="#">TikTok</a>
   </div>
