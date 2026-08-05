@@ -275,6 +275,45 @@ hr { border:none; border-top:1px solid var(--border); }
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--accent); }
 .form-textarea { min-height:120px; resize:vertical; line-height:1.6; }
+
+/* ── DESTINATION MULTI-SELECT ─────────────────────────────── */
+.dest-multiselect {
+  position:relative; width:100%; min-height:52px;
+  border:1.5px solid var(--border-mid); border-radius:10px;
+  background:white; padding:8px 10px;
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px;
+  transition:border-color .2s;
+}
+.dest-multiselect:focus-within { border-color:var(--accent); }
+.dest-tag {
+  display:flex; align-items:center; gap:6px;
+  background:var(--accent-light); color:var(--accent);
+  border-radius:20px; padding:5px 8px 5px 12px;
+  font-size:13px; font-weight:500; white-space:nowrap;
+}
+.dest-tag button {
+  background:none; border:none; color:var(--accent); cursor:pointer;
+  font-size:15px; line-height:1; padding:2px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.dest-tag button:hover { background:var(--accent-mid); }
+.dest-multiselect input {
+  flex:1; min-width:160px; border:none; outline:none;
+  font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text);
+  padding:6px 4px; background:transparent;
+}
+.dest-suggestions {
+  display:none; position:absolute; top:calc(100% + 6px); left:0; right:0;
+  background:white; border:1.5px solid var(--border-mid); border-radius:10px;
+  box-shadow:var(--shadow); max-height:240px; overflow-y:auto; z-index:50;
+}
+.dest-suggestions.open { display:block; }
+.dest-suggestion-item {
+  padding:11px 16px; font-size:14px; color:var(--text); cursor:pointer;
+}
+.dest-suggestion-item:hover, .dest-suggestion-item.active { background:var(--accent-light); color:var(--accent); }
+.dest-suggestion-item.add-custom { color:var(--text-muted); font-style:italic; border-top:1px solid var(--border); }
+
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .form-options { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
 .form-options.two-col { grid-template-columns:repeat(2,1fr); }
@@ -396,6 +435,13 @@ footer p { font-size:13px; color:var(--text-dim); }
   .aff-strip{padding:20px}
 }
 
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<style>
+  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background:#0D7377; border-color:#0D7377; }
+  .flatpickr-day.inRange { background:#E1F5EE; box-shadow:-5px 0 0 #E1F5EE, 5px 0 0 #E1F5EE; border-color:#E1F5EE; }
+  .flatpickr-day.today { border-color:#0D7377; }
+  .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover { background:#0a5c5f; border-color:#0a5c5f; }
 </style>
 </head>
 <body>
@@ -1044,17 +1090,1006 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>Where do you want to go?</h2>
       <p class="form-sub">Tell us your dream destination — or a few you're considering. We'll build around it.</p>
       <div class="form-group">
-        <label class="form-label">Destination(s) <span>— e.g. "Bali" or "Rome + Ibiza" or "Surprise me in Europe"</span></label>
-        <input class="form-input" id="f-dest" type="text" placeholder="Where are you dreaming of going?">
+        <label class="form-label">Destination(s) <span>— add as many as you like, e.g. a multi-island Greece trip</span></label>
+        <div class="dest-multiselect" id="dest-multiselect">
+          <div class="dest-tags" id="dest-tags"></div>
+          <input type="text" id="dest-search" placeholder="Type to search or add a destination..." autocomplete="off">
+          <div class="dest-suggestions" id="dest-suggestions"></div>
+        </div>
+        <input type="hidden" id="f-dest">
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="display:none;">
+        <datalist id="dest-list-data">
+          <option value="1770, Australia">
+          <option value="Aarhus, Denmark">
+          <option value="Abel Tasman, New Zealand">
+          <option value="Abidjan, Ivory Coast">
+          <option value="Abu Dhabi, UAE">
+          <option value="Abuja, Nigeria">
+          <option value="Accra, Ghana">
+          <option value="Addis Ababa, Ethiopia">
+          <option value="Adelaide, Australia">
+          <option value="Afghanistan">
+          <option value="Agra, India">
+          <option value="Airlie Beach, Australia">
+          <option value="Alabama, USA">
+          <option value="Alaska, USA">
+          <option value="Albania">
+          <option value="Albany, Australia">
+          <option value="Alberta, Canada">
+          <option value="Alexandria, Egypt">
+          <option value="Algarve, Portugal">
+          <option value="Algeria">
+          <option value="Algiers, Algeria">
+          <option value="Alice Springs, Australia">
+          <option value="Almaty, Kazakhstan">
+          <option value="Alsace, France">
+          <option value="Amalfi Coast, Italy">
+          <option value="Amazon Rainforest, Peru">
+          <option value="Amazonas, Brazil">
+          <option value="Amman, Jordan">
+          <option value="Amsterdam, Netherlands">
+          <option value="Anchorage, USA">
+          <option value="Andalusia, Spain">
+          <option value="Andaman Islands, India">
+          <option value="Andorra">
+          <option value="Angola">
+          <option value="Anguilla">
+          <option value="Ankara, Turkey">
+          <option value="Antalya, Turkey">
+          <option value="Antananarivo, Madagascar">
+          <option value="Antarctica">
+          <option value="Antigua">
+          <option value="Antigua and Barbuda">
+          <option value="Antigua, Guatemala">
+          <option value="Arequipa, Peru">
+          <option value="Argentina">
+          <option value="Arizona, USA">
+          <option value="Arkansas, USA">
+          <option value="Armenia">
+          <option value="Aruba">
+          <option value="Asheville, USA">
+          <option value="Ashgabat, Turkmenistan">
+          <option value="Aspen, USA">
+          <option value="Assam, India">
+          <option value="Astana, Kazakhstan">
+          <option value="Asuncion, Paraguay">
+          <option value="Aswan, Egypt">
+          <option value="Atacama Desert, Chile">
+          <option value="Athens, Greece">
+          <option value="Auckland, New Zealand">
+          <option value="Austin, USA">
+          <option value="Australia">
+          <option value="Australian Capital Territory, Australia">
+          <option value="Austria">
+          <option value="Ayutthaya, Thailand">
+          <option value="Azerbaijan">
+          <option value="Baden-Wurttemberg, Germany">
+          <option value="Bagan, Myanmar">
+          <option value="Baghdad, Iraq">
+          <option value="Bahamas">
+          <option value="Bahia, Brazil">
+          <option value="Bahrain">
+          <option value="Baja California, Mexico">
+          <option value="Baku, Azerbaijan">
+          <option value="Bali, Indonesia">
+          <option value="Ballarat, Australia">
+          <option value="Ballina, Australia">
+          <option value="Bamako, Mali">
+          <option value="Banff, Canada">
+          <option value="Bangalore, India">
+          <option value="Bangkok, Thailand">
+          <option value="Bangladesh">
+          <option value="Barbados">
+          <option value="Barcelona, Spain">
+          <option value="Bari, Italy">
+          <option value="Bariloche, Argentina">
+          <option value="Barossa Valley, Australia">
+          <option value="Basque Country, Spain">
+          <option value="Bath, UK">
+          <option value="Bathurst, Australia">
+          <option value="Battambang, Cambodia">
+          <option value="Bavaria, Germany">
+          <option value="Bay of Islands, New Zealand">
+          <option value="Bay of Plenty, New Zealand">
+          <option value="Beijing, China">
+          <option value="Beirut, Lebanon">
+          <option value="Belarus">
+          <option value="Belfast, UK">
+          <option value="Belgium">
+          <option value="Belgrade, Serbia">
+          <option value="Belize">
+          <option value="Bendigo, Australia">
+          <option value="Benin">
+          <option value="Berat, Albania">
+          <option value="Bergen, Norway">
+          <option value="Berlin State, Germany">
+          <option value="Berlin, Germany">
+          <option value="Bern, Switzerland">
+          <option value="Bhutan">
+          <option value="Bicheno, Australia">
+          <option value="Big Island, USA">
+          <option value="Big Sur, USA">
+          <option value="Bihar, India">
+          <option value="Bilbao, Spain">
+          <option value="Bishkek, Kyrgyzstan">
+          <option value="Black Forest, Germany">
+          <option value="Bled, Slovenia">
+          <option value="Blue Mountains, Australia">
+          <option value="Bocas del Toro, Panama">
+          <option value="Bodrum, Turkey">
+          <option value="Bogota, Colombia">
+          <option value="Bohol, Philippines">
+          <option value="Bolivia">
+          <option value="Bologna, Italy">
+          <option value="Bonaire">
+          <option value="Bora Bora, French Polynesia">
+          <option value="Boracay, Philippines">
+          <option value="Bordeaux, France">
+          <option value="Bosnia and Herzegovina">
+          <option value="Boston, USA">
+          <option value="Botswana">
+          <option value="Bratislava, Slovakia">
+          <option value="Brazil">
+          <option value="Bright, Australia">
+          <option value="Brighton, UK">
+          <option value="Bristol, UK">
+          <option value="British Columbia, Canada">
+          <option value="Brittany, France">
+          <option value="Broken Hill, Australia">
+          <option value="Broome, Australia">
+          <option value="Bruges, Belgium">
+          <option value="Brunei">
+          <option value="Brussels, Belgium">
+          <option value="Bucharest, Romania">
+          <option value="Budapest, Hungary">
+          <option value="Buenos Aires, Argentina">
+          <option value="Bulgaria">
+          <option value="Bundaberg, Australia">
+          <option value="Burkina Faso">
+          <option value="Burundi">
+          <option value="Busan, South Korea">
+          <option value="Byron Bay, Australia">
+          <option value="Cable Beach, Australia">
+          <option value="Cairns, Australia">
+          <option value="Cairo, Egypt">
+          <option value="Calabria, Italy">
+          <option value="Calgary, Canada">
+          <option value="California, USA">
+          <option value="Cambodia">
+          <option value="Cambridge, UK">
+          <option value="Cameron Highlands, Malaysia">
+          <option value="Cameroon">
+          <option value="Canada">
+          <option value="Canary Islands, Spain">
+          <option value="Canberra, Australia">
+          <option value="Cancun, Mexico">
+          <option value="Canggu, Indonesia">
+          <option value="Cannes, France">
+          <option value="Cape Town, South Africa">
+          <option value="Cape Verde">
+          <option value="Cappadocia, Turkey">
+          <option value="Capri, Italy">
+          <option value="Caracas, Venezuela">
+          <option value="Cardiff, UK">
+          <option value="Cartagena, Colombia">
+          <option value="Casablanca, Morocco">
+          <option value="Catalonia, Spain">
+          <option value="Cebu, Philippines">
+          <option value="Central African Republic">
+          <option value="Cesky Krumlov, Czech Republic">
+          <option value="Chad">
+          <option value="Chamonix, France">
+          <option value="Charleston, USA">
+          <option value="Chefchaouen, Morocco">
+          <option value="Chengdu, China">
+          <option value="Chennai, India">
+          <option value="Chiang Mai, Thailand">
+          <option value="Chiang Rai, Thailand">
+          <option value="Chicago, USA">
+          <option value="Chile">
+          <option value="China">
+          <option value="Chisinau, Moldova">
+          <option value="Chitwan, Nepal">
+          <option value="Chobe National Park, Botswana">
+          <option value="Christchurch, New Zealand">
+          <option value="Christmas Island, Australia">
+          <option value="Cinque Terre, Italy">
+          <option value="Cliffs of Moher, Ireland">
+          <option value="Cocos Islands, Australia">
+          <option value="Coffs Harbour, Australia">
+          <option value="Cologne, Germany">
+          <option value="Colombia">
+          <option value="Colombo, Sri Lanka">
+          <option value="Colorado, USA">
+          <option value="Comoros">
+          <option value="Conakry, Guinea">
+          <option value="Connecticut, USA">
+          <option value="Coober Pedy, Australia">
+          <option value="Coorong, Australia">
+          <option value="Copenhagen, Denmark">
+          <option value="Corfu, Greece">
+          <option value="Cork, Ireland">
+          <option value="Cornwall, UK">
+          <option value="Costa Rica">
+          <option value="Cotswolds, UK">
+          <option value="Cozumel, Mexico">
+          <option value="Cradle Mountain, Australia">
+          <option value="Crete, Greece">
+          <option value="Croatia">
+          <option value="Cuba">
+          <option value="Curacao">
+          <option value="Cusco, Peru">
+          <option value="Cyprus">
+          <option value="Czech Republic">
+          <option value="Da Nang, Vietnam">
+          <option value="Dahab, Egypt">
+          <option value="Dakar, Senegal">
+          <option value="Damascus, Syria">
+          <option value="Darwin, Australia">
+          <option value="Dead Sea, Jordan">
+          <option value="Delaware, USA">
+          <option value="Delhi, India">
+          <option value="Democratic Republic of the Congo">
+          <option value="Denmark">
+          <option value="Denver, USA">
+          <option value="Dhaka, Bangladesh">
+          <option value="Diani Beach, Kenya">
+          <option value="Dili, Timor-Leste">
+          <option value="Djibouti">
+          <option value="Dodoma, Tanzania">
+          <option value="Doha, Qatar">
+          <option value="Dominica">
+          <option value="Dominican Republic">
+          <option value="Dresden, Germany">
+          <option value="Dubai, UAE">
+          <option value="Dubbo, Australia">
+          <option value="Dublin, Ireland">
+          <option value="Dubrovnik, Croatia">
+          <option value="Durban, South Africa">
+          <option value="Durres, Albania">
+          <option value="Dushanbe, Tajikistan">
+          <option value="Easter Island, Chile">
+          <option value="Ecuador">
+          <option value="Edinburgh, UK">
+          <option value="Egypt">
+          <option value="El Nido, Philippines">
+          <option value="El Salvador">
+          <option value="Ella, Sri Lanka">
+          <option value="Emilia-Romagna, Italy">
+          <option value="England, UK">
+          <option value="Equatorial Guinea">
+          <option value="Erbil, Iraq">
+          <option value="Eritrea">
+          <option value="Esperance, Australia">
+          <option value="Essaouira, Morocco">
+          <option value="Estonia">
+          <option value="Eswatini">
+          <option value="Ethiopia">
+          <option value="Etosha National Park, Namibia">
+          <option value="Everest Base Camp, Nepal">
+          <option value="Exmouth, Australia">
+          <option value="Falls Creek, Australia">
+          <option value="Faro, Portugal">
+          <option value="Faroe Islands">
+          <option value="Fes, Morocco">
+          <option value="Fiji">
+          <option value="Finland">
+          <option value="Flinders Ranges, Australia">
+          <option value="Florence, Italy">
+          <option value="Flores, Indonesia">
+          <option value="Florianopolis, Brazil">
+          <option value="Florida, USA">
+          <option value="Formentera, Spain">
+          <option value="France">
+          <option value="Frankfurt, Germany">
+          <option value="Franz Josef, New Zealand">
+          <option value="Fraser Island, Australia">
+          <option value="Freetown, Sierra Leone">
+          <option value="French Riviera, France">
+          <option value="Freycinet, Australia">
+          <option value="Fukuoka, Japan">
+          <option value="Gabon">
+          <option value="Gaborone, Botswana">
+          <option value="Galicia, Spain">
+          <option value="Galle, Sri Lanka">
+          <option value="Galway Bay, Ireland">
+          <option value="Galway, Ireland">
+          <option value="Galápagos Islands, Ecuador">
+          <option value="Gambia">
+          <option value="Garden Route, South Africa">
+          <option value="Gauteng, South Africa">
+          <option value="Gdansk, Poland">
+          <option value="Geelong, Australia">
+          <option value="Geneva, Switzerland">
+          <option value="Georgetown, Guyana">
+          <option value="Georgia">
+          <option value="Georgia, USA">
+          <option value="Germany">
+          <option value="Ghana">
+          <option value="Ghent, Belgium">
+          <option value="Gili Islands, Indonesia">
+          <option value="Gladstone, Australia">
+          <option value="Glasgow, UK">
+          <option value="Goa State, India">
+          <option value="Goa, India">
+          <option value="Gold Coast, Australia">
+          <option value="Gothenburg, Sweden">
+          <option value="Granada, Spain">
+          <option value="Grand Canyon, USA">
+          <option value="Grand Cayman">
+          <option value="Great Ocean Road, Australia">
+          <option value="Greece">
+          <option value="Grenada">
+          <option value="Griffith, Australia">
+          <option value="Guadalajara, Mexico">
+          <option value="Guam">
+          <option value="Guangzhou, China">
+          <option value="Guatemala">
+          <option value="Guatemala City, Guatemala">
+          <option value="Guilin, China">
+          <option value="Guinea">
+          <option value="Guinea-Bissau">
+          <option value="Gujarat, India">
+          <option value="Guyana">
+          <option value="Haiti">
+          <option value="Hakone, Japan">
+          <option value="Halifax, Canada">
+          <option value="Hallstatt, Austria">
+          <option value="Hamburg, Germany">
+          <option value="Hamilton Island, Australia">
+          <option value="Hanoi, Vietnam">
+          <option value="Harare, Zimbabwe">
+          <option value="Havana, Cuba">
+          <option value="Hawaii, USA">
+          <option value="Heidelberg, Germany">
+          <option value="Helsinki, Finland">
+          <option value="Hervey Bay, Australia">
+          <option value="Himachal Pradesh, India">
+          <option value="Hiroshima, Japan">
+          <option value="Ho Chi Minh City, Vietnam">
+          <option value="Hobart, Australia">
+          <option value="Hoi An, Vietnam">
+          <option value="Honduras">
+          <option value="Hong Kong">
+          <option value="Hong Kong SAR, China">
+          <option value="Hua Hin, Thailand">
+          <option value="Hungary">
+          <option value="Hunter Valley, Australia">
+          <option value="Hurghada, Egypt">
+          <option value="Hvar, Croatia">
+          <option value="Hyderabad, India">
+          <option value="Ibiza Town, Spain">
+          <option value="Ibiza, Spain">
+          <option value="Iceland">
+          <option value="Idaho, USA">
+          <option value="Iguazu Falls, Argentina">
+          <option value="Iguazu Falls, Brazil">
+          <option value="Illinois, USA">
+          <option value="India">
+          <option value="Indiana, USA">
+          <option value="Indonesia">
+          <option value="Innsbruck, Austria">
+          <option value="Interlaken, Switzerland">
+          <option value="Ios, Greece">
+          <option value="Iowa, USA">
+          <option value="Iran">
+          <option value="Iraq">
+          <option value="Ireland">
+          <option value="Isla Mujeres, Mexico">
+          <option value="Islamabad, Pakistan">
+          <option value="Isle of Skye, UK">
+          <option value="Israel">
+          <option value="Istanbul, Turkey">
+          <option value="Italy">
+          <option value="Ivory Coast">
+          <option value="Jackson Hole, USA">
+          <option value="Jaipur, India">
+          <option value="Jakarta, Indonesia">
+          <option value="Jalisco, Mexico">
+          <option value="Jamaica">
+          <option value="Japan">
+          <option value="Jasper, Canada">
+          <option value="Jeddah, Saudi Arabia">
+          <option value="Jeju Island, South Korea">
+          <option value="Jerusalem, Israel">
+          <option value="Jervis Bay, Australia">
+          <option value="Johannesburg, South Africa">
+          <option value="Jordan">
+          <option value="Juba, South Sudan">
+          <option value="Juneau, USA">
+          <option value="K'gari, Australia">
+          <option value="Kabul, Afghanistan">
+          <option value="Kakadu, Australia">
+          <option value="Kampala, Uganda">
+          <option value="Kandy, Sri Lanka">
+          <option value="Kangaroo Island, Australia">
+          <option value="Kangaroo Valley, Australia">
+          <option value="Kansas, USA">
+          <option value="Karachi, Pakistan">
+          <option value="Karnataka, India">
+          <option value="Katherine, Australia">
+          <option value="Kathmandu, Nepal">
+          <option value="Kauai, USA">
+          <option value="Kazakhstan">
+          <option value="Kentucky, USA">
+          <option value="Kenya">
+          <option value="Kerala, India">
+          <option value="Key West, USA">
+          <option value="Khartoum, Sudan">
+          <option value="Kigali, Rwanda">
+          <option value="Kilimanjaro, Tanzania">
+          <option value="Killarney, Ireland">
+          <option value="Kingston, Jamaica">
+          <option value="Kinshasa, Democratic Republic of the Congo">
+          <option value="Kiribati">
+          <option value="Koh Phangan, Thailand">
+          <option value="Koh Samui, Thailand">
+          <option value="Kolkata, India">
+          <option value="Komodo Island, Indonesia">
+          <option value="Kosovo">
+          <option value="Kota Kinabalu, Malaysia">
+          <option value="Kotor, Montenegro">
+          <option value="Krabi, Thailand">
+          <option value="Krakow, Poland">
+          <option value="Kruger National Park, South Africa">
+          <option value="Ksamil, Albania">
+          <option value="Kuala Lumpur, Malaysia">
+          <option value="Kuta, Indonesia">
+          <option value="Kuwait">
+          <option value="Kuwait City, Kuwait">
+          <option value="KwaZulu-Natal, South Africa">
+          <option value="Kyiv, Ukraine">
+          <option value="Kyoto, Japan">
+          <option value="Kyrgyzstan">
+          <option value="La Paz, Bolivia">
+          <option value="Ladakh, India">
+          <option value="Lagos, Nigeria">
+          <option value="Lahore, Pakistan">
+          <option value="Lake Atitlan, Guatemala">
+          <option value="Lake Como, Italy">
+          <option value="Lake District, UK">
+          <option value="Lake Tahoe, USA">
+          <option value="Lamu, Kenya">
+          <option value="Langkawi, Malaysia">
+          <option value="Laos">
+          <option value="Las Vegas, USA">
+          <option value="Latvia">
+          <option value="Launceston, Australia">
+          <option value="Lebanon">
+          <option value="Lennox Head, Australia">
+          <option value="Lesotho">
+          <option value="Lhasa, China">
+          <option value="Liberia">
+          <option value="Libreville, Gabon">
+          <option value="Libya">
+          <option value="Liechtenstein">
+          <option value="Lilongwe, Malawi">
+          <option value="Lima, Peru">
+          <option value="Lisbon, Portugal">
+          <option value="Litchfield National Park, Australia">
+          <option value="Lithuania">
+          <option value="Liverpool, UK">
+          <option value="Lizard Island, Australia">
+          <option value="Ljubljana, Slovenia">
+          <option value="Lofoten Islands, Norway">
+          <option value="Loire Valley, France">
+          <option value="Lombardy, Italy">
+          <option value="Lombok, Indonesia">
+          <option value="Lome, Togo">
+          <option value="London, UK">
+          <option value="Lord Howe Island, Australia">
+          <option value="Los Angeles, USA">
+          <option value="Louisiana, USA">
+          <option value="Luanda, Angola">
+          <option value="Luang Prabang, Laos">
+          <option value="Lucerne, Switzerland">
+          <option value="Lusaka, Zambia">
+          <option value="Luxembourg">
+          <option value="Luxembourg City, Luxembourg">
+          <option value="Luxor, Egypt">
+          <option value="Lviv, Ukraine">
+          <option value="Lyon, France">
+          <option value="Macau, China">
+          <option value="Machu Picchu, Peru">
+          <option value="Mackay, Australia">
+          <option value="Madagascar">
+          <option value="Madeira, Portugal">
+          <option value="Madhya Pradesh, India">
+          <option value="Madrid, Spain">
+          <option value="Magnetic Island, Australia">
+          <option value="Maharashtra, India">
+          <option value="Maine, USA">
+          <option value="Malawi">
+          <option value="Malaysia">
+          <option value="Maldives">
+          <option value="Mali">
+          <option value="Mallorca, Spain">
+          <option value="Malmo, Sweden">
+          <option value="Malta">
+          <option value="Managua, Nicaragua">
+          <option value="Manama, Bahrain">
+          <option value="Manchester, UK">
+          <option value="Mandalay, Myanmar">
+          <option value="Manila, Philippines">
+          <option value="Manitoba, Canada">
+          <option value="Maputo, Mozambique">
+          <option value="Marbella, Spain">
+          <option value="Margaret River, Australia">
+          <option value="Marrakech, Morocco">
+          <option value="Marseille, France">
+          <option value="Marshall Islands">
+          <option value="Martha's Vineyard, USA">
+          <option value="Maryland, USA">
+          <option value="Masai Mara, Kenya">
+          <option value="Maseru, Lesotho">
+          <option value="Massachusetts, USA">
+          <option value="Maui, USA">
+          <option value="Mauritania">
+          <option value="Mauritius">
+          <option value="Medellin, Colombia">
+          <option value="Meghalaya, India">
+          <option value="Melbourne, Australia">
+          <option value="Memphis, USA">
+          <option value="Mendoza, Argentina">
+          <option value="Menorca, Spain">
+          <option value="Mexico">
+          <option value="Mexico City, Mexico">
+          <option value="Miami, USA">
+          <option value="Michigan, USA">
+          <option value="Micronesia">
+          <option value="Milan, Italy">
+          <option value="Milford Sound, New Zealand">
+          <option value="Milos, Greece">
+          <option value="Minnesota, USA">
+          <option value="Minsk, Belarus">
+          <option value="Mississippi, USA">
+          <option value="Missouri, USA">
+          <option value="Mogadishu, Somalia">
+          <option value="Moldova">
+          <option value="Mombasa, Kenya">
+          <option value="Monaco">
+          <option value="Mongolia">
+          <option value="Monrovia, Liberia">
+          <option value="Mont Saint-Michel, France">
+          <option value="Montana, USA">
+          <option value="Montego Bay, Jamaica">
+          <option value="Montenegro">
+          <option value="Montevideo, Uruguay">
+          <option value="Montreal, Canada">
+          <option value="Moorea, French Polynesia">
+          <option value="Mornington Peninsula, Australia">
+          <option value="Morocco">
+          <option value="Moscow, Russia">
+          <option value="Mostar, Bosnia and Herzegovina">
+          <option value="Mount Buller, Australia">
+          <option value="Mount Gambier, Australia">
+          <option value="Mozambique">
+          <option value="Mumbai, India">
+          <option value="Munich, Germany">
+          <option value="Munnar, India">
+          <option value="Muscat, Oman">
+          <option value="Myanmar">
+          <option value="Mykonos, Greece">
+          <option value="Myrtle Beach, USA">
+          <option value="N'Djamena, Chad">
+          <option value="Nagoya, Japan">
+          <option value="Nairobi, Kenya">
+          <option value="Namibia">
+          <option value="Nantucket, USA">
+          <option value="Napa Valley, USA">
+          <option value="Napier, New Zealand">
+          <option value="Naples, Italy">
+          <option value="Nara, Japan">
+          <option value="Nashville, USA">
+          <option value="Nauru">
+          <option value="Naxos, Greece">
+          <option value="Nebraska, USA">
+          <option value="Negril, Jamaica">
+          <option value="Nepal">
+          <option value="Netherlands">
+          <option value="Neuschwanstein, Germany">
+          <option value="Nevada, USA">
+          <option value="New Brunswick, Canada">
+          <option value="New Caledonia">
+          <option value="New Hampshire, USA">
+          <option value="New Jersey, USA">
+          <option value="New Mexico, USA">
+          <option value="New Orleans, USA">
+          <option value="New South Wales, Australia">
+          <option value="New York State, USA">
+          <option value="New York, USA">
+          <option value="New Zealand">
+          <option value="Newcastle, Australia">
+          <option value="Newfoundland and Labrador, Canada">
+          <option value="Nha Trang, Vietnam">
+          <option value="Niagara Falls, Canada">
+          <option value="Niamey, Niger">
+          <option value="Nicaragua">
+          <option value="Nice, France">
+          <option value="Nicosia, Cyprus">
+          <option value="Niger">
+          <option value="Nigeria">
+          <option value="Nikko, Japan">
+          <option value="Nimbin, Australia">
+          <option value="Ningaloo Reef, Australia">
+          <option value="Noosa, Australia">
+          <option value="Norfolk Island, Australia">
+          <option value="Normandy, France">
+          <option value="North Carolina, USA">
+          <option value="North Dakota, USA">
+          <option value="North Island, New Zealand">
+          <option value="North Korea">
+          <option value="North Macedonia">
+          <option value="North Rhine-Westphalia, Germany">
+          <option value="Northern Ireland, UK">
+          <option value="Northern Territory, Australia">
+          <option value="Northwest Territories, Canada">
+          <option value="Norway">
+          <option value="Norwegian Fjords, Norway">
+          <option value="Nouakchott, Mauritania">
+          <option value="Nova Scotia, Canada">
+          <option value="Nuku'alofa, Tonga">
+          <option value="Nunavut, Canada">
+          <option value="Nusa Lembongan, Indonesia">
+          <option value="Nusa Penida, Indonesia">
+          <option value="Oahu, USA">
+          <option value="Oaxaca State, Mexico">
+          <option value="Oaxaca, Mexico">
+          <option value="Occitanie, France">
+          <option value="Odesa, Ukraine">
+          <option value="Odisha, India">
+          <option value="Ohio, USA">
+          <option value="Ohrid, North Macedonia">
+          <option value="Okavango Delta, Botswana">
+          <option value="Okinawa, Japan">
+          <option value="Oklahoma, USA">
+          <option value="Oman">
+          <option value="Ontario, Canada">
+          <option value="Orange, Australia">
+          <option value="Oregon, USA">
+          <option value="Orlando, USA">
+          <option value="Osaka, Japan">
+          <option value="Oslo, Norway">
+          <option value="Ottawa, Canada">
+          <option value="Outer Banks, USA">
+          <option value="Oxford, UK">
+          <option value="Pai, Thailand">
+          <option value="Pakistan">
+          <option value="Palau">
+          <option value="Palawan, Philippines">
+          <option value="Palestine">
+          <option value="Palm Springs, USA">
+          <option value="Panama">
+          <option value="Panama City, Panama">
+          <option value="Papua New Guinea">
+          <option value="Paraguay">
+          <option value="Paramaribo, Suriname">
+          <option value="Paris, France">
+          <option value="Paro, Bhutan">
+          <option value="Paros, Greece">
+          <option value="Patagonia, Chile">
+          <option value="Pattaya, Thailand">
+          <option value="Penang, Malaysia">
+          <option value="Pennsylvania, USA">
+          <option value="Perisher, Australia">
+          <option value="Perth, Australia">
+          <option value="Peru">
+          <option value="Petra, Jordan">
+          <option value="Philippines">
+          <option value="Phillip Island, Australia">
+          <option value="Phnom Penh, Cambodia">
+          <option value="Phoenix, USA">
+          <option value="Phuket, Thailand">
+          <option value="Piedmont, Italy">
+          <option value="Pisa, Italy">
+          <option value="Playa del Carmen, Mexico">
+          <option value="Plitvice Lakes, Croatia">
+          <option value="Plovdiv, Bulgaria">
+          <option value="Podgorica, Montenegro">
+          <option value="Pokhara, Nepal">
+          <option value="Poland">
+          <option value="Port Arthur, Australia">
+          <option value="Port Douglas, Australia">
+          <option value="Port Louis, Mauritius">
+          <option value="Port Macquarie, Australia">
+          <option value="Port Moresby, Papua New Guinea">
+          <option value="Port of Spain, Trinidad and Tobago">
+          <option value="Port Vila, Vanuatu">
+          <option value="Port-au-Prince, Haiti">
+          <option value="Portland, USA">
+          <option value="Porto, Portugal">
+          <option value="Portugal">
+          <option value="Prague, Czech Republic">
+          <option value="Prince Edward Island, Canada">
+          <option value="Pristina, Kosovo">
+          <option value="Provence, France">
+          <option value="Provence-Alpes-Cote d'Azur, France">
+          <option value="Puerto Vallarta, Mexico">
+          <option value="Puglia, Italy">
+          <option value="Punjab, India">
+          <option value="Punta Cana, Dominican Republic">
+          <option value="Pyongyang, North Korea">
+          <option value="Qatar">
+          <option value="Quebec City, Canada">
+          <option value="Quebec Province, Canada">
+          <option value="Queensland, Australia">
+          <option value="Queenstown, New Zealand">
+          <option value="Quintana Roo, Mexico">
+          <option value="Quito, Ecuador">
+          <option value="Rabat, Morocco">
+          <option value="Rainbow Mountain, Peru">
+          <option value="Raja Ampat, Indonesia">
+          <option value="Rajasthan, India">
+          <option value="Rarotonga, Cook Islands">
+          <option value="Ras Al Khaimah, UAE">
+          <option value="Republic of the Congo">
+          <option value="Reykjavik, Iceland">
+          <option value="Rhode Island, USA">
+          <option value="Rhodes, Greece">
+          <option value="Riga, Latvia">
+          <option value="Ring of Kerry, Ireland">
+          <option value="Rio de Janeiro State, Brazil">
+          <option value="Rio de Janeiro, Brazil">
+          <option value="Rishikesh, India">
+          <option value="Riyadh, Saudi Arabia">
+          <option value="Roatan, Honduras">
+          <option value="Rockhampton, Australia">
+          <option value="Romania">
+          <option value="Rome, Italy">
+          <option value="Ronda, Spain">
+          <option value="Rotorua, New Zealand">
+          <option value="Rotterdam, Netherlands">
+          <option value="Rottnest Island, Australia">
+          <option value="Russia">
+          <option value="Rwanda">
+          <option value="Sabah, Malaysia">
+          <option value="Sahara Desert, Morocco">
+          <option value="Saint Kitts and Nevis">
+          <option value="Saint Lucia">
+          <option value="Saint Vincent and the Grenadines">
+          <option value="Salalah, Oman">
+          <option value="Salt Lake City, USA">
+          <option value="Salta, Argentina">
+          <option value="Salvador, Brazil">
+          <option value="Salzburg, Austria">
+          <option value="Samoa">
+          <option value="San Andres, Colombia">
+          <option value="San Blas Islands, Panama">
+          <option value="San Diego, USA">
+          <option value="San Francisco, USA">
+          <option value="San Jose, Costa Rica">
+          <option value="San Juan, Puerto Rico">
+          <option value="San Marino">
+          <option value="San Salvador, El Salvador">
+          <option value="San Sebastian, Spain">
+          <option value="Sana'a, Yemen">
+          <option value="Santa Catarina, Brazil">
+          <option value="Santa Marta, Colombia">
+          <option value="Santiago, Chile">
+          <option value="Santo Domingo, Dominican Republic">
+          <option value="Santorini, Greece">
+          <option value="Sao Paulo State, Brazil">
+          <option value="Sao Paulo, Brazil">
+          <option value="Sao Tome and Principe">
+          <option value="Sapporo, Japan">
+          <option value="Sarajevo, Bosnia and Herzegovina">
+          <option value="Saranda, Albania">
+          <option value="Sardinia, Italy">
+          <option value="Saskatchewan, Canada">
+          <option value="Saudi Arabia">
+          <option value="Savannah, USA">
+          <option value="Saxony, Germany">
+          <option value="Sayulita, Mexico">
+          <option value="Scotland, UK">
+          <option value="Seattle, USA">
+          <option value="Sedona, USA">
+          <option value="Seminyak, Indonesia">
+          <option value="Senegal">
+          <option value="Seoul, South Korea">
+          <option value="Serbia">
+          <option value="Serengeti, Tanzania">
+          <option value="Seville, Spain">
+          <option value="Seychelles">
+          <option value="Shanghai, China">
+          <option value="Sharjah, United Arab Emirates">
+          <option value="Sharm El Sheikh, Egypt">
+          <option value="Shepparton, Australia">
+          <option value="Siargao, Philippines">
+          <option value="Sichuan, China">
+          <option value="Sicily, Italy">
+          <option value="Siem Reap, Cambodia">
+          <option value="Sierra Leone">
+          <option value="Sigiriya, Sri Lanka">
+          <option value="Sihanoukville, Cambodia">
+          <option value="Sikkim, India">
+          <option value="Singapore">
+          <option value="Sintra, Portugal">
+          <option value="Skiathos, Greece">
+          <option value="Skopje, North Macedonia">
+          <option value="Slovakia">
+          <option value="Slovenia">
+          <option value="Sofia, Bulgaria">
+          <option value="Solomon Islands">
+          <option value="Somalia">
+          <option value="Sossusvlei, Namibia">
+          <option value="Sousse, Tunisia">
+          <option value="South Africa">
+          <option value="South Australia, Australia">
+          <option value="South Carolina, USA">
+          <option value="South Dakota, USA">
+          <option value="South Island, New Zealand">
+          <option value="South Korea">
+          <option value="South Sudan">
+          <option value="Spain">
+          <option value="Split, Croatia">
+          <option value="Sri Lanka">
+          <option value="St Barts">
+          <option value="St Lucia">
+          <option value="St Martin">
+          <option value="St Petersburg, Russia">
+          <option value="Stellenbosch, South Africa">
+          <option value="Stockholm, Sweden">
+          <option value="Stone Town, Tanzania">
+          <option value="Strasbourg, France">
+          <option value="Sudan">
+          <option value="Sumatra, Indonesia">
+          <option value="Sunraysia, Australia">
+          <option value="Sunshine Coast, Australia">
+          <option value="Suriname">
+          <option value="Suva, Fiji">
+          <option value="Sweden">
+          <option value="Swiss Alps, Switzerland">
+          <option value="Switzerland">
+          <option value="Sydney, Australia">
+          <option value="Syria">
+          <option value="Tahiti, French Polynesia">
+          <option value="Taipei, Taiwan">
+          <option value="Taiwan">
+          <option value="Tajikistan">
+          <option value="Tallinn, Estonia">
+          <option value="Tamil Nadu, India">
+          <option value="Tanzania">
+          <option value="Taormina, Italy">
+          <option value="Tashkent, Uzbekistan">
+          <option value="Tasmania State, Australia">
+          <option value="Tasmania, Australia">
+          <option value="Taupo, New Zealand">
+          <option value="Tbilisi, Georgia">
+          <option value="Tegucigalpa, Honduras">
+          <option value="Tehran, Iran">
+          <option value="Tel Aviv, Israel">
+          <option value="Telangana, India">
+          <option value="Tennessee, USA">
+          <option value="Texas, USA">
+          <option value="Thailand">
+          <option value="The Hague, Netherlands">
+          <option value="Thessaloniki, Greece">
+          <option value="Thimphu, Bhutan">
+          <option value="Thredbo, Australia">
+          <option value="Tibet, China">
+          <option value="Timor-Leste">
+          <option value="Tirana, Albania">
+          <option value="Tobago">
+          <option value="Tofino, Canada">
+          <option value="Togo">
+          <option value="Tokyo, Japan">
+          <option value="Tonga">
+          <option value="Toowoomba, Australia">
+          <option value="Toronto, Canada">
+          <option value="Townsville, Australia">
+          <option value="Transylvania, Romania">
+          <option value="Trinidad and Tobago">
+          <option value="Tripoli, Libya">
+          <option value="Tromso, Norway">
+          <option value="Tulum, Mexico">
+          <option value="Tunis, Tunisia">
+          <option value="Tunisia">
+          <option value="Turin, Italy">
+          <option value="Turkey">
+          <option value="Turkmenistan">
+          <option value="Turks and Caicos">
+          <option value="Tuscany Region, Italy">
+          <option value="Tuscany, Italy">
+          <option value="Tuvalu">
+          <option value="Ubud, Indonesia">
+          <option value="Udaipur, India">
+          <option value="Uganda">
+          <option value="Ukraine">
+          <option value="Ulaanbaatar, Mongolia">
+          <option value="Uluru, Australia">
+          <option value="Uluwatu, Indonesia">
+          <option value="Umbria, Italy">
+          <option value="United Arab Emirates">
+          <option value="United Kingdom">
+          <option value="United States">
+          <option value="Uruguay">
+          <option value="Ushuaia, Argentina">
+          <option value="Utah, USA">
+          <option value="Uttar Pradesh, India">
+          <option value="Uttarakhand, India">
+          <option value="Uzbekistan">
+          <option value="Valencia, Spain">
+          <option value="Valletta, Malta">
+          <option value="Valparaiso, Chile">
+          <option value="Vancouver, Canada">
+          <option value="Vanuatu">
+          <option value="Varanasi, India">
+          <option value="Vatican City">
+          <option value="Veneto, Italy">
+          <option value="Venezuela">
+          <option value="Venice, Italy">
+          <option value="Vermont, USA">
+          <option value="Verona, Italy">
+          <option value="Victoria Falls, Zambia">
+          <option value="Victoria Falls, Zimbabwe">
+          <option value="Victoria, Australia">
+          <option value="Victoria, Canada">
+          <option value="Vienna, Austria">
+          <option value="Vientiane, Laos">
+          <option value="Vietnam">
+          <option value="Vilnius, Lithuania">
+          <option value="Virginia, USA">
+          <option value="Vlore, Albania">
+          <option value="Wadi Rum, Jordan">
+          <option value="Wagga Wagga, Australia">
+          <option value="Wales, UK">
+          <option value="Wanaka, New Zealand">
+          <option value="Warrnambool, Australia">
+          <option value="Warsaw, Poland">
+          <option value="Washington DC, USA">
+          <option value="Washington State, USA">
+          <option value="Wellington, New Zealand">
+          <option value="West Bengal, India">
+          <option value="West Virginia, USA">
+          <option value="Western Australia, Australia">
+          <option value="Western Cape, South Africa">
+          <option value="Whistler, Canada">
+          <option value="Whitsunday Islands, Australia">
+          <option value="Windhoek, Namibia">
+          <option value="Winelands, South Africa">
+          <option value="Winnipeg, Canada">
+          <option value="Wisconsin, USA">
+          <option value="Wollongong, Australia">
+          <option value="Wyoming, USA">
+          <option value="Xi'an, China">
+          <option value="Yamba, Australia">
+          <option value="Yangon, Myanmar">
+          <option value="Yaounde, Cameroon">
+          <option value="Yarra Valley, Australia">
+          <option value="Yellowstone, USA">
+          <option value="Yemen">
+          <option value="Yerevan, Armenia">
+          <option value="Yogyakarta, Indonesia">
+          <option value="York, UK">
+          <option value="Yosemite, USA">
+          <option value="Yucatan, Mexico">
+          <option value="Yukon, Canada">
+          <option value="Yunnan, China">
+          <option value="Zagreb, Croatia">
+          <option value="Zakopane, Poland">
+          <option value="Zakynthos, Greece">
+          <option value="Zambia">
+          <option value="Zanzibar, Tanzania">
+          <option value="Zermatt, Switzerland">
+          <option value="Zhangjiajie, China">
+          <option value="Zimbabwe">
+          <option value="Zurich, Switzerland">
+        </datalist>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Departure date</label>
-          <input class="form-input" id="f-depart" type="date">
+          <input class="form-input" id="f-depart" type="text" placeholder="Select date" readonly>
         </div>
         <div class="form-group">
-          <label class="form-label">Return date</label>
-          <input class="form-input" id="f-return" type="date">
+          <label class="form-label" style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-weight:600;color:var(--text);">Return date</span>
+            <span id="trip-length" style="font-weight:400;color:var(--text-dim);"></span>
+          </label>
+          <input class="form-input" id="f-return" type="text" placeholder="Select date" readonly>
         </div>
       </div>
       <div class="form-group">
@@ -1181,7 +2216,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div style="background:white;border:1.5px solid var(--border-mid);border-radius:var(--radius);padding:24px 22px 20px;">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;">
             <span id="budget-display" style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent);">$8,000</span>
-            <span id="budget-tier" style="font-size:13px;color:var(--text-muted);font-weight:500;">Premium</span>
           </div>
           <input type="range" id="f-budget-slider" min="500" max="250000" step="1000" value="8000"
                  oninput="updateBudgetDisplay(this.value)"
@@ -1194,13 +2228,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group" style="margin-top:8px;">
         <label class="form-label">Accommodation style</label>
         <div class="form-options">
-          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏨</div><div class="opt-label">Hotel</div><div class="opt-sub">4–5 star preferred</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏨</div><div class="opt-label">Hotel</div><div class="opt-sub">Any star rating</div></div>
           <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏠</div><div class="opt-label">Airbnb / Villa</div><div class="opt-sub">Home away from home</div></div>
           <div class="form-opt selected" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">✨</div><div class="opt-label">Boutique</div><div class="opt-sub">Unique &amp; stylish</div></div>
           <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🌴</div><div class="opt-label">Resort</div><div class="opt-sub">All-inclusive vibes</div></div>
           <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🎒</div><div class="opt-label">Budget</div><div class="opt-sub">Hostel / cheap &amp; cheerful</div></div>
           <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🤷</div><div class="opt-label">Surprise me</div><div class="opt-sub">Best value option</div></div>
         </div>
+        <input class="form-input" id="f-accom-notes" type="text" style="margin-top:10px;" placeholder="Anything specific? e.g. 3-star is fine, just need it clean and central / must have a pool / no hostels please">
       </div>
       <div class="form-group" style="margin-top:8px;">
         <label class="form-label">Trip pace</label>
@@ -1378,7 +2413,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
 
     <div style="text-align:center;margin-top:32px;padding-bottom:20px;">
-      <button class="btn-primary" onclick="requireAccount(function(){ var d = document.getElementById('f-dest'); if (d) d.value = document.getElementById('td-dest-name').textContent; showPage('form'); })">Get my personalised itinerary for this trip →</button>
+      <button class="btn-primary" onclick="requireAccount(function(){ selectedDestinations = []; addDestination(document.getElementById('td-dest-name').textContent); showPage('form'); })">Get my personalised itinerary for this trip →</button>
     </div>
   </div>
 </div>
@@ -1402,6 +2437,8 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.js"></script>
 <script>
 // ── PAGE NAVIGATION ─────────────────────────────────────
 function showPage(id, linkEl) {
@@ -1755,6 +2792,13 @@ let currentStep = 1;
 const totalSteps = 6;
 
 function markInvalid(id) {
+  if (id === 'f-dest') {
+    const box = document.getElementById('dest-multiselect');
+    const search = document.getElementById('dest-search');
+    if (box) box.style.borderColor = 'var(--accent)';
+    if (search) search.focus();
+    return;
+  }
   const el = document.getElementById(id);
   if (!el) return;
   el.style.borderColor = 'var(--accent)';
@@ -1763,6 +2807,11 @@ function markInvalid(id) {
 
 function clearInvalid(ids) {
   ids.forEach(id => {
+    if (id === 'f-dest') {
+      const box = document.getElementById('dest-multiselect');
+      if (box) box.style.borderColor = '';
+      return;
+    }
     const el = document.getElementById(id);
     if (el) el.style.borderColor = '';
   });
@@ -1831,16 +2880,8 @@ function updateProgress(n) {
 function updateBudgetDisplay(val) {
   val = parseInt(val);
   const display = document.getElementById('budget-display');
-  const tier = document.getElementById('budget-tier');
   const isMax = val >= 250000;
   display.textContent = isMax ? '$250,000+' : '$' + val.toLocaleString();
-
-  let label = 'Budget traveller';
-  if (val >= 2000 && val < 5000) label = 'Mid-range';
-  else if (val >= 5000 && val < 12000) label = 'Premium';
-  else if (val >= 12000 && val < 50000) label = 'Luxury';
-  else if (val >= 50000) label = 'Ultra-luxury / no limit';
-  tier.textContent = label;
 }
 
 function getBudgetValue() {
@@ -1849,6 +2890,88 @@ function getBudgetValue() {
   const val = parseInt(el.value);
   return val >= 250000 ? '$250,000+' : '$' + val.toLocaleString();
 }
+
+// ── DATE SYNC ──────────────────────────────────────────────
+// (handled by flatpickr's rangePlugin — see init in DOMContentLoaded below)
+
+// ── DESTINATION MULTI-SELECT ──────────────────────────────
+let selectedDestinations = [];
+
+function getDestList() {
+  return Array.from(document.querySelectorAll('#dest-list-data option')).map(o => o.value);
+}
+
+function renderDestTags() {
+  const tagsEl = document.getElementById('dest-tags');
+  const hiddenEl = document.getElementById('f-dest');
+  if (!tagsEl || !hiddenEl) return;
+  tagsEl.innerHTML = selectedDestinations.map(d =>
+    '<span class="dest-tag">' + d.replace(/</g, '&lt;') + '<button type="button" onclick="removeDestination(\'' + d.replace(/'/g, "\\'") + '\')">×</button></span>'
+  ).join('');
+  hiddenEl.value = selectedDestinations.join(', ');
+}
+
+function addDestination(name) {
+  name = name.trim();
+  if (!name) return;
+  if (selectedDestinations.some(d => d.toLowerCase() === name.toLowerCase())) return;
+  selectedDestinations.push(name);
+  renderDestTags();
+  const search = document.getElementById('dest-search');
+  if (search) { search.value = ''; search.focus(); }
+  hideDestSuggestions();
+}
+
+function removeDestination(name) {
+  selectedDestinations = selectedDestinations.filter(d => d !== name);
+  renderDestTags();
+}
+
+function hideDestSuggestions() {
+  const box = document.getElementById('dest-suggestions');
+  if (box) { box.classList.remove('open'); box.innerHTML = ''; }
+}
+
+function showDestSuggestions(query) {
+  const box = document.getElementById('dest-suggestions');
+  if (!box) return;
+  const q = query.trim().toLowerCase();
+  if (!q) { hideDestSuggestions(); return; }
+
+  const matches = getDestList()
+    .filter(d => d.toLowerCase().includes(q))
+    .filter(d => !selectedDestinations.some(s => s.toLowerCase() === d.toLowerCase()))
+    .slice(0, 8);
+
+  let html = matches.map(d =>
+    '<div class="dest-suggestion-item" onclick="addDestination(\'' + d.replace(/'/g, "\\'") + '\')">' + d + '</div>'
+  ).join('');
+
+  const exactMatch = getDestList().some(d => d.toLowerCase() === q);
+  if (!exactMatch) {
+    html += '<div class="dest-suggestion-item add-custom" onclick="addDestination(document.getElementById(\'dest-search\').value)">Add "' + query.trim().replace(/"/g, '') + '" →</div>';
+  }
+
+  box.innerHTML = html;
+  box.classList.add('open');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const search = document.getElementById('dest-search');
+  if (!search) return;
+
+  search.addEventListener('input', function() { showDestSuggestions(this.value); });
+  search.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addDestination(this.value);
+    }
+  });
+  search.addEventListener('focus', function() { if (this.value) showDestSuggestions(this.value); });
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('dest-multiselect').contains(e.target)) hideDestSuggestions();
+  });
+});
 
 function selectOpt(el, group) {
   el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => {
@@ -1885,6 +3008,7 @@ function submitForm() {
     ageRange:     document.getElementById('f-ages').value,
     occasion:     document.getElementById('f-occasion').value,
     budget:       getBudgetValue(),
+    accomNotes:   document.getElementById('f-accom-notes').value,
     vibes:        [...document.querySelectorAll('.form-opt.multi.selected')].map(el => el.querySelector('.opt-label').textContent),
     mustHave:     document.getElementById('f-musthave').value,
     avoid:        document.getElementById('f-avoid').value,
@@ -1916,7 +3040,28 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.f-select').forEach(sel => {
     sel.addEventListener('change', filterCards);
   });
+
+  // Linked departure/return date range calendar — selecting a departure
+  // date carries it into the return calendar and highlights every day between.
+  if (window.flatpickr) {
+    window._departPicker = flatpickr('#f-depart', {
+      dateFormat: 'd-m-Y',
+      minDate: 'today',
+      plugins: [new rangePlugin({ input: '#f-return' })],
+      onChange: updateTripLength
+    });
+  }
 });
+
+function updateTripLength(selectedDates) {
+  const el = document.getElementById('trip-length');
+  if (!el) return;
+  if (!selectedDates || selectedDates.length < 2) { el.textContent = ''; return; }
+  const ms = selectedDates[1] - selectedDates[0];
+  const days = Math.round(ms / 86400000);
+  if (days <= 0) { el.textContent = ''; return; }
+  el.textContent = days + (days === 1 ? ' day' : ' days');
+}
 
 const _origShowPage = showPage;
 window.showPage = function(id, linkEl) {
@@ -1926,11 +3071,18 @@ window.showPage = function(id, linkEl) {
     // Reset inputs
     document.querySelectorAll('#page-form input, #page-form textarea, #page-form select').forEach(el => {
       if (el.id === 'f-budget-slider') { el.value = 8000; return; }
+      if (el.id === 'f-depart' || el.id === 'f-return') { return; } // handled by flatpickr .clear() below
       el.value = '';
       el.style.borderColor = '';
     });
     document.querySelectorAll('.form-opt').forEach(o => o.classList.remove('selected'));
     updateBudgetDisplay(8000);
+    if (window._departPicker) window._departPicker.clear();
+    const tripLenEl = document.getElementById('trip-length');
+    if (tripLenEl) tripLenEl.textContent = '';
+    selectedDestinations = [];
+    renderDestTags();
+    hideDestSuggestions();
   }
 };
 </script>
