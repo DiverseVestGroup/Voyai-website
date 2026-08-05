@@ -106,6 +106,7 @@ nav {
 
 /* VIBES */
 .vibes-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.testimonial-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 .vibe-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); padding:26px; transition:all .2s; box-shadow:var(--shadow-sm); }
 .vibe-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .vibe-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
@@ -388,6 +389,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   footer{flex-direction:column;gap:16px;text-align:center;padding:24px 20px}
   .footer-links{justify-content:center}
   .dest-grid{grid-template-columns:1fr 1fr}
+  .testimonial-grid{grid-template-columns:1fr}
   #pricing{padding:48px 20px}
   #destinations{padding:48px 20px}
   .social-strip-inner{gap:20px}
@@ -743,6 +745,31 @@ footer p { font-size:13px; color:var(--text-dim); }
 
     <div style="text-align:center;margin-top:32px;">
       <button class="btn-primary" onclick="showPage(&#39;inspo&#39;)">See more trip inspiration →</button>
+    </div>
+  </div>
+
+  <!-- ══ TESTIMONIALS (sample) ══════════════════════════════ -->
+  <div class="section" style="max-width:1100px;">
+    <div class="section-hd">
+      <h2>What travellers are saying</h2>
+      <p>Sample reviews — real traveller stories are coming as our first trips launch</p>
+    </div>
+    <div class="testimonial-grid">
+      <div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+        <div style="color:var(--amber);font-size:14px;margin-bottom:10px;">★★★★★</div>
+        <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"Every hotel, tour and restaurant in our itinerary had a booking link ready to go — went from reading the plan to having flights and hotels locked in within the hour."</p>
+        <div style="font-size:13px;font-weight:600;color:var(--text-muted);">Sample review</div>
+      </div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+        <div style="color:var(--amber);font-size:14px;margin-bottom:10px;">★★★★★</div>
+        <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"Planned a multi-city Europe trip in one sitting. Genuinely felt like it understood the vibe we were going for, not just the destinations."</p>
+        <div style="font-size:13px;font-weight:600;color:var(--text-muted);">Sample review</div>
+      </div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+        <div style="color:var(--amber);font-size:14px;margin-bottom:10px;">★★★★★</div>
+        <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"We already had flights and one hotel booked — TripMade built the rest of the trip around what we'd locked in instead of ignoring it."</p>
+        <div style="font-size:13px;font-weight:600;color:var(--text-muted);">Sample review</div>
+      </div>
     </div>
   </div>
 
