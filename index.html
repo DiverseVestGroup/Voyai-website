@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0026)https://www.voyai.travel/# -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TripMade — My trip. Made.</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230D7377'/><text x='50%' y='50%' dominant-baseline='central' text-anchor='middle' font-size='20' fill='white'>%E2%9C%88</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 32 32&#39;&gt;&lt;rect width=&#39;32&#39; height=&#39;32&#39; rx=&#39;8&#39; fill=&#39;%230D7377&#39;/&gt;&lt;text x=&#39;50%&#39; y=&#39;50%&#39; dominant-baseline=&#39;central&#39; text-anchor=&#39;middle&#39; font-size=&#39;20&#39; fill=&#39;white&#39;&gt;%E2%9C%88&lt;/text&gt;&lt;/svg&gt;">
+<link href="./Up to date TripMade — My trip. Made._files/css2" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ───────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -225,6 +225,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .trip-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .2s; box-shadow:var(--shadow-sm); }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
+.trip-card-more { display:none; }
 .card-img { height:180px; display:flex; align-items:flex-end; padding:12px; position:relative; background-size:cover!important; background-position:center!important; }
 .trip-card.featured .card-img { height:220px; }
 .card-img-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:56px; background:rgba(0,0,0,0.12); }
@@ -402,13 +403,14 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="wm">Trip<span>Made</span></div>
   </div>
   <ul class="nav-links">
-    <li><a href="#" class="active" onclick="showPage('landing',this)">Home</a></li>
-    <li><a href="#" onclick="showPage('landing',this);scrollToSection('how')">How it works</a></li>
-    <li><a href="#" onclick="showPage('landing',this);scrollToSection('vibes')">Vibes</a></li>
-    <li><a href="#" onclick="showPage('inspo',this)">Inspiration</a></li>
-    <li><a href="#" onclick="showPage('landing',this);scrollToSection('pricing')">Pricing</a></li>
+    <li><a href="https://www.voyai.travel/#" class="" onclick="showPage(&#39;landing&#39;,this)">Home</a></li>
+    <li><a href="https://www.voyai.travel/#" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;how&#39;)">How it works</a></li>
+    <li><a href="https://www.voyai.travel/#" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;vibes&#39;)">Vibes</a></li>
+    <li><a href="https://www.voyai.travel/#" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
+    <li><a href="https://www.voyai.travel/#" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
+    <li><a href="https://www.voyai.travel/#" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
-  <button class="nav-cta" onclick="showPage('landing',this);scrollToSection('waitlist')">Join waitlist</button>
+  <button class="nav-cta" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;)">Join waitlist</button>
 </nav>
 
 <!-- ══ LANDING PAGE ══════════════════════════════════════ -->
@@ -420,8 +422,8 @@ footer p { font-size:13px; color:var(--text-dim); }
     <h1 class="fu1">My Trip...<br><span class="red">Made.</span></h1>
     <p class="fu2">Tell us your vibe, your dates, and how many people you are travelling with. TripMade builds you a free personalised itinerary — then when you're ready, we handle all the bookings too.</p>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="showPage('form')">Get my free itinerary →</button>
-      <button class="btn-secondary" onclick="scrollToSection('how')">See how it works</button>
+      <button class="btn-primary" onclick="requireAccount(function(){showPage('form');})">Get my free itinerary →</button>
+      <button class="btn-secondary" onclick="scrollToSection(&#39;how&#39;)">See how it works</button>
     </div>
   </div>
 
@@ -450,22 +452,22 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div id="vibes" class="section">
     <div class="section-hd"><h2>Choose your vibe</h2><p>TripMade builds a completely different itinerary for each trip type</p></div>
     <div class="vibes-grid">
-      <div class="vibe-card" style="cursor:pointer" onclick="showPage('inspo');setTimeout(()=>document.querySelectorAll('.cat-tab')[1].click(),100)">
+      <div class="vibe-card" style="cursor:pointer" onclick="showPage(&#39;inspo&#39;);setTimeout(()=&gt;document.querySelectorAll(&#39;.cat-tab&#39;)[1].click(),100)">
         <div class="vibe-top"><div class="vibe-icon" style="background:var(--accent-light);">🔥</div><div><h3>Party crew</h3><div class="sub">Best for groups of 4–12</div></div></div>
         <p>Pre-parties, club nights, pool days, recovery brunches and late checkouts. Built for a group — or anyone chasing a good night.</p>
         <div class="tags"><span class="tag">Club bookings</span><span class="tag">Event tickets</span><span class="tag">Pre-events</span><span class="tag">Ibiza / Amsterdam</span></div>
       </div>
-      <div class="vibe-card" style="cursor:pointer" onclick="showPage('inspo');setTimeout(()=>document.querySelectorAll('.cat-tab')[6].click(),100)">
+      <div class="vibe-card" style="cursor:pointer" onclick="showPage(&#39;inspo&#39;);setTimeout(()=&gt;document.querySelectorAll(&#39;.cat-tab&#39;)[6].click(),100)">
         <div class="vibe-top"><div class="vibe-icon" style="background:#FDF0F7;">🌹</div><div><h3>Romantic getaway</h3><div class="sub">Built for couples</div></div></div>
         <p>Rooftop dinners, spa days, sunset cruises, and private experiences designed entirely around the two of you.</p>
         <div class="tags"><span class="tag">Fine dining</span><span class="tag">Couples spa</span><span class="tag">Sunset bookings</span><span class="tag">Honeymoon</span></div>
       </div>
-      <div class="vibe-card" style="cursor:pointer" onclick="showPage('inspo');setTimeout(()=>document.querySelectorAll('.cat-tab')[7].click(),100)">
+      <div class="vibe-card" style="cursor:pointer" onclick="showPage(&#39;inspo&#39;);setTimeout(()=&gt;document.querySelectorAll(&#39;.cat-tab&#39;)[7].click(),100)">
         <div class="vibe-top"><div class="vibe-icon" style="background:#EAF3DE;">⛰️</div><div><h3>Adventure</h3><div class="sub">Solo or groups</div></div></div>
         <p>Hikes, skydiving, surf lessons and adrenaline-packed days. Every hour optimised for maximum experience.</p>
         <div class="tags"><span class="tag">Outdoor activities</span><span class="tag">Group tours</span><span class="tag">Local guides</span><span class="tag">Golf trips</span></div>
       </div>
-      <div class="vibe-card" style="cursor:pointer" onclick="showPage('inspo');setTimeout(()=>document.querySelectorAll('.cat-tab')[3].click(),100)">
+      <div class="vibe-card" style="cursor:pointer" onclick="showPage(&#39;inspo&#39;);setTimeout(()=&gt;document.querySelectorAll(&#39;.cat-tab&#39;)[3].click(),100)">
         <div class="vibe-top"><div class="vibe-icon" style="background:var(--blue-light);">🗺️</div><div><h3>Sightseeing</h3><div class="sub">Families &amp; culture lovers</div></div></div>
         <p>Landmarks, local culture, museums and neighbourhood gems — with skip-the-line bookings already included.</p>
         <div class="tags"><span class="tag">Skip-the-line</span><span class="tag">Local food</span><span class="tag">Hidden gems</span><span class="tag">Efficient routing</span></div>
@@ -478,57 +480,57 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
     <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — TripMade builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
     <div class="dest-grid">
-      <div class="dest-card wide" style="background-image:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card wide" style="background-image:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Santorini, Greece</div><div class="dest-sub">From $4,200 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:#993556;">🌅 Most romantic</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Tokyo, Japan</div><div class="dest-sub">From $4,800 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#854F0B;">🗺️ Top rated</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Bali, Indonesia</div><div class="dest-sub">From $2,800 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#0F6E56;">🌺 Best value</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Ibiza, Spain</div><div class="dest-sub">From $3,200 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:var(--accent);">🔥 Party</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Paris, France</div><div class="dest-sub">From $4,900 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:#7F77DD;">💍 Honeymoon</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Maldives</div><div class="dest-sub">From $7,500 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:#0F6E56;">🤿 Luxury</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Dubai, UAE</div><div class="dest-sub">From $3,600 AUD · 5 days</div></div>
         <span class="dest-badge" style="color:#BA7517;">✨ Luxury</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Thailand</div><div class="dest-sub">From $2,400 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#378ADD;">🏄 Adventure</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Iceland</div><div class="dest-sub">From $5,800 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#185FA5;">🌌 Northern Lights</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Kenya Safari</div><div class="dest-sub">From $7,200 AUD · 9 days</div></div>
         <span class="dest-badge" style="color:#3B6D11;">🦁 Safari</span>
       </div>
-      <div class="dest-card" style="background-image:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&q=80');" onclick="showPage('inspo')">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Croatia</div><div class="dest-sub">From $4,400 AUD · 9 days</div></div>
         <span class="dest-badge" style="color:#993556;">⛵ Island Hop</span>
@@ -554,13 +556,13 @@ footer p { font-size:13px; color:var(--text-dim); }
           <li>Recommended restaurant &amp; activity picks</li>
           <li>Affiliate booking links included</li>
         </ul>
-        <button class="price-btn" onclick="showPage('landing');scrollToSection('waitlist')">Get started free</button>
+        <button class="price-btn" onclick="showPage(&#39;landing&#39;);scrollToSection(&#39;waitlist&#39;)">Get started free</button>
       </div>
 
       <div class="price-card featured">
         <div class="price-popular">MOST POPULAR</div>
         <div class="price-tier">Essential</div>
-        <div class="price-amount">$39 <span>/ trip</span></div>
+        <div class="price-amount"><span style="text-decoration:line-through;text-decoration-color:var(--text-dim);">$39</span> <span style="color:var(--accent);font-weight:700;">FREE</span> <span>/ trip</span></div>
         <p class="price-desc">For travellers who want a premium itinerary with every detail researched and curated.</p>
         <ul class="price-features">
           <li>Detailed hour-by-hour daily plan</li>
@@ -568,15 +570,14 @@ footer p { font-size:13px; color:var(--text-dim); }
           <li>Restaurant reservations guidance</li>
           <li>Skip-the-line booking advice</li>
           <li>Interactive PDF with maps</li>
-          <li>3 rounds of revisions</li>
         </ul>
-        <button class="price-btn primary" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Join waitlist →</button>
+        <button class="price-btn primary" onclick="showPage(&#39;landing&#39;);setTimeout(()=&gt;document.getElementById(&#39;waitlist&#39;).scrollIntoView({behavior:&#39;smooth&#39;}),50)">Join waitlist →</button>
       </div>
 
-      <div class="price-card">
+      <div class="price-card" style="background:var(--bg3);position:relative;">
+        <div style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px;">COMING SOON …</div>
         <div class="price-tier">Concierge</div>
-        <div class="price-amount">$149 <span>/ trip</span></div>
-        <p class="price-desc">The full TripMade experience. We plan everything and handle all your bookings end-to-end.</p>
+        <p class="price-desc">The full TripMade experience. We plan everything and handle all your bookings end-to-end. Booking fees apply.</p>
         <ul class="price-features">
           <li>All inclusive booking experience</li>
           <li>Flights searched, recommended &amp; booked</li>
@@ -585,9 +586,8 @@ footer p { font-size:13px; color:var(--text-dim); }
           <li>Restaurant reservations made</li>
           <li>Transfers &amp; logistics handled</li>
           <li>Dedicated support throughout</li>
-          <li>Unlimited revisions</li>
         </ul>
-        <button class="price-btn" onclick="showPage('landing');setTimeout(()=>document.getElementById('waitlist').scrollIntoView({behavior:'smooth'}),50)">Join waitlist →</button>
+        <button class="price-btn" onclick="showPage(&#39;landing&#39;);setTimeout(()=&gt;document.getElementById(&#39;waitlist&#39;).scrollIntoView({behavior:&#39;smooth&#39;}),50)">Join waitlist →</button>
       </div>
 
     </div>
@@ -599,7 +599,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div class="itin-wrap">
     <div class="itin-intro">
       <h2>A sample TripMade itinerary</h2>
-      <p>Rome + Ibiza — 8 days — Multi-vibe — $5,800 AUD budget · Departing Sydney</p>
+      <p>Rome + Ibiza — 8 days — Multi-vibe — $7,000 AUD budget · Departing Sydney</p>
     </div>
 
     <!-- Route bar -->
@@ -621,11 +621,11 @@ footer p { font-size:13px; color:var(--text-dim); }
 
     <!-- Summary -->
     <div class="sum-grid">
-      <div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$2,140</div><div class="sum-sub">return + connection</div></div>
-      <div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$1,680</div><div class="sum-sub">8 nights</div></div>
-      <div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$720</div><div class="sum-sub">all booked</div></div>
-      <div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$880</div><div class="sum-sub">all reserved</div></div>
-      <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$5,420</div><div class="sum-sub red">$380 under budget</div></div>
+      <div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$2,120</div><div class="sum-sub">return + connection</div></div>
+      <div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$2,800</div><div class="sum-sub">8 nights</div></div>
+      <div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$760</div><div class="sum-sub">all booked</div></div>
+      <div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$950</div><div class="sum-sub">all reserved</div></div>
+      <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$6,630</div><div class="sum-sub red">$370 under budget</div></div>
     </div>
 
     <!-- ROME -->
@@ -637,9 +637,9 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="day-block">
         <div class="day-lbl">Day 1 — Wed · Arrival</div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">06:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Fly SYD → FCO — Emirates EK415 via Dubai</div><div class="evt-price">$1,480pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">06:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Fly SYD → FCO — Emirates EK415 via Dubai</div><div class="evt-price">$1,890pp</div><div class="ebadge eb-ok">Booked</div></div>
           <div class="evt"><div class="evt-time">19:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Private transfer FCO → Hotel</div><div class="evt-price">$48</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Hotel Campo de' Fiori, Centro Storico</div><div class="evt-price">$220/n</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Hotel Campo de' Fiori, Centro Storico</div><div class="evt-price">$300/n</div><div class="ebadge eb-ok">Booked</div></div>
           <div class="evt"><div class="evt-time">21:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Osteria del Pegno (3 min walk)</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
         </div>
       </div>
@@ -681,7 +681,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="conn-title">Rome FCO → Ibiza IBZ — Vueling VY6241</div>
         <div class="conn-sub">Saturday 14 Sep · Departs 16:20 · Arrives 18:35 · 2h 15m direct</div>
       </div>
-      <div class="conn-price">$186pp</div>
+      <div class="conn-price">$230pp</div>
       <div class="conn-badge">Booked</div>
     </div>
 
@@ -694,10 +694,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="day-block">
         <div class="day-lbl">Day 5 — Sat · Arrival &amp; first night out</div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">18:35</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Ushuaïa Beach Hotel, Playa d'en Bossa</div><div class="evt-price">$280/n</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">18:35</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Ushuaïa Beach Hotel, Playa d'en Bossa</div><div class="evt-price">$420/n</div><div class="ebadge eb-ok">Booked</div></div>
           <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Ushuaïa sits directly on the beach with its own open-air club — no transport needed on night 1.</span></div>
           <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Jockey Club Sunset Beach (beachfront)</div><div class="evt-price">$68pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">23:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Ushuaïa Ibiza Beach Club — Tiësto closing party</div><div class="evt-price">$75pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">23:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Ushuaïa Ibiza Beach Club — Tiësto closing party</div><div class="evt-price">$110pp</div><div class="ebadge eb-ok">Booked</div></div>
         </div>
       </div>
       <div class="day-block">
@@ -707,7 +707,7 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="evt"><div class="evt-time">15:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Sunset catamaran — 3hr, open bar</div><div class="evt-price">$85pp</div><div class="ebadge eb-ok">Booked</div></div>
           <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Catamaran departs Ibiza Town marina — perfect sunset views of Dalt Vila. Sells out fast in September.</span></div>
           <div class="evt"><div class="evt-time">21:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — El Chiringuito, Es Cavallet beach</div><div class="evt-price">$72pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">00:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Pacha Ibiza — Eric Prydz presents HOLO</div><div class="evt-price">$90pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">00:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Pacha Ibiza — Eric Prydz presents HOLO</div><div class="evt-price">$120pp</div><div class="ebadge eb-ok">Booked</div></div>
         </div>
       </div>
       <div class="day-block">
@@ -717,7 +717,7 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Cala Comte has the clearest water on the island. Sunbed reservation avoids the 9am queue.</span></div>
           <div class="evt"><div class="evt-time">18:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Sunset drinks — Café del Mar, San Antonio</div><div class="evt-price">$30pp</div><div class="ebadge eb-res">Reserved</div></div>
           <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Can Pilot, traditional Ibizan grill</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">23:30</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">DC10 — Circoloco Monday (legendary weekly)</div><div class="evt-price">$55pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt"><div class="evt-time">23:30</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">DC10 — Circoloco Monday (legendary weekly)</div><div class="evt-price">$70pp</div><div class="ebadge eb-ok">Booked</div></div>
           <div class="tip"><div class="tip-dot"></div><span>TripMade tip: DC10 Circoloco is one of Ibiza's most iconic nights. Arrives late on purpose — doors from midnight.</span></div>
         </div>
       </div>
@@ -740,7 +740,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
 
     <div style="text-align:center;margin-top:32px;">
-      <button class="btn-primary" onclick="showPage('inspo')">See more trip inspiration →</button>
+      <button class="btn-primary" onclick="showPage(&#39;inspo&#39;)">See more trip inspiration →</button>
     </div>
   </div>
 
@@ -751,10 +751,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>Be first to travel smarter</h2>
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div class="wl-form">
-        <input type="email" placeholder="your@email.com" />
-        <button onclick="showPage('form')">Get my free itinerary →</button>
+        <input type="email" placeholder="your@email.com">
+        <button onclick="requireAccount(function(){showPage('form');})">Get my free itinerary →</button>
       </div>
-      <div class="wl-note">Free forever. No spam. Launching Q3 2026 — open to travellers worldwide.</div>
+      <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
 
@@ -767,31 +767,31 @@ footer p { font-size:13px; color:var(--text-dim); }
     <h1>Trip inspiration</h1>
     <p>Real itineraries built by TripMade. Find your trip, then book it in minutes.</p>
     <div class="cat-tabs">
-      <button class="cat-tab active" onclick="setCat(this)">✨ All trips <span class="tc">48</span></button>
-      <button class="cat-tab" onclick="setCat(this)">🔥 Partying <span class="tc">12</span></button>
-      <button class="cat-tab" onclick="setCat(this)">💍 Honeymoon <span class="tc">9</span></button>
-      <button class="cat-tab" onclick="setCat(this)">🗺️ Sightseeing <span class="tc">11</span></button>
-      <button class="cat-tab" onclick="setCat(this)">⛰️ Hiking <span class="tc">7</span></button>
-      <button class="cat-tab" onclick="setCat(this)">⛳ Golf <span class="tc">5</span></button>
-      <button class="cat-tab" onclick="setCat(this)">🌹 Romantic <span class="tc">8</span></button>
-      <button class="cat-tab" onclick="setCat(this)">🏄 Adventure <span class="tc">6</span></button>
+      <button class="cat-tab active" data-cat="all" onclick="setCat(this)">✨ All trips <span class="tc">48</span></button>
+      <button class="cat-tab" data-cat="party" onclick="setCat(this)">🔥 Partying <span class="tc">12</span></button>
+      <button class="cat-tab" data-cat="honeymoon" onclick="setCat(this)">💍 Honeymoon <span class="tc">9</span></button>
+      <button class="cat-tab" data-cat="sightseeing" onclick="setCat(this)">🗺️ Sightseeing <span class="tc">11</span></button>
+      <button class="cat-tab" data-cat="hiking" onclick="setCat(this)">⛰️ Hiking <span class="tc">7</span></button>
+      <button class="cat-tab" data-cat="golf" onclick="setCat(this)">⛳ Golf <span class="tc">5</span></button>
+      <button class="cat-tab" data-cat="romantic" onclick="setCat(this)">🌹 Romantic <span class="tc">8</span></button>
+      <button class="cat-tab" data-cat="adventure" onclick="setCat(this)">🏄 Adventure <span class="tc">6</span></button>
     </div>
   </div>
 
   <div class="filter-bar">
     <span class="filter-lbl">Budget</span>
-    <button class="f-chip active" data-group="budget" data-budget="any"     onclick="toggleF(this,'budget')">Any budget</button>
-    <button class="f-chip"        data-group="budget" data-budget="under3k"  onclick="toggleF(this,'budget')">Under $3k</button>
-    <button class="f-chip"        data-group="budget" data-budget="3to6k"    onclick="toggleF(this,'budget')">$3k – $6k</button>
-    <button class="f-chip"        data-group="budget" data-budget="6to12k"   onclick="toggleF(this,'budget')">$6k – $12k</button>
-    <button class="f-chip"        data-group="budget" data-budget="over12k"  onclick="toggleF(this,'budget')">$12k+</button>
+    <button class="f-chip active" data-group="budget" data-budget="any" onclick="toggleF(this,&#39;budget&#39;)">Any budget</button>
+    <button class="f-chip" data-group="budget" data-budget="under3k" onclick="toggleF(this,&#39;budget&#39;)">Under $3k</button>
+    <button class="f-chip" data-group="budget" data-budget="3to6k" onclick="toggleF(this,&#39;budget&#39;)">$3k – $6k</button>
+    <button class="f-chip" data-group="budget" data-budget="6to12k" onclick="toggleF(this,&#39;budget&#39;)">$6k – $12k</button>
+    <button class="f-chip" data-group="budget" data-budget="over12k" onclick="toggleF(this,&#39;budget&#39;)">$12k+</button>
     <div class="f-divider"></div>
     <span class="filter-lbl">Duration</span>
-    <button class="f-chip" data-group="duration" data-dur="any"     onclick="toggleF(this,'duration')">Any</button>
-    <button class="f-chip" data-group="duration" data-dur="weekend" onclick="toggleF(this,'duration')">Weekend</button>
-    <button class="f-chip" data-group="duration" data-dur="1week"   onclick="toggleF(this,'duration')">1 week</button>
-    <button class="f-chip" data-group="duration" data-dur="2weeks"  onclick="toggleF(this,'duration')">2 weeks</button>
-    <button class="f-chip" data-group="duration" data-dur="1month"  onclick="toggleF(this,'duration')">1 month+</button>
+    <button class="f-chip" data-group="duration" data-dur="any" onclick="toggleF(this,&#39;duration&#39;)">Any</button>
+    <button class="f-chip" data-group="duration" data-dur="weekend" onclick="toggleF(this,&#39;duration&#39;)">Weekend</button>
+    <button class="f-chip" data-group="duration" data-dur="1week" onclick="toggleF(this,&#39;duration&#39;)">1 week</button>
+    <button class="f-chip" data-group="duration" data-dur="2weeks" onclick="toggleF(this,&#39;duration&#39;)">2 weeks</button>
+    <button class="f-chip" data-group="duration" data-dur="1month" onclick="toggleF(this,&#39;duration&#39;)">1 month+</button>
     <div class="f-divider"></div>
     <select class="f-select" data-group="region"><option>Any region</option><option>Europe</option><option>Asia</option><option>Americas</option><option>Middle East</option><option>Africa</option><option>Pacific</option></select>
     <select class="f-select" data-group="groupsize"><option>Any group size</option><option>Solo</option><option>Couple</option><option>Small group (3–6)</option><option>Large group (7+)</option></select>
@@ -800,9 +800,9 @@ footer p { font-size:13px; color:var(--text-dim); }
 
   <div class="cards-grid">
     <!-- Featured -->
-    <div class="trip-card featured" data-cat="party sightseeing" data-budget="5420" data-dur="8" data-region="Europe" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80') center/cover;">
-        <div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🏛️🎉</div>
+    <div class="trip-card featured" data-cat="party sightseeing" data-budget="6630" data-dur="8" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&amp;q=80&#39;) center/cover;">
+        <div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div>
         <button class="card-save">♡</button>
         <span class="card-vibe-pill" style="background:white;color:var(--accent);">Multi-vibe · Multi-stop</span>
       </div>
@@ -817,118 +817,166 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
       <div class="card-footer">
-        <div class="card-price">$5,420 <span>per person from SYD</span></div>
-        <button class="card-btn" onclick="bookTrip('Rome + Ibiza')">Book this trip →</button>
+        <div class="card-price">$6,630 <span>per person from SYD</span></div>
+        <button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button>
       </div>
     </div>
     <!-- Bali -->
     <div class="trip-card" data-cat="honeymoon romantic" data-budget="4200" data-dur="10" data-region="Asia" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🌺</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Bali, Indonesia</div><div class="card-sub">10 days · Couple · Luxury &amp; romance</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">💍 Honeymoon</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🧖 Spa included</span></div></div>
-      <div class="card-footer"><div class="card-price">$4,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$4,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Ibiza -->
     <div class="trip-card" data-cat="party" data-budget="2890" data-dur="5" data-region="Europe" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🎧</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
       <div class="card-body"><div class="card-dest">Ibiza, Spain</div><div class="card-sub">5 days · Group of 6 · Full send</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🎧 Club nights</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛥️ Boat trip</span></div></div>
-      <div class="card-footer"><div class="card-price">$2,890 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$2,890 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Japan -->
     <div class="trip-card" data-cat="sightseeing" data-budget="6100" data-dur="12" data-region="Asia" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🗼</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Tokyo + Kyoto, Japan</div><div class="card-sub">12 days · 2 adults · Culture &amp; food</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🗺️ Sightseeing</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍜 Food tours</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚅 Rail pass</span></div></div>
-      <div class="card-footer"><div class="card-price">$6,100 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$6,100 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Scotland Golf -->
     <div class="trip-card" data-cat="golf" data-budget="7400" data-dur="7" data-region="Europe" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">⛳</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
       <div class="card-body"><div class="card-dest">St Andrews + Edinburgh, Scotland</div><div class="card-sub">7 days · Group of 4 · Links golf</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 4 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏰 Castle stays</span></div></div>
-      <div class="card-footer"><div class="card-price">$7,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$7,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Patagonia -->
     <div class="trip-card" data-cat="hiking adventure" data-budget="5800" data-dur="14" data-region="Americas" data-group="Solo">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">⛰️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
       <div class="card-body"><div class="card-dest">Patagonia, Chile + Argentina</div><div class="card-sub">14 days · Solo or duo · Torres del Paine</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">⛰️ Multi-day trek</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏕️ Camping</span></div></div>
-      <div class="card-footer"><div class="card-price">$5,800 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$5,800 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Amsterdam -->
     <div class="trip-card" data-cat="party" data-budget="2400" data-dur="4" data-region="Europe" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🌷</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">🔥 Party</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">🔥 Party</span></div>
       <div class="card-body"><div class="card-dest">Amsterdam, Netherlands</div><div class="card-sub">4 days · Group of 5 · Techno &amp; canals</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">🎧 Techno</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛶 Canal boat</span></div></div>
-      <div class="card-footer"><div class="card-price">$2,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$2,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Maldives -->
     <div class="trip-card" data-cat="honeymoon romantic" data-budget="8900" data-dur="7" data-region="Asia" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🏝️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">💍 Honeymoon</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Maldives</div><div class="card-sub">7 days · Couple · Overwater villa</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🤿 Diving</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🌅 Sunsets</span></div></div>
-      <div class="card-footer"><div class="card-price">$8,900 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$8,900 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Morocco -->
     <div class="trip-card" data-cat="sightseeing" data-budget="3200" data-dur="9" data-region="Africa" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🕌</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Marrakech + Sahara, Morocco</div><div class="card-sub">9 days · 2–4 people · Culture &amp; desert</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🐪 Desert camp</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛍️ Souks</span></div></div>
-      <div class="card-footer"><div class="card-price">$3,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$3,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
 
     <!-- Santorini -->
     <div class="trip-card" data-cat="honeymoon romantic" data-budget="4200" data-dur="7" data-region="Europe" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🌅</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Romantic</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Romantic</span></div>
       <div class="card-body"><div class="card-dest">Santorini, Greece</div><div class="card-sub">7 days · Couple · Caldera views &amp; sunsets</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌅 Oia sunsets</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚢 Catamaran</span></div></div>
-      <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Paris -->
     <div class="trip-card" data-cat="honeymoon romantic" data-budget="4900" data-dur="7" data-region="Europe" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);">🗼</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#7F77DD;">💍 Honeymoon</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#7F77DD;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Paris, France</div><div class="card-sub">7 days · Couple · Romance &amp; culture</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:#7F77DD;">🥂 Fine dining</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🖼️ Louvre</span></div></div>
-      <div class="card-footer"><div class="card-price">$4,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$4,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Vietnam -->
     <div class="trip-card" data-cat="adventure sightseeing" data-budget="2900" data-dur="14" data-region="Asia" data-group="Solo">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🛵</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1528127269322-539801943592?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
       <div class="card-body"><div class="card-dest">Vietnam — Hanoi to Hoi An</div><div class="card-sub">14 days · Solo or couple · Food &amp; culture</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🍜 Street food</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛶 Ha Long Bay</span></div></div>
-      <div class="card-footer"><div class="card-price">$2,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$2,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Dubai -->
     <div class="trip-card" data-cat="sightseeing" data-budget="3600" data-dur="5" data-region="Middle East" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🏙️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#BA7517;">✨ Luxury</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#BA7517;">✨ Luxury</span></div>
       <div class="card-body"><div class="card-dest">Dubai, UAE</div><div class="card-sub">5 days · 2 adults · Ultra-luxury stopover</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🏨 Burj Al Arab</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛥️ Desert safari</span></div></div>
-      <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Peru Machu Picchu -->
     <div class="trip-card" data-cat="hiking adventure" data-budget="5100" data-dur="10" data-region="Americas" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🏔️</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">⛰️ Adventure</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">⛰️ Adventure</span></div>
       <div class="card-body"><div class="card-dest">Peru — Lima &amp; Machu Picchu</div><div class="card-sub">10 days · Small group · Inca trail &amp; culture</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🥾 Inca Trail</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍽️ Ceviche</span></div></div>
-      <div class="card-footer"><div class="card-price">$5,100 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$5,100 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Iceland -->
     <div class="trip-card" data-cat="adventure hiking" data-budget="5800" data-dur="10" data-region="Europe" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🌌</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">🌌 Northern Lights</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">🌌 Northern Lights</span></div>
       <div class="card-body"><div class="card-dest">Iceland — Ring Road</div><div class="card-sub">10 days · 2–4 people · Northern lights &amp; glaciers</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🌌 Aurora</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🧊 Glacier hike</span></div></div>
-      <div class="card-footer"><div class="card-price">$5,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$5,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Kenya Safari -->
     <div class="trip-card" data-cat="adventure" data-budget="7200" data-dur="9" data-region="Africa" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🦁</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">🦁 Safari</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">🦁 Safari</span></div>
       <div class="card-body"><div class="card-dest">Masai Mara, Kenya</div><div class="card-sub">9 days · Couple · Great Migration safari</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">🦁 Big Five</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎈 Hot air balloon</span></div></div>
-      <div class="card-footer"><div class="card-price">$7,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$7,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Croatia -->
     <div class="trip-card" data-cat="romantic honeymoon" data-budget="4400" data-dur="9" data-region="Europe" data-group="Couple">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">⛵</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">🌹 Romantic</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">🌹 Romantic</span></div>
       <div class="card-body"><div class="card-dest">Dubrovnik + Hvar, Croatia</div><div class="card-sub">9 days · Couple · Adriatic island hopping</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">⛵ Island hop</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏰 Old Town</span></div></div>
-      <div class="card-footer"><div class="card-price">$4,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$4,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- Amalfi Coast -->
     <div class="trip-card" data-cat="sightseeing romantic" data-budget="5300" data-dur="8" data-region="Europe" data-group="Small group (3–6)">
-      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1612698093158-e07ac200d44e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);">🍋</div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1612698093158-e07ac200d44e?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Amalfi Coast, Italy</div><div class="card-sub">8 days · 2–4 adults · Clifftop villages &amp; sea</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🍋 Positano</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛵ Boat hire</span></div></div>
-      <div class="card-footer"><div class="card-price">$5,300 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card').querySelector('.card-dest').textContent)">Book this trip →</button></div>
+      <div class="card-footer"><div class="card-price">$5,300 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
 
+    <!-- LOAD MORE BATCH (hidden until Load more is clicked) -->
+    <div class="trip-card trip-card-more" data-cat="hiking adventure" data-budget="5200" data-dur="8" data-region="Pacific" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
+      <div class="card-body"><div class="card-dest">Queenstown, New Zealand</div><div class="card-sub">8 days · Couple · Alpine adventure &amp; lakes</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🥾 Milford Sound</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚣 Adventure sports</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="sightseeing party" data-budget="3400" data-dur="6" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Lisbon, Portugal</div><div class="card-sub">6 days · Group of 4 · Old town &amp; nightlife</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🚋 Tram 28</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎶 Fado bars</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="adventure sightseeing" data-budget="4600" data-dur="9" data-region="Africa" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-body"><div class="card-dest">Cape Town, South Africa</div><div class="card-sub">9 days · Couple · Winelands &amp; coastline</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#378ADD;">🍷 Winelands</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏔️ Table Mountain</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="honeymoon romantic" data-budget="5600" data-dur="7" data-region="Pacific" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Fiji</div><div class="card-sub">7 days · Couple · Overwater bure &amp; reef</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌺 Private island</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🤿 Snorkelling</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="party honeymoon" data-budget="3900" data-dur="6" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Tulum, Mexico</div><div class="card-sub">6 days · Group of 5 · Beach clubs &amp; cenotes</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🏖️ Beach clubs</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🕳️ Cenote diving</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="sightseeing adventure" data-budget="6200" data-dur="8" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Norwegian Fjords</div><div class="card-sub">8 days · Couple · Fjord cruise &amp; hiking</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">⛴️ Fjord cruise</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🥾 Trolltunga hike</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="sightseeing" data-budget="3700" data-dur="8" data-region="Africa" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Cairo &amp; the Nile, Egypt</div><div class="card-sub">8 days · Group of 4 · Pyramids &amp; river cruise</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🐫 Pyramids</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛴️ Nile cruise</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,700 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <div class="trip-card trip-card-more" data-cat="hiking sightseeing" data-budget="6800" data-dur="7" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
+      <div class="card-body"><div class="card-dest">Swiss Alps</div><div class="card-sub">7 days · Couple · Alpine villages &amp; scenic rail</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🚞 Glacier Express</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏔️ Matterhorn views</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
   </div><!-- end cards-grid -->
 
   <div class="load-more-wrap">
-    <button class="load-more" onclick="loadMore(this)">Load more trips (30 remaining)</button>
+    <button class="load-more" onclick="loadMore(this)">Load more trips (8 more)</button>
   </div>
 
   <!-- WAITLIST ON INSPO PAGE -->
@@ -938,10 +986,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>Be first to travel smarter</h2>
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div class="wl-form">
-        <input type="email" placeholder="your@email.com" />
-        <button onclick="showPage('form')">Get my free itinerary →</button>
+        <input type="email" placeholder="your@email.com">
+        <button onclick="requireAccount(function(){showPage('form');})">Get my free itinerary →</button>
       </div>
-      <div class="wl-note">Free forever. No spam. Launching Q3 2026 — open to travellers worldwide.</div>
+      <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
 
@@ -953,39 +1001,39 @@ footer p { font-size:13px; color:var(--text-dim); }
 
     <!-- Progress bar -->
     <div class="form-progress">
-      <div class="form-progress-step"><div class="fp-dot active" id="fp1">1</div><div class="fp-line" id="fl1"></div></div>
-      <div class="form-progress-step"><div class="fp-dot" id="fp2">2</div><div class="fp-line" id="fl2"></div></div>
-      <div class="form-progress-step"><div class="fp-dot" id="fp3">3</div><div class="fp-line" id="fl3"></div></div>
-      <div class="form-progress-step"><div class="fp-dot" id="fp4">4</div><div class="fp-line" id="fl4"></div></div>
-      <div class="form-progress-step"><div class="fp-dot" id="fp5">5</div><div class="fp-line" id="fl5"></div></div>
-      <div class="form-progress-step"><div class="fp-dot" id="fp6">6</div></div>
+      <div class="form-progress-step"><div class="fp-dot done" id="fp1">1</div><div class="fp-line done" id="fl1"></div></div>
+      <div class="form-progress-step"><div class="fp-dot done" id="fp2">2</div><div class="fp-line done" id="fl2"></div></div>
+      <div class="form-progress-step"><div class="fp-dot done" id="fp3">3</div><div class="fp-line done" id="fl3"></div></div>
+      <div class="form-progress-step"><div class="fp-dot done" id="fp4">4</div><div class="fp-line done" id="fl4"></div></div>
+      <div class="form-progress-step"><div class="fp-dot done" id="fp5">5</div><div class="fp-line done" id="fl5"></div></div>
+      <div class="form-progress-step"><div class="fp-dot active done" id="fp6">6</div></div>
     </div>
 
     <!-- STEP 1 — Where & When -->
-    <div class="form-step active" id="step1">
+    <div class="form-step" id="step1">
       <div class="form-eyebrow">Step 1 of 6</div>
       <h2>Where do you want to go?</h2>
       <p class="form-sub">Tell us your dream destination — or a few you're considering. We'll build around it.</p>
       <div class="form-group">
         <label class="form-label">Destination(s) <span>— e.g. "Bali" or "Rome + Ibiza" or "Surprise me in Europe"</span></label>
-        <input class="form-input" id="f-dest" type="text" placeholder="Where are you dreaming of going?" />
+        <input class="form-input" id="f-dest" type="text" placeholder="Where are you dreaming of going?">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Departure date</label>
-          <input class="form-input" id="f-depart" type="date" />
+          <input class="form-input" id="f-depart" type="date">
         </div>
         <div class="form-group">
           <label class="form-label">Return date</label>
-          <input class="form-input" id="f-return" type="date" />
+          <input class="form-input" id="f-return" type="date">
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Flying from <span>— your home city or airport</span></label>
-        <input class="form-input" id="f-from" type="text" placeholder="e.g. Sydney, Melbourne, Brisbane..." />
+        <input class="form-input" id="f-from" type="text" placeholder="e.g. Sydney, Melbourne, Brisbane...">
       </div>
       <div class="form-nav">
-        <button class="form-back" onclick="showPage('landing')">← Back to home</button>
+        <button class="form-back" onclick="showPage(&#39;landing&#39;)">← Back to home</button>
         <button class="form-next" onclick="nextStep(1)">Next →</button>
       </div>
     </div>
@@ -998,10 +1046,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Trip type</label>
         <div class="form-options two-col">
-          <div class="form-opt" onclick="selectOpt(this,'triptype')"><div class="opt-icon">🧍</div><div class="opt-label">Solo</div><div class="opt-sub">Just me</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'triptype')"><div class="opt-icon">💑</div><div class="opt-label">Couple</div><div class="opt-sub">2 of us</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'triptype')"><div class="opt-icon">👯</div><div class="opt-label">Friends group</div><div class="opt-sub">3–12 people</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'triptype')"><div class="opt-icon">👨‍👩‍👧‍👦</div><div class="opt-label">Family</div><div class="opt-sub">Kids included</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">🧍</div><div class="opt-label">Solo</div><div class="opt-sub">Just me</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">💑</div><div class="opt-label">Couple</div><div class="opt-sub">2 of us</div></div>
+          <div class="form-opt selected" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">👯</div><div class="opt-label">Friends group</div><div class="opt-sub">3–12 people</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">👨‍👩‍👧‍👦</div><div class="opt-label">Family</div><div class="opt-sub">Kids included</div></div>
         </div>
       </div>
       <div class="form-row">
@@ -1024,7 +1072,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="form-group">
         <label class="form-label">What's the occasion? <span>— optional but helps a lot</span></label>
-        <input class="form-input" id="f-occasion" type="text" placeholder="e.g. 30th birthday, honeymoon, annual boys trip, just need a holiday..." />
+        <input class="form-input" id="f-occasion" type="text" placeholder="e.g. 30th birthday, honeymoon, annual boys trip, just need a holiday...">
       </div>
       <div class="form-nav">
         <button class="form-back" onclick="prevStep(2)">← Back</button>
@@ -1040,15 +1088,15 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Trip vibe <span>— select all that apply</span></label>
         <div class="form-options">
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🔥</div><div class="opt-label">Party</div><div class="opt-sub">Clubs, events, nights out</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🔥</div><div class="opt-label">Party</div><div class="opt-sub">Clubs, events, nights out</div></div>
           <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🌹</div><div class="opt-label">Romantic</div><div class="opt-sub">Intimate, luxe, couple</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">⛰️</div><div class="opt-label">Adventure</div><div class="opt-sub">Hikes, thrills, outdoors</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">⛰️</div><div class="opt-label">Adventure</div><div class="opt-sub">Hikes, thrills, outdoors</div></div>
           <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🏛️</div><div class="opt-label">Culture</div><div class="opt-sub">History, art, museums</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🍝</div><div class="opt-label">Food & drink</div><div class="opt-sub">Restaurants, markets, wine</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🏖️</div><div class="opt-label">Beach & relax</div><div class="opt-sub">Sun, swim, unwind</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🍝</div><div class="opt-label">Food &amp; drink</div><div class="opt-sub">Restaurants, markets, wine</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🏖️</div><div class="opt-label">Beach &amp; relax</div><div class="opt-sub">Sun, swim, unwind</div></div>
           <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🛍️</div><div class="opt-label">Shopping</div><div class="opt-sub">Markets, fashion, finds</div></div>
           <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🌿</div><div class="opt-label">Wellness</div><div class="opt-sub">Spa, yoga, slow travel</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">⛳</div><div class="opt-label">Sport & golf</div><div class="opt-sub">Golf, surf, dive, ski</div></div>
+          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">⛳</div><div class="opt-label">Sport &amp; golf</div><div class="opt-sub">Golf, surf, dive, ski</div></div>
         </div>
         <p class="vibe-multi-note">✓ Select multiple — we'll weave them across your days</p>
       </div>
@@ -1058,7 +1106,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="form-group">
         <label class="form-label">Anything to avoid? <span>— optional</span></label>
-        <input class="form-input" id="f-avoid" type="text" placeholder="e.g. No guided tours, avoid touristy restaurants, no early mornings..." />
+        <input class="form-input" id="f-avoid" type="text" placeholder="e.g. No guided tours, avoid touristy restaurants, no early mornings...">
       </div>
       <div class="form-nav">
         <button class="form-back" onclick="prevStep(3)">← Back</button>
@@ -1079,11 +1127,11 @@ footer p { font-size:13px; color:var(--text-dim); }
 — Already bought tickets to Primavera Sound festival on 16 Sep
 — Friend is meeting us in Ibiza on the 18th
 
-...or leave blank if you're starting from scratch"></textarea>
+...or leave blank if you&#39;re starting from scratch"></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">Anything else we should know? <span>— dietary needs, mobility, preferences</span></label>
-        <input class="form-input" id="f-notes" type="text" placeholder="e.g. One person is vegetarian, prefer boutique hotels over big chains, early riser..." />
+        <input class="form-input" id="f-notes" type="text" placeholder="e.g. One person is vegetarian, prefer boutique hotels over big chains, early riser...">
       </div>
       <div class="form-nav">
         <button class="form-back" onclick="prevStep(4)">← Back</button>
@@ -1097,34 +1145,40 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- STEP 5 — Budget & Style -->
     <div class="form-step" id="step5">
       <div class="form-eyebrow">Step 5 of 6</div>
-      <h2>Budget & travel style</h2>
+      <h2>Budget &amp; travel style</h2>
       <p class="form-sub">We'll make every dollar work hard. Give us a range and we'll optimise around it.</p>
       <div class="form-group">
         <label class="form-label">Total budget per person <span>— all in including flights</span></label>
-        <div class="form-options two-col">
-          <div class="form-opt" onclick="selectOpt(this,'budget')"><div class="opt-icon">💸</div><div class="opt-label">Under $2,000</div><div class="opt-sub">Budget traveller</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'budget')"><div class="opt-icon">💰</div><div class="opt-label">$2,000 – $4,000</div><div class="opt-sub">Mid-range</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'budget')"><div class="opt-icon">💎</div><div class="opt-label">$4,000 – $8,000</div><div class="opt-sub">Premium</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'budget')"><div class="opt-icon">🏆</div><div class="opt-label">$8,000+</div><div class="opt-sub">Luxury / no limit</div></div>
+        <div style="background:white;border:1.5px solid var(--border-mid);border-radius:var(--radius);padding:24px 22px 20px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;">
+            <span id="budget-display" style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent);">$8,000</span>
+            <span id="budget-tier" style="font-size:13px;color:var(--text-muted);font-weight:500;">Premium</span>
+          </div>
+          <input type="range" id="f-budget-slider" min="500" max="250000" step="1000" value="8000"
+                 oninput="updateBudgetDisplay(this.value)"
+                 style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);">
+            <span>$500</span><span>$250,000+</span>
+          </div>
         </div>
       </div>
       <div class="form-group" style="margin-top:8px;">
         <label class="form-label">Accommodation style</label>
         <div class="form-options">
-          <div class="form-opt" onclick="selectOpt(this,'accom')"><div class="opt-icon">🏨</div><div class="opt-label">Hotel</div><div class="opt-sub">4–5 star preferred</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'accom')"><div class="opt-icon">🏠</div><div class="opt-label">Airbnb / Villa</div><div class="opt-sub">Home away from home</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'accom')"><div class="opt-icon">✨</div><div class="opt-label">Boutique</div><div class="opt-sub">Unique & stylish</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'accom')"><div class="opt-icon">🌴</div><div class="opt-label">Resort</div><div class="opt-sub">All-inclusive vibes</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'accom')"><div class="opt-icon">🎒</div><div class="opt-label">Budget</div><div class="opt-sub">Hostel / cheap & cheerful</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'accom')"><div class="opt-icon">🤷</div><div class="opt-label">Surprise me</div><div class="opt-sub">Best value option</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏨</div><div class="opt-label">Hotel</div><div class="opt-sub">4–5 star preferred</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏠</div><div class="opt-label">Airbnb / Villa</div><div class="opt-sub">Home away from home</div></div>
+          <div class="form-opt selected" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">✨</div><div class="opt-label">Boutique</div><div class="opt-sub">Unique &amp; stylish</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🌴</div><div class="opt-label">Resort</div><div class="opt-sub">All-inclusive vibes</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🎒</div><div class="opt-label">Budget</div><div class="opt-sub">Hostel / cheap &amp; cheerful</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🤷</div><div class="opt-label">Surprise me</div><div class="opt-sub">Best value option</div></div>
         </div>
       </div>
       <div class="form-group" style="margin-top:8px;">
         <label class="form-label">Trip pace</label>
         <div class="form-options">
-          <div class="form-opt" onclick="selectOpt(this,'pace')"><div class="opt-icon">⚡</div><div class="opt-label">Packed</div><div class="opt-sub">See everything, always on the go</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'pace')"><div class="opt-icon">⚖️</div><div class="opt-label">Balanced</div><div class="opt-sub">Good mix of activity & downtime</div></div>
-          <div class="form-opt" onclick="selectOpt(this,'pace')"><div class="opt-icon">😌</div><div class="opt-label">Relaxed</div><div class="opt-sub">Slow mornings, no rush</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">⚡</div><div class="opt-label">Packed</div><div class="opt-sub">See everything, always on the go</div></div>
+          <div class="form-opt selected" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">⚖️</div><div class="opt-label">Balanced</div><div class="opt-sub">Good mix of activity &amp; downtime</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">😌</div><div class="opt-label">Relaxed</div><div class="opt-sub">Slow mornings, no rush</div></div>
         </div>
       </div>
       <div class="form-nav">
@@ -1140,15 +1194,15 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p class="form-sub">Your free personalised itinerary will be in your inbox within minutes. No spam, ever.</p>
       <div class="form-group">
         <label class="form-label">Your name</label>
-        <input class="form-input" id="f-name" type="text" placeholder="First name" />
+        <input class="form-input" id="f-name" type="text" placeholder="First name">
       </div>
       <div class="form-group">
         <label class="form-label">Email address</label>
-        <input class="form-input" id="f-email" type="email" placeholder="your@email.com" />
+        <input class="form-input" id="f-email" type="email" placeholder="your@email.com">
       </div>
       <div class="form-group">
         <label class="form-label">Phone number <span>— optional, for Concierge updates</span></label>
-        <input class="form-input" id="f-phone" type="tel" placeholder="+61 4XX XXX XXX" />
+        <input class="form-input" id="f-phone" type="tel" placeholder="+61 4XX XXX XXX">
       </div>
       <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:10px;padding:14px 16px;margin-bottom:24px;font-size:13px;color:var(--accent);line-height:1.6;">
         ✓ <strong>100% free.</strong> No credit card. No catch. Your itinerary will be hand-reviewed by the TripMade team before it lands in your inbox.
@@ -1160,7 +1214,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
 
     <!-- SUCCESS STATE -->
-    <div class="form-step" id="step-success">
+    <div class="form-step active" id="step-success">
       <div class="form-success">
         <div class="success-icon">✈</div>
         <h2>You're all set!</h2>
@@ -1172,29 +1226,150 @@ footer p { font-size:13px; color:var(--text-dim); }
           📧 Your itinerary lands in your inbox — usually within 60 min<br>
           💬 Reply to the email with any tweaks — we'll update it for free
         </div>
-        <button class="btn-primary" onclick="showPage('landing')">Back to home</button>
+        <button class="btn-primary" onclick="showPage(&#39;landing&#39;)">Back to home</button>
       </div>
     </div>
 
   </div>
 </div><!-- end form page -->
 
+<!-- ══ SAVED TRIPS PAGE ══════════════════════════════════ -->
+<div id="page-saved" class="page">
+  <div class="section" style="padding-top:48px;">
+    <div class="section-hd" style="text-align:left;margin-bottom:28px;">
+      <h2 style="margin-bottom:6px;">Your saved trips</h2>
+      <p>Every trip you've hearted, all in one place.</p>
+    </div>
+    <div id="saved-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
+      <div style="font-size:40px;margin-bottom:12px;">♡</div>
+      <p style="font-size:15px;margin-bottom:18px;">You haven't saved any trips yet.</p>
+      <button class="btn-primary" onclick="showPage('inspo')">Browse trip inspiration →</button>
+    </div>
+    <div id="saved-grid" class="cards-grid" style="padding:0;"></div>
+  </div>
+</div>
+
+<!-- ══ SIGN-UP GATE MODAL ════════════════════════════════ -->
+<div id="signup-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="width:28px;height:28px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;">✈</div>
+      <span style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
+    </div>
+    <h3 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Quick sign up</h3>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Just a few details so we can save this for you and send your itinerary.</p>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;">
+      <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;">
+      <input id="su-phone" type="tel" placeholder="Phone number" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;">
+      <select id="su-country" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:white;">
+        <option value="">Country</option>
+        <option>Australia</option><option>New Zealand</option><option>United States</option>
+        <option>United Kingdom</option><option>Canada</option><option>Singapore</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
+
+    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitSignup()">Continue →</button>
+    <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ══ PRIVACY POLICY (DRAFT) ═════════════════════════════ -->
+<div id="page-privacy" class="page">
+  <div class="section" style="max-width:760px;">
+    <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
+      This is a draft placeholder. It has not been reviewed by a lawyer and should be replaced with a proper policy before launch.
+    </div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Privacy Policy</h2>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
+
+    <div style="font-size:14px;line-height:1.8;color:var(--text);">
+      <p style="margin-bottom:18px;"><b>1. Who we are.</b> TripMade Pty Ltd ("TripMade", "we", "us") is an Australian company that builds personalised travel itineraries for customers. This policy explains what personal information we collect, how we use it, and the choices you have.</p>
+      <p style="margin-bottom:18px;"><b>2. Information we collect.</b> When you use TripMade, we may collect your name, email address, phone number, country, and the travel preferences you provide (destination, dates, budget, group size, and similar details) so we can generate and deliver your itinerary.</p>
+      <p style="margin-bottom:18px;"><b>3. How we use it.</b> We use your information to generate your itinerary, send it to you by email, improve our service, and — if you've opted in — send you occasional updates about TripMade. We do not sell your personal information to third parties.</p>
+      <p style="margin-bottom:18px;"><b>4. Affiliate links.</b> Itineraries may include links to booking partners (such as flight, hotel, and activity providers). If you book through these links, TripMade may earn a commission at no extra cost to you.</p>
+      <p style="margin-bottom:18px;"><b>5. Data storage.</b> Your information is stored securely using third-party providers (including Google Workspace and our automation tools) and is not retained for longer than necessary to provide our service.</p>
+      <p style="margin-bottom:18px;"><b>6. Your rights.</b> You can request access to, correction of, or deletion of your personal information at any time by contacting hello@tripmade.co.</p>
+      <p style="margin-bottom:0;"><b>7. Contact.</b> Questions about this policy can be sent to hello@tripmade.co.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TERMS OF SERVICE (DRAFT) ═══════════════════════════ -->
+<div id="page-terms" class="page">
+  <div class="section" style="max-width:760px;">
+    <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
+      This is a draft placeholder. It has not been reviewed by a lawyer and should be replaced with proper terms before launch.
+    </div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Terms &amp; Conditions</h2>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
+
+    <div style="font-size:14px;line-height:1.8;color:var(--text);">
+      <p style="margin-bottom:18px;"><b>1. Acceptance.</b> By using TripMade, you agree to these terms. If you don't agree, please don't use our service.</p>
+      <p style="margin-bottom:18px;"><b>2. Our service.</b> TripMade generates personalised travel itineraries based on the information you provide. Itineraries are suggestions only — we don't currently book or confirm flights, hotels, or activities on your behalf.</p>
+      <p style="margin-bottom:18px;"><b>3. Accuracy.</b> While we aim for accuracy, prices, availability, and details in your itinerary (including affiliate links) are estimates at the time of generation and may change before you book. Always confirm final prices and availability directly with the relevant provider.</p>
+      <p style="margin-bottom:18px;"><b>4. Affiliate commissions.</b> TripMade may earn a commission when you book through links in your itinerary. This does not affect the price you pay.</p>
+      <p style="margin-bottom:18px;"><b>5. No liability for bookings.</b> TripMade is not a travel agent and is not responsible for bookings made directly with third-party providers, including cancellations, delays, or disputes.</p>
+      <p style="margin-bottom:18px;"><b>6. Changes.</b> We may update these terms from time to time as our service evolves.</p>
+      <p style="margin-bottom:0;"><b>7. Contact.</b> Questions about these terms can be sent to hello@tripmade.co.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TRIP DETAIL PAGE (populated dynamically) ═══════════ -->
+<div id="page-tripdetail" class="page">
+  <div class="itin-wrap" style="padding-top:40px;">
+    <div class="itin-intro">
+      <h2 id="td-title">Trip</h2>
+      <p id="td-meta"></p>
+    </div>
+
+    <div class="route-bar">
+      <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-stop" style="flex-direction:column;align-items:flex-start;gap:3px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div class="route-dot" style="background:var(--accent);"></div><div class="route-name" id="td-dest-name">Destination</div><span class="vibe-pill" id="td-vibe-pill" style="background:var(--accent-light);color:var(--accent);">Vibe</span></div>
+        <div class="route-nights" id="td-nights">nights</div>
+      </div>
+      <div class="route-arrow">→</div>
+      <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
+    </div>
+
+    <div class="sum-grid" id="td-sum-grid"></div>
+
+    <div class="itin-block">
+      <div class="itin-hdr sight">
+        <div class="itin-hdr-l"><div class="dest-icon sight">🗺️</div><div><div class="itin-title" id="td-block-title">Trip highlights</div><div class="itin-sub">Sample outline — your full day-by-day itinerary is personalised once you get in touch</div></div></div>
+      </div>
+      <div id="td-days"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;padding-bottom:20px;">
+      <button class="btn-primary" onclick="requireAccount(function(){ var d = document.getElementById('f-dest'); if (d) d.value = document.getElementById('td-dest-name').textContent; showPage('form'); })">Get my personalised itinerary for this trip →</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ FOOTER ════════════════════════════════════════════ -->
 <footer>
   <div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
       <div style="width:26px;height:26px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;">✈</div>
-      <span style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
+      <span style="font-family:&#39;Syne&#39;,sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
     </div>
     <p style="font-size:12px;color:var(--text-dim);">© 2026 TripMade Pty Ltd — Sydney, Australia</p>
-    <p style="font-size:12px;color:var(--text-dim);margin-top:2px;">ABN registered · tripmade.com</p>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:2px;">ABN registered · tripmade.co</p>
   </div>
   <div class="footer-links">
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-    <a href="#">hello@tripmade.com</a>
-    <a href="#">Instagram</a>
-    <a href="#">TikTok</a>
+    <a href="https://www.voyai.travel/#" onclick="showPage('privacy');return false;">Privacy</a>
+    <a href="https://www.voyai.travel/#" onclick="showPage('terms');return false;">Terms</a>
+    <a href="mailto:hello@tripmade.co">hello@tripmade.co</a>
+    <a href="https://www.instagram.com/tripmade.co" target="_blank" rel="noopener">Instagram</a>
+    <a href="#" onclick="return false;" style="cursor:default;opacity:.5;" title="Coming soon">TikTok</a>
   </div>
 </footer>
 
@@ -1231,7 +1406,13 @@ function toggleF(el, group) {
 }
 
 // ── CARD FILTERING LOGIC ─────────────────────────────────
+let _originalCardOrder = null;
 function filterCards() {
+  const grid = document.querySelector('.cards-grid');
+  if (grid && !_originalCardOrder) {
+    _originalCardOrder = Array.from(grid.querySelectorAll('.trip-card'));
+  }
+
   const activeCat   = document.querySelector('.cat-tab.active');
   const activeBudget= document.querySelector('.f-chip[data-group="budget"].active');
   const activeDur   = document.querySelector('.f-chip[data-group="duration"].active');
@@ -1252,48 +1433,220 @@ function filterCards() {
     const cardRegion = card.dataset.region || '';
     const cardGroup  = card.dataset.group  || '';
 
-    let show = true;
+    let catMatch    = true;
+    let budgetMatch = true;
+    let durMatch    = true;
+    let regionMatch = true;
+    let groupMatch  = true;
 
-    if (cat !== 'all' && !cardCat.includes(cat)) show = false;
+    // No filter hides cards — every trip stays visible, matches just get
+    // grouped to the top. Non-matches sit below in their original order.
+    if (cat !== 'all' && !cardCat.includes(cat)) catMatch = false;
 
-    if (budget === 'under3k'  && cardBudget >= 3000)  show = false;
-    if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  show = false;
-    if (budget === '6to12k'   && (cardBudget < 6000  || cardBudget >= 12000)) show = false;
-    if (budget === 'over12k'  && cardBudget < 12000)  show = false;
+    if (budget === 'under3k'  && cardBudget >= 3000)  budgetMatch = false;
+    if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  budgetMatch = false;
+    if (budget === '6to12k'   && (cardBudget < 6000  || cardBudget >= 12000)) budgetMatch = false;
+    if (budget === 'over12k'  && cardBudget < 12000)  budgetMatch = false;
 
-    if (dur === 'weekend' && cardDur > 3)   show = false;
-    if (dur === '1week'   && (cardDur < 4  || cardDur > 9))  show = false;
-    if (dur === '2weeks'  && (cardDur < 10 || cardDur > 20)) show = false;
-    if (dur === '1month'  && cardDur < 21)  show = false;
+    if (dur === 'weekend' && cardDur > 3)   durMatch = false;
+    if (dur === '1week'   && (cardDur < 4  || cardDur > 9))  durMatch = false;
+    if (dur === '2weeks'  && (cardDur < 10 || cardDur > 20)) durMatch = false;
+    if (dur === '1month'  && cardDur < 21)  durMatch = false;
 
-    if (region !== 'Any region' && region !== 'any' && cardRegion !== region) show = false;
-    if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) show = false;
+    if (region !== 'Any region' && region !== 'any' && cardRegion !== region) regionMatch = false;
+    if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) groupMatch = false;
 
-    card.style.display = show ? '' : 'none';
-    if (show) visible++;
+    const matchScore = (catMatch ? 1 : 0) + (budgetMatch ? 1 : 0) + (durMatch ? 1 : 0) + (regionMatch ? 1 : 0) + (groupMatch ? 1 : 0);
+    card.dataset.matchScore = matchScore;
+    card.style.display = '';
+    visible++;
   });
+
+  // Re-order: cards matching the most active filters float to the top,
+  // rest keep their original relative order below. Nothing is ever hidden.
+  if (grid && _originalCardOrder) {
+    const sorted = _originalCardOrder.slice().sort((a, b) => {
+      const aScore = parseInt(a.dataset.matchScore || '0');
+      const bScore = parseInt(b.dataset.matchScore || '0');
+      return bScore - aScore;
+    });
+    sorted.forEach(card => grid.appendChild(card));
+  }
 
   const counter = document.querySelector('.results-count');
   if (counter) counter.textContent = 'Showing ' + visible + ' trips';
 }
 
-// ── SAVE / WISHLIST HEARTS ───────────────────────────────
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('card-save')) {
-    const saved = e.target.classList.toggle('saved');
-    e.target.textContent = saved ? '♥' : '♡';
-    e.target.style.color = saved ? 'var(--accent)' : '';
+// ── ACCOUNT / SIGN-UP GATE ────────────────────────────────
+const TM_USER_KEY  = 'tm_user';
+const TM_LIKED_KEY = 'tm_liked';
+let _pendingSignupCallback = null;
+
+function getUser() {
+  try { return JSON.parse(localStorage.getItem(TM_USER_KEY)); } catch (e) { return null; }
+}
+
+function requireAccount(callback) {
+  if (getUser()) { callback(); return; }
+  _pendingSignupCallback = callback;
+  document.getElementById('signup-modal').style.display = 'flex';
+}
+
+function closeSignupModal() {
+  document.getElementById('signup-modal').style.display = 'none';
+  _pendingSignupCallback = null;
+}
+
+function submitSignup() {
+  const name    = document.getElementById('su-name').value.trim();
+  const email   = document.getElementById('su-email').value.trim();
+  const phone   = document.getElementById('su-phone').value.trim();
+  const country = document.getElementById('su-country').value;
+
+  if (!name || !email || !email.includes('@') || !phone) {
+    document.getElementById('su-error').style.display = 'block';
+    return;
   }
+  document.getElementById('su-error').style.display = 'none';
+
+  const user = { name, email, phone, country, signedUpAt: new Date().toISOString() };
+  localStorage.setItem(TM_USER_KEY, JSON.stringify(user));
+
+  // 👉 Sends the new signup straight into the same Make.com pipeline as the itinerary form,
+  // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
+  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source: 'signup_gate', ...user })
+  });
+
+  document.getElementById('signup-modal').style.display = 'none';
+  const cb = _pendingSignupCallback;
+  _pendingSignupCallback = null;
+  if (cb) cb();
+}
+
+// ── SAVE / WISHLIST HEARTS ───────────────────────────────
+function getLikedTrips() {
+  try { return JSON.parse(localStorage.getItem(TM_LIKED_KEY)) || []; } catch (e) { return []; }
+}
+
+function setLikedTrips(list) {
+  localStorage.setItem(TM_LIKED_KEY, JSON.stringify(list));
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.classList.contains('card-save')) return;
+  const btn = e.target;
+
+  requireAccount(function() {
+    const card = btn.closest('.trip-card');
+    const dest = card.querySelector('.card-dest') ? card.querySelector('.card-dest').textContent : 'Trip';
+    const price = card.querySelector('.card-price') ? card.querySelector('.card-price').innerHTML : '';
+    const imgEl = card.querySelector('.card-img');
+    const imgStyle = imgEl ? imgEl.getAttribute('style') : '';
+    const imgMatch = imgStyle && imgStyle.match(/url\(['"]?(.*?)['"]?\)/);
+    const img = imgMatch ? imgMatch[1] : '';
+
+    const nowSaved = btn.classList.toggle('saved');
+    btn.textContent = nowSaved ? '♥' : '♡';
+    btn.style.color = nowSaved ? 'var(--accent)' : '';
+
+    let liked = getLikedTrips();
+    if (nowSaved) {
+      if (!liked.some(t => t.dest === dest)) liked.push({ dest, price, img });
+    } else {
+      liked = liked.filter(t => t.dest !== dest);
+    }
+    setLikedTrips(liked);
+
+    showPage('saved');
+    renderSavedPage();
+  });
 });
 
+function renderSavedPage() {
+  const grid  = document.getElementById('saved-grid');
+  const empty = document.getElementById('saved-empty');
+  if (!grid) return;
+  const liked = getLikedTrips();
+
+  if (liked.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  grid.style.display = '';
+  empty.style.display = 'none';
+
+  grid.innerHTML = liked.map(t => `
+    <div class="trip-card">
+      <div class="card-img" style="background:url('${t.img}') center/cover;">
+        <div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div>
+        <button class="card-save saved" style="color:var(--accent);" onclick="unsaveTrip('${t.dest.replace(/'/g,"\\'")}')">♥</button>
+      </div>
+      <div class="card-body"><div class="card-dest">${t.dest}</div></div>
+      <div class="card-footer"><div class="card-price">${t.price}</div></div>
+    </div>
+  `).join('');
+}
+
+function unsaveTrip(dest) {
+  const liked = getLikedTrips().filter(t => t.dest !== dest);
+  setLikedTrips(liked);
+  renderSavedPage();
+}
+
 // ── "BOOK THIS TRIP" BUTTONS ─────────────────────────────
-function bookTrip(dest) {
-  showPage('landing');
-  setTimeout(() => {
-    document.getElementById('waitlist').scrollIntoView({ behavior:'smooth' });
-    document.querySelector('#waitlist input[type="email"]').focus();
-    document.querySelector('#waitlist h2').textContent = 'Book your ' + dest + ' trip';
-  }, 100);
+function bookTrip(card) {
+  if (!card) return;
+
+  const destEl  = card.querySelector('.card-dest');
+  const dest    = destEl ? destEl.textContent.trim() : 'Your trip';
+  const priceEl = card.querySelector('.card-price');
+  const priceText = priceEl ? priceEl.childNodes[0].textContent.trim() : '';
+  const dur     = card.dataset.dur || '7';
+  const group   = card.dataset.group || 'Couple';
+  const pillEl  = card.querySelector('.card-vibe-pill');
+  const vibeText = pillEl ? pillEl.textContent.trim() : 'Sightseeing';
+  const subEl   = card.querySelector('.card-sub');
+  const subText = subEl ? subEl.textContent.trim() : (dur + ' days · ' + group + ' · ' + vibeText);
+
+  document.getElementById('td-title').textContent = dest;
+  document.getElementById('td-meta').textContent = subText;
+  document.getElementById('td-dest-name').textContent = dest;
+  document.getElementById('td-vibe-pill').textContent = vibeText;
+  document.getElementById('td-nights').textContent = dur + ' nights';
+  document.getElementById('td-block-title').textContent = dest + ' highlights';
+
+  // Rough indicative split of the advertised total, just for the summary cards
+  const total = parseInt(card.dataset.budget || '4000') || 4000;
+  const flights    = Math.round(total * 0.30 / 10) * 10;
+  const hotels     = Math.round(total * 0.35 / 10) * 10;
+  const activities = Math.round(total * 0.15 / 10) * 10;
+  const food       = Math.max(total - flights - hotels - activities, 0);
+
+  document.getElementById('td-sum-grid').innerHTML =
+    '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$' + flights.toLocaleString() + '</div><div class="sum-sub">return, from SYD</div></div>' +
+    '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$' + hotels.toLocaleString() + '</div><div class="sum-sub">' + dur + ' nights</div></div>' +
+    '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$' + activities.toLocaleString() + '</div><div class="sum-sub">indicative</div></div>' +
+    '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$' + food.toLocaleString() + '</div><div class="sum-sub">indicative</div></div>' +
+    '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + (priceText || ('$' + total.toLocaleString())) + '</div><div class="sum-sub red">per person from SYD</div></div>';
+
+  const shortDest = dest.split(',')[0].split('+')[0].trim();
+  const vibeLower = vibeText.replace(/^\S+\s/, '').toLowerCase();
+  const lastDay = parseInt(dur) || 7;
+  const days = [
+    { label: 'Day 1 — Arrival', text: 'Touch down and settle into ' + shortDest + '. Take the first evening slow before the adventure properly begins.' },
+    { label: 'Day 2 – ' + Math.max(lastDay - 1, 2), text: 'The heart of your trip — TripMade builds this out into a full day-by-day plan around ' + vibeLower + ', matched to your exact dates, budget, and travel style.' },
+    { label: 'Day ' + lastDay + ' — Departure', text: 'A final morning to soak it in before heading home, with your transfer timed around your flight.' }
+  ];
+  document.getElementById('td-days').innerHTML = days.map(d =>
+    '<div class="day-block"><div class="day-lbl">' + d.label + '</div><div class="evt-list"><div class="evt"><div class="evt-name">' + d.text + '</div></div></div></div>'
+  ).join('');
+
+  showPage('tripdetail');
+  window.scrollTo(0, 0);
 }
 
 // ── WAITLIST FORM SUBMISSION ─────────────────────────────
@@ -1354,6 +1707,14 @@ function loadMore(btn) {
   btn.textContent = 'Loading...';
   btn.disabled = true;
   setTimeout(() => {
+    document.querySelectorAll('.trip-card-more').forEach(c => c.classList.remove('trip-card-more'));
+
+    // Refresh the original-order snapshot so the newly revealed cards
+    // participate correctly in the budget/duration/category reordering.
+    const grid = document.querySelector('.cards-grid');
+    if (grid) _originalCardOrder = Array.from(grid.querySelectorAll('.trip-card'));
+    filterCards();
+
     btn.textContent = 'All trips loaded ✓';
     btn.style.color = 'var(--green)';
     btn.style.borderColor = 'var(--green)';
@@ -1364,12 +1725,51 @@ function loadMore(btn) {
 let currentStep = 1;
 const totalSteps = 6;
 
-function nextStep(from) {
-  if (from === 1 && !document.getElementById('f-dest').value.trim()) {
-    document.getElementById('f-dest').focus();
-    document.getElementById('f-dest').style.borderColor = 'var(--accent)';
-    return;
+function markInvalid(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = 'var(--accent)';
+  el.focus();
+}
+
+function clearInvalid(ids) {
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.borderColor = '';
+  });
+}
+
+function validateStep(from) {
+  if (from === 1) {
+    clearInvalid(['f-dest', 'f-depart', 'f-return', 'f-from']);
+    if (!document.getElementById('f-dest').value.trim())   { markInvalid('f-dest');   return false; }
+    if (!document.getElementById('f-depart').value.trim()) { markInvalid('f-depart'); return false; }
+    if (!document.getElementById('f-return').value.trim()) { markInvalid('f-return'); return false; }
+    if (!document.getElementById('f-from').value.trim())   { markInvalid('f-from');   return false; }
+    return true;
   }
+  if (from === 2) {
+    clearInvalid(['f-pax', 'f-ages']);
+    if (!document.getElementById('f-pax').value)  { markInvalid('f-pax');  return false; }
+    if (!document.getElementById('f-ages').value) { markInvalid('f-ages'); return false; }
+    return true;
+  }
+  if (from === 3) {
+    const anyVibe = document.querySelectorAll('#step3 .form-opt.multi.selected').length > 0;
+    const note = document.querySelector('#step3 .vibe-multi-note');
+    if (!anyVibe) {
+      if (note) { note.style.color = 'var(--accent)'; note.textContent = 'Please select at least one vibe to continue'; }
+      return false;
+    }
+    if (note) { note.style.color = ''; note.textContent = '✓ Select multiple — we\'ll weave them across your days'; }
+    return true;
+  }
+  // Steps 4 and 5 have sensible defaults / are optional — nothing to gate here.
+  return true;
+}
+
+function nextStep(from) {
+  if (!validateStep(from)) return;
   if (from === 6) { submitForm(); return; }
   goToStep(from + 1);
 }
@@ -1398,6 +1798,29 @@ function updateProgress(n) {
   }
 }
 
+// ── BUDGET SLIDER ─────────────────────────────────────────
+function updateBudgetDisplay(val) {
+  val = parseInt(val);
+  const display = document.getElementById('budget-display');
+  const tier = document.getElementById('budget-tier');
+  const isMax = val >= 250000;
+  display.textContent = isMax ? '$250,000+' : '$' + val.toLocaleString();
+
+  let label = 'Budget traveller';
+  if (val >= 2000 && val < 5000) label = 'Mid-range';
+  else if (val >= 5000 && val < 12000) label = 'Premium';
+  else if (val >= 12000 && val < 50000) label = 'Luxury';
+  else if (val >= 50000) label = 'Ultra-luxury / no limit';
+  tier.textContent = label;
+}
+
+function getBudgetValue() {
+  const el = document.getElementById('f-budget-slider');
+  if (!el) return '';
+  const val = parseInt(el.value);
+  return val >= 250000 ? '$250,000+' : '$' + val.toLocaleString();
+}
+
 function selectOpt(el, group) {
   el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => {
     if (!o.classList.contains('multi')) o.classList.remove('selected');
@@ -1410,6 +1833,12 @@ function toggleVibe(el) {
 }
 
 function submitForm() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) {
+    document.getElementById('f-name').style.borderColor = 'var(--accent)';
+    document.getElementById('f-name').focus();
+    return;
+  }
   const email = document.getElementById('f-email').value.trim();
   if (!email || !email.includes('@')) {
     document.getElementById('f-email').style.borderColor = 'var(--accent)';
@@ -1426,6 +1855,7 @@ function submitForm() {
     travellers:   document.getElementById('f-pax').value,
     ageRange:     document.getElementById('f-ages').value,
     occasion:     document.getElementById('f-occasion').value,
+    budget:       getBudgetValue(),
     vibes:        [...document.querySelectorAll('.form-opt.multi.selected')].map(el => el.querySelector('.opt-label').textContent),
     mustHave:     document.getElementById('f-musthave').value,
     avoid:        document.getElementById('f-avoid').value,
@@ -1466,12 +1896,15 @@ window.showPage = function(id, linkEl) {
     goToStep(1);
     // Reset inputs
     document.querySelectorAll('#page-form input, #page-form textarea, #page-form select').forEach(el => {
+      if (el.id === 'f-budget-slider') { el.value = 8000; return; }
       el.value = '';
       el.style.borderColor = '';
     });
     document.querySelectorAll('.form-opt').forEach(o => o.classList.remove('selected'));
+    updateBudgetDisplay(8000);
   }
 };
 </script>
-</body>
-</html>
+
+
+</body></html>
