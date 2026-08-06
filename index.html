@@ -2439,6 +2439,13 @@ footer p { font-size:13px; color:var(--text-dim); }
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/plugins/rangePlugin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const sb = supabase.createClient(
+  'https://ccdbpyqjlvzusjgedhck.supabase.co',
+  'sb_publishable_JObc3raGKOFiP4sW5Ql48Q_RoKtG0YZ'
+);
+</script>
 <script>
 // ── PAGE NAVIGATION ─────────────────────────────────────
 function showPage(id, linkEl) {
@@ -2563,7 +2570,7 @@ function closeSignupModal() {
   _pendingSignupCallback = null;
 }
 
-function submitSignup() {
+async function submitSignup() {
   const name    = document.getElementById('su-name').value.trim();
   const email   = document.getElementById('su-email').value.trim();
   const phone   = document.getElementById('su-phone').value.trim();
@@ -2575,21 +2582,43 @@ function submitSignup() {
   }
   document.getElementById('su-error').style.display = 'none';
 
-  const user = { name, email, phone, country, signedUpAt: new Date().toISOString() };
-  localStorage.setItem(TM_USER_KEY, JSON.stringify(user));
+  const submitBtn = document.querySelector('#signup-modal .btn-primary');
+  if (submitBtn) { submitBtn.textContent = 'Signing up...'; submitBtn.disabled = true; }
 
-  // 👉 Sends the new signup straight into the same Make.com pipeline as the itinerary form,
-  // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
-  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source: 'signup_gate', ...user })
-  });
+  try {
+    // Create a real, permanent account row in Supabase — no password required,
+    // this is what actually makes the sign-up stick beyond just this browser.
+    const { data, error } = await sb.auth.signInAnonymously();
+    if (error) throw error;
 
-  document.getElementById('signup-modal').style.display = 'none';
-  const cb = _pendingSignupCallback;
-  _pendingSignupCallback = null;
-  if (cb) cb();
+    const userId = data.user.id;
+    const { error: profileError } = await sb.from('profiles').upsert({
+      id: userId, name, email, phone, country
+    });
+    if (profileError) throw profileError;
+
+    const user = { id: userId, name, email, phone, country, signedUpAt: new Date().toISOString() };
+    localStorage.setItem(TM_USER_KEY, JSON.stringify(user));
+
+    // Also sends the signup into the existing Make.com pipeline as a backup feed —
+    // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
+    fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: 'signup_gate', ...user })
+    });
+
+    document.getElementById('signup-modal').style.display = 'none';
+    const cb = _pendingSignupCallback;
+    _pendingSignupCallback = null;
+    if (cb) cb();
+  } catch (err) {
+    console.error('Signup failed:', err);
+    document.getElementById('su-error').textContent = 'Something went wrong — please try again.';
+    document.getElementById('su-error').style.display = 'block';
+  } finally {
+    if (submitBtn) { submitBtn.textContent = 'Continue →'; submitBtn.disabled = false; }
+  }
 }
 
 // ── SAVE / WISHLIST HEARTS ───────────────────────────────
@@ -2621,6 +2650,13 @@ document.addEventListener('click', function(e) {
     let liked = getLikedTrips();
     if (nowSaved) {
       if (!liked.some(t => t.dest === dest)) liked.push({ dest, price, img });
+      // Write a real row into Supabase so saved trips are actually stored, not just local
+      const currentUser = getUser();
+      if (currentUser && currentUser.id) {
+        sb.from('saved_trips').insert({
+          user_id: currentUser.id, destination: dest, price: price, image_url: img
+        }).then(({ error }) => { if (error) console.error('Save trip failed:', error); });
+      }
     } else {
       liked = liked.filter(t => t.dest !== dest);
     }
