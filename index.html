@@ -448,7 +448,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 
 <!-- ══ NAV ══════════════════════════════════════════════ -->
 <nav>
-  <div class="nav-logo">
+  <div class="nav-logo" onclick="showPage(&#39;landing&#39;,document.querySelector(&#39;.nav-links a&#39;))" style="cursor:pointer;">
     <div class="icon">✈</div>
     <div class="wm">Trip<span>Made</span></div>
   </div>
@@ -827,7 +827,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div class="wl-form">
         <input type="email" placeholder="your@email.com">
-        <button onclick="requireAccount(function(){showPage('form');})">Get my free itinerary →</button>
+        <button onclick="submitWaitlist(this)">Join the waitlist →</button>
       </div>
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
@@ -1062,7 +1062,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div class="wl-form">
         <input type="email" placeholder="your@email.com">
-        <button onclick="requireAccount(function(){showPage('form');})">Get my free itinerary →</button>
+        <button onclick="submitWaitlist(this)">Join the waitlist →</button>
       </div>
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
@@ -2771,8 +2771,13 @@ function submitWaitlist(btn) {
   input.value = '';
   input.placeholder = email + ' — confirmed!';
 
-  // 👉 Replace with your Mailchimp / Make.com webhook URL:
-  // fetch('YOUR_WEBHOOK_URL', { method:'POST', body: JSON.stringify({ email }) });
+  // Sends the signup to the same Make.com pipeline, tagged 'waitlist' so a
+  // dedicated confirmation-email step can be added on that end.
+  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source: 'waitlist', email: email, joinedAt: new Date().toISOString() })
+  }).catch(err => console.error('Waitlist signup failed to send:', err));
 }
 
 // ── FREE ITINERARY FORM ──────────────────────────────────
