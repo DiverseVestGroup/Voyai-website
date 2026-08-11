@@ -199,6 +199,14 @@ hr { border:none; border-top:1px solid var(--border); }
 .wl-form input::placeholder { color:var(--text-dim); }
 .wl-form input:focus { border-color:var(--accent); }
 .wl-form button { background:var(--accent); color:white; border:none; padding:13px 22px; border-radius:10px; font-size:14px; font-weight:500; transition:opacity .2s; white-space:nowrap; }
+.wl-form-full { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; max-width:520px; margin:0 auto 4px; }
+.wl-form-full input, .wl-form-full select {
+  background:white; border:1.5px solid var(--border-mid); border-radius:10px;
+  padding:13px 16px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text);
+  outline:none; transition:border-color .2s; width:100%; appearance:none;
+}
+.wl-form-full input::placeholder { color:var(--text-dim); }
+.wl-form-full input:focus, .wl-form-full select:focus { border-color:var(--accent); }
 .wl-form button:hover { opacity:.88; }
 .wl-note { font-size:12px; color:var(--text-dim); }
 
@@ -425,6 +433,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   .filter-bar{padding:12px 16px}
   .waitlist{padding:48px 20px}
   .wl-form{flex-direction:column}
+  .wl-form-full{grid-template-columns:1fr}
   footer{flex-direction:column;gap:16px;text-align:center;padding:24px 20px}
   .footer-links{justify-content:center}
   .dest-grid{grid-template-columns:1fr 1fr}
@@ -825,10 +834,19 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="free-badge">✓ 100% FREE</div>
       <h2>Be first to travel smarter</h2>
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
-      <div class="wl-form">
-        <input type="email" placeholder="your@email.com">
-        <button onclick="submitWaitlist(this)">Join the waitlist →</button>
+      <div class="wl-form-full">
+        <input type="text" id="wl-name" placeholder="Full name">
+        <input type="email" id="wl-email" placeholder="Email address">
+        <input type="tel" id="wl-phone" placeholder="Phone number">
+        <select id="wl-country">
+          <option value="">Country</option>
+          <option>Australia</option><option>New Zealand</option><option>United States</option>
+          <option>United Kingdom</option><option>Canada</option><option>Singapore</option>
+          <option>Other</option>
+        </select>
       </div>
+      <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email and phone.</p>
+      <button class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
@@ -1062,7 +1080,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div class="wl-form">
         <input type="email" placeholder="your@email.com">
-        <button onclick="submitWaitlist(this)">Join the waitlist →</button>
+        <button onclick="joinWaitlistCTA(this)">Join the waitlist →</button>
       </div>
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
@@ -2570,6 +2588,32 @@ function closeSignupModal() {
   _pendingSignupCallback = null;
 }
 
+// Core account creation — used by both the popup modal and the inline
+// waitlist form, so there's one single place this logic lives.
+async function createTripMadeAccount(name, email, phone, country) {
+  const { data, error } = await sb.auth.signInAnonymously();
+  if (error) throw error;
+
+  const userId = data.user.id;
+  const { error: profileError } = await sb.from('profiles').upsert({
+    id: userId, name, email, phone, country
+  });
+  if (profileError) throw profileError;
+
+  const user = { id: userId, name, email, phone, country, signedUpAt: new Date().toISOString() };
+  localStorage.setItem(TM_USER_KEY, JSON.stringify(user));
+
+  // Also sends the signup into the existing Make.com pipeline as a backup feed —
+  // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
+  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source: 'signup_gate', ...user })
+  });
+
+  return user;
+}
+
 async function submitSignup() {
   const name    = document.getElementById('su-name').value.trim();
   const email   = document.getElementById('su-email').value.trim();
@@ -2586,27 +2630,7 @@ async function submitSignup() {
   if (submitBtn) { submitBtn.textContent = 'Signing up...'; submitBtn.disabled = true; }
 
   try {
-    // Create a real, permanent account row in Supabase — no password required,
-    // this is what actually makes the sign-up stick beyond just this browser.
-    const { data, error } = await sb.auth.signInAnonymously();
-    if (error) throw error;
-
-    const userId = data.user.id;
-    const { error: profileError } = await sb.from('profiles').upsert({
-      id: userId, name, email, phone, country
-    });
-    if (profileError) throw profileError;
-
-    const user = { id: userId, name, email, phone, country, signedUpAt: new Date().toISOString() };
-    localStorage.setItem(TM_USER_KEY, JSON.stringify(user));
-
-    // Also sends the signup into the existing Make.com pipeline as a backup feed —
-    // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
-    fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: 'signup_gate', ...user })
-    });
+    await createTripMadeAccount(name, email, phone, country);
 
     document.getElementById('signup-modal').style.display = 'none';
     const cb = _pendingSignupCallback;
@@ -2721,19 +2745,36 @@ function bookTrip(card) {
   document.getElementById('td-nights').textContent = dur + ' nights';
   document.getElementById('td-block-title').textContent = dest + ' highlights';
 
-  // Rough indicative split of the advertised total, just for the summary cards
-  const total = parseInt(card.dataset.budget || '4000') || 4000;
-  const flights    = Math.round(total * 0.30 / 10) * 10;
-  const hotels     = Math.round(total * 0.35 / 10) * 10;
-  const activities = Math.round(total * 0.15 / 10) * 10;
-  const food       = Math.max(total - flights - hotels - activities, 0);
+  // Flights are based on a realistic baseline for the region flown to from
+  // Sydney — NOT a percentage of the advertised price, since long-haul airfare
+  // is a largely fixed cost regardless of trip length or budget tier.
+  const regionFlightBaseline = {
+    'Australia': 450, 'Pacific': 800, 'Asia': 1100, 'Middle East': 1800,
+    'Africa': 2000, 'Americas': 2100, 'Europe': 2000
+  };
+  const region = card.dataset.region || 'Europe';
+  const flights = regionFlightBaseline[region] || 1900;
+
+  const advertisedTotal = parseInt(card.dataset.budget || '4000') || 4000;
+  const nights = parseInt(dur) || 5;
+  // Make sure there's enough left over for at least modest hotels/food —
+  // if the advertised price was set too low to realistically cover the
+  // flight alone, the total gets bumped up rather than showing near-$0 hotels.
+  const minPlausibleTotal = flights + (nights * 90) + 300;
+  const total = Math.max(advertisedTotal, minPlausibleTotal);
+
+  const remainder = total - flights;
+  const hotels     = Math.round(remainder * 0.50 / 10) * 10;
+  const activities = Math.round(remainder * 0.30 / 10) * 10;
+  const food       = Math.max(remainder - hotels - activities, 0);
+  const totalDisplay = total > advertisedTotal ? total : (priceText ? null : total);
 
   document.getElementById('td-sum-grid').innerHTML =
     '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$' + flights.toLocaleString() + '</div><div class="sum-sub">return, from SYD</div></div>' +
     '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$' + hotels.toLocaleString() + '</div><div class="sum-sub">' + dur + ' nights</div></div>' +
     '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$' + activities.toLocaleString() + '</div><div class="sum-sub">indicative</div></div>' +
     '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$' + food.toLocaleString() + '</div><div class="sum-sub">indicative</div></div>' +
-    '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + (priceText || ('$' + total.toLocaleString())) + '</div><div class="sum-sub red">per person from SYD</div></div>';
+    '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + (totalDisplay !== null ? '$' + totalDisplay.toLocaleString() : priceText) + '</div><div class="sum-sub red">per person from SYD</div></div>';
 
   const shortDest = dest.split(',')[0].split('+')[0].trim();
   const vibeLower = vibeText.replace(/^\S+\s/, '').toLowerCase();
@@ -2778,6 +2819,65 @@ function submitWaitlist(btn) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ source: 'waitlist', email: email, joinedAt: new Date().toISOString() })
   }).catch(err => console.error('Waitlist signup failed to send:', err));
+}
+
+// Opens the same Quick Sign Up modal used by "Get my free itinerary" — pre-fills
+// the email if they'd already typed one in the waitlist box first.
+function joinWaitlistCTA(btn) {
+  const form  = btn.closest('.wl-form');
+  const input = form ? form.querySelector('input[type="email"]') : null;
+  const typedEmail = input ? input.value.trim() : '';
+
+  if (typedEmail && !getUser()) {
+    const suEmail = document.getElementById('su-email');
+    if (suEmail) suEmail.value = typedEmail;
+  }
+
+  requireAccount(function() {
+    btn.textContent = '✓ You\'re on the list!';
+    btn.style.background = 'var(--green)';
+    btn.disabled = true;
+    if (input) {
+      input.disabled = true;
+      input.value = '';
+      input.placeholder = (typedEmail || 'You') + ' — confirmed!';
+    }
+  });
+}
+
+// Full inline waitlist sign-up — same fields as the popup, no modal needed
+// since they're already sitting right there on the page.
+async function submitWaitlistFull(btn) {
+  const name    = document.getElementById('wl-name').value.trim();
+  const email   = document.getElementById('wl-email').value.trim();
+  const phone   = document.getElementById('wl-phone').value.trim();
+  const country = document.getElementById('wl-country').value;
+  const errorEl = document.getElementById('wl-error');
+
+  if (!name || !email || !email.includes('@') || !phone) {
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+
+  try {
+    await createTripMadeAccount(name, email, phone, country);
+
+    btn.textContent = '✓ You\'re on the list!';
+    btn.style.background = 'var(--green)';
+    ['wl-name', 'wl-email', 'wl-phone', 'wl-country'].forEach(id => {
+      document.getElementById(id).disabled = true;
+    });
+  } catch (err) {
+    console.error('Waitlist signup failed:', err);
+    errorEl.textContent = 'Something went wrong — please try again.';
+    errorEl.style.display = 'block';
+    btn.textContent = 'Join the waitlist →';
+    btn.disabled = false;
+  }
 }
 
 // ── FREE ITINERARY FORM ──────────────────────────────────
