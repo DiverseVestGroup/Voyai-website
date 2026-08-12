@@ -478,7 +478,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <!-- HERO -->
   <div class="hero">
     <div class="hero-pill fu"><div class="dot"></div>Bookings Handled by TripMade Coming Soon</div>
-    <h1 class="fu1">My Trip...<br><span class="red">Made.</span></h1>
+    <h1 class="fu1">Your Trip...<br><span class="red">Made.</span></h1>
     <p class="fu2">Tell us your vibe, your dates, and how many people you are travelling with. TripMade builds you a free personalised itinerary — then when you're ready, we handle all the bookings too.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="requireAccount(function(){showPage('form');})">Get my free itinerary →</button>
@@ -888,6 +888,17 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="f-divider"></div>
     <select class="f-select" data-group="region"><option>Any region</option><option>Europe</option><option>Asia</option><option>Americas</option><option>Middle East</option><option>Africa</option><option>Pacific</option></select>
     <select class="f-select" data-group="groupsize"><option>Any group size</option><option>Solo</option><option>Couple</option><option>Small group (3–6)</option><option>Large group (7+)</option></select>
+    <div class="f-divider"></div>
+    <select class="f-select" id="currency-select" onchange="applyCurrency(this.value)">
+      <option value="AUD">AUD (A$)</option>
+      <option value="USD">USD (US$)</option>
+      <option value="EUR">EUR (€)</option>
+      <option value="GBP">GBP (£)</option>
+      <option value="NZD">NZD (NZ$)</option>
+      <option value="CAD">CAD (C$)</option>
+      <option value="SGD">SGD (S$)</option>
+      <option value="JPY">JPY (¥)</option>
+    </select>
     <div class="results-count">Showing 18 trips</div>
   </div>
 
@@ -2128,10 +2139,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Trip type</label>
         <div class="form-options two-col">
-          <div class="form-opt" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">🧍</div><div class="opt-label">Solo</div><div class="opt-sub">Just me</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">💑</div><div class="opt-label">Couple</div><div class="opt-sub">2 of us</div></div>
-          <div class="form-opt selected" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">👯</div><div class="opt-label">Friends group</div><div class="opt-sub">3–12 people</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;triptype&#39;)"><div class="opt-icon">👨‍👩‍👧‍👦</div><div class="opt-label">Family</div><div class="opt-sub">Kids included</div></div>
+          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon">🧍</div><div class="opt-label">Solo</div><div class="opt-sub">Just me</div></div>
+          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon">💑</div><div class="opt-label">Couple</div><div class="opt-sub">2 of us</div></div>
+          <div class="form-opt selected" onclick="selectTripType(this)"><div class="opt-icon">👯</div><div class="opt-label">Friends group</div><div class="opt-sub">3–12 people</div></div>
+          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon">👨‍👩‍👧‍👦</div><div class="opt-label">Family</div><div class="opt-sub">Kids included</div></div>
         </div>
       </div>
       <div class="form-row">
@@ -2497,7 +2508,43 @@ function toggleF(el, group) {
 }
 
 // ── CARD FILTERING LOGIC ─────────────────────────────────
-let _originalCardOrder = null;
+// ── CURRENCY CONVERSION ───────────────────────────────────
+// Static snapshot rates (1 AUD = X). Good enough for display purposes —
+// swap for a live FX API call later if exact-to-the-cent accuracy matters.
+const CURRENCY_RATES = {
+  AUD: 1, USD: 0.7059, EUR: 0.6118, GBP: 0.5225,
+  NZD: 1.2038, CAD: 0.9832, SGD: 0.9038, JPY: 112.49
+};
+const CURRENCY_SYMBOLS = {
+  AUD: 'A$', USD: 'US$', EUR: '€', GBP: '£',
+  NZD: 'NZ$', CAD: 'C$', SGD: 'S$', JPY: '¥'
+};
+let _currentCurrency = 'AUD';
+
+function formatPrice(audAmount) {
+  const rate = CURRENCY_RATES[_currentCurrency] || 1;
+  const symbol = CURRENCY_SYMBOLS[_currentCurrency] || 'A$';
+  let converted = audAmount * rate;
+  // JPY has no meaningful decimals and much larger nominal values — round to nearest 10
+  converted = _currentCurrency === 'JPY' ? Math.round(converted / 10) * 10 : Math.round(converted);
+  return symbol + converted.toLocaleString();
+}
+
+function applyCurrency(currency) {
+  _currentCurrency = currency;
+
+  document.querySelectorAll('.trip-card').forEach(card => {
+    const budget = parseInt(card.dataset.budget || '0');
+    if (!budget) return;
+    const priceEl = card.querySelector('.card-price');
+    if (!priceEl || !priceEl.firstChild) return;
+    priceEl.firstChild.textContent = formatPrice(budget) + ' ';
+  });
+
+  // If a trip detail page is currently open, re-render its cost breakdown too
+  if (window._currentTripCard) renderTripDetail(window._currentTripCard);
+}
+
 function filterCards() {
   const grid = document.querySelector('.cards-grid');
   if (grid && !_originalCardOrder) {
@@ -2726,7 +2773,13 @@ function unsaveTrip(dest) {
 // ── "BOOK THIS TRIP" BUTTONS ─────────────────────────────
 function bookTrip(card) {
   if (!card) return;
+  window._currentTripCard = card;
+  renderTripDetail(card);
+  showPage('tripdetail');
+  window.scrollTo(0, 0);
+}
 
+function renderTripDetail(card) {
   const destEl  = card.querySelector('.card-dest');
   const dest    = destEl ? destEl.textContent.trim() : 'Your trip';
   const priceEl = card.querySelector('.card-price');
@@ -2767,14 +2820,16 @@ function bookTrip(card) {
   const hotels     = Math.round(remainder * 0.50 / 10) * 10;
   const activities = Math.round(remainder * 0.30 / 10) * 10;
   const food       = Math.max(remainder - hotels - activities, 0);
-  const totalDisplay = total > advertisedTotal ? total : (priceText ? null : total);
+  // All figures below are raw AUD — formatPrice() converts to whatever
+  // currency is currently selected on the Inspiration page.
+  const totalDisplay = total > advertisedTotal ? formatPrice(total) : (priceText || formatPrice(total));
 
   document.getElementById('td-sum-grid').innerHTML =
-    '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$' + flights.toLocaleString() + '</div><div class="sum-sub">return, from SYD</div></div>' +
-    '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$' + hotels.toLocaleString() + '</div><div class="sum-sub">' + dur + ' nights</div></div>' +
-    '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$' + activities.toLocaleString() + '</div><div class="sum-sub">indicative</div></div>' +
-    '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$' + food.toLocaleString() + '</div><div class="sum-sub">indicative</div></div>' +
-    '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + (totalDisplay !== null ? '$' + totalDisplay.toLocaleString() : priceText) + '</div><div class="sum-sub red">per person from SYD</div></div>';
+    '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">' + formatPrice(flights) + '</div><div class="sum-sub">return, from SYD</div></div>' +
+    '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">' + formatPrice(hotels) + '</div><div class="sum-sub">' + dur + ' nights</div></div>' +
+    '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">' + formatPrice(activities) + '</div><div class="sum-sub">indicative</div></div>' +
+    '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">' + formatPrice(food) + '</div><div class="sum-sub">indicative</div></div>' +
+    '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + totalDisplay + '</div><div class="sum-sub red">per person from SYD</div></div>';
 
   const shortDest = dest.split(',')[0].split('+')[0].trim();
   const vibeLower = vibeText.replace(/^\S+\s/, '').toLowerCase();
@@ -2787,9 +2842,6 @@ function bookTrip(card) {
   document.getElementById('td-days').innerHTML = days.map(d =>
     '<div class="day-block"><div class="day-lbl">' + d.label + '</div><div class="evt-list"><div class="evt"><div class="evt-name">' + d.text + '</div></div></div></div>'
   ).join('');
-
-  showPage('tripdetail');
-  window.scrollTo(0, 0);
 }
 
 // ── WAITLIST FORM SUBMISSION ─────────────────────────────
@@ -2921,6 +2973,7 @@ function loadMore(btn) {
     const grid = document.querySelector('.cards-grid');
     if (grid) _originalCardOrder = Array.from(grid.querySelectorAll('.trip-card'));
     filterCards();
+    applyCurrency(_currentCurrency);
 
     btn.textContent = 'All trips loaded ✓';
     btn.style.color = 'var(--green)';
@@ -3121,6 +3174,29 @@ function selectOpt(el, group) {
   el.classList.add('selected');
 }
 
+// Trip type tiles (Solo/Couple/Friends group/Family) — Solo always means exactly
+// one traveller, so the "Number of travellers" dropdown locks and greys out.
+function selectTripType(el) {
+  selectOpt(el, 'triptype');
+  const label = el.querySelector('.opt-label').textContent.trim();
+  const pax = document.getElementById('f-pax');
+
+  if (label === 'Solo') {
+    pax.value = '1';
+    pax.disabled = true;
+    pax.style.background = 'var(--bg2)';
+    pax.style.color = 'var(--text-dim)';
+    pax.style.cursor = 'not-allowed';
+    pax.style.borderColor = '';
+  } else if (pax.disabled) {
+    pax.disabled = false;
+    pax.value = '';
+    pax.style.background = '';
+    pax.style.color = '';
+    pax.style.cursor = '';
+  }
+}
+
 function toggleVibe(el) {
   el.classList.toggle('selected');
 }
@@ -3224,6 +3300,8 @@ window.showPage = function(id, linkEl) {
     selectedDestinations = [];
     renderDestTags();
     hideDestSuggestions();
+    const pax = document.getElementById('f-pax');
+    if (pax) { pax.disabled = false; pax.style.background = ''; pax.style.color = ''; pax.style.cursor = ''; }
   }
 };
 </script>
