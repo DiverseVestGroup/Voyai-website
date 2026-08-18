@@ -342,6 +342,9 @@ hr { border:none; border-top:1px solid var(--border); }
 .form-success h2 { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; margin-bottom:10px; }
 .form-success p { font-size:15px; color:var(--text-muted); line-height:1.6; max-width:420px; margin:0 auto 28px; }
 .existing-booking-box { background:var(--bg2); border:1.5px dashed var(--border-mid); border-radius:10px; padding:16px; margin-bottom:14px; }
+.upload-box { background:var(--bg2); border:1.5px dashed var(--border-mid); border-radius:10px; padding:20px; text-align:center; cursor:pointer; transition:border-color .2s; }
+.upload-box:hover { border-color:var(--accent); }
+.upload-box.has-file { text-align:left; background:white; border-style:solid; }
 .existing-booking-box p { font-size:13px; color:var(--text-muted); margin-bottom:10px; }
 .vibe-multi-note { font-size:12px; color:var(--text-dim); margin-top:8px; font-style:italic; }
 @media(max-width:640px){
@@ -2223,6 +2226,21 @@ footer p { font-size:13px; color:var(--text-dim); }
 ...or leave blank if you&#39;re starting from scratch"></textarea>
       </div>
       <div class="form-group">
+        <label class="form-label">Got a spreadsheet or booking confirmation? <span>— optional</span></label>
+        <div class="upload-box" id="upload-box" onclick="document.getElementById('f-upload').click()">
+          <input type="file" id="f-upload" accept=".xlsx,.xls,.csv,.pdf,.docx,.doc,.png,.jpg,.jpeg" style="display:none;" onchange="handleFileSelect(this)">
+          <div id="upload-placeholder">
+            <div style="font-size:22px;margin-bottom:6px;">📎</div>
+            <div style="font-size:13px;color:var(--text);font-weight:600;">Click to upload a file</div>
+            <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">Spreadsheet, PDF, Word doc or screenshot — up to 10MB</div>
+          </div>
+          <div id="upload-selected" style="display:none;align-items:center;justify-content:space-between;">
+            <span style="font-size:13px;color:var(--text);"><span id="upload-filename"></span></span>
+            <button type="button" onclick="event.stopPropagation();clearFileSelect()" style="background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;">Remove</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
         <label class="form-label">Anything else we should know? <span>— dietary needs, mobility, preferences</span></label>
         <input class="form-input" id="f-notes" type="text" placeholder="e.g. One person is vegetarian, prefer boutique hotels over big chains, early riser...">
       </div>
@@ -2272,6 +2290,22 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">⚡</div><div class="opt-label">Packed</div><div class="opt-sub">See everything, always on the go</div></div>
           <div class="form-opt selected" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">⚖️</div><div class="opt-label">Balanced</div><div class="opt-sub">Good mix of activity &amp; downtime</div></div>
           <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">😌</div><div class="opt-label">Relaxed</div><div class="opt-sub">Slow mornings, no rush</div></div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:8px;">
+        <label class="form-label">Got a photo that captures the vibe? <span>— optional</span></label>
+        <div class="upload-box" id="image-upload-box" onclick="document.getElementById('f-image-upload').click()">
+          <input type="file" id="f-image-upload" accept="image/*" style="display:none;" onchange="handleImageSelect(this)">
+          <div id="image-upload-placeholder">
+            <div style="font-size:22px;margin-bottom:6px;">🖼️</div>
+            <div style="font-size:13px;color:var(--text);font-weight:600;">Click to upload an inspiration photo</div>
+            <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">A place, a mood, a Pinterest save — whatever gets the vibe across. Up to 10MB</div>
+          </div>
+          <div id="image-upload-selected" style="display:none;align-items:center;gap:12px;">
+            <img id="image-upload-preview" style="width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+            <span style="font-size:13px;color:var(--text);flex:1;"><span id="image-upload-filename"></span></span>
+            <button type="button" onclick="event.stopPropagation();clearImageSelect()" style="background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;">Remove</button>
+          </div>
         </div>
       </div>
       <div class="form-nav">
@@ -3201,7 +3235,107 @@ function toggleVibe(el) {
   el.classList.toggle('selected');
 }
 
-function submitForm() {
+// ── EXISTING BOOKING FILE UPLOAD ─────────────────────────
+let _selectedUploadFile = null;
+
+function handleFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (file.size > 10 * 1024 * 1024) {
+    alert('That file is over 10MB — please choose a smaller one.');
+    input.value = '';
+    return;
+  }
+
+  _selectedUploadFile = file;
+  document.getElementById('upload-placeholder').style.display = 'none';
+  const selected = document.getElementById('upload-selected');
+  selected.style.display = 'flex';
+  document.getElementById('upload-filename').textContent = '📄 ' + file.name;
+  document.getElementById('upload-box').classList.add('has-file');
+}
+
+function clearFileSelect() {
+  _selectedUploadFile = null;
+  document.getElementById('f-upload').value = '';
+  document.getElementById('upload-placeholder').style.display = 'block';
+  document.getElementById('upload-selected').style.display = 'none';
+  document.getElementById('upload-box').classList.remove('has-file');
+}
+
+// Shared Supabase Storage upload — used by both the "existing booking" file
+// uploader (Step 4) and the inspiration image uploader (Step 5).
+async function uploadToStorage(file) {
+  if (!file) return '';
+  try {
+    // Needs the same anonymous Supabase session created at sign-up — makes sure
+    // whoever's uploading is a real, identifiable account, not anonymous chaos.
+    let user = getUser();
+    if (!user) {
+      const { data, error } = await sb.auth.signInAnonymously();
+      if (error) throw error;
+      user = { id: data.user.id };
+    }
+    const path = user.id + '/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const { error: uploadError } = await sb.storage.from('uploads').upload(path, file);
+    if (uploadError) throw uploadError;
+    const { data: urlData } = sb.storage.from('uploads').getPublicUrl(path);
+    return urlData ? urlData.publicUrl : '';
+  } catch (err) {
+    console.error('File upload failed:', err);
+    return '';
+  }
+}
+
+async function uploadExistingBookingFile() {
+  return uploadToStorage(_selectedUploadFile);
+}
+
+async function uploadInspirationImage() {
+  return uploadToStorage(_selectedImageFile);
+}
+
+// ── INSPIRATION IMAGE UPLOAD (Step 5) ────────────────────
+let _selectedImageFile = null;
+
+function handleImageSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (file.size > 10 * 1024 * 1024) {
+    alert('That file is over 10MB — please choose a smaller one.');
+    input.value = '';
+    return;
+  }
+  if (!file.type.startsWith('image/')) {
+    alert('Please choose an image file.');
+    input.value = '';
+    return;
+  }
+
+  _selectedImageFile = file;
+  document.getElementById('image-upload-placeholder').style.display = 'none';
+  const selected = document.getElementById('image-upload-selected');
+  selected.style.display = 'flex';
+  document.getElementById('image-upload-filename').textContent = file.name;
+  document.getElementById('image-upload-box').classList.add('has-file');
+
+  const reader = new FileReader();
+  reader.onload = e => { document.getElementById('image-upload-preview').src = e.target.result; };
+  reader.readAsDataURL(file);
+}
+
+function clearImageSelect() {
+  _selectedImageFile = null;
+  document.getElementById('f-image-upload').value = '';
+  document.getElementById('image-upload-placeholder').style.display = 'block';
+  document.getElementById('image-upload-selected').style.display = 'none';
+  document.getElementById('image-upload-box').classList.remove('has-file');
+}
+
+
+async function submitForm() {
   const name = document.getElementById('f-name').value.trim();
   if (!name) {
     document.getElementById('f-name').style.borderColor = 'var(--accent)';
@@ -3214,6 +3348,12 @@ function submitForm() {
     document.getElementById('f-email').focus();
     return;
   }
+
+  const submitBtn = document.querySelector('#step6 .form-next');
+  if (submitBtn) { submitBtn.textContent = 'Sending...'; submitBtn.disabled = true; }
+
+  const uploadedFileUrl = await uploadExistingBookingFile();
+  const uploadedImageUrl = await uploadInspirationImage();
 
   // Collect all form data
   const formData = {
@@ -3230,6 +3370,8 @@ function submitForm() {
     mustHave:     document.getElementById('f-musthave').value,
     avoid:        document.getElementById('f-avoid').value,
     existing:     document.getElementById('f-existing').value,
+    existingFile: uploadedFileUrl,
+    inspirationImage: uploadedImageUrl,
     notes:        document.getElementById('f-notes').value,
     name:         document.getElementById('f-name').value,
     email:        email,
@@ -3302,6 +3444,10 @@ window.showPage = function(id, linkEl) {
     hideDestSuggestions();
     const pax = document.getElementById('f-pax');
     if (pax) { pax.disabled = false; pax.style.background = ''; pax.style.color = ''; pax.style.cursor = ''; }
+    clearFileSelect();
+    clearImageSelect();
+    const submitBtn = document.querySelector('#step6 .form-next');
+    if (submitBtn) { submitBtn.textContent = 'Send my itinerary ✈'; submitBtn.disabled = false; }
   }
 };
 </script>
