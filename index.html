@@ -3380,8 +3380,9 @@ async function submitForm() {
 
   console.log('Itinerary request:', formData);
 
-  // 👉 Plug in your Make.com webhook URL here:
-  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+  // 👉 TEMPORARY: pointed at the "Integration Webhooks — PDF rebuild" test scenario
+  // while we build the new PDF pipeline. Swap back to the original webhook once done.
+  fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
