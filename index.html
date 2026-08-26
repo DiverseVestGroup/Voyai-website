@@ -843,7 +843,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="wl-form-full">
         <input type="text" id="wl-name" placeholder="Full name">
         <input type="email" id="wl-email" placeholder="Email address">
-        <input type="password" id="wl-password" placeholder="Create a password" autocomplete="new-password">
         <input type="tel" id="wl-phone" placeholder="Phone number">
         <select id="wl-country">
           <option value="">Country</option>
@@ -2391,7 +2390,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div style="display:flex;flex-direction:column;gap:12px;">
       <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
-      <input id="su-password" type="password" placeholder="Create a password" autocomplete="new-password" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-phone" type="tel" placeholder="Phone number" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <select id="su-country" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;background:white;">
         <option value="">Country</option>
@@ -2401,9 +2399,9 @@ footer p { font-size:13px; color:var(--text-dim); }
       </select>
     </div>
 
-    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email, a password (6+ characters) and phone.</p>
+    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
 
-    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitSignup()">Continue →</button>
+    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a magic link →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">Already have an account? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeSignupModal();openLoginModal()">Log in</a></p>
   </div>
@@ -2417,16 +2415,15 @@ footer p { font-size:13px; color:var(--text-dim); }
       <span style="font-family:&#39;Syne&#39;,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Log in</h3>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Welcome back — pick up right where you left off, on any device.</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your email and we&#39;ll send you a magic link — pick up right where you left off, on any device.</p>
 
     <div style="display:flex;flex-direction:column;gap:12px;">
       <input id="li-email" type="email" placeholder="Email address" autocomplete="username" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
-      <input id="li-password" type="password" placeholder="Password" autocomplete="current-password" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
 
-    <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter your email and password.</p>
+    <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter a valid email address.</p>
 
-    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitLogin()">Log in →</button>
+    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a magic link →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeLoginModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">New here? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeLoginModal();document.getElementById(&#39;signup-modal&#39;).style.display=&#39;flex&#39;">Sign up</a></p>
   </div>
@@ -2676,14 +2673,24 @@ function filterCards() {
   if (counter) counter.textContent = 'Showing ' + visible + ' trips';
 }
 
-// ── ACCOUNT / LOGIN — real Supabase Auth accounts, persisted server-side
-// so a visitor can log into the SAME account from any device. Supabase's
-// own SDK already persists the session in localStorage and restores it on
-// load; we just mirror that into an in-memory `_currentUser` (with the
-// profile fields joined in) so the rest of the app can call the existing
+// ── ACCOUNT / LOGIN — real Supabase Auth accounts via MAGIC LINK (no
+// passwords anywhere), persisted server-side so a visitor can log into the
+// SAME account from any device. signInWithOtp() handles both "I'm new" and
+// "I already have an account" with the one call — Supabase creates the auth
+// user the first time and just sends a login link every time after, without
+// ever revealing to the caller whether the email was already registered
+// (avoids leaking who has an account). Supabase's own SDK persists the
+// session in localStorage (and syncs it across tabs) and restores it on
+// load; we mirror that into an in-memory `_currentUser` (with the profile
+// fields joined in) so the rest of the app can call the existing
 // synchronous getUser() everywhere it already does.
 let _currentUser = null;
 let _pendingSignupCallback = null;
+// Name/phone/country typed into THIS tab's signup form, applied to the
+// profile row once the magic link is clicked and a real session exists.
+// (Also stored in the auth user's own metadata as a fallback, in case the
+// link gets clicked on a different device/tab than the one that signed up.)
+let _pendingProfileData = null;
 
 function getUser() {
   return _currentUser;
@@ -2691,10 +2698,35 @@ function getUser() {
 
 // Loads the profile row for a Supabase Auth user into the in-memory cache
 // and refreshes the nav. Called on initial page load and after every
-// login/logout/signup so `_currentUser` always reflects the real session.
+// auth change so `_currentUser` always reflects the real session. Creates
+// the profile row the first time a given auth user is ever seen.
 async function hydrateCurrentUser(authUser) {
   if (!authUser) { _currentUser = null; renderAuthNav(); return; }
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
+
+  let { data: profile } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
+
+  if (!profile) {
+    const meta = authUser.user_metadata || {};
+    const seed = {
+      id: authUser.id,
+      email: authUser.email || '',
+      name: (_pendingProfileData && _pendingProfileData.name) || meta.name || '',
+      phone: (_pendingProfileData && _pendingProfileData.phone) || meta.phone || '',
+      country: (_pendingProfileData && _pendingProfileData.country) || meta.country || ''
+    };
+    const { data: created } = await sb.from('profiles').upsert(seed).select().maybeSingle();
+    profile = created || seed;
+
+    // First time this person has ever been seen — send it into the existing
+    // Make.com pipeline as a backup feed, same as before.
+    fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name: seed.name, email: seed.email, phone: seed.phone, country: seed.country, signedUpAt: new Date().toISOString() })
+    });
+  }
+  _pendingProfileData = null;
+
   _currentUser = {
     id: authUser.id,
     email: authUser.email || (profile && profile.email) || '',
@@ -2706,12 +2738,21 @@ async function hydrateCurrentUser(authUser) {
 }
 
 async function initAuth() {
+  // Registered before getSession() so we never miss a SIGNED_IN event that
+  // fires while Supabase is parsing a magic-link token out of the URL.
+  sb.auth.onAuthStateChange(async (event, session) => {
+    await hydrateCurrentUser(session ? session.user : null);
+    if (event === 'SIGNED_IN' && _currentUser) {
+      document.getElementById('signup-modal').style.display = 'none';
+      document.getElementById('login-modal').style.display = 'none';
+      const cb = _pendingSignupCallback;
+      _pendingSignupCallback = null;
+      if (cb) cb();
+    }
+  });
+
   const { data: { session } } = await sb.auth.getSession();
   await hydrateCurrentUser(session ? session.user : null);
-
-  sb.auth.onAuthStateChange((_event, session) => {
-    hydrateCurrentUser(session ? session.user : null);
-  });
 }
 document.addEventListener('DOMContentLoaded', initAuth);
 
@@ -2753,127 +2794,74 @@ function closeLoginModal() {
   document.getElementById('li-error').style.display = 'none';
 }
 
-// Core account creation — used by both the popup modal and the inline
-// waitlist form, so there's one single place this logic lives. Creates a
-// REAL Supabase Auth account (email + password), not an anonymous one, so
-// the same login works again later from any device.
-async function createTripMadeAccount(name, email, phone, country, password) {
-  const { data, error } = await sb.auth.signUp({
-    email, password,
-    options: { data: { name, phone, country } }
-  });
-  if (error) {
-    // Supabase's "already registered" signal varies by version — surface a
-    // clear, actionable message rather than a raw error either way.
-    if (/already registered|already exists|user_already_exists/i.test(error.message || '')) {
-      throw new Error('ALREADY_REGISTERED');
-    }
-    throw error;
-  }
-
-  const authUser = data.user;
-  const hasSession = !!data.session;
-
-  // If email confirmation is required on this project, signUp() succeeds
-  // but returns no session — there's no auth.uid() yet, so we can't write
-  // the profile row (RLS would reject it) or treat them as logged in.
-  if (!hasSession) {
-    return { pendingConfirmation: true, email };
-  }
-
-  const { error: profileError } = await sb.from('profiles').upsert({
-    id: authUser.id, name, email, phone, country
-  });
-  if (profileError) throw profileError;
-
-  await hydrateCurrentUser(authUser);
-
-  // Also sends the signup into the existing Make.com pipeline as a backup feed —
-  // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
-  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name, email, phone, country, signedUpAt: new Date().toISOString() })
-  });
-
-  return _currentUser;
-}
-
 async function submitSignup() {
-  const name     = document.getElementById('su-name').value.trim();
-  const email    = document.getElementById('su-email').value.trim();
-  const password = document.getElementById('su-password').value;
-  const phone    = document.getElementById('su-phone').value.trim();
-  const country  = document.getElementById('su-country').value;
-  const errorEl  = document.getElementById('su-error');
+  const name    = document.getElementById('su-name').value.trim();
+  const email   = document.getElementById('su-email').value.trim();
+  const phone   = document.getElementById('su-phone').value.trim();
+  const country = document.getElementById('su-country').value;
+  const errorEl = document.getElementById('su-error');
 
-  if (!name || !email || !email.includes('@') || !phone || password.length < 6) {
-    errorEl.textContent = 'Please fill in your name, email, a password (6+ characters) and phone.';
+  if (!name || !email || !email.includes('@') || !phone) {
+    errorEl.textContent = 'Please fill in your name, email and phone.';
     errorEl.style.display = 'block';
     return;
   }
   errorEl.style.display = 'none';
 
   const submitBtn = document.querySelector('#signup-modal .btn-primary');
-  if (submitBtn) { submitBtn.textContent = 'Signing up...'; submitBtn.disabled = true; }
+  if (submitBtn) { submitBtn.textContent = 'Sending link...'; submitBtn.disabled = true; }
 
   try {
-    const result = await createTripMadeAccount(name, email, phone, country, password);
+    _pendingProfileData = { name, phone, country };
+    const { error } = await sb.auth.signInWithOtp({
+      email,
+      options: { data: { name, phone, country }, emailRedirectTo: window.location.origin + window.location.pathname }
+    });
+    if (error) throw error;
 
-    if (result && result.pendingConfirmation) {
-      errorEl.style.color = 'var(--green)';
-      errorEl.textContent = 'Almost there — check ' + email + ' for a confirmation link, then log in.';
-      errorEl.style.display = 'block';
-      _pendingSignupCallback = null;
-      return;
-    }
-
-    document.getElementById('signup-modal').style.display = 'none';
-    const cb = _pendingSignupCallback;
-    _pendingSignupCallback = null;
-    if (cb) cb();
+    errorEl.style.color = 'var(--green)';
+    errorEl.textContent = 'Check ' + email + ' for a magic link — click it and this page will pick up right where you left off.';
+    errorEl.style.display = 'block';
+    if (submitBtn) submitBtn.textContent = 'Link sent ✓';
   } catch (err) {
     console.error('Signup failed:', err);
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = (err && err.message === 'ALREADY_REGISTERED')
-      ? 'That email already has an account — log in instead.'
-      : 'Something went wrong — please try again.';
+    errorEl.textContent = 'Something went wrong — please try again.';
     errorEl.style.display = 'block';
-  } finally {
-    if (submitBtn) { submitBtn.textContent = 'Continue →'; submitBtn.disabled = false; }
+    if (submitBtn) { submitBtn.textContent = 'Email me a magic link →'; submitBtn.disabled = false; }
   }
 }
 
 async function submitLogin() {
-  const email    = document.getElementById('li-email').value.trim();
-  const password = document.getElementById('li-password').value;
-  const errorEl  = document.getElementById('li-error');
+  const email   = document.getElementById('li-email').value.trim();
+  const errorEl = document.getElementById('li-error');
 
-  if (!email || !password) {
-    errorEl.textContent = 'Please enter your email and password.';
+  if (!email || !email.includes('@')) {
+    errorEl.textContent = 'Please enter a valid email address.';
     errorEl.style.display = 'block';
     return;
   }
   errorEl.style.display = 'none';
 
   const submitBtn = document.querySelector('#login-modal .btn-primary');
-  if (submitBtn) { submitBtn.textContent = 'Logging in...'; submitBtn.disabled = true; }
+  if (submitBtn) { submitBtn.textContent = 'Sending link...'; submitBtn.disabled = true; }
 
   try {
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    const { error } = await sb.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin + window.location.pathname }
+    });
     if (error) throw error;
-    await hydrateCurrentUser(data.user);
 
-    document.getElementById('login-modal').style.display = 'none';
-    const cb = _pendingSignupCallback;
-    _pendingSignupCallback = null;
-    if (cb) cb();
+    errorEl.style.color = 'var(--green)';
+    errorEl.textContent = 'Check ' + email + ' for a magic link — click it and this page will log you in automatically.';
+    errorEl.style.display = 'block';
+    if (submitBtn) submitBtn.textContent = 'Link sent ✓';
   } catch (err) {
     console.error('Login failed:', err);
-    errorEl.textContent = 'Incorrect email or password — please try again.';
+    errorEl.textContent = 'Something went wrong — please try again.';
     errorEl.style.display = 'block';
-  } finally {
-    if (submitBtn) { submitBtn.textContent = 'Log in →'; submitBtn.disabled = false; }
+    if (submitBtn) { submitBtn.textContent = 'Email me a magic link →'; submitBtn.disabled = false; }
   }
 }
 
@@ -3095,45 +3083,41 @@ function joinWaitlistCTA(btn) {
 // Full inline waitlist sign-up — same fields as the popup, no modal needed
 // since they're already sitting right there on the page.
 async function submitWaitlistFull(btn) {
-  const name     = document.getElementById('wl-name').value.trim();
-  const email    = document.getElementById('wl-email').value.trim();
-  const password = document.getElementById('wl-password').value;
-  const phone    = document.getElementById('wl-phone').value.trim();
-  const country  = document.getElementById('wl-country').value;
-  const errorEl  = document.getElementById('wl-error');
+  const name    = document.getElementById('wl-name').value.trim();
+  const email   = document.getElementById('wl-email').value.trim();
+  const phone   = document.getElementById('wl-phone').value.trim();
+  const country = document.getElementById('wl-country').value;
+  const errorEl = document.getElementById('wl-error');
 
-  if (!name || !email || !email.includes('@') || !phone || password.length < 6) {
-    errorEl.textContent = 'Please fill in your name, email, a password (6+ characters) and phone.';
+  if (!name || !email || !email.includes('@') || !phone) {
+    errorEl.textContent = 'Please fill in your name, email and phone.';
     errorEl.style.display = 'block';
     return;
   }
   errorEl.style.display = 'none';
 
-  btn.textContent = 'Joining...';
+  btn.textContent = 'Sending link...';
   btn.disabled = true;
 
   try {
-    const result = await createTripMadeAccount(name, email, phone, country, password);
+    _pendingProfileData = { name, phone, country };
+    const { error } = await sb.auth.signInWithOtp({
+      email,
+      options: { data: { name, phone, country }, emailRedirectTo: window.location.origin + window.location.pathname }
+    });
+    if (error) throw error;
 
-    if (result && result.pendingConfirmation) {
-      btn.textContent = 'Check your email →';
-      errorEl.style.color = 'var(--green)';
-      errorEl.textContent = 'Almost there — check ' + email + ' for a confirmation link, then log in.';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    btn.textContent = '✓ You\'re on the list!';
-    btn.style.background = 'var(--green)';
-    ['wl-name', 'wl-email', 'wl-password', 'wl-phone', 'wl-country'].forEach(id => {
+    btn.textContent = 'Check your email →';
+    errorEl.style.color = 'var(--green)';
+    errorEl.textContent = 'Almost there — check ' + email + ' for a magic link to finish joining.';
+    errorEl.style.display = 'block';
+    ['wl-name', 'wl-email', 'wl-phone', 'wl-country'].forEach(id => {
       document.getElementById(id).disabled = true;
     });
   } catch (err) {
     console.error('Waitlist signup failed:', err);
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = (err && err.message === 'ALREADY_REGISTERED')
-      ? 'That email already has an account — log in instead.'
-      : 'Something went wrong — please try again.';
+    errorEl.textContent = 'Something went wrong — please try again.';
     errorEl.style.display = 'block';
     btn.textContent = 'Join the waitlist →';
     btn.disabled = false;
