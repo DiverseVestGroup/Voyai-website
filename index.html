@@ -474,7 +474,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   </ul>
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="nav-account" style="font-size:13px;color:var(--text-muted);"></span>
-    <button class="nav-cta" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;)">Join waitlist</button>
+    <button class="nav-cta" id="nav-waitlist-btn" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;);joinWaitlist();">Join waitlist</button>
   </div>
 </nav>
 
@@ -840,19 +840,24 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="free-badge">✓ 100% FREE</div>
       <h2>Be first to travel smarter</h2>
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
-      <div class="wl-form-full">
-        <input type="text" id="wl-name" placeholder="Full name">
-        <input type="email" id="wl-email" placeholder="Email address">
-        <input type="tel" id="wl-phone" placeholder="Phone number">
-        <select id="wl-country">
-          <option value="">Country</option>
-          <option>Australia</option><option>New Zealand</option><option>United States</option>
-          <option>United Kingdom</option><option>Canada</option><option>Singapore</option>
-          <option>Other</option>
-        </select>
+      <div id="waitlist-form-wrap">
+        <div class="wl-form-full">
+          <input type="text" id="wl-name" placeholder="Full name">
+          <input type="email" id="wl-email" placeholder="Email address">
+          <input type="tel" id="wl-phone" placeholder="Phone number">
+          <select id="wl-country">
+            <option value="">Country</option>
+            <option>Australia</option><option>New Zealand</option><option>United States</option>
+            <option>United Kingdom</option><option>Canada</option><option>Singapore</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email and phone.</p>
+        <button class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
       </div>
-      <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email and phone.</p>
-      <button class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
+      <div id="waitlist-loggedin-wrap" style="display:none;">
+        <button class="btn-primary" id="waitlist-loggedin-btn" onclick="joinWaitlist()" style="margin-top:14px;">Join the waitlist →</button>
+      </div>
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
@@ -2750,8 +2755,16 @@ async function hydrateCurrentUser(authUser) {
     email: authUser.email || (profile && profile.email) || '',
     name: (profile && profile.name) || '',
     phone: (profile && profile.phone) || '',
-    country: (profile && profile.country) || ''
+    country: (profile && profile.country) || '',
+    joinedWaitlist: false
   };
+
+  // Tracked in its own table (separate from `profiles`, which is every
+  // account regardless of intent) so the business can see exactly who has
+  // deliberately opted in as an interested early customer.
+  const { data: wl } = await sb.from('waitlist_signups').select('user_id').eq('user_id', authUser.id).maybeSingle();
+  _currentUser.joinedWaitlist = !!wl;
+
   renderAuthNav();
 }
 
@@ -2805,27 +2818,126 @@ function renderAuthNav() {
   if (!el) return;
   if (_currentUser) {
     const name = _currentUser.name || _currentUser.email || 'there';
-    const email = _currentUser.email || '';
     const initial = (name.trim().charAt(0) || '?').toUpperCase();
+
+    // Only show fields that actually have a value — a blank "Country:" line
+    // looks broken, and not everyone will have all four filled in.
+    const infoRows = [
+      { label: null,      value: _currentUser.name },
+      { label: null,      value: _currentUser.email },
+      { label: null,      value: _currentUser.phone },
+      { label: null,      value: _currentUser.country }
+    ].filter(r => r.value);
+
+    const rowsHtml = infoRows.map((r, i) =>
+      '<div style="font-size:' + (i === 0 ? '14px;font-weight:600;color:var(--text);' : '12.5px;color:var(--text-muted);') + 'margin-bottom:3px;word-break:break-word;">' + r.value + '</div>'
+    ).join('');
+
     el.innerHTML =
-      '<span style="display:inline-flex;align-items:center;gap:8px;">' +
-        '<span style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:white;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">' + initial + '</span>' +
-        '<span style="line-height:1.25;text-align:left;">' +
-          '<span style="display:block;font-weight:600;color:var(--text);font-size:13px;">' + name + '</span>' +
-          (email ? '<span style="display:block;font-size:11px;color:var(--text-muted);">' + email + '</span>' : '') +
-        '</span>' +
-        '<a href="javascript:void(0)" style="color:var(--accent);margin-left:2px;font-size:12px;" onclick="logoutUser()">Log out</a>' +
-      '</span>';
+      '<div style="position:relative;">' +
+        '<button type="button" onclick="toggleProfileMenu(event)" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:8px;font-family:inherit;">' +
+          '<span style="width:26px;height:26px;border-radius:50%;background:var(--accent);color:white;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">' + initial + '</span>' +
+          '<span style="font-size:13px;font-weight:600;color:var(--text);">' + name.split(' ')[0] + '</span>' +
+          '<span style="font-size:9px;color:var(--text-muted);">▾</span>' +
+        '</button>' +
+        '<div id="profile-menu" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:white;border:1px solid var(--border-mid);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.14);min-width:220px;padding:14px;z-index:80;text-align:left;">' +
+          '<div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px;">Your account</div>' +
+          rowsHtml +
+          '<button onclick="logoutUser()" style="width:100%;margin-top:10px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
+        '</div>' +
+      '</div>';
   } else {
     el.innerHTML = '<a href="javascript:void(0)" style="color:var(--text-muted);" onclick="openLoginModal()">Log in</a>';
   }
+  renderWaitlistCTA();
 }
+
+function toggleProfileMenu(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('profile-menu');
+  if (!menu) return;
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+// Close the profile dropdown on any click outside it.
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('profile-menu');
+  if (!menu || menu.style.display !== 'block') return;
+  if (!e.target.closest('#nav-account')) menu.style.display = 'none';
+});
 
 async function logoutUser() {
   await sb.auth.signOut();
   _currentUser = null;
   renderAuthNav();
   showPage('landing', document.querySelector('.nav-links a'));
+}
+
+// ── WAITLIST — a deliberate opt-in, tracked in its own `waitlist_signups`
+// table (separate from `profiles`, which is just "has an account" — e.g.
+// someone who only ever logged in to save a trip). This is what lets the
+// business see real, intentional interest ahead of launch.
+async function joinWaitlist() {
+  if (!getUser()) { requireAccount(joinWaitlist); return; }
+  if (_currentUser.joinedWaitlist) return;
+
+  const { error } = await sb.from('waitlist_signups').upsert({
+    user_id: _currentUser.id,
+    name: _currentUser.name,
+    email: _currentUser.email,
+    phone: _currentUser.phone,
+    country: _currentUser.country
+  }, { onConflict: 'user_id' });
+
+  if (error) { console.error('Join waitlist failed:', error); return; }
+
+  _currentUser.joinedWaitlist = true;
+  renderWaitlistCTA();
+
+  // Backup feed into the existing Make.com pipeline, tagged distinctly from
+  // a plain account signup so it can be routed/filtered separately.
+  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source: 'waitlist_join', id: _currentUser.id, name: _currentUser.name, email: _currentUser.email, phone: _currentUser.phone, country: _currentUser.country, joinedAt: new Date().toISOString() })
+  });
+}
+
+// Reflects join-state everywhere the waitlist CTA appears: the nav button,
+// and the inline landing-page section (which swaps its whole detailed form
+// out for a single button once we already know who's asking).
+function renderWaitlistCTA() {
+  const joined = !!(_currentUser && _currentUser.joinedWaitlist);
+
+  const navBtn = document.getElementById('nav-waitlist-btn');
+  if (navBtn) {
+    navBtn.textContent = joined ? 'Joined waitlist ✓' : 'Join waitlist';
+    navBtn.style.background = joined ? 'var(--green)' : '';
+    navBtn.style.cursor = joined ? 'default' : 'pointer';
+    navBtn.onclick = joined ? null : function() {
+      showPage('landing', document.querySelector('.nav-links a'));
+      scrollToSection('waitlist');
+      joinWaitlist();
+    };
+  }
+
+  const formWrap     = document.getElementById('waitlist-form-wrap');
+  const loggedInWrap = document.getElementById('waitlist-loggedin-wrap');
+  if (formWrap && loggedInWrap) {
+    if (_currentUser) {
+      formWrap.style.display = 'none';
+      loggedInWrap.style.display = 'block';
+      const btn = document.getElementById('waitlist-loggedin-btn');
+      if (btn) {
+        btn.textContent = joined ? 'You\'re on the waitlist ✓' : 'Join the waitlist →';
+        btn.disabled = joined;
+        btn.style.opacity = joined ? '0.7' : '';
+        btn.style.cursor = joined ? 'default' : '';
+      }
+    } else {
+      formWrap.style.display = '';
+      loggedInWrap.style.display = 'none';
+    }
+  }
 }
 
 function requireAccount(callback) {
@@ -3156,6 +3268,9 @@ async function submitWaitlistFull(btn) {
 
   try {
     _pendingProfileData = { name, phone, country };
+    // Once they click the emailed link and a real session exists, join them
+    // to the waitlist automatically — that's the whole point of this form.
+    _pendingSignupCallback = joinWaitlist;
     const { error } = await sb.auth.signInWithOtp({
       email,
       options: { data: { name, phone, country }, emailRedirectTo: window.location.origin + window.location.pathname }
