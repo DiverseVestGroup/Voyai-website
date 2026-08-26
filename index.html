@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0021)https://tripmade.co/# -->
+<!-- saved from url=(0020)https://tripmade.co/ -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 32 32&#39;&gt;&lt;rect width=&#39;32&#39; height=&#39;32&#39; rx=&#39;8&#39; fill=&#39;%230D7377&#39;/&gt;&lt;text x=&#39;50%&#39; y=&#39;50%&#39; dominant-baseline=&#39;central&#39; text-anchor=&#39;middle&#39; font-size=&#39;20&#39; fill=&#39;white&#39;&gt;%E2%9C%88&lt;/text&gt;&lt;/svg&gt;">
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./TripMade — My trip. Made._files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ───────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -448,7 +448,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 }
 
 </style>
-<link rel="stylesheet" href="./TripMade — My trip. Made._files/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
   .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background:#0D7377; border-color:#0D7377; }
   .flatpickr-day.inRange { background:#E1F5EE; box-shadow:-5px 0 0 #E1F5EE, 5px 0 0 #E1F5EE; border-color:#E1F5EE; }
@@ -472,7 +472,10 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
-  <button class="nav-cta" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;)">Join waitlist</button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span id="nav-account" style="font-size:13px;color:var(--text-muted);"></span>
+    <button class="nav-cta" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;)">Join waitlist</button>
+  </div>
 </nav>
 
 <!-- ══ LANDING PAGE ══════════════════════════════════════ -->
@@ -840,6 +843,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="wl-form-full">
         <input type="text" id="wl-name" placeholder="Full name">
         <input type="email" id="wl-email" placeholder="Email address">
+        <input type="password" id="wl-password" placeholder="Create a password" autocomplete="new-password">
         <input type="tel" id="wl-phone" placeholder="Phone number">
         <select id="wl-country">
           <option value="">Country</option>
@@ -2261,21 +2265,11 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Total budget per person <span>— all in including flights</span></label>
         <div style="background:white;border:1.5px solid var(--border-mid);border-radius:var(--radius);padding:24px 22px 20px;">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;gap:12px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;">
             <span id="budget-display" style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;color:var(--accent);">$8,000</span>
-            <select class="form-select" id="f-budget-currency" onchange="applyCurrency(this.value)" style="width:auto;flex-shrink:0;padding:6px 10px;font-size:13px;">
-              <option value="AUD">AUD (A$)</option>
-              <option value="USD">USD (US$)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-              <option value="NZD">NZD (NZ$)</option>
-              <option value="CAD">CAD (C$)</option>
-              <option value="SGD">SGD (S$)</option>
-              <option value="JPY">JPY (¥)</option>
-            </select>
           </div>
           <input type="range" id="f-budget-slider" min="500" max="250000" step="1000" value="8000" oninput="updateBudgetDisplay(this.value)" style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);" id="budget-range-labels">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);">
             <span>$500</span><span>$250,000+</span>
           </div>
         </div>
@@ -2353,7 +2347,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-success">
         <div class="success-icon">✈</div>
         <h2>You're all set!</h2>
-        <p>We're building your personalised itinerary right now. Expect it in your inbox in less than 5 minutes — check your spam just in case.</p>
+        <p>We're building your personalised itinerary right now. Expect it in your inbox within the hour — check your spam just in case.</p>
         <div style="background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:28px;text-align:left;font-size:13px;line-height:1.8;color:var(--text-muted);">
           <strong style="color:var(--text);display:block;margin-bottom:8px;">What happens next:</strong>
           🔍 Our AI reviews your brief and builds your day-by-day plan<br>
@@ -2377,8 +2371,8 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <div id="saved-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
       <div style="font-size:40px;margin-bottom:12px;">♡</div>
-      <p style="font-size:15px;margin-bottom:18px;">You haven't saved any trips yet.</p>
-      <button class="btn-primary" onclick="showPage(&#39;inspo&#39;)">Browse trip inspiration →</button>
+      <p id="saved-empty-text" style="font-size:15px;margin-bottom:18px;">You haven't saved any trips yet.</p>
+      <button id="saved-empty-btn" class="btn-primary" onclick="showPage(&#39;inspo&#39;)">Browse trip inspiration →</button>
     </div>
     <div id="saved-grid" class="cards-grid" style="padding:0;"></div>
   </div>
@@ -2397,6 +2391,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div style="display:flex;flex-direction:column;gap:12px;">
       <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+      <input id="su-password" type="password" placeholder="Create a password" autocomplete="new-password" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-phone" type="tel" placeholder="Phone number" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <select id="su-country" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;background:white;">
         <option value="">Country</option>
@@ -2406,10 +2401,34 @@ footer p { font-size:13px; color:var(--text-dim); }
       </select>
     </div>
 
-    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
+    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email, a password (6+ characters) and phone.</p>
 
     <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitSignup()">Continue →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
+    <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">Already have an account? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeSignupModal();openLoginModal()">Log in</a></p>
+  </div>
+</div>
+
+<!-- ══ LOG-IN MODAL ═══════════════════════════════════════ -->
+<div id="login-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="width:28px;height:28px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;">✈</div>
+      <span style="font-family:&#39;Syne&#39;,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
+    </div>
+    <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Log in</h3>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Welcome back — pick up right where you left off, on any device.</p>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <input id="li-email" type="email" placeholder="Email address" autocomplete="username" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+      <input id="li-password" type="password" placeholder="Password" autocomplete="current-password" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+    </div>
+
+    <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter your email and password.</p>
+
+    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitLogin()">Log in →</button>
+    <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeLoginModal()">Cancel</button>
+    <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">New here? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeLoginModal();document.getElementById(&#39;signup-modal&#39;).style.display=&#39;flex&#39;">Sign up</a></p>
   </div>
 </div>
 
@@ -2508,9 +2527,9 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
 </footer>
 
-<script src="./TripMade — My trip. Made._files/flatpickr.min.js.download"></script>
-<script src="./TripMade — My trip. Made._files/rangePlugin.js.download"></script>
-<script src="./TripMade — My trip. Made._files/supabase.min.js.download"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const sb = supabase.createClient(
   'https://ccdbpyqjlvzusjgedhck.supabase.co',
@@ -2575,12 +2594,6 @@ function formatPrice(audAmount) {
 function applyCurrency(currency) {
   _currentCurrency = currency;
 
-  // Keep every currency selector on the page in sync (browse page + budget slider)
-  const browseSelect = document.getElementById('currency-select');
-  const budgetSelect = document.getElementById('f-budget-currency');
-  if (browseSelect) browseSelect.value = currency;
-  if (budgetSelect) budgetSelect.value = currency;
-
   document.querySelectorAll('.trip-card').forEach(card => {
     const budget = parseInt(card.dataset.budget || '0');
     if (!budget) return;
@@ -2588,10 +2601,6 @@ function applyCurrency(currency) {
     if (!priceEl || !priceEl.firstChild) return;
     priceEl.firstChild.textContent = formatPrice(budget) + ' ';
   });
-
-  // Refresh the budget slider display (Step 5) if it's on the page
-  const budgetSlider = document.getElementById('f-budget-slider');
-  if (budgetSlider) updateBudgetDisplay(budgetSlider.value);
 
   // If a trip detail page is currently open, re-render its cost breakdown too
   if (window._currentTripCard) renderTripDetail(window._currentTripCard);
@@ -2623,43 +2632,105 @@ function filterCards() {
     const cardRegion = card.dataset.region || '';
     const cardGroup  = card.dataset.group  || '';
 
-    let match = true;
+    let catMatch    = true;
+    let budgetMatch = true;
+    let durMatch    = true;
+    let regionMatch = true;
+    let groupMatch  = true;
 
-    if (cat !== 'all' && !cardCat.includes(cat)) match = false;
+    // No filter hides cards — every trip stays visible, matches just get
+    // grouped to the top. Non-matches sit below in their original order.
+    if (cat !== 'all' && !cardCat.includes(cat)) catMatch = false;
 
-    if (budget === 'under3k'  && cardBudget >= 3000)  match = false;
-    if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  match = false;
-    if (budget === '6to12k'   && (cardBudget < 6000  || cardBudget >= 12000)) match = false;
-    if (budget === 'over12k'  && cardBudget < 12000)  match = false;
+    if (budget === 'under3k'  && cardBudget >= 3000)  budgetMatch = false;
+    if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  budgetMatch = false;
+    if (budget === '6to12k'   && (cardBudget < 6000  || cardBudget >= 12000)) budgetMatch = false;
+    if (budget === 'over12k'  && cardBudget < 12000)  budgetMatch = false;
 
-    if (dur === 'weekend' && cardDur > 3)   match = false;
-    if (dur === '1week'   && (cardDur < 4  || cardDur > 9))  match = false;
-    if (dur === '2weeks'  && (cardDur < 10 || cardDur > 20)) match = false;
-    if (dur === '1month'  && cardDur < 21)  match = false;
+    if (dur === 'weekend' && cardDur > 3)   durMatch = false;
+    if (dur === '1week'   && (cardDur < 4  || cardDur > 9))  durMatch = false;
+    if (dur === '2weeks'  && (cardDur < 10 || cardDur > 20)) durMatch = false;
+    if (dur === '1month'  && cardDur < 21)  durMatch = false;
 
-    if (region !== 'Any region' && region !== 'any' && cardRegion !== region) match = false;
-    if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) match = false;
+    if (region !== 'Any region' && region !== 'any' && cardRegion !== region) regionMatch = false;
+    if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) groupMatch = false;
 
-    card.style.display = match ? '' : 'none';
-    if (match) visible++;
+    const matchScore = (catMatch ? 1 : 0) + (budgetMatch ? 1 : 0) + (durMatch ? 1 : 0) + (regionMatch ? 1 : 0) + (groupMatch ? 1 : 0);
+    card.dataset.matchScore = matchScore;
+    card.style.display = '';
+    visible++;
   });
 
-  // Restore cards to their original relative order (undoes any past reordering)
+  // Re-order: cards matching the most active filters float to the top,
+  // rest keep their original relative order below. Nothing is ever hidden.
   if (grid && _originalCardOrder) {
-    _originalCardOrder.forEach(card => grid.appendChild(card));
+    const sorted = _originalCardOrder.slice().sort((a, b) => {
+      const aScore = parseInt(a.dataset.matchScore || '0');
+      const bScore = parseInt(b.dataset.matchScore || '0');
+      return bScore - aScore;
+    });
+    sorted.forEach(card => grid.appendChild(card));
   }
 
   const counter = document.querySelector('.results-count');
   if (counter) counter.textContent = 'Showing ' + visible + ' trips';
 }
 
-// ── ACCOUNT / SIGN-UP GATE ────────────────────────────────
-const TM_USER_KEY  = 'tm_user';
-const TM_LIKED_KEY = 'tm_liked';
+// ── ACCOUNT / LOGIN — real Supabase Auth accounts, persisted server-side
+// so a visitor can log into the SAME account from any device. Supabase's
+// own SDK already persists the session in localStorage and restores it on
+// load; we just mirror that into an in-memory `_currentUser` (with the
+// profile fields joined in) so the rest of the app can call the existing
+// synchronous getUser() everywhere it already does.
+let _currentUser = null;
 let _pendingSignupCallback = null;
 
 function getUser() {
-  try { return JSON.parse(localStorage.getItem(TM_USER_KEY)); } catch (e) { return null; }
+  return _currentUser;
+}
+
+// Loads the profile row for a Supabase Auth user into the in-memory cache
+// and refreshes the nav. Called on initial page load and after every
+// login/logout/signup so `_currentUser` always reflects the real session.
+async function hydrateCurrentUser(authUser) {
+  if (!authUser) { _currentUser = null; renderAuthNav(); return; }
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
+  _currentUser = {
+    id: authUser.id,
+    email: authUser.email || (profile && profile.email) || '',
+    name: (profile && profile.name) || '',
+    phone: (profile && profile.phone) || '',
+    country: (profile && profile.country) || ''
+  };
+  renderAuthNav();
+}
+
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  await hydrateCurrentUser(session ? session.user : null);
+
+  sb.auth.onAuthStateChange((_event, session) => {
+    hydrateCurrentUser(session ? session.user : null);
+  });
+}
+document.addEventListener('DOMContentLoaded', initAuth);
+
+function renderAuthNav() {
+  const el = document.getElementById('nav-account');
+  if (!el) return;
+  if (_currentUser) {
+    const first = (_currentUser.name || _currentUser.email || 'there').split(' ')[0];
+    el.innerHTML = 'Hi, ' + first + ' · <a href="javascript:void(0)" style="color:var(--accent);" onclick="logoutUser()">Log out</a>';
+  } else {
+    el.innerHTML = '<a href="javascript:void(0)" style="color:var(--text-muted);" onclick="openLoginModal()">Log in</a>';
+  }
+}
+
+async function logoutUser() {
+  await sb.auth.signOut();
+  _currentUser = null;
+  renderAuthNav();
+  showPage('landing', document.querySelector('.nav-links a'));
 }
 
 function requireAccount(callback) {
@@ -2673,49 +2744,89 @@ function closeSignupModal() {
   _pendingSignupCallback = null;
 }
 
-// Core account creation — used by both the popup modal and the inline
-// waitlist form, so there's one single place this logic lives.
-async function createTripMadeAccount(name, email, phone, country) {
-  const { data, error } = await sb.auth.signInAnonymously();
-  if (error) throw error;
+function openLoginModal() {
+  document.getElementById('login-modal').style.display = 'flex';
+}
 
-  const userId = data.user.id;
+function closeLoginModal() {
+  document.getElementById('login-modal').style.display = 'none';
+  document.getElementById('li-error').style.display = 'none';
+}
+
+// Core account creation — used by both the popup modal and the inline
+// waitlist form, so there's one single place this logic lives. Creates a
+// REAL Supabase Auth account (email + password), not an anonymous one, so
+// the same login works again later from any device.
+async function createTripMadeAccount(name, email, phone, country, password) {
+  const { data, error } = await sb.auth.signUp({
+    email, password,
+    options: { data: { name, phone, country } }
+  });
+  if (error) {
+    // Supabase's "already registered" signal varies by version — surface a
+    // clear, actionable message rather than a raw error either way.
+    if (/already registered|already exists|user_already_exists/i.test(error.message || '')) {
+      throw new Error('ALREADY_REGISTERED');
+    }
+    throw error;
+  }
+
+  const authUser = data.user;
+  const hasSession = !!data.session;
+
+  // If email confirmation is required on this project, signUp() succeeds
+  // but returns no session — there's no auth.uid() yet, so we can't write
+  // the profile row (RLS would reject it) or treat them as logged in.
+  if (!hasSession) {
+    return { pendingConfirmation: true, email };
+  }
+
   const { error: profileError } = await sb.from('profiles').upsert({
-    id: userId, name, email, phone, country
+    id: authUser.id, name, email, phone, country
   });
   if (profileError) throw profileError;
 
-  const user = { id: userId, name, email, phone, country, signedUpAt: new Date().toISOString() };
-  localStorage.setItem(TM_USER_KEY, JSON.stringify(user));
+  await hydrateCurrentUser(authUser);
 
   // Also sends the signup into the existing Make.com pipeline as a backup feed —
   // tagged so it can be routed differently (e.g. into Mailchimp) if needed.
   fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source: 'signup_gate', ...user })
+    body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name, email, phone, country, signedUpAt: new Date().toISOString() })
   });
 
-  return user;
+  return _currentUser;
 }
 
 async function submitSignup() {
-  const name    = document.getElementById('su-name').value.trim();
-  const email   = document.getElementById('su-email').value.trim();
-  const phone   = document.getElementById('su-phone').value.trim();
-  const country = document.getElementById('su-country').value;
+  const name     = document.getElementById('su-name').value.trim();
+  const email    = document.getElementById('su-email').value.trim();
+  const password = document.getElementById('su-password').value;
+  const phone    = document.getElementById('su-phone').value.trim();
+  const country  = document.getElementById('su-country').value;
+  const errorEl  = document.getElementById('su-error');
 
-  if (!name || !email || !email.includes('@') || !phone) {
-    document.getElementById('su-error').style.display = 'block';
+  if (!name || !email || !email.includes('@') || !phone || password.length < 6) {
+    errorEl.textContent = 'Please fill in your name, email, a password (6+ characters) and phone.';
+    errorEl.style.display = 'block';
     return;
   }
-  document.getElementById('su-error').style.display = 'none';
+  errorEl.style.display = 'none';
 
   const submitBtn = document.querySelector('#signup-modal .btn-primary');
   if (submitBtn) { submitBtn.textContent = 'Signing up...'; submitBtn.disabled = true; }
 
   try {
-    await createTripMadeAccount(name, email, phone, country);
+    const result = await createTripMadeAccount(name, email, phone, country, password);
+
+    if (result && result.pendingConfirmation) {
+      errorEl.style.color = 'var(--green)';
+      errorEl.textContent = 'Almost there — check ' + email + ' for a confirmation link, then log in.';
+      errorEl.style.display = 'block';
+      _pendingSignupCallback = null;
+      return;
+    }
 
     document.getElementById('signup-modal').style.display = 'none';
     const cb = _pendingSignupCallback;
@@ -2723,27 +2834,56 @@ async function submitSignup() {
     if (cb) cb();
   } catch (err) {
     console.error('Signup failed:', err);
-    document.getElementById('su-error').textContent = 'Something went wrong — please try again.';
-    document.getElementById('su-error').style.display = 'block';
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = (err && err.message === 'ALREADY_REGISTERED')
+      ? 'That email already has an account — log in instead.'
+      : 'Something went wrong — please try again.';
+    errorEl.style.display = 'block';
   } finally {
     if (submitBtn) { submitBtn.textContent = 'Continue →'; submitBtn.disabled = false; }
   }
 }
 
-// ── SAVE / WISHLIST HEARTS ───────────────────────────────
-function getLikedTrips() {
-  try { return JSON.parse(localStorage.getItem(TM_LIKED_KEY)) || []; } catch (e) { return []; }
+async function submitLogin() {
+  const email    = document.getElementById('li-email').value.trim();
+  const password = document.getElementById('li-password').value;
+  const errorEl  = document.getElementById('li-error');
+
+  if (!email || !password) {
+    errorEl.textContent = 'Please enter your email and password.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  const submitBtn = document.querySelector('#login-modal .btn-primary');
+  if (submitBtn) { submitBtn.textContent = 'Logging in...'; submitBtn.disabled = true; }
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    await hydrateCurrentUser(data.user);
+
+    document.getElementById('login-modal').style.display = 'none';
+    const cb = _pendingSignupCallback;
+    _pendingSignupCallback = null;
+    if (cb) cb();
+  } catch (err) {
+    console.error('Login failed:', err);
+    errorEl.textContent = 'Incorrect email or password — please try again.';
+    errorEl.style.display = 'block';
+  } finally {
+    if (submitBtn) { submitBtn.textContent = 'Log in →'; submitBtn.disabled = false; }
+  }
 }
 
-function setLikedTrips(list) {
-  localStorage.setItem(TM_LIKED_KEY, JSON.stringify(list));
-}
-
+// ── SAVE / WISHLIST HEARTS — reads and writes the real `saved_trips`
+// table so a saved trip shows up again from any device that logs in.
 document.addEventListener('click', function(e) {
   if (!e.target.classList.contains('card-save')) return;
   const btn = e.target;
 
-  requireAccount(function() {
+  requireAccount(async function() {
     const card = btn.closest('.trip-card');
     const dest = card.querySelector('.card-dest') ? card.querySelector('.card-dest').textContent : 'Trip';
     const price = card.querySelector('.card-price') ? card.querySelector('.card-price').innerHTML : '';
@@ -2756,33 +2896,47 @@ document.addEventListener('click', function(e) {
     btn.textContent = nowSaved ? '♥' : '♡';
     btn.style.color = nowSaved ? 'var(--accent)' : '';
 
-    let liked = getLikedTrips();
+    const currentUser = getUser();
     if (nowSaved) {
-      if (!liked.some(t => t.dest === dest)) liked.push({ dest, price, img });
-      // Write a real row into Supabase so saved trips are actually stored, not just local
-      const currentUser = getUser();
-      if (currentUser && currentUser.id) {
-        sb.from('saved_trips').insert({
-          user_id: currentUser.id, destination: dest, price: price, image_url: img
-        }).then(({ error }) => { if (error) console.error('Save trip failed:', error); });
-      }
+      const { error } = await sb.from('saved_trips').insert({
+        user_id: currentUser.id, destination: dest, price: price, image_url: img
+      });
+      if (error) console.error('Save trip failed:', error);
     } else {
-      liked = liked.filter(t => t.dest !== dest);
+      const { error } = await sb.from('saved_trips').delete()
+        .eq('user_id', currentUser.id).eq('destination', dest);
+      if (error) console.error('Unsave trip failed:', error);
     }
-    setLikedTrips(liked);
 
     showPage('saved');
     renderSavedPage();
   });
 });
 
-function renderSavedPage() {
+async function renderSavedPage() {
   const grid  = document.getElementById('saved-grid');
   const empty = document.getElementById('saved-empty');
   if (!grid) return;
-  const liked = getLikedTrips();
 
-  if (liked.length === 0) {
+  const currentUser = getUser();
+  const emptyText = document.getElementById('saved-empty-text');
+  const emptyBtn  = document.getElementById('saved-empty-btn');
+
+  if (!currentUser) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    if (emptyText) emptyText.textContent = 'Log in to see the trips you\'ve saved.';
+    if (emptyBtn)  { emptyBtn.textContent = 'Log in →'; emptyBtn.setAttribute('onclick', 'openLoginModal()'); }
+    return;
+  }
+  if (emptyText) emptyText.textContent = 'You haven\'t saved any trips yet.';
+  if (emptyBtn)  { emptyBtn.textContent = 'Browse trip inspiration →'; emptyBtn.setAttribute('onclick', "showPage('inspo')"); }
+
+  const { data: liked, error } = await sb.from('saved_trips')
+    .select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+  if (error) { console.error('Loading saved trips failed:', error); return; }
+
+  if (!liked || liked.length === 0) {
     grid.style.display = 'none';
     empty.style.display = 'block';
     return;
@@ -2792,19 +2946,22 @@ function renderSavedPage() {
 
   grid.innerHTML = liked.map(t => `
     <div class="trip-card">
-      <div class="card-img" style="background:url('${t.img}') center/cover;">
+      <div class="card-img" style="background:url('${t.image_url}') center/cover;">
         <div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div>
-        <button class="card-save saved" style="color:var(--accent);" onclick="unsaveTrip('${t.dest.replace(/'/g,"\\'")}')">♥</button>
+        <button class="card-save saved" style="color:var(--accent);" onclick="unsaveTrip('${t.destination.replace(/'/g,"\\'")}')">♥</button>
       </div>
-      <div class="card-body"><div class="card-dest">${t.dest}</div></div>
+      <div class="card-body"><div class="card-dest">${t.destination}</div></div>
       <div class="card-footer"><div class="card-price">${t.price}</div></div>
     </div>
   `).join('');
 }
 
-function unsaveTrip(dest) {
-  const liked = getLikedTrips().filter(t => t.dest !== dest);
-  setLikedTrips(liked);
+async function unsaveTrip(dest) {
+  const currentUser = getUser();
+  if (!currentUser) return;
+  const { error } = await sb.from('saved_trips').delete()
+    .eq('user_id', currentUser.id).eq('destination', dest);
+  if (error) console.error('Unsave trip failed:', error);
   renderSavedPage();
 }
 
@@ -2938,13 +3095,15 @@ function joinWaitlistCTA(btn) {
 // Full inline waitlist sign-up — same fields as the popup, no modal needed
 // since they're already sitting right there on the page.
 async function submitWaitlistFull(btn) {
-  const name    = document.getElementById('wl-name').value.trim();
-  const email   = document.getElementById('wl-email').value.trim();
-  const phone   = document.getElementById('wl-phone').value.trim();
-  const country = document.getElementById('wl-country').value;
-  const errorEl = document.getElementById('wl-error');
+  const name     = document.getElementById('wl-name').value.trim();
+  const email    = document.getElementById('wl-email').value.trim();
+  const password = document.getElementById('wl-password').value;
+  const phone    = document.getElementById('wl-phone').value.trim();
+  const country  = document.getElementById('wl-country').value;
+  const errorEl  = document.getElementById('wl-error');
 
-  if (!name || !email || !email.includes('@') || !phone) {
+  if (!name || !email || !email.includes('@') || !phone || password.length < 6) {
+    errorEl.textContent = 'Please fill in your name, email, a password (6+ characters) and phone.';
     errorEl.style.display = 'block';
     return;
   }
@@ -2954,16 +3113,27 @@ async function submitWaitlistFull(btn) {
   btn.disabled = true;
 
   try {
-    await createTripMadeAccount(name, email, phone, country);
+    const result = await createTripMadeAccount(name, email, phone, country, password);
+
+    if (result && result.pendingConfirmation) {
+      btn.textContent = 'Check your email →';
+      errorEl.style.color = 'var(--green)';
+      errorEl.textContent = 'Almost there — check ' + email + ' for a confirmation link, then log in.';
+      errorEl.style.display = 'block';
+      return;
+    }
 
     btn.textContent = '✓ You\'re on the list!';
     btn.style.background = 'var(--green)';
-    ['wl-name', 'wl-email', 'wl-phone', 'wl-country'].forEach(id => {
+    ['wl-name', 'wl-email', 'wl-password', 'wl-phone', 'wl-country'].forEach(id => {
       document.getElementById(id).disabled = true;
     });
   } catch (err) {
     console.error('Waitlist signup failed:', err);
-    errorEl.textContent = 'Something went wrong — please try again.';
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = (err && err.message === 'ALREADY_REGISTERED')
+      ? 'That email already has an account — log in instead.'
+      : 'Something went wrong — please try again.';
     errorEl.style.display = 'block';
     btn.textContent = 'Join the waitlist →';
     btn.disabled = false;
@@ -3113,19 +3283,14 @@ function updateBudgetDisplay(val) {
   val = parseInt(val);
   const display = document.getElementById('budget-display');
   const isMax = val >= 250000;
-  display.textContent = isMax ? formatPrice(250000) + '+' : formatPrice(val);
-
-  const rangeLabels = document.getElementById('budget-range-labels');
-  if (rangeLabels) {
-    rangeLabels.innerHTML = '<span>' + formatPrice(500) + '</span><span>' + formatPrice(250000) + '+</span>';
-  }
+  display.textContent = isMax ? '$250,000+' : '$' + val.toLocaleString();
 }
 
 function getBudgetValue() {
   const el = document.getElementById('f-budget-slider');
   if (!el) return '';
   const val = parseInt(el.value);
-  return val >= 250000 ? formatPrice(250000) + '+' : formatPrice(val);
+  return val >= 250000 ? '$250,000+' : '$' + val.toLocaleString();
 }
 
 // ── DATE SYNC ──────────────────────────────────────────────
@@ -3231,13 +3396,6 @@ function selectTripType(el) {
     pax.style.color = 'var(--text-dim)';
     pax.style.cursor = 'not-allowed';
     pax.style.borderColor = '';
-  } else if (label === 'Couple') {
-    pax.value = '2';
-    pax.disabled = true;
-    pax.style.background = 'var(--bg2)';
-    pax.style.color = 'var(--text-dim)';
-    pax.style.cursor = 'not-allowed';
-    pax.style.borderColor = '';
   } else if (pax.disabled) {
     pax.disabled = false;
     pax.value = '';
@@ -3285,8 +3443,9 @@ function clearFileSelect() {
 async function uploadToStorage(file) {
   if (!file) return '';
   try {
-    // Needs the same anonymous Supabase session created at sign-up — makes sure
-    // whoever's uploading is a real, identifiable account, not anonymous chaos.
+    // Normally the visitor already has a real account by this point (the form
+    // is gated behind sign-up). Falls back to an anonymous Supabase session
+    // only if somehow reached before that, so the upload still has an owner.
     let user = getUser();
     if (!user) {
       const { data, error } = await sb.auth.signInAnonymously();
@@ -3468,11 +3627,5 @@ window.showPage = function(id, linkEl) {
   }
 };
 </script>
-
-
-
-<div class="flatpickr-calendar rangeMode animate" tabindex="-1"><div class="flatpickr-months"><span class="flatpickr-prev-month flatpickr-disabled"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17 17"><g></g><path d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"></path></svg></span><div class="flatpickr-month"><div class="flatpickr-current-month"><select class="flatpickr-monthDropdown-months" aria-label="Month" tabindex="-1"><option class="flatpickr-monthDropdown-month" value="7" tabindex="-1">August</option><option class="flatpickr-monthDropdown-month" value="8" tabindex="-1">September</option><option class="flatpickr-monthDropdown-month" value="9" tabindex="-1">October</option><option class="flatpickr-monthDropdown-month" value="10" tabindex="-1">November</option><option class="flatpickr-monthDropdown-month" value="11" tabindex="-1">December</option></select><div class="numInputWrapper"><input class="numInput cur-year" type="number" tabindex="-1" aria-label="Year" min="2026"><span class="arrowUp"></span><span class="arrowDown"></span></div></div></div><span class="flatpickr-next-month"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17 17"><g></g><path d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"></path></svg></span></div><div class="flatpickr-innerContainer"><div class="flatpickr-rContainer"><div class="flatpickr-weekdays"><div class="flatpickr-weekdaycontainer">
-      <span class="flatpickr-weekday">
-        Sun</span><span class="flatpickr-weekday">Mon</span><span class="flatpickr-weekday">Tue</span><span class="flatpickr-weekday">Wed</span><span class="flatpickr-weekday">Thu</span><span class="flatpickr-weekday">Fri</span><span class="flatpickr-weekday">Sat
-      </span>
-      </div></div><div class="flatpickr-days" tabindex="-1"><div class="dayContainer"><span class="flatpickr-day prevMonthDay flatpickr-disabled" aria-label="July 26, 2026">26</span><span class="flatpickr-day prevMonthDay flatpickr-disabled" aria-label="July 27, 2026">27</span><span class="flatpickr-day prevMonthDay flatpickr-disabled" aria-label="July 28, 2026">28</span><span class="flatpickr-day prevMonthDay flatpickr-disabled" aria-label="July 29, 2026">29</span><span class="flatpickr-day prevMonthDay flatpickr-disabled" aria-label="July 30, 2026">30</span><span class="flatpickr-day prevMonthDay flatpickr-disabled" aria-label="July 31, 2026">31</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 1, 2026">1</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 2, 2026">2</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 3, 2026">3</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 4, 2026">4</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 5, 2026">5</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 6, 2026">6</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 7, 2026">7</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 8, 2026">8</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 9, 2026">9</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 10, 2026">10</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 11, 2026">11</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 12, 2026">12</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 13, 2026">13</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 14, 2026">14</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 15, 2026">15</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 16, 2026">16</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 17, 2026">17</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 18, 2026">18</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 19, 2026">19</span><span class="flatpickr-day flatpickr-disabled" aria-label="August 20, 2026">20</span><span class="flatpickr-day today" aria-label="August 21, 2026" aria-current="date" tabindex="-1">21</span><span class="flatpickr-day" aria-label="August 22, 2026" tabindex="-1">22</span><span class="flatpickr-day" aria-label="August 23, 2026" tabindex="-1">23</span><span class="flatpickr-day" aria-label="August 24, 2026" tabindex="-1">24</span><span class="flatpickr-day" aria-label="August 25, 2026" tabindex="-1">25</span><span class="flatpickr-day" aria-label="August 26, 2026" tabindex="-1">26</span><span class="flatpickr-day" aria-label="August 27, 2026" tabindex="-1">27</span><span class="flatpickr-day" aria-label="August 28, 2026" tabindex="-1">28</span><span class="flatpickr-day" aria-label="August 29, 2026" tabindex="-1">29</span><span class="flatpickr-day" aria-label="August 30, 2026" tabindex="-1">30</span><span class="flatpickr-day" aria-label="August 31, 2026" tabindex="-1">31</span><span class="flatpickr-day nextMonthDay" aria-label="September 1, 2026" tabindex="-1">1</span><span class="flatpickr-day nextMonthDay" aria-label="September 2, 2026" tabindex="-1">2</span><span class="flatpickr-day nextMonthDay" aria-label="September 3, 2026" tabindex="-1">3</span><span class="flatpickr-day nextMonthDay" aria-label="September 4, 2026" tabindex="-1">4</span><span class="flatpickr-day nextMonthDay" aria-label="September 5, 2026" tabindex="-1">5</span></div></div></div></div></div></body></html>
+</body>
+</html>
