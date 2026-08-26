@@ -2696,6 +2696,24 @@ function getUser() {
   return _currentUser;
 }
 
+// Turns Supabase's raw auth error messages into something a visitor can act
+// on, instead of a generic "something went wrong" that hides what actually
+// happened (and makes real bugs impossible to tell apart from, e.g., simply
+// asking for another link too soon).
+function friendlyAuthError(err) {
+  const msg = (err && err.message) || '';
+  if (/after \d+ seconds/i.test(msg)) {
+    return 'You just requested a link — ' + msg.replace(/^.*?(after \d+ seconds)/i, 'please wait $1') + ' before asking for another.';
+  }
+  if (/rate limit/i.test(msg)) {
+    return 'Too many login emails sent recently — please wait a few minutes and try again.';
+  }
+  if (/signups not allowed/i.test(msg)) {
+    return 'New sign-ups aren\'t open right now — please check back soon.';
+  }
+  return msg || 'Something went wrong — please try again.';
+}
+
 // Loads the profile row for a Supabase Auth user into the in-memory cache
 // and refreshes the nav. Called on initial page load and after every
 // auth change so `_currentUser` always reflects the real session. Creates
@@ -2751,8 +2769,34 @@ async function initAuth() {
     }
   });
 
+  handleAuthLinkError();
+
   const { data: { session } } = await sb.auth.getSession();
   await hydrateCurrentUser(session ? session.user : null);
+}
+
+// If a magic link was clicked but was already used, too old, or otherwise
+// invalid, Supabase redirects back with #error=... in the URL instead of a
+// session. Surface that clearly instead of leaving a cryptic error sitting
+// in the address bar with nothing on-page explaining it.
+function handleAuthLinkError() {
+  const hash = window.location.hash;
+  if (!hash || hash.indexOf('error=') === -1) return;
+
+  const params = new URLSearchParams(hash.slice(1));
+  const code = params.get('error_code');
+
+  let message = 'That link no longer works — please request a new one.';
+  if (code === 'otp_expired') {
+    message = 'That link has expired or was already used — request a fresh one below.';
+  }
+
+  openLoginModal();
+  const errorEl = document.getElementById('li-error');
+  if (errorEl) { errorEl.textContent = message; errorEl.style.display = 'block'; }
+
+  // Clean the error out of the visible URL so it doesn't linger on refresh/share.
+  history.replaceState(null, '', window.location.pathname + window.location.search);
 }
 document.addEventListener('DOMContentLoaded', initAuth);
 
@@ -2760,8 +2804,18 @@ function renderAuthNav() {
   const el = document.getElementById('nav-account');
   if (!el) return;
   if (_currentUser) {
-    const first = (_currentUser.name || _currentUser.email || 'there').split(' ')[0];
-    el.innerHTML = 'Hi, ' + first + ' · <a href="javascript:void(0)" style="color:var(--accent);" onclick="logoutUser()">Log out</a>';
+    const name = _currentUser.name || _currentUser.email || 'there';
+    const email = _currentUser.email || '';
+    const initial = (name.trim().charAt(0) || '?').toUpperCase();
+    el.innerHTML =
+      '<span style="display:inline-flex;align-items:center;gap:8px;">' +
+        '<span style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:white;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">' + initial + '</span>' +
+        '<span style="line-height:1.25;text-align:left;">' +
+          '<span style="display:block;font-weight:600;color:var(--text);font-size:13px;">' + name + '</span>' +
+          (email ? '<span style="display:block;font-size:11px;color:var(--text-muted);">' + email + '</span>' : '') +
+        '</span>' +
+        '<a href="javascript:void(0)" style="color:var(--accent);margin-left:2px;font-size:12px;" onclick="logoutUser()">Log out</a>' +
+      '</span>';
   } else {
     el.innerHTML = '<a href="javascript:void(0)" style="color:var(--text-muted);" onclick="openLoginModal()">Log in</a>';
   }
@@ -2826,7 +2880,7 @@ async function submitSignup() {
   } catch (err) {
     console.error('Signup failed:', err);
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = 'Something went wrong — please try again.';
+    errorEl.textContent = friendlyAuthError(err);
     errorEl.style.display = 'block';
     if (submitBtn) { submitBtn.textContent = 'Email me a magic link →'; submitBtn.disabled = false; }
   }
@@ -2859,7 +2913,8 @@ async function submitLogin() {
     if (submitBtn) submitBtn.textContent = 'Link sent ✓';
   } catch (err) {
     console.error('Login failed:', err);
-    errorEl.textContent = 'Something went wrong — please try again.';
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = friendlyAuthError(err);
     errorEl.style.display = 'block';
     if (submitBtn) { submitBtn.textContent = 'Email me a magic link →'; submitBtn.disabled = false; }
   }
@@ -3117,7 +3172,7 @@ async function submitWaitlistFull(btn) {
   } catch (err) {
     console.error('Waitlist signup failed:', err);
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = 'Something went wrong — please try again.';
+    errorEl.textContent = friendlyAuthError(err);
     errorEl.style.display = 'block';
     btn.textContent = 'Join the waitlist →';
     btn.disabled = false;
