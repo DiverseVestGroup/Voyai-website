@@ -841,7 +841,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>Be first to travel smarter</h2>
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div id="waitlist-form-wrap">
-        <div class="wl-form-full">
+        <div id="wl-step-details" class="wl-form-full">
           <input type="text" id="wl-name" placeholder="Full name">
           <input type="email" id="wl-email" placeholder="Email address">
           <input type="tel" id="wl-phone" placeholder="Phone number">
@@ -851,6 +851,15 @@ footer p { font-size:13px; color:var(--text-dim); }
             <option>United Kingdom</option><option>Canada</option><option>Singapore</option>
             <option>Other</option>
           </select>
+          <select id="wl-heard-from">
+            <option value="">How did you hear about us? (optional)</option>
+            <option>Instagram</option><option>TikTok</option><option>Facebook</option>
+            <option>Google search</option><option>Friend or family</option>
+            <option>Word of mouth</option><option>Other</option>
+          </select>
+        </div>
+        <div id="wl-step-code" style="display:none;max-width:280px;margin:0 auto;">
+          <input id="wl-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
         </div>
         <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email and phone.</p>
         <button class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
@@ -2390,9 +2399,9 @@ footer p { font-size:13px; color:var(--text-dim); }
       <span style="font-family:&#39;Syne&#39;,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Quick sign up</h3>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Just a few details so we can save this for you and send your itinerary.</p>
+    <p id="su-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Just a few details so we can save this for you and send your itinerary.</p>
 
-    <div style="display:flex;flex-direction:column;gap:12px;">
+    <div id="su-step-details" style="display:flex;flex-direction:column;gap:12px;">
       <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-phone" type="tel" placeholder="Phone number" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
@@ -2402,11 +2411,21 @@ footer p { font-size:13px; color:var(--text-dim); }
         <option>United Kingdom</option><option>Canada</option><option>Singapore</option>
         <option>Other</option>
       </select>
+      <select id="su-heard-from" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;background:white;color:var(--text-muted);">
+        <option value="">How did you hear about us? (optional)</option>
+        <option>Instagram</option><option>TikTok</option><option>Facebook</option>
+        <option>Google search</option><option>Friend or family</option>
+        <option>Word of mouth</option><option>Other</option>
+      </select>
+    </div>
+
+    <div id="su-step-code" style="display:none;flex-direction:column;gap:12px;">
+      <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
 
     <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
 
-    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a magic link →</button>
+    <button class="btn-primary" id="su-submit-btn" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a code →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">Already have an account? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeSignupModal();openLoginModal()">Log in</a></p>
   </div>
@@ -2420,17 +2439,21 @@ footer p { font-size:13px; color:var(--text-dim); }
       <span style="font-family:&#39;Syne&#39;,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em;">Trip<span style="color:var(--accent);">Made</span></span>
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Log in</h3>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your email and we&#39;ll send you a magic link — pick up right where you left off, on any device.</p>
+    <p id="li-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your email and we&#39;ll send you a login code — pick up right where you left off, on any device.</p>
 
-    <div style="display:flex;flex-direction:column;gap:12px;">
+    <div id="li-step-email" style="display:flex;flex-direction:column;gap:12px;">
       <input id="li-email" type="email" placeholder="Email address" autocomplete="username" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+    </div>
+
+    <div id="li-step-code" style="display:none;flex-direction:column;gap:12px;">
+      <input id="li-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
 
     <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter a valid email address.</p>
 
-    <button class="btn-primary" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a magic link →</button>
+    <button class="btn-primary" id="li-submit-btn" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a code →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeLoginModal()">Cancel</button>
-    <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">New here? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeLoginModal();document.getElementById(&#39;signup-modal&#39;).style.display=&#39;flex&#39;">Sign up</a></p>
+    <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">New here? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeLoginModal();openSignupModal()">Sign up</a></p>
   </div>
 </div>
 
@@ -2691,11 +2714,25 @@ function filterCards() {
 // synchronous getUser() everywhere it already does.
 let _currentUser = null;
 let _pendingSignupCallback = null;
-// Name/phone/country typed into THIS tab's signup form, applied to the
-// profile row once the magic link is clicked and a real session exists.
-// (Also stored in the auth user's own metadata as a fallback, in case the
-// link gets clicked on a different device/tab than the one that signed up.)
+// Name/phone/country/heardFrom typed into THIS tab's signup form, applied
+// to the profile row once the emailed code is verified and a real session
+// exists. (Also stored in the auth user's own metadata as a fallback, in
+// case the link gets clicked on a different device/tab than the one that
+// signed up.)
 let _pendingProfileData = null;
+
+// Captured once, on load — whichever campaign link brought this visitor in,
+// silently attached to their profile if/when they sign up. Doesn't require
+// them to tell us anything; just reads standard utm_* query params if a
+// marketing link happens to include them.
+const _utmParams = (function() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    utmSource: p.get('utm_source') || '',
+    utmMedium: p.get('utm_medium') || '',
+    utmCampaign: p.get('utm_campaign') || ''
+  };
+})();
 
 function getUser() {
   return _currentUser;
@@ -2735,7 +2772,11 @@ async function hydrateCurrentUser(authUser) {
       email: authUser.email || '',
       name: (_pendingProfileData && _pendingProfileData.name) || meta.name || '',
       phone: (_pendingProfileData && _pendingProfileData.phone) || meta.phone || '',
-      country: (_pendingProfileData && _pendingProfileData.country) || meta.country || ''
+      country: (_pendingProfileData && _pendingProfileData.country) || meta.country || '',
+      heard_from: (_pendingProfileData && _pendingProfileData.heardFrom) || meta.heardFrom || '',
+      utm_source: _utmParams.utmSource,
+      utm_medium: _utmParams.utmMedium,
+      utm_campaign: _utmParams.utmCampaign
     };
     const { data: created } = await sb.from('profiles').upsert(seed).select().maybeSingle();
     profile = created || seed;
@@ -2788,9 +2829,11 @@ async function initAuth() {
   await hydrateCurrentUser(session ? session.user : null);
 }
 
-// If a magic link was clicked but was already used, too old, or otherwise
-// invalid, Supabase redirects back with #error=... in the URL instead of a
-// session. Surface that clearly instead of leaving a cryptic error sitting
+// Fallback safety net: if the email's link is ever clicked instead of the
+// code being typed in (e.g. if the email template still shows both), and
+// that link was already used, too old, or otherwise invalid, Supabase
+// redirects back with #error=... in the URL instead of a session. Surface
+// that clearly instead of leaving a cryptic error sitting
 // in the address bar with nothing on-page explaining it.
 function handleAuthLinkError() {
   const hash = window.location.hash;
@@ -2847,7 +2890,11 @@ function renderAuthNav() {
         '</div>' +
       '</div>';
   } else {
-    el.innerHTML = '<a href="javascript:void(0)" style="color:var(--text-muted);" onclick="openLoginModal()">Log in</a>';
+    el.innerHTML =
+      '<span style="display:inline-flex;align-items:center;gap:14px;">' +
+        '<a href="javascript:void(0)" style="color:var(--text-muted);font-size:14px;" onclick="openLoginModal()">Log in</a>' +
+        '<button type="button" onclick="openSignupModal()" style="background:var(--accent);color:white;border:none;padding:9px 18px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity=&#39;.88&#39;" onmouseout="this.style.opacity=&#39;1&#39;">Sign up</button>' +
+      '</span>';
   }
   renderWaitlistCTA();
 }
@@ -2943,6 +2990,7 @@ function renderWaitlistCTA() {
 function requireAccount(callback) {
   if (getUser()) { callback(); return; }
   _pendingSignupCallback = callback;
+  resetSignupModalToDetailsStep();
   document.getElementById('signup-modal').style.display = 'flex';
 }
 
@@ -2952,7 +3000,13 @@ function closeSignupModal() {
 }
 
 function openLoginModal() {
+  resetLoginModalToEmailStep();
   document.getElementById('login-modal').style.display = 'flex';
+}
+
+function openSignupModal() {
+  resetSignupModalToDetailsStep();
+  document.getElementById('signup-modal').style.display = 'flex';
 }
 
 function closeLoginModal() {
@@ -2960,57 +3014,137 @@ function closeLoginModal() {
   document.getElementById('li-error').style.display = 'none';
 }
 
-async function submitSignup() {
-  const name    = document.getElementById('su-name').value.trim();
-  const email   = document.getElementById('su-email').value.trim();
-  const phone   = document.getElementById('su-phone').value.trim();
-  const country = document.getElementById('su-country').value;
+// Puts the sign-up modal back to "enter your details" — used whenever it's
+// (re)opened, so a stale "enter your code" state from a previous attempt
+// never lingers.
+function resetSignupModalToDetailsStep() {
+  const details = document.getElementById('su-step-details');
+  const code    = document.getElementById('su-step-code');
+  const intro   = document.getElementById('su-intro');
+  const btn     = document.getElementById('su-submit-btn');
+  if (details) details.style.display = 'flex';
+  if (code)    code.style.display = 'none';
+  if (intro)   intro.textContent = 'Just a few details so we can save this for you and send your itinerary.';
+  if (btn)     { btn.textContent = 'Email me a code →'; btn.disabled = false; btn.onclick = submitSignup; }
+  const codeInput = document.getElementById('su-code');
+  if (codeInput) codeInput.value = '';
   const errorEl = document.getElementById('su-error');
+  if (errorEl) errorEl.style.display = 'none';
+}
+
+// Same idea for the log-in modal.
+function resetLoginModalToEmailStep() {
+  const step1 = document.getElementById('li-step-email');
+  const step2 = document.getElementById('li-step-code');
+  const intro = document.getElementById('li-intro');
+  const btn   = document.getElementById('li-submit-btn');
+  if (step1) step1.style.display = 'flex';
+  if (step2) step2.style.display = 'none';
+  if (intro) intro.textContent = 'Enter your email and we\'ll send you a login code — pick up right where you left off, on any device.';
+  if (btn)   { btn.textContent = 'Email me a code →'; btn.disabled = false; btn.onclick = submitLogin; }
+  const codeInput = document.getElementById('li-code');
+  if (codeInput) codeInput.value = '';
+  const errorEl = document.getElementById('li-error');
+  if (errorEl) errorEl.style.display = 'none';
+}
+
+// STEP 1 — request a 6-digit code by email. A code (rather than a link)
+// means whoever checks the email can hand the code back to the ORIGINAL
+// device/browser that asked for it, instead of getting logged in on
+// whichever device the email happens to be opened on.
+async function submitSignup() {
+  const name      = document.getElementById('su-name').value.trim();
+  const email     = document.getElementById('su-email').value.trim();
+  const phone     = document.getElementById('su-phone').value.trim();
+  const country   = document.getElementById('su-country').value;
+  const heardFrom = document.getElementById('su-heard-from').value;
+  const errorEl   = document.getElementById('su-error');
 
   if (!name || !email || !email.includes('@') || !phone) {
+    errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Please fill in your name, email and phone.';
     errorEl.style.display = 'block';
     return;
   }
   errorEl.style.display = 'none';
 
-  const submitBtn = document.querySelector('#signup-modal .btn-primary');
-  if (submitBtn) { submitBtn.textContent = 'Sending link...'; submitBtn.disabled = true; }
+  const submitBtn = document.getElementById('su-submit-btn');
+  if (submitBtn) { submitBtn.textContent = 'Sending code...'; submitBtn.disabled = true; }
 
   try {
-    _pendingProfileData = { name, phone, country };
+    _pendingProfileData = { name, phone, country, heardFrom };
     const { error } = await sb.auth.signInWithOtp({
       email,
-      options: { data: { name, phone, country }, emailRedirectTo: window.location.origin + window.location.pathname }
+      options: { data: { name, phone, country, heardFrom }, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
 
-    errorEl.style.color = 'var(--green)';
-    errorEl.textContent = 'Check ' + email + ' for a magic link — click it and this page will pick up right where you left off.';
-    errorEl.style.display = 'block';
-    if (submitBtn) submitBtn.textContent = 'Link sent ✓';
+    document.getElementById('su-step-details').style.display = 'none';
+    document.getElementById('su-step-code').style.display = 'flex';
+    document.getElementById('su-intro').textContent = 'Enter the 6-digit code we sent to ' + email + '.';
+    if (submitBtn) {
+      submitBtn.textContent = 'Verify code →';
+      submitBtn.disabled = false;
+      submitBtn.onclick = function() { verifySignupCode(email); };
+    }
+    const codeInput = document.getElementById('su-code');
+    if (codeInput) codeInput.focus();
   } catch (err) {
     console.error('Signup failed:', err);
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = friendlyAuthError(err);
     errorEl.style.display = 'block';
-    if (submitBtn) { submitBtn.textContent = 'Email me a magic link →'; submitBtn.disabled = false; }
+    if (submitBtn) { submitBtn.textContent = 'Email me a code →'; submitBtn.disabled = false; }
   }
 }
 
+// STEP 2 — verify the code the visitor typed back in. Success here hands
+// back a real session synchronously (no URL/redirect involved at all), and
+// the existing onAuthStateChange listener takes it from there: hydrates the
+// profile, closes the modal, and resumes whatever was pending.
+async function verifySignupCode(email) {
+  const code    = document.getElementById('su-code').value.trim();
+  const errorEl = document.getElementById('su-error');
+
+  if (!code) {
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = 'Enter the 6-digit code from your email.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  const submitBtn = document.getElementById('su-submit-btn');
+  if (submitBtn) { submitBtn.textContent = 'Verifying...'; submitBtn.disabled = true; }
+
+  try {
+    const { error } = await sb.auth.verifyOtp({ email, token: code, type: 'email' });
+    if (error) throw error;
+  } catch (err) {
+    console.error('Code verification failed:', err);
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = friendlyAuthError(err);
+    errorEl.style.display = 'block';
+    if (submitBtn) { submitBtn.textContent = 'Verify code →'; submitBtn.disabled = false; }
+  }
+}
+
+// STEP 1 — request a 6-digit code by email (see submitSignup for why a code
+// beats a link: it's typed back into the same device that asked for it).
 async function submitLogin() {
   const email   = document.getElementById('li-email').value.trim();
   const errorEl = document.getElementById('li-error');
 
   if (!email || !email.includes('@')) {
+    errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Please enter a valid email address.';
     errorEl.style.display = 'block';
     return;
   }
   errorEl.style.display = 'none';
 
-  const submitBtn = document.querySelector('#login-modal .btn-primary');
-  if (submitBtn) { submitBtn.textContent = 'Sending link...'; submitBtn.disabled = true; }
+  const submitBtn = document.getElementById('li-submit-btn');
+  if (submitBtn) { submitBtn.textContent = 'Sending code...'; submitBtn.disabled = true; }
 
   try {
     const { error } = await sb.auth.signInWithOtp({
@@ -3019,16 +3153,52 @@ async function submitLogin() {
     });
     if (error) throw error;
 
-    errorEl.style.color = 'var(--green)';
-    errorEl.textContent = 'Check ' + email + ' for a magic link — click it and this page will log you in automatically.';
-    errorEl.style.display = 'block';
-    if (submitBtn) submitBtn.textContent = 'Link sent ✓';
+    document.getElementById('li-step-email').style.display = 'none';
+    document.getElementById('li-step-code').style.display = 'flex';
+    document.getElementById('li-intro').textContent = 'Enter the 6-digit code we sent to ' + email + '.';
+    if (submitBtn) {
+      submitBtn.textContent = 'Verify code →';
+      submitBtn.disabled = false;
+      submitBtn.onclick = function() { verifyLoginCode(email); };
+    }
+    const codeInput = document.getElementById('li-code');
+    if (codeInput) codeInput.focus();
   } catch (err) {
     console.error('Login failed:', err);
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = friendlyAuthError(err);
     errorEl.style.display = 'block';
-    if (submitBtn) { submitBtn.textContent = 'Email me a magic link →'; submitBtn.disabled = false; }
+    if (submitBtn) { submitBtn.textContent = 'Email me a code →'; submitBtn.disabled = false; }
+  }
+}
+
+// STEP 2 — verify the code. Success hands back a session synchronously;
+// the existing onAuthStateChange listener closes the modal and resumes
+// whatever was pending.
+async function verifyLoginCode(email) {
+  const code    = document.getElementById('li-code').value.trim();
+  const errorEl = document.getElementById('li-error');
+
+  if (!code) {
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = 'Enter the 6-digit code from your email.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  const submitBtn = document.getElementById('li-submit-btn');
+  if (submitBtn) { submitBtn.textContent = 'Verifying...'; submitBtn.disabled = true; }
+
+  try {
+    const { error } = await sb.auth.verifyOtp({ email, token: code, type: 'email' });
+    if (error) throw error;
+  } catch (err) {
+    console.error('Code verification failed:', err);
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = friendlyAuthError(err);
+    errorEl.style.display = 'block';
+    if (submitBtn) { submitBtn.textContent = 'Verify code →'; submitBtn.disabled = false; }
   }
 }
 
@@ -3054,7 +3224,7 @@ document.addEventListener('click', function(e) {
     const currentUser = getUser();
     if (nowSaved) {
       const { error } = await sb.from('saved_trips').insert({
-        user_id: currentUser.id, destination: dest, price: price, image_url: img
+        user_id: currentUser.id, email: currentUser.email, destination: dest, price: price, image_url: img
       });
       if (error) console.error('Save trip failed:', error);
     } else {
@@ -3249,47 +3419,85 @@ function joinWaitlistCTA(btn) {
 
 // Full inline waitlist sign-up — same fields as the popup, no modal needed
 // since they're already sitting right there on the page.
+// STEP 1 — request a 6-digit code by email.
 async function submitWaitlistFull(btn) {
-  const name    = document.getElementById('wl-name').value.trim();
-  const email   = document.getElementById('wl-email').value.trim();
-  const phone   = document.getElementById('wl-phone').value.trim();
-  const country = document.getElementById('wl-country').value;
-  const errorEl = document.getElementById('wl-error');
+  const name      = document.getElementById('wl-name').value.trim();
+  const email     = document.getElementById('wl-email').value.trim();
+  const phone     = document.getElementById('wl-phone').value.trim();
+  const country   = document.getElementById('wl-country').value;
+  const heardFrom = document.getElementById('wl-heard-from').value;
+  const errorEl   = document.getElementById('wl-error');
 
   if (!name || !email || !email.includes('@') || !phone) {
+    errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Please fill in your name, email and phone.';
     errorEl.style.display = 'block';
     return;
   }
   errorEl.style.display = 'none';
 
-  btn.textContent = 'Sending link...';
+  btn.textContent = 'Sending code...';
   btn.disabled = true;
 
   try {
-    _pendingProfileData = { name, phone, country };
-    // Once they click the emailed link and a real session exists, join them
-    // to the waitlist automatically — that's the whole point of this form.
+    _pendingProfileData = { name, phone, country, heardFrom };
+    // Once the code is verified and a real session exists, join them to the
+    // waitlist automatically — that's the whole point of this form.
     _pendingSignupCallback = joinWaitlist;
     const { error } = await sb.auth.signInWithOtp({
       email,
-      options: { data: { name, phone, country }, emailRedirectTo: window.location.origin + window.location.pathname }
+      options: { data: { name, phone, country, heardFrom }, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
 
-    btn.textContent = 'Check your email →';
+    document.getElementById('wl-step-details').style.display = 'none';
+    document.getElementById('wl-step-code').style.display = 'block';
     errorEl.style.color = 'var(--green)';
-    errorEl.textContent = 'Almost there — check ' + email + ' for a magic link to finish joining.';
+    errorEl.textContent = 'Enter the 6-digit code we sent to ' + email + '.';
     errorEl.style.display = 'block';
-    ['wl-name', 'wl-email', 'wl-phone', 'wl-country'].forEach(id => {
-      document.getElementById(id).disabled = true;
-    });
+    btn.textContent = 'Verify code →';
+    btn.disabled = false;
+    btn.onclick = function() { verifyWaitlistCode(email, btn); };
+    const codeInput = document.getElementById('wl-code');
+    if (codeInput) codeInput.focus();
   } catch (err) {
     console.error('Waitlist signup failed:', err);
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = friendlyAuthError(err);
     errorEl.style.display = 'block';
     btn.textContent = 'Join the waitlist →';
+    btn.disabled = false;
+  }
+}
+
+// STEP 2 — verify the code. Success hands back a session synchronously;
+// the existing onAuthStateChange listener runs the pending joinWaitlist()
+// callback and renderWaitlistCTA() swaps this whole form out for the
+// logged-in button — nothing else to do here.
+async function verifyWaitlistCode(email, btn) {
+  const code    = document.getElementById('wl-code').value.trim();
+  const errorEl = document.getElementById('wl-error');
+
+  if (!code) {
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = 'Enter the 6-digit code from your email.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+
+  try {
+    const { error } = await sb.auth.verifyOtp({ email, token: code, type: 'email' });
+    if (error) throw error;
+  } catch (err) {
+    console.error('Code verification failed:', err);
+    errorEl.style.color = 'var(--accent)';
+    errorEl.textContent = friendlyAuthError(err);
+    errorEl.style.display = 'block';
+    btn.textContent = 'Verify code →';
     btn.disabled = false;
   }
 }
@@ -3716,6 +3924,32 @@ async function submitForm() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
   });
+
+  // Also keep a queryable copy in Supabase — this form captures the richest
+  // signal we have of real travel intent (destination, dates, budget, trip
+  // vibe, party composition), and until now it only ever left the site via
+  // the webhook above with nothing kept on our side to query later.
+  const loggedInUser = getUser();
+  sb.from('itinerary_requests').insert({
+    user_id: loggedInUser ? loggedInUser.id : null,
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    destination: formData.destination,
+    depart_date: formData.departDate,
+    return_date: formData.returnDate,
+    flying_from: formData.flyingFrom,
+    travellers: formData.travellers,
+    age_range: formData.ageRange,
+    occasion: formData.occasion,
+    budget: formData.budget,
+    vibes: formData.vibes,
+    accom_notes: formData.accomNotes,
+    must_have: formData.mustHave,
+    avoid: formData.avoid,
+    existing_booking: formData.existing,
+    notes: formData.notes
+  }).then(({ error }) => { if (error) console.error('Saving itinerary request failed:', error); });
 
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
