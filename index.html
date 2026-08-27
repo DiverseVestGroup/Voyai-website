@@ -892,6 +892,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button class="cat-tab" data-cat="golf" onclick="setCat(this)">⛳ Golf <span class="tc">5</span></button>
       <button class="cat-tab" data-cat="romantic" onclick="setCat(this)">🌹 Romantic <span class="tc">8</span></button>
       <button class="cat-tab" data-cat="adventure" onclick="setCat(this)">🏄 Adventure <span class="tc">6</span></button>
+      <button class="cat-tab" data-cat="relax" onclick="setCat(this)">🏖️ Beach &amp; relax <span class="tc">4</span></button>
     </div>
   </div>
 
@@ -910,10 +911,10 @@ footer p { font-size:13px; color:var(--text-dim); }
     <button class="f-chip" data-group="duration" data-dur="2weeks" onclick="toggleF(this,&#39;duration&#39;)">2 weeks</button>
     <button class="f-chip" data-group="duration" data-dur="1month" onclick="toggleF(this,&#39;duration&#39;)">1 month+</button>
     <div class="f-divider"></div>
-    <select class="f-select" data-group="region"><option>Any region</option><option>Europe</option><option>Asia</option><option>Americas</option><option>Middle East</option><option>Africa</option><option>Pacific</option></select>
-    <select class="f-select" data-group="groupsize"><option>Any group size</option><option>Solo</option><option>Couple</option><option>Small group (3–6)</option><option>Large group (7+)</option></select>
+    <select class="f-select" data-group="region" onchange="filterCards()"><option>Any region</option><option>Europe</option><option>Asia</option><option>Americas</option><option>Middle East</option><option>Africa</option><option>Pacific</option></select>
+    <select class="f-select" data-group="groupsize" onchange="filterCards()"><option>Any group size</option><option>Solo</option><option>Couple</option><option>Small group (3–6)</option><option>Large group (7+)</option></select>
     <div class="f-divider"></div>
-    <select class="f-select" id="currency-select" onchange="applyCurrency(this.value)">
+    <select class="f-select currency-picker" id="currency-select" onchange="applyCurrency(this.value)">
       <option value="AUD">AUD (A$)</option>
       <option value="USD">USD (US$)</option>
       <option value="EUR">EUR (€)</option>
@@ -950,7 +951,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
     <!-- Bali -->
-    <div class="trip-card" data-cat="honeymoon romantic" data-budget="4200" data-dur="10" data-region="Asia" data-group="Couple">
+    <div class="trip-card" data-cat="honeymoon romantic relax" data-budget="4200" data-dur="10" data-region="Asia" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Bali, Indonesia</div><div class="card-sub">10 days · Couple · Luxury &amp; romance</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">💍 Honeymoon</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🧖 Spa included</span></div></div>
       <div class="card-footer"><div class="card-price">$4,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
@@ -986,7 +987,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-footer"><div class="card-price">$2,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
     <!-- Maldives -->
-    <div class="trip-card" data-cat="honeymoon romantic" data-budget="8900" data-dur="7" data-region="Asia" data-group="Couple">
+    <div class="trip-card" data-cat="honeymoon romantic relax" data-budget="8900" data-dur="7" data-region="Asia" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Maldives</div><div class="card-sub">7 days · Couple · Overwater villa</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🤿 Diving</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🌅 Sunsets</span></div></div>
       <div class="card-footer"><div class="card-price">$8,900 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
@@ -999,7 +1000,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
 
     <!-- Santorini -->
-    <div class="trip-card" data-cat="honeymoon romantic" data-budget="4200" data-dur="7" data-region="Europe" data-group="Couple">
+    <div class="trip-card" data-cat="honeymoon romantic relax" data-budget="4200" data-dur="7" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Romantic</span></div>
       <div class="card-body"><div class="card-dest">Santorini, Greece</div><div class="card-sub">7 days · Couple · Caldera views &amp; sunsets</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌅 Oia sunsets</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚢 Catamaran</span></div></div>
       <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
@@ -1072,7 +1073,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-footer"><div class="card-price">$4,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
 
-    <div class="trip-card trip-card-more" data-cat="honeymoon romantic" data-budget="5600" data-dur="7" data-region="Pacific" data-group="Couple">
+    <div class="trip-card trip-card-more" data-cat="honeymoon romantic relax" data-budget="5600" data-dur="7" data-region="Pacific" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Fiji</div><div class="card-sub">7 days · Couple · Overwater bure &amp; reef</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌺 Private island</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🤿 Snorkelling</span></div></div>
       <div class="card-footer"><div class="card-price">$5,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
@@ -2282,12 +2283,22 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Total budget per person <span>— all in including flights</span></label>
         <div style="background:white;border:1.5px solid var(--border-mid);border-radius:var(--radius);padding:24px 22px 20px;">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;gap:12px;">
             <span id="budget-display" style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;color:var(--accent);">$8,000</span>
+            <select id="f-currency" class="currency-picker" onchange="onFormCurrencyChange(this.value)" style="padding:8px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:13px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;background:white;flex-shrink:0;">
+              <option value="AUD">AUD (A$)</option>
+              <option value="USD">USD (US$)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="NZD">NZD (NZ$)</option>
+              <option value="CAD">CAD (C$)</option>
+              <option value="SGD">SGD (S$)</option>
+              <option value="JPY">JPY (¥)</option>
+            </select>
           </div>
-          <input type="range" id="f-budget-slider" min="500" max="250000" step="1000" value="8000" oninput="updateBudgetDisplay(this.value)" style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
+          <input type="range" id="f-budget-slider" min="500" max="100000" step="1000" value="8000" oninput="updateBudgetDisplay(this.value)" style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
           <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);">
-            <span>$500</span><span>$250,000+</span>
+            <span id="budget-min-label">$500</span><span id="budget-max-label">$100,000+</span>
           </div>
         </div>
       </div>
@@ -2637,7 +2648,26 @@ const CURRENCY_SYMBOLS = {
   AUD: 'A$', USD: 'US$', EUR: '€', GBP: '£',
   NZD: 'NZ$', CAD: 'C$', SGD: 'S$', JPY: '¥'
 };
+// Signup country → sensible currency default. Anything not listed (or no
+// country given) falls back to USD as the most widely understood default.
+const COUNTRY_CURRENCY = {
+  'Australia': 'AUD', 'New Zealand': 'NZD', 'United States': 'USD',
+  'United Kingdom': 'GBP', 'Canada': 'CAD', 'Singapore': 'SGD'
+};
+function defaultCurrencyForCountry(country) {
+  return COUNTRY_CURRENCY[country] || 'USD';
+}
 let _currentCurrency = 'AUD';
+
+// Applies whatever currency is currently active to every currency picker on
+// the page (Inspiration page + itinerary form can each have their own),
+// keeping them all in sync whether the change came from the profile menu,
+// the Inspiration page, or the itinerary form itself.
+function syncCurrencySelects() {
+  document.querySelectorAll('.currency-picker').forEach(function(sel) {
+    sel.value = _currentCurrency;
+  });
+}
 
 function formatPrice(audAmount) {
   const rate = CURRENCY_RATES[_currentCurrency] || 1;
@@ -2648,8 +2678,14 @@ function formatPrice(audAmount) {
   return symbol + converted.toLocaleString();
 }
 
+// Single source of truth for "what currency is active right now" — called
+// from the Inspiration page's currency picker, the itinerary form's, and on
+// login (seeded from the account's saved currency). Keeps every picker on
+// the page and every price display in sync with each other, wherever the
+// change came from.
 function applyCurrency(currency) {
   _currentCurrency = currency;
+  syncCurrencySelects();
 
   document.querySelectorAll('.trip-card').forEach(card => {
     const budget = parseInt(card.dataset.budget || '0');
@@ -2661,14 +2697,25 @@ function applyCurrency(currency) {
 
   // If a trip detail page is currently open, re-render its cost breakdown too
   if (window._currentTripCard) renderTripDetail(window._currentTripCard);
+
+  // Itinerary form: no conversion (it's the traveller's own stated budget,
+  // not an advertised price), just relabel the slider with the new symbol.
+  const minEl = document.getElementById('budget-min-label');
+  const maxEl = document.getElementById('budget-max-label');
+  const symbol = CURRENCY_SYMBOLS[currency] || '$';
+  if (minEl) minEl.textContent = symbol + '500';
+  if (maxEl) maxEl.textContent = symbol + '100,000+';
+  const slider = document.getElementById('f-budget-slider');
+  if (slider) updateBudgetDisplay(slider.value);
+}
+
+// Itinerary form's own currency picker delegates straight to applyCurrency()
+// so both pickers and every price display stay in lockstep either way.
+function onFormCurrencyChange(code) {
+  applyCurrency(code);
 }
 
 function filterCards() {
-  const grid = document.querySelector('.cards-grid');
-  if (grid && !_originalCardOrder) {
-    _originalCardOrder = Array.from(grid.querySelectorAll('.trip-card'));
-  }
-
   const activeCat   = document.querySelector('.cat-tab.active');
   const activeBudget= document.querySelector('.f-chip[data-group="budget"].active');
   const activeDur   = document.querySelector('.f-chip[data-group="duration"].active');
@@ -2695,9 +2742,11 @@ function filterCards() {
     let regionMatch = true;
     let groupMatch  = true;
 
-    // No filter hides cards — every trip stays visible, matches just get
-    // grouped to the top. Non-matches sit below in their original order.
-    if (cat !== 'all' && !cardCat.includes(cat)) catMatch = false;
+    // A trip's data-cat can list more than one vibe (e.g. "party sightseeing")
+    // so a single selected category tab needs to appear as one of its
+    // space-separated words specifically — not just anywhere in the string,
+    // so e.g. "art" as a category could never accidentally match "party".
+    if (cat !== 'all' && !cardCat.split(' ').includes(cat)) catMatch = false;
 
     if (budget === 'under3k'  && cardBudget >= 3000)  budgetMatch = false;
     if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  budgetMatch = false;
@@ -2712,25 +2761,21 @@ function filterCards() {
     if (region !== 'Any region' && region !== 'any' && cardRegion !== region) regionMatch = false;
     if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) groupMatch = false;
 
-    const matchScore = (catMatch ? 1 : 0) + (budgetMatch ? 1 : 0) + (durMatch ? 1 : 0) + (regionMatch ? 1 : 0) + (groupMatch ? 1 : 0);
-    card.dataset.matchScore = matchScore;
-    card.style.display = '';
-    visible++;
+    // A card must satisfy every active filter at once (category AND budget
+    // AND duration AND region AND group size) — this is what actually makes
+    // the buttons filter the results down, instead of just reordering them.
+    const isMatch = catMatch && budgetMatch && durMatch && regionMatch && groupMatch;
+
+    // .trip-card-more cards are the ones still collapsed behind "Load more"
+    // (hidden via CSS, class-based) — clearing the inline style here on a
+    // match defers back to that CSS rule, so they correctly stay hidden
+    // until revealed, instead of the filter prematurely popping them open.
+    card.style.display = isMatch ? '' : 'none';
+    if (isMatch && !card.classList.contains('trip-card-more')) visible++;
   });
 
-  // Re-order: cards matching the most active filters float to the top,
-  // rest keep their original relative order below. Nothing is ever hidden.
-  if (grid && _originalCardOrder) {
-    const sorted = _originalCardOrder.slice().sort((a, b) => {
-      const aScore = parseInt(a.dataset.matchScore || '0');
-      const bScore = parseInt(b.dataset.matchScore || '0');
-      return bScore - aScore;
-    });
-    sorted.forEach(card => grid.appendChild(card));
-  }
-
   const counter = document.querySelector('.results-count');
-  if (counter) counter.textContent = 'Showing ' + visible + ' trips';
+  if (counter) counter.textContent = 'Showing ' + visible + (visible === 1 ? ' trip' : ' trips');
 }
 
 // ── ACCOUNT / LOGIN — real Supabase Auth accounts via MAGIC LINK (no
@@ -2795,6 +2840,19 @@ function friendlyAuthError(err) {
 async function hydrateCurrentUser(authUser) {
   if (!authUser) { _currentUser = null; renderAuthNav(); return; }
 
+  // Guard against stale anonymous sessions from the old (pre-OTP) sign-up
+  // system: those users have no email/name/phone/anything, and a browser
+  // that still had one cached in localStorage from before would otherwise
+  // show up as a blank "there" account with nothing actually filled in.
+  // The current sign-up flow never creates anonymous users, so seeing one
+  // here can only be leftover state — sign it out instead of hydrating it.
+  if (authUser.is_anonymous) {
+    await sb.auth.signOut();
+    _currentUser = null;
+    renderAuthNav();
+    return;
+  }
+
   let { data: profile } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
 
   if (!profile) {
@@ -2810,12 +2868,19 @@ async function hydrateCurrentUser(authUser) {
       utm_medium: _utmParams.utmMedium,
       utm_campaign: _utmParams.utmCampaign
     };
+    // Currency defaults off whichever country was just set above — e.g.
+    // Australia → AUD — computed after the fact so it always tracks
+    // whatever country ended up in the seed, wherever it came from.
+    seed.currency = defaultCurrencyForCountry(seed.country);
     const { data: created } = await sb.from('profiles').upsert(seed).select().maybeSingle();
     profile = created || seed;
 
-    // First time this person has ever been seen — send it into the existing
-    // Make.com pipeline as a backup feed, same as before.
-    fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+    // First time this person has ever been seen — triggers the "Welcome to
+    // TripMade" email. That logic lives in the "Integration Webhooks — PDF
+    // rebuild" scenario (filtered on source === 'signup_gate'), which is
+    // reached via THIS webhook URL — not the old "Integration Webhooks"
+    // scenario's URL, which is deprecated and switched off.
+    fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name: seed.name, email: seed.email, phone: seed.phone, country: seed.country, signedUpAt: new Date().toISOString() })
@@ -2829,6 +2894,7 @@ async function hydrateCurrentUser(authUser) {
     name: (profile && profile.name) || '',
     phone: (profile && profile.phone) || '',
     country: (profile && profile.country) || '',
+    currency: (profile && profile.currency) || defaultCurrencyForCountry((profile && profile.country) || ''),
     joinedWaitlist: false
   };
 
@@ -2837,6 +2903,13 @@ async function hydrateCurrentUser(authUser) {
   // deliberately opted in as an interested early customer.
   const { data: wl } = await sb.from('waitlist_signups').select('user_id').eq('user_id', authUser.id).maybeSingle();
   _currentUser.joinedWaitlist = !!wl;
+
+  // The account's saved currency becomes the site-wide default the moment
+  // someone's logged in — Inspiration page prices and the itinerary form
+  // both pick it up via the shared _currentCurrency + .currency-picker sync.
+  _currentCurrency = _currentUser.currency;
+  syncCurrencySelects();
+  applyCurrency(_currentCurrency);
 
   renderAuthNav();
 }
@@ -2926,9 +2999,24 @@ function renderAuthNav() {
         '<div id="profile-menu" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:white;border:1px solid var(--border-mid);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.14);min-width:220px;padding:14px;z-index:80;text-align:left;">' +
           '<div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px;">Your account</div>' +
           rowsHtml +
-          '<button onclick="logoutUser()" style="width:100%;margin-top:10px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
+          '<div style="border-top:1px solid var(--border);margin:10px 0 8px;padding-top:10px;">' +
+            '<label style="font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);display:block;margin-bottom:5px;">Currency</label>' +
+            '<select class="currency-picker" onchange="changeProfileCurrency(this.value)" style="width:100%;padding:7px 9px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:13px;font-family:inherit;background:white;outline:none;">' +
+              '<option value="AUD">AUD (A$)</option><option value="USD">USD (US$)</option>' +
+              '<option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option>' +
+              '<option value="NZD">NZD (NZ$)</option><option value="CAD">CAD (C$)</option>' +
+              '<option value="SGD">SGD (S$)</option><option value="JPY">JPY (¥)</option>' +
+            '</select>' +
+          '</div>' +
+          '<button onclick="logoutUser()" style="width:100%;margin-top:2px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
         '</div>' +
       '</div>';
+
+    // The <select> above always renders with AUD's <option> first — force
+    // it to the account's actual saved currency (syncCurrencySelects() also
+    // covers this select on every future currency change).
+    const menuCurrencySelect = el.querySelector('#profile-menu .currency-picker');
+    if (menuCurrencySelect) menuCurrencySelect.value = _currentUser.currency || 'AUD';
   } else {
     el.innerHTML =
       '<span style="display:inline-flex;align-items:center;gap:14px;">' +
@@ -2944,6 +3032,19 @@ function toggleProfileMenu(e) {
   const menu = document.getElementById('profile-menu');
   if (!menu) return;
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// Changing currency from the profile menu updates the saved default for
+// this account (not just this visit), and immediately re-prices everything
+// currently on screen via the same applyCurrency() pipeline as every other
+// currency picker on the site.
+async function changeProfileCurrency(code) {
+  applyCurrency(code);
+  const user = getUser();
+  if (!user) return;
+  user.currency = code;
+  const { error } = await sb.from('profiles').update({ currency: code }).eq('id', user.id);
+  if (error) console.error('Saving currency preference failed:', error);
 }
 // Close the profile dropdown on any click outside it.
 document.addEventListener('click', function(e) {
@@ -3163,6 +3264,11 @@ async function renderTestimonials() {
   }
 }
 document.addEventListener('DOMContentLoaded', renderTestimonials);
+
+// Runs the Inspiration page's filters once on load so the "Showing X trips"
+// counter reflects reality from the start, instead of the hardcoded
+// placeholder text that was sitting in the markup.
+document.addEventListener('DOMContentLoaded', filterCards);
 
 // Puts the sign-up modal back to "enter your details" — used whenever it's
 // (re)opened, so a stale "enter your code" state from a previous attempt
@@ -3688,10 +3794,8 @@ function loadMore(btn) {
   setTimeout(() => {
     document.querySelectorAll('.trip-card-more').forEach(c => c.classList.remove('trip-card-more'));
 
-    // Refresh the original-order snapshot so the newly revealed cards
-    // participate correctly in the budget/duration/category reordering.
-    const grid = document.querySelector('.cards-grid');
-    if (grid) _originalCardOrder = Array.from(grid.querySelectorAll('.trip-card'));
+    // Newly revealed cards now need to be checked against whatever filters
+    // are currently active, same as everything else.
     filterCards();
     applyCurrency(_currentCurrency);
 
@@ -3791,18 +3895,36 @@ function updateProgress(n) {
 }
 
 // ── BUDGET SLIDER ─────────────────────────────────────────
+// The slider's number is a straight amount in whichever currency the
+// traveller has picked for the form (no FX conversion here — unlike the
+// Inspiration page, this is a budget THEY are stating, not an advertised
+// price being converted for browsing convenience) — switching currency
+// just relabels the same number with the new symbol.
+function formCurrencySymbol() {
+  const el = document.getElementById('f-currency');
+  const code = el ? el.value : (_currentCurrency || 'AUD');
+  return CURRENCY_SYMBOLS[code] || '$';
+}
+
 function updateBudgetDisplay(val) {
   val = parseInt(val);
   const display = document.getElementById('budget-display');
-  const isMax = val >= 250000;
-  display.textContent = isMax ? '$250,000+' : '$' + val.toLocaleString();
+  const symbol = formCurrencySymbol();
+  const isMax = val >= 100000;
+  display.textContent = symbol + (isMax ? '100,000+' : val.toLocaleString());
 }
 
 function getBudgetValue() {
   const el = document.getElementById('f-budget-slider');
   if (!el) return '';
   const val = parseInt(el.value);
-  return val >= 250000 ? '$250,000+' : '$' + val.toLocaleString();
+  const symbol = formCurrencySymbol();
+  return symbol + (val >= 100000 ? '100,000+' : val.toLocaleString());
+}
+
+function getFormCurrencyCode() {
+  const el = document.getElementById('f-currency');
+  return el ? el.value : (_currentCurrency || 'AUD');
 }
 
 // ── DATE SYNC ──────────────────────────────────────────────
@@ -3894,15 +4016,18 @@ function selectOpt(el, group) {
   el.classList.add('selected');
 }
 
-// Trip type tiles (Solo/Couple/Friends group/Family) — Solo always means exactly
-// one traveller, so the "Number of travellers" dropdown locks and greys out.
+// Trip type tiles (Solo/Couple/Friends group/Family) — Solo always means
+// exactly one traveller and Couple always means exactly two, so the
+// "Number of travellers" dropdown auto-fills and locks for both; Friends
+// group/Family leave it open since group size varies.
 function selectTripType(el) {
   selectOpt(el, 'triptype');
   const label = el.querySelector('.opt-label').textContent.trim();
   const pax = document.getElementById('f-pax');
+  const fixedCount = (label === 'Solo') ? '1' : (label === 'Couple') ? '2' : null;
 
-  if (label === 'Solo') {
-    pax.value = '1';
+  if (fixedCount) {
+    pax.value = fixedCount;
     pax.disabled = true;
     pax.style.background = 'var(--bg2)';
     pax.style.color = 'var(--text-dim)';
@@ -4052,6 +4177,7 @@ async function submitForm() {
     ageRange:     document.getElementById('f-ages').value,
     occasion:     document.getElementById('f-occasion').value,
     budget:       getBudgetValue(),
+    currency:     getFormCurrencyCode(),
     accomNotes:   document.getElementById('f-accom-notes').value,
     vibes:        [...document.querySelectorAll('.form-opt.multi.selected')].map(el => el.querySelector('.opt-label').textContent),
     mustHave:     document.getElementById('f-musthave').value,
@@ -4093,6 +4219,7 @@ async function submitForm() {
     age_range: formData.ageRange,
     occasion: formData.occasion,
     budget: formData.budget,
+    currency: formData.currency,
     vibes: formData.vibes,
     accom_notes: formData.accomNotes,
     must_have: formData.mustHave,
@@ -4144,12 +4271,13 @@ window.showPage = function(id, linkEl) {
     // Reset inputs
     document.querySelectorAll('#page-form input, #page-form textarea, #page-form select').forEach(el => {
       if (el.id === 'f-budget-slider') { el.value = 8000; return; }
+      if (el.id === 'f-currency') { return; } // reset separately below, to the traveller's actual default
       if (el.id === 'f-depart' || el.id === 'f-return') { return; } // handled by flatpickr .clear() below
       el.value = '';
       el.style.borderColor = '';
     });
     document.querySelectorAll('.form-opt').forEach(o => o.classList.remove('selected'));
-    updateBudgetDisplay(8000);
+    onFormCurrencyChange(_currentCurrency);
     if (window._departPicker) window._departPicker.clear();
     const tripLenEl = document.getElementById('trip-length');
     if (tripLenEl) tripLenEl.textContent = '';
