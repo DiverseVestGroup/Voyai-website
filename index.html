@@ -884,15 +884,15 @@ footer p { font-size:13px; color:var(--text-dim); }
     <h1>Trip inspiration</h1>
     <p>Real itineraries built by TripMade. Find your trip, then book it in minutes.</p>
     <div class="cat-tabs">
-      <button class="cat-tab active" data-cat="all" onclick="setCat(this)">✨ All trips <span class="tc">41</span></button>
-      <button class="cat-tab" data-cat="party" onclick="setCat(this)">🔥 Partying <span class="tc">12</span></button>
-      <button class="cat-tab" data-cat="honeymoon" onclick="setCat(this)">💍 Honeymoon <span class="tc">9</span></button>
-      <button class="cat-tab" data-cat="sightseeing" onclick="setCat(this)">🗺️ Sightseeing <span class="tc">11</span></button>
+      <button class="cat-tab active" data-cat="all" onclick="setCat(this)">✨ All trips <span class="tc">60</span></button>
+      <button class="cat-tab" data-cat="party" onclick="setCat(this)">🔥 Partying <span class="tc">15</span></button>
+      <button class="cat-tab" data-cat="honeymoon" onclick="setCat(this)">💍 Honeymoon <span class="tc">10</span></button>
+      <button class="cat-tab" data-cat="sightseeing" onclick="setCat(this)">🗺️ Sightseeing <span class="tc">19</span></button>
       <button class="cat-tab" data-cat="hiking" onclick="setCat(this)">⛰️ Hiking <span class="tc">7</span></button>
-      <button class="cat-tab" data-cat="golf" onclick="setCat(this)">⛳ Golf <span class="tc">5</span></button>
-      <button class="cat-tab" data-cat="romantic" onclick="setCat(this)">🌹 Romantic <span class="tc">8</span></button>
-      <button class="cat-tab" data-cat="adventure" onclick="setCat(this)">🏄 Adventure <span class="tc">9</span></button>
-      <button class="cat-tab" data-cat="relax" onclick="setCat(this)">🏖️ Beach &amp; relax <span class="tc">4</span></button>
+      <button class="cat-tab" data-cat="golf" onclick="setCat(this)">⛳ Golf <span class="tc">8</span></button>
+      <button class="cat-tab" data-cat="romantic" onclick="setCat(this)">🌹 Romantic <span class="tc">11</span></button>
+      <button class="cat-tab" data-cat="adventure" onclick="setCat(this)">🏄 Adventure <span class="tc">14</span></button>
+      <button class="cat-tab" data-cat="relax" onclick="setCat(this)">🏖️ Beach &amp; relax <span class="tc">13</span></button>
     </div>
   </div>
 
@@ -1143,6 +1143,121 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-img" style="background:url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
       <div class="card-body"><div class="card-dest">Everest Base Camp, Nepal</div><div class="card-sub">14 days · Solo or small group · Himalayan trek</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🏔️ EBC trek</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏕️ Teahouse stays</span></div></div>
       <div class="card-footer"><div class="card-price">$3,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+
+    <!-- Bora Bora -->
+    <div class="trip-card" data-cat="honeymoon romantic relax" data-budget="16800" data-dur="8" data-region="Pacific" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Bora Bora, French Polynesia</div><div class="card-sub">8 days · Couple · Overwater bungalow, ultra-luxury</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🏝️ Overwater villa</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🤿 Private lagoon</span></div></div>
+      <div class="card-footer"><div class="card-price">$16,800 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Antarctica -->
+    <div class="trip-card" data-cat="adventure sightseeing" data-budget="18500" data-dur="12" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1547469247-0fa20e5c5bbb?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-body"><div class="card-dest">Antarctica Expedition Cruise</div><div class="card-sub">12 days · Small group · Ushuaia departure, icebergs &amp; wildlife</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🐧 Wildlife cruise</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🧊 Zodiac landings</span></div></div>
+      <div class="card-footer"><div class="card-price">$18,500 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Botswana -->
+    <div class="trip-card" data-cat="adventure sightseeing" data-budget="14200" data-dur="9" data-region="Africa" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">🦁 Safari</span></div>
+      <div class="card-body"><div class="card-dest">Okavango Delta, Botswana</div><div class="card-sub">9 days · Couple · Ultra-luxury tented camps</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">🛶 Mokoro safari</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🐘 Private guide</span></div></div>
+      <div class="card-footer"><div class="card-price">$14,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Hokkaido -->
+    <div class="trip-card" data-cat="relax sightseeing" data-budget="12800" data-dur="10" data-region="Asia" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1516575150278-77136aed6920?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">🏖️ Relax</span></div>
+      <div class="card-body"><div class="card-dest">Hokkaido, Japan</div><div class="card-sub">10 days · Couple · Powder snow &amp; private onsen</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">♨️ Private onsen</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍶 Sake tasting</span></div></div>
+      <div class="card-footer"><div class="card-price">$12,800 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Portugal & Spain Coastal Retreat (1 month, relax) -->
+    <div class="trip-card" data-cat="relax" data-budget="9800" data-dur="28" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1555881395-4d3211dd9d5c?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">🏖️ Relax</span></div>
+      <div class="card-body"><div class="card-dest">Portugal &amp; Spain Coastal Retreat</div><div class="card-sub">28 days · Couple · Algarve to Costa del Sol, slow travel</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🌅 Beach towns</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍷 Coastal dining</span></div></div>
+      <div class="card-footer"><div class="card-price">$9,800 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Ultimate Europe Party Circuit (1 month, party) -->
+    <div class="trip-card" data-cat="party" data-budget="8600" data-dur="30" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Ultimate Europe Party Circuit</div><div class="card-sub">30 days · Group of 6 · Ibiza, Berlin, Amsterdam &amp; Croatia</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🎧 4 party cities</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛥️ Boat parties</span></div></div>
+      <div class="card-footer"><div class="card-price">$8,600 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Grand European Tour (1 month, mixture) -->
+    <div class="trip-card" data-cat="sightseeing party relax adventure" data-budget="12400" data-dur="30" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1543832923-44667a44c804?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">✨ Grand tour</span></div>
+      <div class="card-body"><div class="card-dest">Grand European Tour</div><div class="card-sub">30 days · Group of 6 · A mix of it all — culture, coast &amp; nightlife across 8 countries</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">🗺️ 8 countries</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎭 Something for everyone</span></div></div>
+      <div class="card-footer"><div class="card-price">$12,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- South America Grand Tour (over 2 weeks) -->
+    <div class="trip-card" data-cat="adventure sightseeing" data-budget="6800" data-dur="18" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1591331686277-d6a51e0f66c7?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-body"><div class="card-dest">South America Grand Tour</div><div class="card-sub">18 days · Small group · Peru, Bolivia &amp; Chile</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🧂 Uyuni salt flats</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🗺️ 3 countries</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Southeast Asia Backpacking (over 2 weeks) -->
+    <div class="trip-card" data-cat="adventure sightseeing" data-budget="3400" data-dur="20" data-region="Asia" data-group="Solo">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1466442929976-97f336a657be?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-body"><div class="card-dest">Southeast Asia Backpacking</div><div class="card-sub">20 days · Solo or duo · Thailand, Vietnam &amp; Cambodia</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🛕 Angkor Wat</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎒 Budget-friendly</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- India Golden Triangle + Kerala (over 2 weeks) -->
+    <div class="trip-card" data-cat="sightseeing" data-budget="4200" data-dur="16" data-region="Asia" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
+      <div class="card-body"><div class="card-dest">Golden Triangle + Kerala, India</div><div class="card-sub">16 days · Couple · Taj Mahal to backwaters</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🕌 Taj Mahal</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛶 Kerala backwaters</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Blue Mountains NSW (weekend) -->
+    <div class="trip-card" data-cat="relax sightseeing" data-budget="890" data-dur="3" data-region="Pacific" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">🏖️ Relax</span></div>
+      <div class="card-body"><div class="card-dest">Blue Mountains, NSW</div><div class="card-sub">3 days · Couple · Weekend escape from Sydney</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🏔️ Three Sisters</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚗 2hrs from Sydney</span></div></div>
+      <div class="card-footer"><div class="card-price">$890 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Byron Bay NSW (weekend) -->
+    <div class="trip-card" data-cat="relax" data-budget="1100" data-dur="3" data-region="Pacific" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1587271636175-90d58cdad458?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">🏖️ Relax</span></div>
+      <div class="card-body"><div class="card-dest">Byron Bay, NSW</div><div class="card-sub">3 days · Group of 4 · Beach town weekend</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🏄 Beach days</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🥑 Cafe culture</span></div></div>
+      <div class="card-footer"><div class="card-price">$1,100 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Jervis Bay NSW (weekend) -->
+    <div class="trip-card" data-cat="relax" data-budget="750" data-dur="2" data-region="Pacific" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1494791368093-85217fbbf8de?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">🏖️ Relax</span></div>
+      <div class="card-body"><div class="card-dest">Jervis Bay, NSW</div><div class="card-sub">2 days · Couple · Whitest sand, South Coast</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🏖️ Whitest sand</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🐬 Dolphin watching</span></div></div>
+      <div class="card-footer"><div class="card-price">$750 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Hunter Valley Wine Weekend NSW (weekend) -->
+    <div class="trip-card" data-cat="relax party" data-budget="980" data-dur="3" data-region="Pacific" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">🏖️ Relax</span></div>
+      <div class="card-body"><div class="card-dest">Hunter Valley Wine Weekend, NSW</div><div class="card-sub">3 days · Group of 4 · Cellar doors &amp; long lunches</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">🍷 Cellar door tours</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚗 2hrs from Sydney</span></div></div>
+      <div class="card-footer"><div class="card-price">$980 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Marbella Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="5600" data-dur="6" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1600393442758-2b0b57259a41?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Marbella, Spain</div><div class="card-sub">6 days · Couple · Costa del Sol fairways</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 3 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🌅 Coastal resort</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,600 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Phuket Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="4200" data-dur="6" data-region="Asia" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Phuket, Thailand</div><div class="card-sub">6 days · Group of 4 · Tropical fairways &amp; beach resort</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 3 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏖️ Beach resort</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Queenstown Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="6800" data-dur="7" data-region="Pacific" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1589802829985-817e51171b92?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Queenstown, New Zealand</div><div class="card-sub">7 days · Couple · Alpine lake &amp; mountain courses</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 2 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏔️ Lake views</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Kyoto Ryokan Retreat -->
+    <div class="trip-card" data-cat="romantic relax" data-budget="5200" data-dur="6" data-region="Asia" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">🌹 Romantic</span></div>
+      <div class="card-body"><div class="card-dest">Kyoto, Japan</div><div class="card-sub">6 days · Couple · Traditional ryokan &amp; private onsen</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🏯 Ryokan stay</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍵 Tea ceremony</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Positano -->
+    <div class="trip-card" data-cat="romantic" data-budget="5800" data-dur="6" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1533619043865-2ff03e73c6b8?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">🌹 Romantic</span></div>
+      <div class="card-body"><div class="card-dest">Positano, Italy</div><div class="card-sub">6 days · Couple · Clifftop villa &amp; sunset dinners</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌅 Clifftop views</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍝 Private chef dinner</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,800 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
 
     <!-- LOAD MORE BATCH (hidden until Load more is clicked) -->
