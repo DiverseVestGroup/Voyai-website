@@ -809,28 +809,32 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 
-  <!-- ══ TESTIMONIALS (sample) ══════════════════════════════ -->
+  <!-- ══ TESTIMONIALS ═══════════════════════════════════════ -->
   <div class="section" style="max-width:1100px;">
     <div class="section-hd">
       <h2>What travellers are saying</h2>
-      <p>Sample reviews — real traveller stories are coming as our first trips launch</p>
+      <p id="testimonials-subhead">Sample reviews — real traveller stories are coming as our first trips launch</p>
     </div>
-    <div class="testimonial-grid">
-      <div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+    <div class="testimonial-grid" id="testimonial-grid">
+      <div class="testimonial-sample" style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
         <div style="color:var(--amber);font-size:14px;margin-bottom:10px;">★★★★★</div>
         <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"Every hotel, tour and restaurant in our itinerary had a booking link ready to go — went from reading the plan to having flights and hotels locked in within the hour."</p>
         <div style="font-size:13px;font-weight:600;color:var(--text-muted);">Sample review</div>
       </div>
-      <div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+      <div class="testimonial-sample" style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
         <div style="color:var(--amber);font-size:14px;margin-bottom:10px;">★★★★★</div>
         <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"Planned a multi-city Europe trip in one sitting. Genuinely felt like it understood the vibe we were going for, not just the destinations."</p>
         <div style="font-size:13px;font-weight:600;color:var(--text-muted);">Sample review</div>
       </div>
-      <div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
+      <div class="testimonial-sample" style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">
         <div style="color:var(--amber);font-size:14px;margin-bottom:10px;">★★★★★</div>
         <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"We already had flights and one hotel booked — TripMade built the rest of the trip around what we'd locked in instead of ignoring it."</p>
         <div style="font-size:13px;font-weight:600;color:var(--text-muted);">Sample review</div>
       </div>
+    </div>
+    <div style="text-align:center;margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="requireAccount(openTestimonialModal)" style="padding:11px 22px;">★ Leave a review</button>
+      <a id="google-review-link" href="#" target="_blank" rel="noopener" class="btn-secondary" style="display:none;padding:11px 22px;text-decoration:none;">Leave us a Google review</a>
     </div>
   </div>
 
@@ -2431,6 +2435,34 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
 </div>
 
+<!-- ══ TESTIMONIAL MODAL ══════════════════════════════════ -->
+<div id="testimonial-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
+    <div id="tm-form-step">
+      <h3 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin:0 0 6px;">Leave a review</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Tell other travellers what your TripMade experience was like. We'll check it over before it goes live on the site.</p>
+
+      <div id="tm-stars" style="display:flex;gap:6px;font-size:30px;color:var(--border-mid);margin-bottom:16px;user-select:none;">
+        <span data-star="1" onclick="setTestimonialRating(1)" style="cursor:pointer;">★</span><span data-star="2" onclick="setTestimonialRating(2)" style="cursor:pointer;">★</span><span data-star="3" onclick="setTestimonialRating(3)" style="cursor:pointer;">★</span><span data-star="4" onclick="setTestimonialRating(4)" style="cursor:pointer;">★</span><span data-star="5" onclick="setTestimonialRating(5)" style="cursor:pointer;">★</span>
+      </div>
+
+      <textarea id="tm-text" rows="4" placeholder="What was your experience with TripMade like?" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+
+      <p id="tm-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please choose a star rating and write a few words.</p>
+
+      <button class="btn-primary" id="tm-submit-btn" style="width:100%;margin-top:18px;" onclick="submitTestimonial()">Submit review</button>
+      <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeTestimonialModal()">Cancel</button>
+    </div>
+
+    <div id="tm-thanks-step" style="display:none;text-align:center;">
+      <div style="font-size:36px;margin-bottom:10px;">🙏</div>
+      <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin:0 0 8px;">Thanks for the review!</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">It's been sent off for a quick check and will appear on the site once approved.</p>
+      <button class="btn-primary" style="width:100%;" onclick="closeTestimonialModal()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ LOG-IN MODAL ═══════════════════════════════════════ -->
 <div id="login-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
   <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
@@ -2827,6 +2859,14 @@ async function initAuth() {
 
   const { data: { session } } = await sb.auth.getSession();
   await hydrateCurrentUser(session ? session.user : null);
+
+  // A "how was your trip?" follow-up email can link straight to the review
+  // form instead of just the homepage — e.g. tripmade.co/?leavereview=1.
+  // Checked only after hydrateCurrentUser resolves, so an already-logged-in
+  // visitor goes straight to the form instead of being asked to log in again.
+  if (new URLSearchParams(window.location.search).get('leavereview') === '1') {
+    requireAccount(openTestimonialModal);
+  }
 }
 
 // Fallback safety net: if the email's link is ever clicked instead of the
@@ -3013,6 +3053,116 @@ function closeLoginModal() {
   document.getElementById('login-modal').style.display = 'none';
   document.getElementById('li-error').style.display = 'none';
 }
+
+// ── TESTIMONIALS ──────────────────────────────────────────
+// Set this once TripMade has a live Google Business Profile to add a
+// "Leave us a Google review" button alongside the on-site one — the short
+// review-link URL from the profile (looks like https://g.page/r/XXXXXXX/review),
+// not the general maps listing link. Leave blank until then.
+const GOOGLE_REVIEW_URL = '';
+
+let _testimonialRating = 0;
+
+function setTestimonialRating(n) {
+  _testimonialRating = n;
+  document.querySelectorAll('#tm-stars span').forEach(function(el) {
+    el.style.color = (parseInt(el.dataset.star, 10) <= n) ? 'var(--amber)' : 'var(--border-mid)';
+  });
+}
+
+function openTestimonialModal() {
+  _testimonialRating = 0;
+  setTestimonialRating(0);
+  document.getElementById('tm-text').value = '';
+  document.getElementById('tm-error').style.display = 'none';
+  document.getElementById('tm-form-step').style.display = 'block';
+  document.getElementById('tm-thanks-step').style.display = 'none';
+  const btn = document.getElementById('tm-submit-btn');
+  if (btn) { btn.textContent = 'Submit review'; btn.disabled = false; }
+  document.getElementById('testimonial-modal').style.display = 'flex';
+}
+
+function closeTestimonialModal() {
+  document.getElementById('testimonial-modal').style.display = 'none';
+}
+
+async function submitTestimonial() {
+  const text    = document.getElementById('tm-text').value.trim();
+  const errorEl = document.getElementById('tm-error');
+  const user    = getUser();
+
+  if (!user) { closeTestimonialModal(); requireAccount(openTestimonialModal); return; }
+
+  if (!_testimonialRating || text.length < 10) {
+    errorEl.textContent = !_testimonialRating
+      ? 'Please choose a star rating.'
+      : 'Please write a few words about your experience (at least 10 characters).';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  const btn = document.getElementById('tm-submit-btn');
+  if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
+
+  try {
+    const { error } = await sb.from('testimonials').insert({
+      user_id: user.id,
+      name: user.name,
+      email: user.email,
+      rating: _testimonialRating,
+      review_text: text
+    });
+    if (error) throw error;
+
+    document.getElementById('tm-form-step').style.display = 'none';
+    document.getElementById('tm-thanks-step').style.display = 'block';
+  } catch (err) {
+    console.error('Testimonial submission failed:', err);
+    errorEl.textContent = 'Something went wrong sending your review — please try again.';
+    errorEl.style.display = 'block';
+    if (btn) { btn.textContent = 'Submit review'; btn.disabled = false; }
+  }
+}
+
+// Public section — anyone (including logged-out visitors) can see approved
+// reviews. Swaps the 3 hardcoded samples out for real ones the moment at
+// least one exists; falls back to the samples untouched otherwise.
+async function renderTestimonials() {
+  if (GOOGLE_REVIEW_URL) {
+    const glink = document.getElementById('google-review-link');
+    if (glink) { glink.href = GOOGLE_REVIEW_URL; glink.style.display = 'inline-block'; }
+  }
+
+  try {
+    const { data, error } = await sb.from('testimonials')
+      .select('name,rating,review_text,created_at')
+      .eq('approved', true)
+      .order('created_at', { ascending: false })
+      .limit(9);
+    if (error) throw error;
+    if (!data || !data.length) return; // keep the samples as-is
+
+    const grid = document.getElementById('testimonial-grid');
+    const subhead = document.getElementById('testimonials-subhead');
+    if (subhead) subhead.textContent = 'Real reviews from real travellers';
+    if (!grid) return;
+
+    grid.innerHTML = data.map(function(t) {
+      const stars = '★★★★★'.slice(0, t.rating) + '☆☆☆☆☆'.slice(0, 5 - t.rating);
+      const safeName = (t.name || 'TripMade traveller').replace(/</g, '&lt;');
+      const safeText = (t.review_text || '').replace(/</g, '&lt;');
+      return '<div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);">' +
+        '<div style="color:var(--amber);font-size:14px;margin-bottom:10px;">' + stars + '</div>' +
+        '<p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;">"' + safeText + '"</p>' +
+        '<div style="font-size:13px;font-weight:600;color:var(--text-muted);">' + safeName + '</div>' +
+        '</div>';
+    }).join('');
+  } catch (err) {
+    console.error('Loading testimonials failed:', err); // keep the samples as-is
+  }
+}
+document.addEventListener('DOMContentLoaded', renderTestimonials);
 
 // Puts the sign-up modal back to "enter your details" — used whenever it's
 // (re)opened, so a stale "enter your code" state from a previous attempt
