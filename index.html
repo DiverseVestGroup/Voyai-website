@@ -884,14 +884,14 @@ footer p { font-size:13px; color:var(--text-dim); }
     <h1>Trip inspiration</h1>
     <p>Real itineraries built by TripMade. Find your trip, then book it in minutes.</p>
     <div class="cat-tabs">
-      <button class="cat-tab active" data-cat="all" onclick="setCat(this)">✨ All trips <span class="tc">48</span></button>
+      <button class="cat-tab active" data-cat="all" onclick="setCat(this)">✨ All trips <span class="tc">41</span></button>
       <button class="cat-tab" data-cat="party" onclick="setCat(this)">🔥 Partying <span class="tc">12</span></button>
       <button class="cat-tab" data-cat="honeymoon" onclick="setCat(this)">💍 Honeymoon <span class="tc">9</span></button>
       <button class="cat-tab" data-cat="sightseeing" onclick="setCat(this)">🗺️ Sightseeing <span class="tc">11</span></button>
       <button class="cat-tab" data-cat="hiking" onclick="setCat(this)">⛰️ Hiking <span class="tc">7</span></button>
       <button class="cat-tab" data-cat="golf" onclick="setCat(this)">⛳ Golf <span class="tc">5</span></button>
       <button class="cat-tab" data-cat="romantic" onclick="setCat(this)">🌹 Romantic <span class="tc">8</span></button>
-      <button class="cat-tab" data-cat="adventure" onclick="setCat(this)">🏄 Adventure <span class="tc">6</span></button>
+      <button class="cat-tab" data-cat="adventure" onclick="setCat(this)">🏄 Adventure <span class="tc">9</span></button>
       <button class="cat-tab" data-cat="relax" onclick="setCat(this)">🏖️ Beach &amp; relax <span class="tc">4</span></button>
     </div>
   </div>
@@ -1052,6 +1052,97 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1612698093158-e07ac200d44e?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Amalfi Coast, Italy</div><div class="card-sub">8 days · 2–4 adults · Clifftop villages &amp; sea</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🍋 Positano</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛵ Boat hire</span></div></div>
       <div class="card-footer"><div class="card-price">$5,300 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
+    </div>
+
+    <!-- Pebble Beach Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="6900" data-dur="6" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Pebble Beach, California</div><div class="card-sub">6 days · Group of 4 · Coastal championship courses</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 3 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🌊 Ocean views</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Algarve Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="5200" data-dur="6" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1592919505780-303950717480?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Algarve, Portugal</div><div class="card-sub">6 days · Couple · Cliffside fairways</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 4 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏖️ Beach resort</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Augusta Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="6400" data-dur="5" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1587174786622-eb59d2d5f2ac?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Augusta &amp; Savannah, Georgia</div><div class="card-sub">5 days · Group of 4 · Classic Southern golf</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 3 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍽️ Southern dining</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Hunter Valley Golf -->
+    <div class="trip-card" data-cat="golf" data-budget="4800" data-dur="5" data-region="Pacific" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
+      <div class="card-body"><div class="card-dest">Hunter Valley, Australia</div><div class="card-sub">5 days · Group of 4 · Golf &amp; vineyards</div><div class="card-meta"><span class="ctag" style="background:#EAF3DE;color:#3B6D11;">⛳ 2 courses</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍷 Wine tasting</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Las Vegas -->
+    <div class="trip-card" data-cat="party" data-budget="3200" data-dur="4" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1581351721010-8cf859cb5729?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Las Vegas, USA</div><div class="card-sub">4 days · Group of 6 · Strip nights &amp; pool parties</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🎉 Pool parties</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎰 Casino night</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Bangkok -->
+    <div class="trip-card" data-cat="party" data-budget="2100" data-dur="5" data-region="Asia" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Bangkok, Thailand</div><div class="card-sub">5 days · Group of 5 · Rooftop bars &amp; nightlife</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">🍹 Rooftop bars</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛺 Night markets</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,100 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Hvar -->
+    <div class="trip-card" data-cat="party" data-budget="3100" data-dur="6" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1555990538-ceb70e5e5d3f?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Hvar, Croatia</div><div class="card-sub">6 days · Group of 6 · Island beach clubs</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🎧 Beach clubs</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛥️ Boat party</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,100 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Berlin -->
+    <div class="trip-card" data-cat="party" data-budget="2200" data-dur="4" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1560930950-5cc20e80e392?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Berlin, Germany</div><div class="card-sub">4 days · Group of 5 · Techno &amp; late nights</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">🎧 Techno clubs</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍺 Beer gardens</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Cancun -->
+    <div class="trip-card" data-cat="party" data-budget="2800" data-dur="5" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1552074284-5e88ef1aef18?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Cancun, Mexico</div><div class="card-sub">5 days · Group of 6 · Beach clubs &amp; nightlife</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🏖️ Beach clubs</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎉 All-inclusive</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Prague -->
+    <div class="trip-card" data-cat="party" data-budget="1900" data-dur="4" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1541849546-216549ae216d?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Prague, Czechia</div><div class="card-sub">4 days · Group of 6 · Beer halls &amp; old town</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">🍺 Beer halls</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏰 Old Town</span></div></div>
+      <div class="card-footer"><div class="card-price">$1,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Miami -->
+    <div class="trip-card" data-cat="party" data-budget="3400" data-dur="4" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1506966953602-c20cc11f75e3?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
+      <div class="card-body"><div class="card-dest">Miami, USA</div><div class="card-sub">4 days · Group of 6 · South Beach nights</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🏖️ South Beach</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍸 Rooftop bars</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Seychelles -->
+    <div class="trip-card" data-cat="honeymoon romantic" data-budget="13200" data-dur="8" data-region="Africa" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Seychelles</div><div class="card-sub">8 days · Couple · Ultra-private island villa</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🏝️ Private villa</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🥂 Butler service</span></div></div>
+      <div class="card-footer"><div class="card-price">$13,200 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Lake Como -->
+    <div class="trip-card" data-cat="honeymoon" data-budget="5400" data-dur="7" data-region="Europe" data-group="Couple">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1592738834729-8203eee3f556?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
+      <div class="card-body"><div class="card-dest">Lake Como, Italy</div><div class="card-sub">7 days · Couple · Lakeside villas &amp; villages</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🥂 Fine dining</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛵ Lake cruise</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- New Zealand -->
+    <div class="trip-card" data-cat="hiking" data-budget="4700" data-dur="9" data-region="Pacific" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
+      <div class="card-body"><div class="card-dest">Milford Track, New Zealand</div><div class="card-sub">9 days · Small group · Fiordland great walk</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🥾 Great Walk</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏔️ Fiordland</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,700 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Nepal -->
+    <div class="trip-card" data-cat="hiking adventure" data-budget="3800" data-dur="14" data-region="Asia" data-group="Solo">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
+      <div class="card-body"><div class="card-dest">Everest Base Camp, Nepal</div><div class="card-sub">14 days · Solo or small group · Himalayan trek</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🏔️ EBC trek</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏕️ Teahouse stays</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
 
     <!-- LOAD MORE BATCH (hidden until Load more is clicked) -->
