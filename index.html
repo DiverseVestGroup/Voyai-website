@@ -244,8 +244,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .tour-provider-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; padding:0 48px 28px; max-width:900px; margin:0 auto; }
 .tour-provider-card { display:block; background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); text-decoration:none; color:inherit; transition:all .2s; }
 .tour-provider-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
-.tour-provider-img { height:160px; background-size:cover; background-position:center; position:relative; }
-.tour-provider-img-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.35) 0%,transparent 55%); }
+.tour-provider-logo { height:32px; margin-bottom:16px; }
 .tour-provider-body { padding:24px; }
 .tour-provider-name { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:8px; }
 .tour-provider-desc { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:16px; }
@@ -2653,11 +2652,14 @@ footer p { font-size:13px; color:var(--text-dim); }
     <p style="font-size:11px;color:var(--text-dim);margin:0 0 28px;max-width:640px;">
       These are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
     </p>
+    <!-- TO ADD A LOGO: once you have each provider's official logo file
+         (from their partner dashboard's brand-assets section, or the
+         GetYourGuide press download center), upload it somewhere you can
+         link to (e.g. your own site's /assets folder) and add a line like
+         <img class="tour-provider-logo" src="[logo URL]" alt="Viator">
+         as the first thing inside .tour-provider-body, above .tour-provider-name. -->
     <div class="tour-provider-grid">
       <a class="tour-provider-card" href="https://www.viator.com/?pid=P00317698&amp;mcid=42383&amp;medium=link&amp;medium_version=selector" target="_blank" rel="noopener noreferrer sponsored">
-        <div class="tour-provider-img" style="background-image:url(&#39;https://images.unsplash.com/photo-1777523743673-fe2577163ede?w=800&amp;q=80&#39;);">
-          <div class="tour-provider-img-overlay"></div>
-        </div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">Viator</div>
           <div class="tour-provider-desc">400,000+ tours, activities and experiences worldwide, backed by Tripadvisor.</div>
@@ -2665,9 +2667,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </a>
       <a class="tour-provider-card" href="https://www.getyourguide.com?partner_id=IGZD2IR&amp;cmp=share_to_earn" target="_blank" rel="noopener noreferrer sponsored">
-        <div class="tour-provider-img" style="background-image:url(&#39;https://images.unsplash.com/photo-1766415007432-80738e830722?w=800&amp;q=80&#39;);">
-          <div class="tour-provider-img-overlay"></div>
-        </div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">GetYourGuide</div>
           <div class="tour-provider-desc">Tours, tickets and local experiences, with free cancellation on most bookings.</div>
