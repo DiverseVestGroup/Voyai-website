@@ -255,6 +255,18 @@ hr { border:none; border-top:1px solid var(--border); }
 .klook-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .klook-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
 @media (max-width:700px) { .klook-widget-intro, .klook-widget-wrap { padding-left:20px; padding-right:20px; } }
+.klook-deals-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
+.klook-deals-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
+.klook-deals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.deal-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow-sm); }
+.deal-badge { display:inline-block; background:var(--accent-light); color:var(--accent); font-weight:700; font-size:13px; padding:3px 10px; border-radius:999px; margin-bottom:8px; }
+.deal-title { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; color:var(--text); margin-bottom:4px; }
+.deal-note { font-size:11px; color:var(--text-dim); margin-bottom:10px; line-height:1.4; }
+.deal-footer { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+.deal-code { font-family:monospace; font-size:13px; font-weight:600; background:var(--bg); border:1px dashed var(--border-mid); border-radius:6px; padding:4px 10px; letter-spacing:0.5px; }
+.deal-copy-btn { font-size:12px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; padding:4px 4px; }
+.deal-expiry { font-size:11px; color:var(--text-dim); margin-top:8px; }
+@media (max-width:700px) { .klook-deals-intro, .klook-deals-wrap { padding-left:20px; padding-right:20px; } .klook-deals-grid { grid-template-columns:1fr; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
 .trip-card-more { display:none; }
@@ -2695,6 +2707,130 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
 
+    <!-- Klook promo codes below are a curated subset of a larger coupon feed
+         Lachlan sourced — only codes with NO residency restriction, so any
+         visitor can actually redeem what's shown here. A few near-duplicate
+         codes (multiple Taiwan-attraction codes, an early-bird vs standard
+         Tai Hang code) were consolidated to the single best/longest-running
+         version of each to avoid showing confusingly similar codes side by
+         side. These are time-limited and WILL need refreshing periodically
+         — check expiry dates against Klook's current coupon feed. -->
+    <div class="klook-deals-intro">
+      <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin:0 0 4px;">Klook deals worth grabbing</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin:0;">Copy a code below, then apply it at checkout on Klook. These work for any traveller — a few exclude residents of the destination country itself, which is standard for tourist-only rail passes.</p>
+    </div>
+    <div class="klook-deals-wrap">
+      <div class="klook-deals-grid">
+
+        <div class="deal-card">
+          <div class="deal-badge">15% off</div>
+          <div class="deal-title">Hokkaido Tours</div>
+          <div class="deal-footer">
+            <span class="deal-code">HOKKAIDOTOUR15OFF</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;HOKKAIDOTOUR15OFF&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 30 Sep 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">¥6,000 off</div>
+          <div class="deal-title">Shinkansen Same-day Luggage Delivery</div>
+          <div class="deal-footer">
+            <span class="deal-code">JRWDELIVERY</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;JRWDELIVERY&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 30 Sep 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">10% off</div>
+          <div class="deal-title">Kintetsu Rail Tickets</div>
+          <div class="deal-note">Not valid for residents of Japan</div>
+          <div class="deal-footer">
+            <span class="deal-code">KINTETSU</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;KINTETSU&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 10 Sep 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">5% off</div>
+          <div class="deal-title">Switzerland Transportation Passes</div>
+          <div class="deal-footer">
+            <span class="deal-code">SWISSMOB10%OFF</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;SWISSMOB10%OFF&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 30 Sep 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">8% off</div>
+          <div class="deal-title">JR Tokyo Wide Pass</div>
+          <div class="deal-note">Not valid for residents of Japan · max discount ¥1,500</div>
+          <div class="deal-footer">
+            <span class="deal-code">TWP8SUMMER</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;TWP8SUMMER&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 4 Oct 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">10% off</div>
+          <div class="deal-title">Arts in the City: Revisit Tai Hang, Hong Kong</div>
+          <div class="deal-footer">
+            <span class="deal-code">VISITTAIHANG</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;VISITTAIHANG&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 31 Oct 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">20% off</div>
+          <div class="deal-title">Mahanakhon SkyWalk, Bangkok</div>
+          <div class="deal-note">Selected ticket packages only</div>
+          <div class="deal-footer">
+            <span class="deal-code">SUNMSTB</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;SUNMSTB&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 28 Dec 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">¥2,800 off</div>
+          <div class="deal-title">JR Takayama-Hokuriku Area Tourist Pass</div>
+          <div class="deal-note">Not valid for residents of Japan</div>
+          <div class="deal-footer">
+            <span class="deal-code">TAKAYAMA2800</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;TAKAYAMA2800&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 31 Mar 2027</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">5% off</div>
+          <div class="deal-title">Taiwan Attractions — Taipei 101, museums, gondola &amp; more</div>
+          <div class="deal-note">Max discount $8 USD</div>
+          <div class="deal-footer">
+            <span class="deal-code">TW_ATT5%</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;TW_ATT5%&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">Valid until 30 Sep 2026</div>
+        </div>
+
+        <div class="deal-card">
+          <div class="deal-badge">5% off</div>
+          <div class="deal-title">Your First Hotel Booking</div>
+          <div class="deal-note">Klook app only · first hotel booking only</div>
+          <div class="deal-footer">
+            <span class="deal-code">HOTELONAPP</span>
+            <button class="deal-copy-btn" onclick="copyDealCode(&#39;HOTELONAPP&#39;,this)">Copy code</button>
+          </div>
+          <div class="deal-expiry">No expiry</div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- The block below (search/country/city filters over embedded Viator widgets)
          was the original on-site Tours page, kept here but hidden rather than
          deleted, in case a curated in-page browsing experience is wanted again
@@ -4854,6 +4990,37 @@ function clearTourFilters() {
   if (countryEl) countryEl.value = '';
   if (cityEl) cityEl.value = '';
   filterTours();
+}
+
+// Copies a Klook deal code to the clipboard and briefly flips the clicked
+// button's label to confirm it worked, then reverts. Falls back to the
+// old textarea+execCommand trick if navigator.clipboard isn't available
+// (e.g. non-HTTPS contexts).
+function copyDealCode(code, btnEl) {
+  const finish = (ok) => {
+    if (!btnEl) return;
+    const original = btnEl.textContent;
+    btnEl.textContent = ok ? 'Copied!' : 'Copy failed';
+    btnEl.disabled = true;
+    setTimeout(() => { btnEl.textContent = original; btnEl.disabled = false; }, 1500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(() => finish(true)).catch(() => finish(false));
+  } else {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = code;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      finish(true);
+    } catch (e) {
+      finish(false);
+    }
+  }
 }
 
 const _origShowPage = showPage;
