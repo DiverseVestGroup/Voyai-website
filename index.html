@@ -241,6 +241,13 @@ hr { border:none; border-top:1px solid var(--border); }
 .tours-filter-bar input[type="text"] { flex:1; min-width:220px; padding:10px 14px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; }
 .tours-filter-bar select { padding:10px 14px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; background:white; color:var(--text); }
 @media (max-width:700px) { .tours-grid-wrap, .tours-filter-bar { padding:0 20px; } .tours-grid-wrap { padding-bottom:28px; } }
+.tour-provider-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; padding:0 48px 28px; max-width:900px; margin:0 auto; }
+.tour-provider-card { display:block; background:white; border:1.5px solid var(--border); border-radius:var(--radius); padding:28px 24px; box-shadow:var(--shadow-sm); text-decoration:none; color:inherit; transition:all .2s; }
+.tour-provider-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
+.tour-provider-name { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.tour-provider-desc { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:16px; }
+.tour-provider-cta { font-size:13px; font-weight:600; color:var(--accent); }
+@media (max-width:700px) { .tour-provider-grid { grid-template-columns:1fr; padding:0 20px 28px; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
 .trip-card-more { display:none; }
@@ -476,7 +483,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;how&#39;)">How it works</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;vibes&#39;)">Vibes</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
-    <li><a href="https://www.viator.com/?pid=P00317698&amp;mcid=42383&amp;medium=link&amp;medium_version=selector" target="_blank" rel="noopener noreferrer sponsored">Tours &amp; experiences</a></li>
+    <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Tours &amp; experiences</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
@@ -2638,39 +2645,59 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div class="section" style="padding-top:48px;">
     <div class="section-hd" style="text-align:left;margin-bottom:8px;">
       <h2 style="margin-bottom:6px;">Tours &amp; experiences</h2>
-      <p>Bookable activities you can add to any trip — browse and book directly, no itinerary needed.</p>
+      <p>Browse and book activities anywhere in the world — pick a platform below to see what's on offer.</p>
     </div>
     <p style="font-size:11px;color:var(--text-dim);margin:0 0 28px;max-width:640px;">
-      Some links below are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
+      These are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
     </p>
-    <div class="tours-filter-bar">
-      <input type="text" id="tours-search" placeholder="Search tours, e.g. &#39;wine&#39; or &#39;river cruise&#39;" oninput="filterTours()">
-      <select id="tours-country-filter" onchange="filterTours()">
-        <option value="">All countries</option>
-      </select>
-      <select id="tours-city-filter" onchange="filterTours()">
-        <option value="">All cities</option>
-      </select>
+    <div class="tour-provider-grid">
+      <a class="tour-provider-card" href="https://www.viator.com/?pid=P00317698&amp;mcid=42383&amp;medium=link&amp;medium_version=selector" target="_blank" rel="noopener noreferrer sponsored">
+        <div class="tour-provider-name">Viator</div>
+        <div class="tour-provider-desc">400,000+ tours, activities and experiences worldwide, backed by Tripadvisor.</div>
+        <div class="tour-provider-cta">Browse Viator →</div>
+      </a>
+      <a class="tour-provider-card" href="https://www.getyourguide.com?partner_id=IGZD2IR&amp;cmp=share_to_earn" target="_blank" rel="noopener noreferrer sponsored">
+        <div class="tour-provider-name">GetYourGuide</div>
+        <div class="tour-provider-desc">Tours, tickets and local experiences, with free cancellation on most bookings.</div>
+        <div class="tour-provider-cta">Browse GetYourGuide →</div>
+      </a>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:0 48px;margin-bottom:14px;max-width:1200px;">
-      <p id="tours-results-count" style="font-size:12px;color:var(--text-dim);margin:0;"></p>
-      <button type="button" onclick="clearTourFilters()" style="background:none;border:none;color:var(--text-dim);font-size:12px;text-decoration:underline;cursor:pointer;padding:0;">Clear filters</button>
-    </div>
-    <div id="tours-grid" class="tours-grid-wrap">
-      <div class="tour-widget-card" data-country="Vatican City" data-city="Rome" data-keywords="vatican, museums, sistine chapel, tour, rome, italy">
-        <div class="tour-card-label">Vatican Museums &amp; Sistine Chapel Tour — Rome</div>
-        <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-4afcab66-406e-4339-9460-9851353d0722"></div>
+
+    <!-- The block below (search/country/city filters over embedded Viator widgets)
+         was the original on-site Tours page, kept here but hidden rather than
+         deleted, in case a curated in-page browsing experience is wanted again
+         later. Remove style="display:none" on #tours-widget-fallback to bring
+         it back. See the affiliate traffic plan doc for the reasoning. -->
+    <div id="tours-widget-fallback" style="display:none;">
+      <div class="tours-filter-bar">
+        <input type="text" id="tours-search" placeholder="Search tours, e.g. &#39;wine&#39; or &#39;river cruise&#39;" oninput="filterTours()">
+        <select id="tours-country-filter" onchange="filterTours()">
+          <option value="">All countries</option>
+        </select>
+        <select id="tours-city-filter" onchange="filterTours()">
+          <option value="">All cities</option>
+        </select>
       </div>
-      <!-- Paris — Eiffel Tower Summit Access + Seine River Cruise -->
-      <div class="tour-widget-card" data-country="France" data-city="Paris" data-keywords="eiffel tower, seine, river cruise, paris, france">
-        <div class="tour-card-label">Eiffel Tower Summit Access + Seine River Cruise — Paris</div>
-        <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-3f6b9dc8-ece2-4314-a9d6-8886cc0d3044"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 48px;margin-bottom:14px;max-width:1200px;">
+        <p id="tours-results-count" style="font-size:12px;color:var(--text-dim);margin:0;"></p>
+        <button type="button" onclick="clearTourFilters()" style="background:none;border:none;color:var(--text-dim);font-size:12px;text-decoration:underline;cursor:pointer;padding:0;">Clear filters</button>
       </div>
-      <!-- Next tour card goes here — copy the block above, change data-vi-widget-ref -->
-    </div>
-    <div id="tours-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
-      <p style="margin-bottom:14px;">No tours match your filters.</p>
-      <button class="btn-secondary" onclick="clearTourFilters()">Clear filters</button>
+      <div id="tours-grid" class="tours-grid-wrap">
+        <div class="tour-widget-card" data-country="Vatican City" data-city="Rome" data-keywords="vatican, museums, sistine chapel, tour, rome, italy">
+          <div class="tour-card-label">Vatican Museums &amp; Sistine Chapel Tour — Rome</div>
+          <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-4afcab66-406e-4339-9460-9851353d0722"></div>
+        </div>
+        <!-- Paris — Eiffel Tower Summit Access + Seine River Cruise -->
+        <div class="tour-widget-card" data-country="France" data-city="Paris" data-keywords="eiffel tower, seine, river cruise, paris, france">
+          <div class="tour-card-label">Eiffel Tower Summit Access + Seine River Cruise — Paris</div>
+          <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-3f6b9dc8-ece2-4314-a9d6-8886cc0d3044"></div>
+        </div>
+        <!-- Next tour card goes here — copy the block above, change data-vi-widget-ref -->
+      </div>
+      <div id="tours-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
+        <p style="margin-bottom:14px;">No tours match your filters.</p>
+        <button class="btn-secondary" onclick="clearTourFilters()">Clear filters</button>
+      </div>
     </div>
   </div>
 </div>
