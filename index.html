@@ -235,8 +235,12 @@ hr { border:none; border-top:1px solid var(--border); }
 .cards-grid { padding:28px 48px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1200px; margin:0 auto; }
 .trip-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .2s; box-shadow:var(--shadow-sm); }
 .tour-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); min-height:120px; width:100%; }
+.tour-card-label { padding:14px 16px 0; font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--text); }
 .tours-grid-wrap { display:flex; flex-direction:column; gap:20px; padding:0 48px 28px; max-width:1200px; margin:0 auto; }
-@media (max-width:700px) { .tours-grid-wrap { padding:0 20px 28px; } }
+.tours-filter-bar { display:flex; gap:10px; flex-wrap:wrap; padding:0 48px; margin-bottom:10px; max-width:1200px; }
+.tours-filter-bar input[type="text"] { flex:1; min-width:220px; padding:10px 14px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; }
+.tours-filter-bar select { padding:10px 14px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; background:white; color:var(--text); }
+@media (max-width:700px) { .tours-grid-wrap, .tours-filter-bar { padding:0 20px; } .tours-grid-wrap { padding-bottom:28px; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
 .trip-card-more { display:none; }
@@ -472,7 +476,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;how&#39;)">How it works</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;vibes&#39;)">Vibes</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Tours &amp; experiences</a></li>
+    <li><a href="https://www.viator.com/?pid=P00317698&amp;mcid=42383&amp;medium=link&amp;medium_version=selector" target="_blank" rel="noopener noreferrer sponsored">Tours &amp; experiences</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
@@ -2612,6 +2616,13 @@ footer p { font-size:13px; color:var(--text-dim); }
      once per page — see loadViatorWidgets() further down — so you never
      need to touch any script tags, just add more widget divs.
 
+     Also set data-country, data-city and a short data-keywords list (comma
+     separated, lowercase, whatever a traveller might search — activity type,
+     landmark name, etc.) on the .tour-widget-card wrapper, and add a matching
+     .tour-card-label above the widget div. The filter bar below reads these
+     attributes to build its country/city dropdowns and to match search text,
+     so a card added without them just won't show up when filters are active.
+
      LAYOUT NOTE: each widget gets its own full-width row (.tours-grid-wrap
      is a single column, not a 3-across grid like the trip cards). A Viator
      "category/destination" widget already lays its own tours out as tiles
@@ -2632,15 +2643,34 @@ footer p { font-size:13px; color:var(--text-dim); }
     <p style="font-size:11px;color:var(--text-dim);margin:0 0 28px;max-width:640px;">
       Some links below are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
     </p>
+    <div class="tours-filter-bar">
+      <input type="text" id="tours-search" placeholder="Search tours, e.g. &#39;wine&#39; or &#39;river cruise&#39;" oninput="filterTours()">
+      <select id="tours-country-filter" onchange="filterTours()">
+        <option value="">All countries</option>
+      </select>
+      <select id="tours-city-filter" onchange="filterTours()">
+        <option value="">All cities</option>
+      </select>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:0 48px;margin-bottom:14px;max-width:1200px;">
+      <p id="tours-results-count" style="font-size:12px;color:var(--text-dim);margin:0;"></p>
+      <button type="button" onclick="clearTourFilters()" style="background:none;border:none;color:var(--text-dim);font-size:12px;text-decoration:underline;cursor:pointer;padding:0;">Clear filters</button>
+    </div>
     <div id="tours-grid" class="tours-grid-wrap">
-      <div class="tour-widget-card">
+      <div class="tour-widget-card" data-country="Vatican City" data-city="Rome" data-keywords="vatican, museums, sistine chapel, tour, rome, italy">
+        <div class="tour-card-label">Vatican Museums &amp; Sistine Chapel Tour — Rome</div>
         <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-4afcab66-406e-4339-9460-9851353d0722"></div>
       </div>
       <!-- Paris — Eiffel Tower Summit Access + Seine River Cruise -->
-      <div class="tour-widget-card">
+      <div class="tour-widget-card" data-country="France" data-city="Paris" data-keywords="eiffel tower, seine, river cruise, paris, france">
+        <div class="tour-card-label">Eiffel Tower Summit Access + Seine River Cruise — Paris</div>
         <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-3f6b9dc8-ece2-4314-a9d6-8886cc0d3044"></div>
       </div>
       <!-- Next tour card goes here — copy the block above, change data-vi-widget-ref -->
+    </div>
+    <div id="tours-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
+      <p style="margin-bottom:14px;">No tours match your filters.</p>
+      <button class="btn-secondary" onclick="clearTourFilters()">Clear filters</button>
     </div>
   </div>
 </div>
@@ -4681,6 +4711,75 @@ function loadViatorWidgets() {
   s.async = true;
   s.src = 'https://www.viator.com/orion/partner/widget.js';
   document.body.appendChild(s);
+}
+
+// Builds the country/city dropdown options on the Tours page from whatever
+// data-country/data-city attributes exist on .tour-widget-card elements —
+// so adding a new tour card (see "TO ADD MORE TOURS" comment above) is
+// enough to get it picked up by the filters, no separate list to maintain.
+function populateTourFilterOptions() {
+  const cards = document.querySelectorAll('#tours-grid .tour-widget-card');
+  const countrySel = document.getElementById('tours-country-filter');
+  const citySel = document.getElementById('tours-city-filter');
+  if (!cards.length || !countrySel || !citySel) return;
+  const countries = [...new Set(Array.from(cards).map(c => c.dataset.country).filter(Boolean))].sort();
+  const cities = [...new Set(Array.from(cards).map(c => c.dataset.city).filter(Boolean))].sort();
+  countries.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    countrySel.appendChild(opt);
+  });
+  cities.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    citySel.appendChild(opt);
+  });
+  filterTours();
+}
+document.addEventListener('DOMContentLoaded', populateTourFilterOptions);
+
+// AND-matches the search box, country dropdown and city dropdown against
+// each .tour-widget-card's data attributes. Search checks the card's label
+// text plus its data-keywords list, so a query like "wine" or "river cruise"
+// works even though those words aren't in the country/city fields.
+function filterTours() {
+  const searchEl = document.getElementById('tours-search');
+  const countryEl = document.getElementById('tours-country-filter');
+  const cityEl = document.getElementById('tours-city-filter');
+  const countEl = document.getElementById('tours-results-count');
+  const emptyEl = document.getElementById('tours-empty');
+  const gridEl = document.getElementById('tours-grid');
+  if (!searchEl || !countryEl || !cityEl || !gridEl) return;
+  const q = searchEl.value.trim().toLowerCase();
+  const country = countryEl.value;
+  const city = cityEl.value;
+  const cards = Array.from(gridEl.querySelectorAll('.tour-widget-card'));
+  let visible = 0;
+  cards.forEach(card => {
+    const label = (card.querySelector('.tour-card-label')?.textContent || '').toLowerCase();
+    const keywords = (card.dataset.keywords || '').toLowerCase();
+    const matchesSearch = !q || label.includes(q) || keywords.includes(q);
+    const matchesCountry = !country || card.dataset.country === country;
+    const matchesCity = !city || card.dataset.city === city;
+    const isMatch = matchesSearch && matchesCountry && matchesCity;
+    card.style.display = isMatch ? '' : 'none';
+    if (isMatch) visible++;
+  });
+  if (countEl) {
+    countEl.textContent = cards.length ? (visible + ' of ' + cards.length + ' tour' + (cards.length === 1 ? '' : 's')) : '';
+  }
+  if (emptyEl) emptyEl.style.display = (cards.length && visible === 0) ? '' : 'none';
+  gridEl.style.display = (cards.length && visible === 0) ? 'none' : '';
+}
+
+function clearTourFilters() {
+  const searchEl = document.getElementById('tours-search');
+  const countryEl = document.getElementById('tours-country-filter');
+  const cityEl = document.getElementById('tours-city-filter');
+  if (searchEl) searchEl.value = '';
+  if (countryEl) countryEl.value = '';
+  if (cityEl) cityEl.value = '';
+  filterTours();
 }
 
 const _origShowPage = showPage;
