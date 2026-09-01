@@ -2636,6 +2636,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="tour-widget-card">
         <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-4afcab66-406e-4339-9460-9851353d0722"></div>
       </div>
+      <!-- Paris — Eiffel Tower Summit Access + Seine River Cruise -->
+      <div class="tour-widget-card">
+        <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-3f6b9dc8-ece2-4314-a9d6-8886cc0d3044"></div>
+      </div>
       <!-- Next tour card goes here — copy the block above, change data-vi-widget-ref -->
     </div>
   </div>
@@ -2819,6 +2823,17 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="itin-hdr-l"><div class="dest-icon sight">🗺️</div><div><div class="itin-title" id="td-block-title">Trip highlights</div><div class="itin-sub">Sample outline — your full day-by-day itinerary is personalised once you get in touch</div></div></div>
       </div>
       <div id="td-days"></div>
+    </div>
+
+    <!-- Bookable experiences for this specific destination, when we have a
+         matching Viator widget for it (see TOUR_WIDGETS_BY_DESTINATION) —
+         hidden entirely when there isn't one yet, rather than showing an
+         empty section. -->
+    <div class="itin-block" id="td-tours-block" style="display:none;">
+      <div class="itin-hdr sight">
+        <div class="itin-hdr-l"><div class="dest-icon sight">🎟️</div><div><div class="itin-title">Book experiences for this trip</div><div class="itin-sub">Bookable now, separate from your itinerary — some are affiliate links, see our <a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;)" style="color:inherit;text-decoration:underline;">Tours &amp; experiences</a> page for more.</div></div></div>
+      </div>
+      <div id="td-tours-grid" class="tours-grid-wrap" style="padding:16px;gap:16px;max-width:none;"></div>
     </div>
 
     <div style="text-align:center;margin-top:32px;padding-bottom:20px;">
@@ -3190,6 +3205,22 @@ async function initAuth() {
   // visitor goes straight to the form instead of being asked to log in again.
   if (new URLSearchParams(window.location.search).get('leavereview') === '1') {
     requireAccount(openTestimonialModal);
+  }
+
+  // Deep-link support — e.g. tripmade.co/?page=tours opens straight to the
+  // Tours & experiences page instead of the homepage, so it can be used as
+  // a stable, shareable URL (link-in-bio, an ad, an email CTA) without
+  // anyone needing to click through the nav first. Checked after
+  // hydrateCurrentUser resolves, same as the leavereview flag above; only
+  // an allowlisted set of pages can be deep-linked to this way.
+  const DEEP_LINKABLE_PAGES = ['inspo', 'tours', 'saved'];
+  const deepLinkPage = new URLSearchParams(window.location.search).get('page');
+  if (deepLinkPage && DEEP_LINKABLE_PAGES.includes(deepLinkPage)) {
+    const navLink = Array.from(document.querySelectorAll('.nav-links a')).find(a =>
+      (a.getAttribute('onclick') || '').includes("showPage('" + deepLinkPage + "'")
+    );
+    showPage(deepLinkPage, navLink);
+    if (deepLinkPage === 'saved') renderSavedPage();
   }
 }
 
@@ -3806,6 +3837,19 @@ function bookTrip(card) {
   window.scrollTo(0, 0);
 }
 
+// Curated Viator affiliate widgets, matched to specific sample-trip
+// destinations — shown on that trip's detail page as a "Book experiences
+// for this trip" section (see renderTripDetail below), on top of the full
+// Tours & experiences page. Add an entry whenever a new widget comes in for
+// a destination that's already on the Inspiration page — the key must
+// match that trip card's exact card-dest text. Multiple widgets per
+// destination are fine; they'll all show as their own tile.
+const TOUR_WIDGETS_BY_DESTINATION = {
+  'Paris, France': [
+    { partnerId: 'P00317698', widgetRef: 'W-3f6b9dc8-ece2-4314-a9d6-8886cc0d3044' }
+  ]
+};
+
 function renderTripDetail(card) {
   const destEl  = card.querySelector('.card-dest');
   const dest    = destEl ? destEl.textContent.trim() : 'Your trip';
@@ -3876,6 +3920,24 @@ function renderTripDetail(card) {
   document.getElementById('td-days').innerHTML = days.map(d =>
     '<div class="day-block"><div class="day-lbl">' + d.label + '</div><div class="evt-list"><div class="evt"><div class="evt-name">' + d.text + '</div></div></div></div>'
   ).join('');
+
+  // "Book experiences for this trip" — only shown when we actually have a
+  // matching Viator widget for this exact destination.
+  const toursBlock = document.getElementById('td-tours-block');
+  const toursGrid  = document.getElementById('td-tours-grid');
+  const matchingTours = TOUR_WIDGETS_BY_DESTINATION[dest];
+  if (toursBlock && toursGrid) {
+    if (matchingTours && matchingTours.length) {
+      toursGrid.innerHTML = matchingTours.map(t =>
+        '<div class="tour-widget-card"><div data-vi-partner-id="' + t.partnerId + '" data-vi-widget-ref="' + t.widgetRef + '"></div></div>'
+      ).join('');
+      toursBlock.style.display = '';
+      loadViatorWidgets();
+    } else {
+      toursGrid.innerHTML = '';
+      toursBlock.style.display = 'none';
+    }
+  }
 }
 
 // ── WAITLIST FORM SUBMISSION ─────────────────────────────
