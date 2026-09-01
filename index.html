@@ -234,6 +234,9 @@ hr { border:none; border-top:1px solid var(--border); }
 
 .cards-grid { padding:28px 48px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1200px; margin:0 auto; }
 .trip-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .2s; box-shadow:var(--shadow-sm); }
+.tour-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); min-height:120px; width:100%; }
+.tours-grid-wrap { display:flex; flex-direction:column; gap:20px; padding:0 48px 28px; max-width:1200px; margin:0 auto; }
+@media (max-width:700px) { .tours-grid-wrap { padding:0 20px 28px; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
 .trip-card-more { display:none; }
@@ -469,6 +472,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;how&#39;)">How it works</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;vibes&#39;)">Vibes</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
+    <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Tours &amp; experiences</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
@@ -2596,6 +2600,47 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
 </div><!-- end form page -->
 
+<!-- ══ TOURS & EXPERIENCES PAGE ══════════════════════════
+     Browsable, bookable activities — each card is a Viator affiliate widget.
+     Clicking through and booking earns TripMade a commission at no extra
+     cost to the traveller (disclosed below, per FTC/ACCC affiliate rules).
+
+     TO ADD MORE TOURS: grab a new widget snippet from the Viator partner
+     dashboard (partner ID stays the same, only data-vi-widget-ref changes
+     per tour), then copy one .tour-widget-card block below and swap in the
+     new data-vi-widget-ref. The Viator loader itself only needs to load
+     once per page — see loadViatorWidgets() further down — so you never
+     need to touch any script tags, just add more widget divs.
+
+     LAYOUT NOTE: each widget gets its own full-width row (.tours-grid-wrap
+     is a single column, not a 3-across grid like the trip cards). A Viator
+     "category/destination" widget already lays its own tours out as tiles
+     in a row — cramming it into a narrow 1/3-width grid cell was what made
+     it collapse into a squeezed vertical list; giving it the full content
+     width lets Viator's own responsive layout show them as squares across
+     like it's designed to. If a specific widget still looks like a list
+     once it has full width, that's a display-style setting on the widget
+     itself in Viator's Widget & Link Builder (list vs. grid/carousel), not
+     something this page's CSS controls — re-generate that widget there and
+     swap in the new data-vi-widget-ref. -->
+<div id="page-tours" class="page">
+  <div class="section" style="padding-top:48px;">
+    <div class="section-hd" style="text-align:left;margin-bottom:8px;">
+      <h2 style="margin-bottom:6px;">Tours &amp; experiences</h2>
+      <p>Bookable activities you can add to any trip — browse and book directly, no itinerary needed.</p>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);margin:0 0 28px;max-width:640px;">
+      Some links below are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
+    </p>
+    <div id="tours-grid" class="tours-grid-wrap">
+      <div class="tour-widget-card">
+        <div data-vi-partner-id="P00317698" data-vi-widget-ref="W-4afcab66-406e-4339-9460-9851353d0722"></div>
+      </div>
+      <!-- Next tour card goes here — copy the block above, change data-vi-widget-ref -->
+    </div>
+  </div>
+</div>
+
 <!-- ══ SAVED TRIPS PAGE ══════════════════════════════════ -->
 <div id="page-saved" class="page">
   <div class="section" style="padding-top:48px;">
@@ -4557,9 +4602,31 @@ function updateTripLength(selectedDates) {
   el.textContent = days + (days === 1 ? ' day' : ' days');
 }
 
+// Loads the Viator partner widget script the first time someone actually
+// visits the Tours & experiences page, rather than on every page load.
+// Deliberately lazy for two reasons: (1) no point loading a third-party
+// affiliate script for visitors who never browse tours, and (2) Viator's
+// widget measures its container's size when it initialises — if the script
+// ran at page load like a normal <script> tag, it would be initialising
+// inside a display:none page (see ".page { display:none }" above) and could
+// render at zero height. Loading it only once the page is already visible
+// (.page.active → display:block) avoids that entirely.
+let _viatorLoaded = false;
+function loadViatorWidgets() {
+  if (_viatorLoaded) return;
+  _viatorLoaded = true;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.viator.com/orion/partner/widget.js';
+  document.body.appendChild(s);
+}
+
 const _origShowPage = showPage;
 window.showPage = function(id, linkEl) {
   _origShowPage(id, linkEl);
+  if (id === 'tours') {
+    loadViatorWidgets();
+  }
   if (id === 'form') {
     goToStep(1);
     // Reset inputs
