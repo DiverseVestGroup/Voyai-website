@@ -251,6 +251,10 @@ hr { border:none; border-top:1px solid var(--border); }
 .tour-provider-desc { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:16px; }
 .tour-provider-cta { font-size:13px; font-weight:600; color:var(--accent); }
 @media (max-width:700px) { .tour-provider-grid { grid-template-columns:1fr; padding:0 20px 28px; } }
+.klook-widget-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
+.klook-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
+.klook-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
+@media (max-width:700px) { .klook-widget-intro, .klook-widget-wrap { padding-left:20px; padding-right:20px; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
 .trip-card-more { display:none; }
@@ -2681,6 +2685,16 @@ footer p { font-size:13px; color:var(--text-dim); }
       </a>
     </div>
 
+    <div class="klook-widget-intro">
+      <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin:0 0 4px;">Or search Klook directly</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin:0;">Browse and book Klook's tours, tickets and experiences right here — no need to leave this page.</p>
+    </div>
+    <div class="klook-widget-wrap">
+      <div class="klook-widget-card">
+        <ins class="klk-aff-widget" data-wid="133329" data-height="340px" data-adid="1410090" data-lang="" data-prod="search_vertical" data-currency=""><a href="//www.klook.com/?aid=">Klook.com</a></ins>
+      </div>
+    </div>
+
     <!-- The block below (search/country/city filters over embedded Viator widgets)
          was the original on-site Tours page, kept here but hidden rather than
          deleted, in case a curated in-page browsing experience is wanted again
@@ -4758,6 +4772,21 @@ function loadViatorWidgets() {
   document.body.appendChild(s);
 }
 
+// Same lazy-load reasoning as loadViatorWidgets() above — Klook's own
+// snippet runs this script unconditionally at page load, but that would
+// mean it initialises while the Tours page is still display:none. Deferred
+// to first visit instead.
+let _klookLoaded = false;
+function loadKlookWidget() {
+  if (_klookLoaded) return;
+  _klookLoaded = true;
+  const s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = 'https://affiliate.klook.com/widget/fetch-iframe-init.js';
+  document.body.appendChild(s);
+}
+
 // Builds the country/city dropdown options on the Tours page from whatever
 // data-country/data-city attributes exist on .tour-widget-card elements —
 // so adding a new tour card (see "TO ADD MORE TOURS" comment above) is
@@ -4832,6 +4861,7 @@ window.showPage = function(id, linkEl) {
   _origShowPage(id, linkEl);
   if (id === 'tours') {
     loadViatorWidgets();
+    loadKlookWidget();
   }
   if (id === 'form') {
     goToStep(1);
