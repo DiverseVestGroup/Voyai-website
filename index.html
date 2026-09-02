@@ -267,6 +267,18 @@ hr { border:none; border-top:1px solid var(--border); }
 .deal-copy-btn { font-size:12px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; padding:4px 4px; }
 .deal-expiry { font-size:11px; color:var(--text-dim); margin-top:8px; }
 @media (max-width:700px) { .klook-deals-intro, .klook-deals-wrap { padding-left:20px; padding-right:20px; } .klook-deals-grid { grid-template-columns:1fr; } }
+.category-heading-wrap { max-width:900px; margin:0 auto; padding:20px 48px 0; }
+.category-heading-wrap h3 { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin:0 0 4px; }
+.category-heading-wrap p { font-size:13px; color:var(--text-muted); margin:0; }
+.category-body-wrap { max-width:900px; margin:0 auto; padding:12px 48px 8px; }
+.coming-soon-card { border:1.5px dashed var(--border-mid); border-radius:var(--radius); padding:20px; color:var(--text-dim); font-size:13px; text-align:center; }
+@media (max-width:700px) { .category-heading-wrap, .category-body-wrap { padding-left:20px; padding-right:20px; } }
+.tour-search-bar { display:flex; gap:10px; max-width:900px; margin:16px auto 4px; padding:0 48px; }
+.tour-search-bar input[type="text"] { flex:1; padding:12px 16px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; }
+.tour-search-bar button { padding:12px 22px; border:none; border-radius:10px; background:var(--accent); color:white; font-weight:600; font-size:14px; cursor:pointer; }
+.tour-search-note { max-width:900px; margin:0 auto 16px; padding:0 48px; font-size:12px; color:var(--text-dim); line-height:1.5; }
+.klook-search-link { display:block; margin-top:12px; font-size:13px; font-weight:600; color:var(--accent); text-decoration:underline; }
+@media (max-width:700px) { .tour-search-bar, .tour-search-note { padding-left:20px; padding-right:20px; } .tour-search-bar { flex-direction:column; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
 .trip-card-more { display:none; }
@@ -502,7 +514,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;how&#39;)">How it works</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;vibes&#39;)">Vibes</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Tours &amp; experiences</a></li>
+    <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Book your trip</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
@@ -2663,26 +2675,121 @@ footer p { font-size:13px; color:var(--text-dim); }
 <div id="page-tours" class="page">
   <div class="section" style="padding-top:48px;">
     <div class="section-hd" style="text-align:left;margin-bottom:8px;">
-      <h2 style="margin-bottom:6px;">Tours &amp; experiences</h2>
+      <h2 style="margin-bottom:6px;">Book your trip</h2>
+      <p>Everything you need for your next trip, in one place — flights, stays, insurance, tours and experiences.</p>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);margin:0 0 20px;max-width:640px;">
+      Some links on this page are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
+    </p>
+
+    <!-- Each category below (Flights, Accommodation, Travel insurance) is a
+         placeholder until a real affiliate link/program exists for it — see
+         the affiliate traffic plan doc for candidate programs to sign up
+         for. To fill one in, replace its .coming-soon-card with a
+         .tour-provider-card grid (see Tours & experiences below for the
+         pattern) or an embedded widget section (see the Klook section for
+         that pattern). Don't invent a placeholder link — wait for a real one. -->
+    <div class="category-heading-wrap">
+      <h3>✈️ Flights</h3>
+      <p>Compare and book flights for your trip.</p>
+    </div>
+    <!-- TO ADD A LOGO: once you have Skyscanner's/Kiwi.com's official logo
+         file (or the real affiliate link), follow the same pattern as the
+         Viator/GetYourGuide cards below — add a .tour-provider-logo-wrap
+         div (with a background colour matching the logo file) as the first
+         child inside .tour-provider-card, before .tour-provider-body. -->
+    <div class="tour-provider-grid">
+      <a class="tour-provider-card" href="https://www.skyscanner.com.au/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Skyscanner</div>
+          <div class="tour-provider-desc">Compare flights across hundreds of airlines and travel sites to find the best fare.</div>
+          <div class="tour-provider-cta">Visit Skyscanner →</div>
+        </div>
+      </a>
+      <a class="tour-provider-card" href="https://www.kiwi.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Kiwi.com</div>
+          <div class="tour-provider-desc">Flight search that combines airlines most sites miss, including budget carriers.</div>
+          <div class="tour-provider-cta">Visit Kiwi.com →</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="category-heading-wrap">
+      <h3>🏨 Accommodation</h3>
+      <p>Hotels, apartments and stays wherever you're headed.</p>
+    </div>
+    <div class="tour-provider-grid">
+      <a class="tour-provider-card" href="https://www.booking.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Booking.com</div>
+          <div class="tour-provider-desc">Hotels, apartments and homes worldwide, with free cancellation on most stays.</div>
+          <div class="tour-provider-cta">Visit Booking.com →</div>
+        </div>
+      </a>
+      <a class="tour-provider-card" href="https://www.agoda.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Agoda</div>
+          <div class="tour-provider-desc">Strong hotel deals and availability across Asia-Pacific and beyond.</div>
+          <div class="tour-provider-cta">Visit Agoda →</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="category-heading-wrap">
+      <h3>🛡️ Travel insurance</h3>
+      <p>Cover for your trip, sorted before you go.</p>
+    </div>
+    <div class="tour-provider-grid">
+      <a class="tour-provider-card" href="https://www.covermore.com.au/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Cover-More</div>
+          <div class="tour-provider-desc">Australian travel insurer, covering medical, cancellation and belongings.</div>
+          <div class="tour-provider-cta">Visit Cover-More →</div>
+        </div>
+      </a>
+      <a class="tour-provider-card" href="https://safetywing.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">SafetyWing</div>
+          <div class="tour-provider-desc">Flexible travel medical cover, popular with long-term and digital nomad travellers.</div>
+          <div class="tour-provider-cta">Visit SafetyWing →</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="category-heading-wrap">
+      <h3>🎟️ Tours &amp; experiences</h3>
       <p>Browse and book activities anywhere in the world — pick a platform below to see what's on offer.</p>
     </div>
-    <p style="font-size:11px;color:var(--text-dim);margin:0 0 28px;max-width:640px;">
-      These are affiliate links — if you book through them, TripMade may earn a small commission at no extra cost to you.
-    </p>
+    <!-- Search bar below hands the same query off to each provider's own
+         search results page — it does NOT merge results into one list (see
+         the affiliate traffic plan doc for why a true unified search needs
+         API partnerships this project doesn't have). Viator and Klook both
+         have confirmed, working free-text search URLs, so those two update
+         for real. GetYourGuide's public site uses destination-slug URLs
+         (e.g. /paris-l16/) rather than a ?q= search parameter, so there's
+         no reliable way to pre-fill a query there — its card intentionally
+         keeps linking to their homepage, and the note below says so rather
+         than pretending it works. -->
+    <div class="tour-search-bar">
+      <input type="text" id="tour-search-query" placeholder="Search once — e.g. Paris, snorkeling, food tour..." onkeydown="if(event.key==='Enter'){searchAllTours();}">
+      <button type="button" onclick="searchAllTours()">Search</button>
+    </div>
+    <p class="tour-search-note" id="tour-search-note">Searches Viator and Klook directly — GetYourGuide doesn't support a pre-filled search link, so its card always opens their homepage.</p>
     <!-- Provider logos below are embedded as base64 data URIs (the files
          Lachlan sent directly), so this page has no dependency on an
          external image host. To swap a logo later, replace the base64
          string in the relevant img src, or point src at a hosted file URL
          instead. -->
     <div class="tour-provider-grid">
-      <a class="tour-provider-card" href="https://www.viator.com/?pid=P00317698&amp;mcid=42383&amp;medium=link&amp;medium_version=selector" target="_blank" rel="noopener noreferrer sponsored">
+      <a class="tour-provider-card" id="tour-card-viator" href="https://www.viator.com/?pid=P00317698&amp;mcid=42383&amp;medium=link&amp;medium_version=selector" target="_blank" rel="noopener noreferrer sponsored">
         <div class="tour-provider-logo-wrap" style="background:#34686B;">
           <img src="data:image/webp;base64,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" alt="Viator">
         </div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">Viator</div>
           <div class="tour-provider-desc">400,000+ tours, activities and experiences worldwide, backed by Tripadvisor.</div>
-          <div class="tour-provider-cta">Browse Viator →</div>
+          <div class="tour-provider-cta" id="tour-card-viator-cta">Browse Viator →</div>
         </div>
       </a>
       <a class="tour-provider-card" href="https://www.getyourguide.com?partner_id=IGZD2IR&amp;cmp=share_to_earn" target="_blank" rel="noopener noreferrer sponsored">
@@ -2704,6 +2811,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="klook-widget-wrap">
       <div class="klook-widget-card">
         <ins class="klk-aff-widget" data-wid="133329" data-height="340px" data-adid="1410090" data-lang="" data-prod="search_vertical" data-currency=""><a href="//www.klook.com/?aid=">Klook.com</a></ins>
+        <a class="klook-search-link" id="klook-search-link" href="#" target="_blank" rel="noopener noreferrer sponsored" style="display:none;"></a>
       </div>
     </div>
 
@@ -5020,6 +5128,41 @@ function copyDealCode(code, btnEl) {
     } catch (e) {
       finish(false);
     }
+  }
+}
+
+// Hands one search query off to Viator's and Klook's own search results
+// pages (both confirmed working ?text=/?query= URL patterns). GetYourGuide
+// is deliberately left alone — their public site uses destination-slug
+// URLs (e.g. /paris-l16/) rather than a free-text search parameter, so
+// there's no reliable query to build there; the note text says so instead
+// of silently doing nothing.
+function searchAllTours() {
+  const input = document.getElementById('tour-search-query');
+  const note = document.getElementById('tour-search-note');
+  if (!input) return;
+  const q = input.value.trim();
+  if (!q) { input.focus(); return; }
+  const encoded = encodeURIComponent(q);
+
+  const viatorCard = document.getElementById('tour-card-viator');
+  const viatorCta = document.getElementById('tour-card-viator-cta');
+  if (viatorCard) {
+    viatorCard.href = 'https://www.viator.com/searchResults/all?text=' + encoded + '&pid=P00317698&mcid=42383&medium=link&medium_version=selector';
+  }
+  if (viatorCta) {
+    viatorCta.textContent = 'See "' + q + '" on Viator →';
+  }
+
+  const klookLink = document.getElementById('klook-search-link');
+  if (klookLink) {
+    klookLink.href = 'https://www.klook.com/en-US/search/result/?query=' + encoded + '&aid=1410090';
+    klookLink.textContent = 'See "' + q + '" on Klook →';
+    klookLink.style.display = '';
+  }
+
+  if (note) {
+    note.textContent = 'Showing "' + q + '" on Viator and Klook above — GetYourGuide doesn\'t support a pre-filled search link, so its card still opens their homepage.';
   }
 }
 
