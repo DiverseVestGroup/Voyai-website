@@ -5145,25 +5145,32 @@ function searchAllTours() {
   if (!q) { input.focus(); return; }
   const encoded = encodeURIComponent(q);
 
+  const viatorUrl = 'https://www.viator.com/searchResults/all?text=' + encoded + '&pid=P00317698&mcid=42383&medium=link&medium_version=selector';
+  const klookUrl = 'https://www.klook.com/en-US/search/result/?query=' + encoded + '&aid=1410090';
+
   const viatorCard = document.getElementById('tour-card-viator');
   const viatorCta = document.getElementById('tour-card-viator-cta');
-  if (viatorCard) {
-    viatorCard.href = 'https://www.viator.com/searchResults/all?text=' + encoded + '&pid=P00317698&mcid=42383&medium=link&medium_version=selector';
-  }
-  if (viatorCta) {
-    viatorCta.textContent = 'See "' + q + '" on Viator →';
-  }
+  if (viatorCard) viatorCard.href = viatorUrl;
+  if (viatorCta) viatorCta.textContent = 'See "' + q + '" on Viator →';
 
   const klookLink = document.getElementById('klook-search-link');
   if (klookLink) {
-    klookLink.href = 'https://www.klook.com/en-US/search/result/?query=' + encoded + '&aid=1410090';
+    klookLink.href = klookUrl;
     klookLink.textContent = 'See "' + q + '" on Klook →';
     klookLink.style.display = '';
   }
 
   if (note) {
-    note.textContent = 'Showing "' + q + '" on Viator and Klook above — GetYourGuide doesn\'t support a pre-filled search link, so its card still opens their homepage.';
+    note.textContent = 'Opened "' + q + '" on Viator and Klook in new tabs — GetYourGuide doesn\'t support a pre-filled search link, so its card still opens their homepage.';
   }
+
+  // Clicking "Search" should visibly do something right away, not just quietly
+  // update link targets for someone to notice and click through later — so
+  // open both results directly. Both calls are synchronous inside this click
+  // handler (no await/setTimeout before them), which is what keeps browsers'
+  // popup blockers from treating them as unrequested popups.
+  window.open(viatorUrl, '_blank', 'noopener,noreferrer');
+  window.open(klookUrl, '_blank', 'noopener,noreferrer');
 }
 
 const _origShowPage = showPage;
