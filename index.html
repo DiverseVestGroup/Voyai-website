@@ -4300,7 +4300,12 @@ function joinWaitlistCTA(btn) {
     if (suEmail) suEmail.value = typedEmail;
   }
 
-  requireAccount(function() {
+  requireAccount(async function() {
+    // Actually join (DB upsert + notification webhook) instead of just
+    // faking success in the UI — joinWaitlist() itself no-ops harmlessly
+    // if this account already joined.
+    await joinWaitlist();
+
     btn.textContent = '✓ You\'re on the list!';
     btn.style.background = 'var(--green)';
     btn.disabled = true;
