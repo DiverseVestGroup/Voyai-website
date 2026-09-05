@@ -3646,8 +3646,12 @@ async function joinWaitlist() {
   renderWaitlistCTA();
 
   // Backup feed into the existing Make.com pipeline, tagged distinctly from
-  // a plain account signup so it can be routed/filtered separately.
-  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+  // a plain account signup so it can be routed/filtered separately. Triggers
+  // the "You're on the waitlist" email in the "Integration Webhooks — PDF
+  // rebuild" scenario (filtered on source === 'waitlist_join'), reached via
+  // THIS webhook URL — not the old "Integration Webhooks" scenario's URL,
+  // which is deprecated and switched off.
+  fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ source: 'waitlist_join', id: _currentUser.id, name: _currentUser.name, email: _currentUser.email, phone: _currentUser.phone, country: _currentUser.country, joinedAt: new Date().toISOString() })
@@ -4273,12 +4277,14 @@ function submitWaitlist(btn) {
   input.value = '';
   input.placeholder = email + ' — confirmed!';
 
-  // Sends the signup to the same Make.com pipeline, tagged 'waitlist' so a
-  // dedicated confirmation-email step can be added on that end.
-  fetch('https://hook.eu1.make.com/hi4b1sari8dlkl2heqvamu1yr1jvfjqj', {
+  // Sends the signup to the same Make.com pipeline as the logged-in "Join
+  // the waitlist" button, tagged identically ('waitlist_join') so both paths
+  // trigger the same "You're on the waitlist" email — reached via the
+  // active webhook, not the old deprecated "Integration Webhooks" one.
+  fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source: 'waitlist', email: email, joinedAt: new Date().toISOString() })
+    body: JSON.stringify({ source: 'waitlist_join', email: email, joinedAt: new Date().toISOString() })
   }).catch(err => console.error('Waitlist signup failed to send:', err));
 }
 
