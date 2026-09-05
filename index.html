@@ -421,26 +421,6 @@ footer p { font-size:13px; color:var(--text-dim); }
 /* ── FREE BADGE ─────────────────────────────────────────── */
 .free-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-light); border:1px solid var(--green-mid); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; color:var(--green); margin-bottom:12px; }
 
-/* ── PRICING SECTION ────────────────────────────────────── */
-#pricing { padding:80px 48px; background:var(--bg2); }
-.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:960px; margin:0 auto; }
-.price-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius-lg); padding:32px 28px; position:relative; box-shadow:var(--shadow-sm); transition:all .2s; }
-.price-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
-.price-card.featured { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-mid),var(--shadow); }
-.price-popular { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--accent); color:white; font-size:11px; font-weight:600; padding:4px 16px; border-radius:20px; white-space:nowrap; letter-spacing:.04em; }
-.price-tier { font-size:12px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; }
-.price-amount { font-family:'Syne',sans-serif; font-size:40px; font-weight:800; line-height:1; margin-bottom:4px; }
-.price-amount span { font-size:16px; font-weight:400; color:var(--text-muted); font-family:'DM Sans',sans-serif; }
-.price-desc { font-size:13px; color:var(--text-muted); margin-bottom:24px; line-height:1.5; }
-.price-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
-.price-features li { display:flex; align-items:flex-start; gap:9px; font-size:13px; line-height:1.45; }
-.price-features li::before { content:"✓"; color:var(--green); font-weight:700; font-size:13px; flex-shrink:0; margin-top:1px; }
-.price-btn { width:100%; padding:13px; border-radius:10px; font-size:14px; font-weight:500; border:1.5px solid var(--border-mid); background:white; color:var(--text); transition:all .2s; }
-.price-btn:hover { border-color:var(--accent); color:var(--accent); }
-.price-btn.primary { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 14px rgba(13,115,119,.28); }
-.price-btn.primary:hover { opacity:.9; transform:translateY(-1px); }
-.price-note { text-align:center; font-size:12px; color:var(--text-dim); margin-top:20px; max-width:960px; margin-left:auto; margin-right:auto; }
-
 /* ── DESTINATIONS SECTION ───────────────────────────────── */
 #destinations { padding:80px 48px; }
 .dest-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
@@ -459,7 +439,6 @@ footer p { font-size:13px; color:var(--text-dim); }
 
 /* ── MOBILE ─────────────────────────────────────────────── */
 @media(max-width:900px){
-  .pricing-grid{grid-template-columns:1fr}
   .dest-grid{grid-template-columns:repeat(2,1fr)}
   .dest-card.wide{grid-column:span 2}
   .steps-grid{grid-template-columns:1fr 1fr}
@@ -486,7 +465,6 @@ footer p { font-size:13px; color:var(--text-dim); }
   .footer-links{justify-content:center}
   .dest-grid{grid-template-columns:1fr 1fr}
   .testimonial-grid{grid-template-columns:1fr}
-  #pricing{padding:48px 20px}
   #destinations{padding:48px 20px}
   .social-strip-inner{gap:20px}
   .aff-strip{padding:20px}
@@ -516,7 +494,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Book your trip</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
-    <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;pricing&#39;)">Pricing</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="nav-account" style="font-size:13px;color:var(--text-muted);"></span>
@@ -553,7 +530,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="step"><div class="step-num">01</div><div class="step-icon">🎯</div><h3>Pick your vibe</h3><p>Party trip, romantic escape, adventure, or sightseeing — or mix and match vibes / interests across cities.</p></div>
       <div class="step"><div class="step-num">02</div><div class="step-icon">📅</div><h3>Add your details</h3><p>Dates. Group size / number of people. Budget. And anything you've already got booked. We fill the gaps.</p></div>
       <div class="step"><div class="step-num">03</div><div class="step-icon">🤖</div><h3>TripMade Builds it:</h3><p>A complete day-by-day itinerary across one or multiple countries — no wasted days, no dead time.</p></div>
-      <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, hotel, dinner and event can be booked with VOYAI.</p></div>
+      <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, hotel, dinner and event can be booked with TripMade.</p></div>
     </div>
   </div>
 
@@ -580,8 +557,8 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="vibe-card" style="cursor:pointer" onclick="showPage(&#39;inspo&#39;);setTimeout(()=&gt;document.querySelectorAll(&#39;.cat-tab&#39;)[3].click(),100)">
         <div class="vibe-top"><div class="vibe-icon" style="background:var(--blue-light);">🗺️</div><div><h3>Sightseeing</h3><div class="sub">Families &amp; culture lovers</div></div></div>
-        <p>Landmarks, local culture, museums and neighbourhood gems — with skip-the-line bookings already included.</p>
-        <div class="tags"><span class="tag">Skip-the-line</span><span class="tag">Local food</span><span class="tag">Hidden gems</span><span class="tag">Efficient routing</span></div>
+        <p>Landmarks, local culture, museums and neighbourhood gems — efficiently routed so you see more in less time.</p>
+        <div class="tags"><span class="tag">Museum tickets</span><span class="tag">Local food</span><span class="tag">Hidden gems</span><span class="tag">Efficient routing</span></div>
       </div>
     </div>
   </div>
@@ -591,37 +568,37 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
     <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — TripMade builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
     <div class="dest-grid">
-      <div class="dest-card wide" style="background-image:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card wide" style="background-image:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&amp;q=80&#39;);" onclick="openDestinationTrip('Santorini, Greece')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Santorini, Greece</div><div class="dest-sub">From $4,200 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:#993556;">🌅 Most romantic</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Tokyo + Kyoto, Japan')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Tokyo, Japan</div><div class="dest-sub">From $4,800 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#854F0B;">🗺️ Top rated</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Bali, Indonesia')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Bali, Indonesia</div><div class="dest-sub">From $2,800 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#0F6E56;">🌺 Best value</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Ibiza, Spain')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Ibiza, Spain</div><div class="dest-sub">From $3,200 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:var(--accent);">🔥 Party</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Paris, France')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Paris, France</div><div class="dest-sub">From $4,900 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:#7F77DD;">💍 Honeymoon</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Maldives')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Maldives</div><div class="dest-sub">From $7,500 AUD · 7 days</div></div>
         <span class="dest-badge" style="color:#0F6E56;">🤿 Luxury</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Dubai, UAE')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Dubai, UAE</div><div class="dest-sub">From $3,600 AUD · 5 days</div></div>
         <span class="dest-badge" style="color:#BA7517;">✨ Luxury</span>
@@ -631,78 +608,22 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="dest-info"><div class="dest-name">Thailand</div><div class="dest-sub">From $2,400 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#378ADD;">🏄 Adventure</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Iceland — Ring Road')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Iceland</div><div class="dest-sub">From $5,800 AUD · 10 days</div></div>
         <span class="dest-badge" style="color:#185FA5;">🌌 Northern Lights</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Masai Mara, Kenya')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Kenya Safari</div><div class="dest-sub">From $7,200 AUD · 9 days</div></div>
         <span class="dest-badge" style="color:#3B6D11;">🦁 Safari</span>
       </div>
-      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&amp;q=80&#39;);" onclick="showPage(&#39;inspo&#39;)">
+      <div class="dest-card" style="background-image:url(&#39;https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&amp;q=80&#39;);" onclick="openDestinationTrip('Dubrovnik + Hvar, Croatia')">
         <div class="dest-overlay"></div>
         <div class="dest-info"><div class="dest-name">Croatia</div><div class="dest-sub">From $4,400 AUD · 9 days</div></div>
         <span class="dest-badge" style="color:#993556;">⛵ Island Hop</span>
       </div>
     </div>
-  </div>
-
-  <hr>
-
-  <!-- ══ PRICING ══════════════════════════════════════════ -->
-  <div id="pricing">
-    <div class="section-hd"><h2>Simple, transparent pricing</h2><p>Start free — upgrade only when you need more. No subscriptions, no surprises.</p></div>
-    <div class="pricing-grid">
-
-      <div class="price-card">
-        <div class="price-tier">Free</div>
-        <div class="price-amount">$0 <span>/ itinerary</span></div>
-        <p class="price-desc">Perfect for getting started. A complete personalised itinerary delivered to your inbox.</p>
-        <ul class="price-features">
-          <li>Full day-by-day itinerary</li>
-          <li>Personalised to your travel style</li>
-          <li>Delivered to your email in minutes</li>
-          <li>Recommended restaurant &amp; activity picks</li>
-          <li>Affiliate booking links included</li>
-        </ul>
-        <button class="price-btn" onclick="showPage(&#39;landing&#39;);scrollToSection(&#39;waitlist&#39;)">Get started free</button>
-      </div>
-
-      <div class="price-card featured">
-        <div class="price-popular">MOST POPULAR</div>
-        <div class="price-tier">Essential</div>
-        <div class="price-amount"><span style="text-decoration:line-through;text-decoration-color:var(--text-dim);">$39</span> <span style="color:var(--accent);font-weight:700;">FREE</span> <span>/ trip</span></div>
-        <p class="price-desc">For travellers who want a premium itinerary with every detail researched and curated.</p>
-        <ul class="price-features">
-          <li>Detailed hour-by-hour daily plan</li>
-          <li>Top-rated hotel recommendations</li>
-          <li>Restaurant reservations guidance</li>
-          <li>Skip-the-line booking advice</li>
-          <li>Interactive PDF with maps</li>
-        </ul>
-        <button class="price-btn primary" onclick="showPage(&#39;landing&#39;);setTimeout(()=&gt;document.getElementById(&#39;waitlist&#39;).scrollIntoView({behavior:&#39;smooth&#39;}),50)">Join waitlist →</button>
-      </div>
-
-      <div class="price-card" style="background:var(--bg3);position:relative;">
-        <div style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px;">COMING SOON …</div>
-        <div class="price-tier">Concierge</div>
-        <p class="price-desc">The full TripMade experience. We plan everything and handle all your bookings end-to-end. Booking fees apply.</p>
-        <ul class="price-features">
-          <li>All inclusive booking experience</li>
-          <li>Flights searched, recommended &amp; booked</li>
-          <li>Hotels booked on your behalf</li>
-          <li>Activities &amp; tours pre-booked</li>
-          <li>Restaurant reservations made</li>
-          <li>Transfers &amp; logistics handled</li>
-          <li>Dedicated support throughout</li>
-        </ul>
-        <button class="price-btn" onclick="showPage(&#39;landing&#39;);setTimeout(()=&gt;document.getElementById(&#39;waitlist&#39;).scrollIntoView({behavior:&#39;smooth&#39;}),50)">Join waitlist →</button>
-      </div>
-
-    </div>
-    <p class="price-note">All prices in AUD. Join TripMade waitlist for bookings handled by us.</p>
   </div>
 
   <hr>
@@ -4188,6 +4109,26 @@ async function unsaveTrip(dest) {
     .eq('user_id', currentUser.id).eq('destination', dest);
   if (error) console.error('Unsave trip failed:', error);
   renderSavedPage();
+}
+
+// Popular-destination tiles (homepage) link straight into that destination's
+// specific sample trip on the Inspiration page, instead of just dropping the
+// visitor on the Inspiration page in general — matched by the exact
+// card-dest text of the trip we want that tile to open. Falls back to the
+// Inspiration page if no exact match is found (e.g. no single sample trip
+// matches that tile yet).
+function openDestinationTrip(exactDestText) {
+  let match = null;
+  document.querySelectorAll('.trip-card').forEach(card => {
+    if (match) return;
+    const destEl = card.querySelector('.card-dest');
+    if (destEl && destEl.textContent.trim() === exactDestText) match = card;
+  });
+  if (match) {
+    bookTrip(match);
+  } else {
+    showPage('inspo');
+  }
 }
 
 // ── "BOOK THIS TRIP" BUTTONS ─────────────────────────────
