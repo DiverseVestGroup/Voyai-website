@@ -484,6 +484,31 @@ footer p { font-size:13px; color:var(--text-dim); }
   .flatpickr-day.today { border-color:#0D7377; }
   .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover { background:#0a5c5f; border-color:#0a5c5f; }
 </style>
+<!-- Travelpayouts Drive — automated affiliate monetization (link conversion,
+     keyword linking, content recommendations, hover previews, targeted
+     offers). Installed from Lachlan's Travelpayouts dashboard
+     (app.travelpayouts.com/dashboard). Confirmed legitimate via
+     Travelpayouts' own support docs before adding. Recommended: go into
+     Drive's dashboard and start with only link conversion enabled — turn
+     off keyword linking / auto content blocks / popups initially, since
+     those inject their own UI and could clash with or duplicate the
+     hand-built affiliate cards/widgets already on the "Book your trip"
+     page (Viator, GetYourGuide, Klook, Ferryhopper). Loads as an async
+     external script, appended to <head> — same "ignore me" attributes for
+     every major WP caching/optimization plugin (nowprocket = WP Rocket,
+     data-noptimize = Autoptimize/Hummingbird, data-cfasync = Cloudflare
+     Rocket Loader, data-wpfc-render = WP Fastest Cache, data-no-defer =
+     generic defer-exclusion) even though this site isn't WordPress — they're
+     harmless no-ops here, Travelpayouts just ships one universal snippet. -->
+<script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">
+  (function () {
+      var script = document.createElement("script");
+      script.async = 1;
+      script.setAttribute("data-cmp-ab","2");
+      script.src = 'https://emrld.ltd/NTcxMjMw.js?t=571230';
+      document.head.appendChild(script);
+  })();
+</script>
 </head>
 <body>
 
