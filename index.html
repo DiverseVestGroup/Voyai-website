@@ -255,6 +255,10 @@ hr { border:none; border-top:1px solid var(--border); }
 .klook-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .klook-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
 @media (max-width:700px) { .klook-widget-intro, .klook-widget-wrap { padding-left:20px; padding-right:20px; } }
+.ferry-widget-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
+.ferry-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; display:flex; justify-content:center; }
+.ferry-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
+@media (max-width:700px) { .ferry-widget-intro, .ferry-widget-wrap { padding-left:20px; padding-right:20px; } .ferry-widget-card iframe { max-width:100%; } }
 .klook-deals-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
 .klook-deals-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .klook-deals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
@@ -2682,11 +2686,18 @@ footer p { font-size:13px; color:var(--text-dim); }
          Logo is the real file Lachlan sent (base64 webp), matching the
          Viator/GetYourGuide pattern — wrap background #F6F6F6 sampled from
          the logo file's own corner pixel to avoid a visible seam.
-         Ferryhopper also offers an embeddable search/trips widget (built
-         via their affiliate dashboard, login required) — not added here
-         since that needs Lachlan to generate the widget's embed code
-         himself and send it over, the same way the Klook widget snippet
-         was added. Their dashboard login was shared in Lachlan's affiliate
+         Ferryhopper's embeddable search widget (simple iframe, embed code
+         Lachlan generated via their affiliate dashboard, aff_uid=tpmdco
+         baked into the src) is added below the link card — see the
+         .ferry-widget-* block. Lachlan also has a second, more advanced
+         Ferryhopper widget (fhiw script + <ferryhopper-widget> custom
+         element) that's NOT added: its snippet ships with a placeholder
+         "YOUR_WIDGET_API_KEY" (needs the real key from Lachlan's dashboard)
+         and it's pinned to one fixed route (origin/destination attributes,
+         e.g. Piraeus→Heraklion) rather than a general search box, so it's
+         better suited to promoting a specific route than to this general
+         page — add it only once there's a real key and a specific route to
+         promote. Their dashboard login was shared in Lachlan's affiliate
          signup email but is Lachlan's own credential — not something to be
          entered anywhere by anyone other than him. -->
     <div class="category-heading-wrap">
@@ -2704,6 +2715,21 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Search ferries →</div>
         </div>
       </a>
+    </div>
+
+    <!-- Plain iframe embed — unlike Klook/Viator's widget scripts, this
+         loads its own content the moment it's in the DOM regardless of the
+         page being display:none, so no lazy-load-on-visit wrapper is
+         needed here (see loadKlookWidget()/loadViatorWidgets() further
+         down for why those two do need one). -->
+    <div class="ferry-widget-intro">
+      <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin:0 0 4px;">Or search Ferryhopper directly</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin:0;">Search and book ferry routes right here — no need to leave this page.</p>
+    </div>
+    <div class="ferry-widget-wrap">
+      <div class="ferry-widget-card">
+        <iframe width="390" height="420" scrolling="no" frameborder="0" src="https://www.ferryhopper.com/en/embed/simple?aff_uid=tpmdco" title="Ferryhopper ferry search"></iframe>
+      </div>
     </div>
 
     <div class="category-heading-wrap">
