@@ -261,6 +261,40 @@ hr { border:none; border-top:1px solid var(--border); }
 .ferry-widget-desc { font-size:13px; color:var(--text-muted); line-height:1.4; margin-bottom:6px; }
 @media (max-width:700px) { .ferry-widget-wrap { padding-left:20px; padding-right:20px; } }
 .ferry-widget-card iframe { max-width:100%; border-radius:8px; }
+
+/* ── ASK TRIPMADE ──────────────────────────────────────── */
+.ask-wrap { max-width:900px; margin:0 auto; padding:0 48px 60px; }
+@media (max-width:700px) { .ask-wrap { padding-left:20px; padding-right:20px; } }
+.ask-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:22px; margin-bottom:16px; }
+.ask-row { display:flex; gap:10px; }
+.ask-row input { flex:1; font-family:inherit; font-size:15px; padding:13px 16px; border:1.5px solid var(--border-mid); border-radius:var(--radius-sm); background:var(--bg3); color:var(--text); }
+.ask-row input:focus { outline:none; border-color:var(--accent); }
+.ask-row button { font-family:inherit; font-weight:700; font-size:14px; color:#fff; background:var(--accent); border:none; border-radius:var(--radius-sm); padding:0 22px; cursor:pointer; transition:filter .15s; }
+.ask-row button:disabled { opacity:.6; cursor:default; }
+.ask-row button:hover:not(:disabled) { filter:brightness(1.08); }
+.ask-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.ask-chip { font-size:12.5px; color:var(--text-muted); background:var(--bg3); border:1px solid var(--border); border-radius:999px; padding:6px 13px; cursor:pointer; transition:background .15s,color .15s,border-color .15s; }
+.ask-chip:hover { background:var(--accent-light); color:var(--accent); border-color:var(--accent-mid); }
+@media (max-width:700px) { .ask-row { flex-direction:column; } .ask-row button { padding:13px; } }
+.ask-results-hd { display:flex; align-items:baseline; justify-content:space-between; margin:28px 0 14px; }
+.ask-results-hd h3 { font-family:'Syne',sans-serif; font-size:18px; font-weight:700; margin:0; }
+.ask-results-meta { font-size:12.5px; color:var(--text-dim); }
+.ask-results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:760px) { .ask-results-grid { grid-template-columns:1fr; } }
+.ask-stay-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:18px; display:flex; flex-direction:column; gap:10px; }
+.ask-stay-name { font-size:15.5px; font-weight:700; }
+.ask-stay-desc { font-size:13px; line-height:1.5; color:var(--text-muted); flex:1; }
+.ask-stay-foot { display:flex; align-items:center; justify-content:space-between; margin-top:2px; gap:8px; }
+.ask-stay-price { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; }
+.ask-stay-price span { font-weight:400; color:var(--text-dim); font-size:11.5px; }
+.ask-stay-cta { font-size:12.5px; font-weight:700; color:var(--accent); border:1.5px solid var(--accent-mid); border-radius:999px; padding:6px 12px; background:var(--accent-light); white-space:nowrap; }
+.ask-stay-cta.fallback { color:var(--text-muted); border-color:var(--border-mid); background:transparent; }
+.ask-stay-flag { font-size:10.5px; color:var(--text-dim); }
+.ask-crosssell { margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:var(--radius); padding:16px 20px; }
+.ask-crosssell p { margin:0; font-size:14px; color:var(--text); }
+.ask-crosssell p b { display:block; font-size:15px; margin-bottom:2px; }
+.ask-crosssell button { flex-shrink:0; font-family:inherit; font-weight:700; font-size:13.5px; color:var(--accent); background:var(--bg2); border:1.5px solid var(--accent-mid); border-radius:var(--radius-sm); padding:10px 16px; cursor:pointer; }
+.ask-error { font-size:14px; color:var(--text-muted); padding:20px 0; }
 .klook-deals-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
 .klook-deals-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .klook-deals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
@@ -522,6 +556,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <li><a href="javascript:void(0)" class="" onclick="showPage(&#39;landing&#39;,this)">Home</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;how&#39;)">How it works</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;inspo&#39;,this)">Inspiration</a></li>
+    <li><a href="javascript:void(0)" onclick="showPage(&#39;ask&#39;,this)">Ask TripMade</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;tours&#39;,this)">Book your trip</a></li>
     <li><a href="javascript:void(0)" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a></li>
   </ul>
@@ -2644,24 +2679,33 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h3>✈️ Flights</h3>
       <p>Compare and book flights for your trip.</p>
     </div>
-    <!-- TO ADD A LOGO: once you have Skyscanner's/Kiwi.com's official logo
-         file (or the real affiliate link), follow the same pattern as the
+    <!-- TO ADD A LOGO: once you have Kiwi.com's official logo file (or a
+         real affiliate link), follow the same pattern as the Trip.com/
          Viator/GetYourGuide cards below — add a .tour-provider-logo-wrap
          div (with a background colour matching the logo file) as the first
-         child inside .tour-provider-card, before .tour-provider-body. -->
+         child inside .tour-provider-card, before .tour-provider-body.
+         Skyscanner removed 2026-09-08 — Lachlan wasn't accepted into their
+         affiliate program, so the card was pulled entirely rather than
+         left as an unmonetized plain link. -->
     <div class="tour-provider-grid">
-      <a class="tour-provider-card" href="https://www.skyscanner.com.au/" target="_blank" rel="noopener noreferrer">
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">Skyscanner</div>
-          <div class="tour-provider-desc">Compare flights across hundreds of airlines and travel sites to find the best fare.</div>
-          <div class="tour-provider-cta">Visit Skyscanner →</div>
-        </div>
-      </a>
       <a class="tour-provider-card" href="https://www.kiwi.com/" target="_blank" rel="noopener noreferrer">
         <div class="tour-provider-body">
           <div class="tour-provider-name">Kiwi.com</div>
           <div class="tour-provider-desc">Flight search that combines airlines most sites miss, including budget carriers.</div>
           <div class="tour-provider-cta">Visit Kiwi.com →</div>
+        </div>
+      </a>
+      <!-- Same real, tracked Trip.com affiliate link as the Accommodation section below —
+           Trip.com covers flights too, so it's repeated here. See the note on that card
+           re: the logo being TripMade's own icon rather than Trip.com's official logo. -->
+      <a class="tour-provider-card" href="https://www.trip.com/?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=&amp;trip_sub3=D19724084" target="_blank" rel="noopener noreferrer sponsored">
+        <div class="tour-provider-logo-wrap" style="background:#2547FF;">
+          <img src="data:image/png;base64,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" alt="Trip.com">
+        </div>
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Trip.com</div>
+          <div class="tour-provider-desc">Compare flights across hundreds of airlines, plus hotel bundles.</div>
+          <div class="tour-provider-cta">Visit Trip.com →</div>
         </div>
       </a>
     </div>
@@ -2683,6 +2727,21 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-name">Agoda</div>
           <div class="tour-provider-desc">Strong hotel deals and availability across Asia-Pacific and beyond.</div>
           <div class="tour-provider-cta">Visit Agoda →</div>
+        </div>
+      </a>
+      <!-- Real, tracked affiliate link (Allianceid/SID params) — rel includes "sponsored".
+           NOTE: the logo below is the image Lachlan supplied for this card, but it's TripMade's
+           own "Trip." app icon (blue rounded square, white wordmark, amber dot) rather than
+           Trip.com's official brand logo — flagged to Lachlan in chat; swap this data URI for
+           Trip.com's real logo file if/when supplied, following the same base64 pattern. -->
+      <a class="tour-provider-card" href="https://www.trip.com/?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=&amp;trip_sub3=D19724084" target="_blank" rel="noopener noreferrer sponsored">
+        <div class="tour-provider-logo-wrap" style="background:#2547FF;">
+          <img src="data:image/png;base64,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" alt="Trip.com">
+        </div>
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Trip.com</div>
+          <div class="tour-provider-desc">Flights, hotels, trains and airport transfers — one of the world's largest online travel platforms.</div>
+          <div class="tour-provider-cta">Visit Trip.com →</div>
         </div>
       </a>
     </div>
@@ -2970,6 +3029,40 @@ footer p { font-size:13px; color:var(--text-dim); }
         <p style="margin-bottom:14px;">No tours match your filters.</p>
         <button class="btn-secondary" onclick="clearTourFilters()">Clear filters</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ASK TRIPMADE PAGE ═════════════════════════════════
+     Quick-answer accommodation search, separate from the full itinerary
+     form. Calls the "ask-tripmade" Supabase Edge Function, which calls
+     Claude to write 3 neighbourhood-level suggestions from its own
+     knowledge, then attaches a Book/Compare CTA per a server-side
+     affiliate-link lookup (no accommodation program is live yet, so every
+     result shows "Compare hotels" today — see the function's
+     LIVE_AFFILIATES table; add Booking.com/Agoda there once approved, no
+     front-end change needed). Nav placement (own page + nav link) was
+     Lachlan's pick, easy to move later — it's just this page + one nav
+     <li>, not tied into anything else. -->
+<div id="page-ask" class="page">
+  <div class="section" style="padding-top:48px;">
+    <div class="section-hd" style="text-align:left;margin-bottom:8px;">
+      <h2 style="margin-bottom:6px;">Ask TripMade</h2>
+      <p>Not ready to plan a whole trip? Ask one quick question — a city, a budget, a preference — and get a few places to stay back right away.</p>
+    </div>
+    <div class="ask-wrap">
+      <div class="ask-card">
+        <div class="ask-row">
+          <input type="text" id="ask-input" placeholder="e.g. Where should I stay in Barcelona? Budget around $150 a night, close to the beach." onkeydown="if(event.key==='Enter') runAskTripMade();">
+          <button id="ask-btn" onclick="runAskTripMade()">Ask</button>
+        </div>
+        <div class="ask-chips">
+          <div class="ask-chip" onclick="askChip(this)" data-q="Best area to stay in Bali under $80 a night, quiet and close to good surf.">Bali · under $80, quiet + surf</div>
+          <div class="ask-chip" onclick="askChip(this)" data-q="Where to stay in Paris, budget $200, want to be right in the city centre.">Paris · $200, city centre</div>
+          <div class="ask-chip" onclick="askChip(this)" data-q="Tokyo on a budget, around $90 a night, somewhere with good nightlife nearby.">Tokyo · $90, nightlife</div>
+        </div>
+      </div>
+      <div id="ask-results" style="display:none;"></div>
     </div>
   </div>
 </div>
@@ -3542,7 +3635,7 @@ async function initAuth() {
   // anyone needing to click through the nav first. Checked after
   // hydrateCurrentUser resolves, same as the leavereview flag above; only
   // an allowlisted set of pages can be deep-linked to this way.
-  const DEEP_LINKABLE_PAGES = ['inspo', 'tours', 'saved'];
+  const DEEP_LINKABLE_PAGES = ['inspo', 'tours', 'saved', 'ask'];
   const deepLinkPage = new URLSearchParams(window.location.search).get('page');
   if (deepLinkPage && DEEP_LINKABLE_PAGES.includes(deepLinkPage)) {
     const navLink = Array.from(document.querySelectorAll('.nav-links a')).find(a =>
@@ -4816,6 +4909,97 @@ function prefillItineraryFromTrip(card) {
 
   const step1Sub = document.getElementById('step1-sub');
   if (step1Sub) step1Sub.textContent = 'We\'ve pre-filled this from the "' + dest + '" trip — change anything you like before sending it.';
+}
+
+// ── ASK TRIPMADE ──────────────────────────────────────────
+// Calls the "ask-tripmade" Supabase Edge Function (Claude does the actual
+// suggesting; the function attaches a Book/Compare CTA per its own
+// affiliate-link lookup — see the function's source for that table).
+function askChip(el) {
+  const input = document.getElementById('ask-input');
+  input.value = el.dataset.q;
+  runAskTripMade();
+}
+
+async function runAskTripMade() {
+  const input = document.getElementById('ask-input');
+  const btn = document.getElementById('ask-btn');
+  const resultsEl = document.getElementById('ask-results');
+  const query = input.value.trim();
+  if (!query) { input.focus(); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Thinking…';
+  resultsEl.style.display = 'block';
+  resultsEl.innerHTML = '<div class="ask-error">Finding a few places that fit…</div>';
+
+  try {
+    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query } });
+    if (error) throw error;
+    if (data && data.error) {
+      resultsEl.innerHTML = '<div class="ask-error">' + data.error + '</div>';
+      return;
+    }
+    renderAskResults(data, query);
+  } catch (e) {
+    console.error('ask-tripmade failed', e);
+    resultsEl.innerHTML = '<div class="ask-error">Couldn\'t get suggestions just then — please try again in a moment.</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ask';
+  }
+}
+
+function renderAskResults(data, query) {
+  const resultsEl = document.getElementById('ask-results');
+  const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
+  const budgetMeta = data.budget_amount ? (dirLabel + data.currency + ' ' + data.budget_amount + '/night · ') : '';
+
+  const cardsHtml = (data.suggestions || []).map(function(s) {
+    const ctaClass = s.cta && s.cta.isAffiliate ? 'ask-stay-cta' : 'ask-stay-cta fallback';
+    const flagHtml = s.cta && s.cta.isAffiliate ? '' : '<div class="ask-stay-flag">no live affiliate yet</div>';
+    return '' +
+      '<div class="ask-stay-card">' +
+        '<div class="ask-stay-name">' + s.area + '</div>' +
+        '<div class="ask-stay-desc">' + s.reason + '</div>' +
+        '<div class="ask-stay-foot">' +
+          '<div class="ask-stay-price">~' + data.currency + ' ' + s.price_estimate + '<span> / night</span></div>' +
+          '<a class="' + ctaClass + '" href="' + s.cta.url + '" target="_blank" rel="noopener noreferrer' + (s.cta.isAffiliate ? ' sponsored' : '') + '">' + s.cta.label + '</a>' +
+        '</div>' +
+        flagHtml +
+      '</div>';
+  }).join('');
+
+  resultsEl.innerHTML = '' +
+    '<div class="ask-results-hd"><h3>Suggestions for ' + data.destination + '</h3><div class="ask-results-meta">' + budgetMeta + 'via Claude</div></div>' +
+    '<div class="ask-results-grid">' + cardsHtml + '</div>' +
+    '<div class="ask-crosssell">' +
+      '<p><b>Want the full trip planned too?</b>Carry this destination and budget straight into TripMade\'s itinerary form.</p>' +
+      '<button type="button" onclick="prefillItineraryFromAsk(' + JSON.stringify(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
+    '</div>';
+
+  window._lastAskQuery = query;
+}
+
+// Lighter version of prefillItineraryFromTrip() for when all we have is a
+// destination + (maybe) a budget figure, not a full sample-trip card.
+function prefillItineraryFromAsk(destination, budgetAmount) {
+  requireAccount(function() {
+    showPage('form');
+    addDestination(destination);
+    if (budgetAmount) {
+      const sliderEl = document.getElementById('f-budget-slider');
+      if (sliderEl) {
+        const val = Math.min(Math.max(budgetAmount, parseInt(sliderEl.min)), parseInt(sliderEl.max));
+        sliderEl.value = val;
+        updateBudgetDisplay(val);
+      }
+    }
+    const fromEl = document.getElementById('f-from');
+    if (fromEl && !fromEl.value) fromEl.value = 'Sydney';
+    const step1Sub = document.getElementById('step1-sub');
+    if (step1Sub) step1Sub.textContent = 'We\'ve pre-filled this from your Ask TripMade question — change anything you like before sending it.';
+  });
 }
 
 // ── EXISTING BOOKING FILE UPLOAD ─────────────────────────
