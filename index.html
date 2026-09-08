@@ -275,6 +275,9 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
 .ask-chip { font-size:12.5px; color:var(--text-muted); background:var(--bg3); border:1px solid var(--border); border-radius:999px; padding:6px 13px; cursor:pointer; transition:background .15s,color .15s,border-color .15s; }
 .ask-chip:hover { background:var(--accent-light); color:var(--accent); border-color:var(--accent-mid); }
+.ask-chip.disabled { cursor:default; opacity:.55; pointer-events:none; }
+.coming-soon-badge { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:var(--text-dim); background:var(--bg3); border:1px solid var(--border-mid); border-radius:999px; padding:3px 10px; margin-left:10px; vertical-align:middle; }
+.ask-preview-note { font-size:12.5px; color:var(--text-dim); padding:14px 0 0; }
 @media (max-width:700px) { .ask-row { flex-direction:column; } .ask-row button { padding:13px; } }
 .ask-results-hd { display:flex; align-items:baseline; justify-content:space-between; margin:28px 0 14px; }
 .ask-results-hd h3 { font-family:'Syne',sans-serif; font-size:18px; font-weight:700; margin:0; }
@@ -3047,7 +3050,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 <div id="page-ask" class="page">
   <div class="section" style="padding-top:48px;">
     <div class="section-hd" style="text-align:left;margin-bottom:8px;">
-      <h2 style="margin-bottom:6px;">Ask TripMade</h2>
+      <h2 style="margin-bottom:6px;">Ask TripMade<span id="ask-coming-soon-badge" class="coming-soon-badge" style="display:none;">Coming soon</span></h2>
       <p>Not ready to plan a whole trip? Ask one quick question — a city, a budget, a preference — and get a few places to stay back right away.</p>
     </div>
     <div class="ask-wrap">
@@ -3063,6 +3066,40 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
       <div id="ask-results" style="display:none;"></div>
+
+      <!-- Static example, not generated — just shows visitors the format real
+           results will take. Hidden automatically once ASK_TRIPMADE_ENABLED
+           is switched on (see the JS below) since real results replace it. -->
+      <div id="ask-example" style="display:none;">
+        <div class="ask-results-hd"><h3>Example — here's what you'll get</h3><div class="ask-results-meta">for "Barcelona, ~$150/night, close to the beach"</div></div>
+        <div class="ask-results-grid">
+          <div class="ask-stay-card">
+            <div class="ask-stay-name">Barceloneta</div>
+            <div class="ask-stay-desc">Right on the sand, with a lively beachfront promenade of bars and seafood spots — the most walkable pick if the beach is the priority.</div>
+            <div class="ask-stay-foot">
+              <div class="ask-stay-price">~$140<span> / night</span></div>
+              <div class="ask-stay-cta fallback">Compare hotels</div>
+            </div>
+          </div>
+          <div class="ask-stay-card">
+            <div class="ask-stay-name">El Born</div>
+            <div class="ask-stay-desc">Boutique hotels among old-town laneways, cafés and galleries — a short taxi or metro ride from the beach, with more character after dark.</div>
+            <div class="ask-stay-foot">
+              <div class="ask-stay-price">~$155<span> / night</span></div>
+              <div class="ask-stay-cta fallback">Compare hotels</div>
+            </div>
+          </div>
+          <div class="ask-stay-card">
+            <div class="ask-stay-name">Poblenou</div>
+            <div class="ask-stay-desc">A quieter stretch of beach with a growing food scene — better value than Barceloneta, still an easy walk to the sand.</div>
+            <div class="ask-stay-foot">
+              <div class="ask-stay-price">~$120<span> / night</span></div>
+              <div class="ask-stay-cta fallback">Compare hotels</div>
+            </div>
+          </div>
+        </div>
+        <div class="ask-preview-note">Just a sample for now — once Ask TripMade is switched on, results like these are generated live for whatever you ask.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -4915,13 +4952,37 @@ function prefillItineraryFromTrip(card) {
 // Calls the "ask-tripmade" Supabase Edge Function (Claude does the actual
 // suggesting; the function attaches a Book/Compare CTA per its own
 // affiliate-link lookup — see the function's source for that table).
+//
+// FLIP THIS TO true once the ANTHROPIC_API_KEY secret is set in Supabase
+// (see tripmade-quick-ask-feature-spec.md for the steps) and redeploy —
+// nothing else needs to change. The search bar, Ask button and example
+// chips re-enable themselves and the static example block below hides
+// itself automatically; initAskComingSoon() handles all of that.
+const ASK_TRIPMADE_ENABLED = false;
+
+function initAskComingSoon() {
+  if (ASK_TRIPMADE_ENABLED) return;
+  const input = document.getElementById('ask-input');
+  const btn = document.getElementById('ask-btn');
+  const badge = document.getElementById('ask-coming-soon-badge');
+  const example = document.getElementById('ask-example');
+  if (input) { input.disabled = true; input.placeholder = 'Coming soon — check back shortly'; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Coming soon'; }
+  if (badge) badge.style.display = 'inline-block';
+  if (example) example.style.display = 'block';
+  document.querySelectorAll('.ask-chip').forEach(function(c) { c.classList.add('disabled'); });
+}
+initAskComingSoon();
+
 function askChip(el) {
+  if (!ASK_TRIPMADE_ENABLED) return;
   const input = document.getElementById('ask-input');
   input.value = el.dataset.q;
   runAskTripMade();
 }
 
 async function runAskTripMade() {
+  if (!ASK_TRIPMADE_ENABLED) return;
   const input = document.getElementById('ask-input');
   const btn = document.getElementById('ask-btn');
   const resultsEl = document.getElementById('ask-results');
