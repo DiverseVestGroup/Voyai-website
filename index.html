@@ -3597,19 +3597,44 @@ async function hydrateCurrentUser(authUser) {
     // Australia → AUD — computed after the fact so it always tracks
     // whatever country ended up in the seed, wherever it came from.
     seed.currency = defaultCurrencyForCountry(seed.country);
-    const { data: created } = await sb.from('profiles').upsert(seed).select().maybeSingle();
-    profile = created || seed;
 
-    // First time this person has ever been seen — triggers the "Welcome to
-    // TripMade" email. That logic lives in the "Integration Webhooks — PDF
-    // rebuild" scenario (filtered on source === 'signup_gate'), which is
-    // reached via THIS webhook URL — not the old "Integration Webhooks"
-    // scenario's URL, which is deprecated and switched off.
-    fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name: seed.name, email: seed.email, phone: seed.phone, country: seed.country, signedUpAt: new Date().toISOString() })
-    });
+    // Plain INSERT, not upsert — this is deliberate. hydrateCurrentUser()
+    // runs on every auth event, including silent background token
+    // refreshes (Supabase swaps the access token roughly hourly while a
+    // tab stays open), and the SELECT just above this can occasionally
+    // come back empty for a real, already-signed-up person if it races
+    // against that token swap (RLS momentarily sees no valid auth.uid()).
+    // An upsert would treat that as a genuine new signup, silently
+    // re-blanking any profile fields not in `seed` and re-firing the
+    // welcome email below — which is exactly the "random welcome email"
+    // bug reported 2026-09-08 (see tripmade-welcome-email-duplicate-fix.md).
+    // A bare INSERT instead relies on the `id` primary key: if a profile
+    // row already exists, this fails with a conflict and `created` comes
+    // back empty, so we fall through to re-fetching the real row and skip
+    // the webhook entirely — the welcome email only ever fires on the one
+    // request that actually wins the race to create the row for real.
+    const { data: created } = await sb.from('profiles').insert(seed).select().maybeSingle();
+
+    if (created) {
+      profile = created;
+
+      // First time this person has ever been seen — triggers the "Welcome to
+      // TripMade" email. That logic lives in the "Integration Webhooks — PDF
+      // rebuild" scenario (filtered on source === 'signup_gate'), which is
+      // reached via THIS webhook URL — not the old "Integration Webhooks"
+      // scenario's URL, which is deprecated and switched off.
+      fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name: seed.name, email: seed.email, phone: seed.phone, country: seed.country, signedUpAt: new Date().toISOString() })
+      });
+    } else {
+      // Someone already exists under this id — the SELECT above just
+      // missed it. Fetch the real row rather than falling back to the
+      // (likely mostly-blank) seed, so nothing gets overwritten.
+      const { data: existing } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
+      profile = existing;
+    }
   }
   _pendingProfileData = null;
 
