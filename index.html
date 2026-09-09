@@ -262,6 +262,13 @@ hr { border:none; border-top:1px solid var(--border); }
 @media (max-width:700px) { .ferry-widget-wrap { padding-left:20px; padding-right:20px; } }
 .ferry-widget-card iframe { max-width:100%; border-radius:8px; }
 
+/* ── FLIGHT SEARCH WIDGET (Travelpayouts) ─────────────────── */
+.flight-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
+.flight-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
+.flight-widget-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.flight-widget-desc { font-size:13px; color:var(--text-muted); line-height:1.4; margin-bottom:14px; }
+@media (max-width:700px) { .flight-widget-wrap { padding-left:20px; padding-right:20px; } }
+
 /* ── ASK TRIPMADE ──────────────────────────────────────── */
 .ask-wrap { max-width:900px; margin:0 auto; padding:0 48px 60px; }
 @media (max-width:700px) { .ask-wrap { padding-left:20px; padding-right:20px; } }
@@ -545,6 +552,22 @@ footer p { font-size:13px; color:var(--text-dim); }
       script.src = 'https://emrld.ltd/NTcxMjMw.js?t=571230';
       document.head.appendChild(script);
   })();
+</script>
+
+<!-- PostHog — site analytics (Product Analytics, Web Analytics, Session
+     Replay). EU region, project "TripMade" (id 269884), set up 2026-09-09.
+     Standard install snippet from PostHog's own onboarding — nothing custom.
+     person_profiles: 'identified_only' means anonymous browsing is tracked
+     under a temporary id and only gets tied to a real person once they
+     sign up/log in (via the site's existing Supabase auth), rather than
+     creating a full profile for every anonymous visitor. -->
+<script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="Gl Zl Jl Ql Yl init wu ku yu bu Tu Pa Iu pu Pu Fu Ou capture getExtension Su Wl Lu calculateEventProperties Du register register_once register_for_session unregister unregister_for_session Bu mu Nu getFeatureFlag getFeatureFlagPayload getFeatureFlagResult getAllFeatureFlags isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync Hu identify setPersonProperties unsetPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset zu shutdown setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty qu Au createPersonProfile setInternalOrTestUser ju tu eu opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Eu debug Fa bs getPageViewId captureTraceFeedback captureTraceMetric du".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_x8gMQDQtuuRk2whak6x9vd99kVx58M3tQodBqLFPaepH', {
+        api_host: 'https://eu.i.posthog.com',
+        defaults: '2026-05-30',
+        person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+    })
 </script>
 </head>
 <body>
@@ -2683,13 +2706,15 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p>Compare and book flights for your trip.</p>
     </div>
     <!-- TO ADD A LOGO: once you have Kiwi.com's official logo file (or a
-         real affiliate link), follow the same pattern as the Trip.com/
-         Viator/GetYourGuide cards below — add a .tour-provider-logo-wrap
-         div (with a background colour matching the logo file) as the first
-         child inside .tour-provider-card, before .tour-provider-body.
+         real affiliate link), follow the same pattern as the Trip.com card
+         under Accommodation below, or the Viator/GetYourGuide cards under
+         Tours & experiences — add a .tour-provider-logo-wrap div (with a
+         background colour matching the logo file) as the first child
+         inside .tour-provider-card, before .tour-provider-body.
          Skyscanner removed 2026-09-08 — Lachlan wasn't accepted into their
          affiliate program, so the card was pulled entirely rather than
-         left as an unmonetized plain link. -->
+         left as an unmonetized plain link. Trip.com card removed from this
+         section 2026-09-09 (Lachlan's call) — it's still under Accommodation. -->
     <div class="tour-provider-grid">
       <a class="tour-provider-card" href="https://www.kiwi.com/" target="_blank" rel="noopener noreferrer">
         <div class="tour-provider-body">
@@ -2698,19 +2723,20 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Visit Kiwi.com →</div>
         </div>
       </a>
-      <!-- Same real, tracked Trip.com affiliate link as the Accommodation section below —
-           Trip.com covers flights too, so it's repeated here. See the note on that card
-           re: the logo being TripMade's own icon rather than Trip.com's official logo. -->
-      <a class="tour-provider-card" href="https://www.trip.com/?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=&amp;trip_sub3=D19724084" target="_blank" rel="noopener noreferrer sponsored">
-        <div class="tour-provider-logo-wrap" style="background:#2547FF;">
-          <img src="data:image/png;base64,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" alt="Trip.com">
-        </div>
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">Trip.com</div>
-          <div class="tour-provider-desc">Compare flights across hundreds of airlines, plus hotel bundles.</div>
-          <div class="tour-provider-cta">Visit Trip.com →</div>
-        </div>
-      </a>
+    </div>
+
+    <!-- Travelpayouts flight-search widget (2026-09-09) — same Travelpayouts
+         account as the Drive script in <head> (trs=571230 matches that
+         account's marker). "plain=true"/"border_radius=0" strip the
+         widget's own chrome so it sits inside our own card styling below.
+         The script renders itself at this exact spot in the DOM — nothing
+         else needed to wire it up. -->
+    <div class="flight-widget-wrap">
+      <div class="flight-widget-card">
+        <div class="flight-widget-name">Search flights</div>
+        <div class="flight-widget-desc">Compare prices across airlines and travel sites — search right here, no need to leave this page.</div>
+        <script async src="https://tpwdgt.com/content?currency=usd&trs=571230&shmarker=774757&locale=en&stops=any&show_hotels=true&powered_by=true&border_radius=0&plain=true&color_button=%2300A991&color_button_text=%23ffffff&promo_id=3414&campaign_id=111" charset="utf-8"></script>
+      </div>
     </div>
 
     <div class="category-heading-wrap">
@@ -3563,7 +3589,15 @@ function friendlyAuthError(err) {
 // auth change so `_currentUser` always reflects the real session. Creates
 // the profile row the first time a given auth user is ever seen.
 async function hydrateCurrentUser(authUser) {
-  if (!authUser) { _currentUser = null; renderAuthNav(); return; }
+  if (!authUser) {
+    // Logged out (or never logged in) — make sure PostHog isn't still
+    // attributing this browser's anonymous activity to whoever was last
+    // identified on it (e.g. a shared/public computer). typeof-guarded
+    // since this runs on every auth check and must never throw if an
+    // ad-blocker kept the PostHog script from ever defining `posthog`.
+    if (typeof posthog !== 'undefined') posthog.reset();
+    _currentUser = null; renderAuthNav(); return;
+  }
 
   // Guard against stale anonymous sessions from the old (pre-OTP) sign-up
   // system: those users have no email/name/phone/anything, and a browser
@@ -3572,6 +3606,7 @@ async function hydrateCurrentUser(authUser) {
   // The current sign-up flow never creates anonymous users, so seeing one
   // here can only be leftover state — sign it out instead of hydrating it.
   if (authUser.is_anonymous) {
+    if (typeof posthog !== 'undefined') posthog.reset();
     await sb.auth.signOut();
     _currentUser = null;
     renderAuthNav();
@@ -3647,6 +3682,22 @@ async function hydrateCurrentUser(authUser) {
     currency: (profile && profile.currency) || defaultCurrencyForCountry((profile && profile.country) || ''),
     joinedWaitlist: false
   };
+
+  // Tie this browser's PostHog activity to the real signed-in person
+  // instead of just an anonymous session id. `identify()` is idempotent —
+  // safe to call on every hydrate (including the silent background token
+  // refreshes this function also runs on), it only does real work when the
+  // distinct id actually changes. No email/PII in the properties beyond
+  // what the person already gave us at signup. typeof-guarded so a
+  // blocked/missing PostHog script can never break auth.
+  if (typeof posthog !== 'undefined') {
+    posthog.identify(_currentUser.id, {
+      email: _currentUser.email,
+      name: _currentUser.name,
+      country: _currentUser.country,
+      currency: _currentUser.currency
+    });
+  }
 
   // Tracked in its own table (separate from `profiles`, which is every
   // account regardless of intent) so the business can see exactly who has
