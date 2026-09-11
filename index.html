@@ -386,6 +386,30 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-crosssell p b { display:block; font-size:15px; margin-bottom:2px; }
 .ask-crosssell button { flex-shrink:0; font-family:inherit; font-weight:700; font-size:13.5px; color:var(--accent); background:var(--bg2); border:1.5px solid var(--accent-mid); border-radius:var(--radius-sm); padding:10px 16px; cursor:pointer; }
 .ask-error { font-size:14px; color:var(--text-muted); padding:20px 0; }
+
+/* Chat-thread mode: each question+answer pair is one .ask-turn, appended
+   (not replacing) so the visitor can scroll back through everything
+   they've asked this session — see runAskTripMade(). */
+.ask-turn { padding-top:26px; margin-top:26px; border-top:1px solid var(--border); }
+.ask-turn:first-child { padding-top:0; margin-top:0; border-top:none; }
+.ask-user-row { display:flex; justify-content:flex-end; margin-bottom:16px; }
+.ask-user-bubble { max-width:78%; background:var(--accent); color:#fff; font-size:14px; font-weight:600; line-height:1.45; border-radius:14px 14px 3px 14px; padding:10px 16px; }
+.ask-chat-toolbar { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-top:18px; }
+.ask-chat-toolbar .ask-save-status { font-size:12.5px; color:var(--text-dim); }
+.ask-save-btn { font-family:inherit; font-weight:700; font-size:13px; color:var(--accent); background:var(--accent-light); border:1.5px solid var(--accent-mid); border-radius:999px; padding:8px 16px; cursor:pointer; transition:filter .15s; }
+.ask-save-btn:hover:not(:disabled) { filter:brightness(1.05); }
+.ask-save-btn:disabled { opacity:.6; cursor:default; }
+
+/* Saved chats list — on the Saved page, alongside Saved trips. */
+.saved-chats-list { display:flex; flex-direction:column; gap:10px; }
+.saved-chat-row { display:flex; align-items:center; justify-content:space-between; gap:14px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:14px 18px; }
+.saved-chat-main { min-width:0; }
+.saved-chat-title { font-size:14.5px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.saved-chat-meta { font-size:12px; color:var(--text-dim); margin-top:2px; }
+.saved-chat-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.saved-chat-open { font-family:inherit; font-weight:700; font-size:13px; color:var(--accent); background:var(--accent-light); border:1.5px solid var(--accent-mid); border-radius:999px; padding:7px 15px; cursor:pointer; white-space:nowrap; }
+.saved-chat-delete { font-family:inherit; font-size:12.5px; color:var(--text-dim); background:none; border:none; cursor:pointer; padding:7px 6px; }
+.saved-chat-delete:hover { color:var(--text-muted); }
 .klook-deals-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
 .klook-deals-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .klook-deals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
@@ -3166,6 +3190,11 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
       <div id="ask-results" style="display:none;"></div>
+      <div id="ask-chat-toolbar" class="ask-chat-toolbar" style="display:none;">
+        <a href="javascript:void(0)" onclick="resetAskChat()" style="font-size:12.5px;color:var(--text-dim);margin-right:auto;">↺ Start a new chat</a>
+        <span id="ask-save-status" class="ask-save-status"></span>
+        <button type="button" id="ask-save-btn" class="ask-save-btn" onclick="saveAskChat()">💾 Save this chat</button>
+      </div>
 
       <!-- Static example, not generated — just shows visitors the format
            results will take, and fills the space under the search box before
@@ -3219,6 +3248,20 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button id="saved-empty-btn" class="btn-primary" onclick="showPage(&#39;inspo&#39;)">Browse trip inspiration →</button>
     </div>
     <div id="saved-grid" class="cards-grid" style="padding:0;"></div>
+
+    <!-- Saved Ask TripMade chats — a whole question+answer thread saved
+         from the Ask TripMade page (see saveAskChat()/openSavedChat() in
+         the script), so a customer can pick up an earlier conversation
+         instead of re-asking everything from scratch. -->
+    <div class="section-hd" style="text-align:left;margin:44px 0 20px;">
+      <h2 style="margin-bottom:6px;font-size:22px;">Saved chats</h2>
+      <p>Ask TripMade conversations you've saved to come back to.</p>
+    </div>
+    <div id="saved-chats-empty" style="display:none;text-align:center;padding:40px 20px;color:var(--text-muted);">
+      <p id="saved-chats-empty-text" style="font-size:15px;margin-bottom:18px;">You haven't saved any Ask TripMade chats yet.</p>
+      <button id="saved-chats-empty-btn" class="btn-primary" onclick="showPage(&#39;ask&#39;)">Ask TripMade a question →</button>
+    </div>
+    <div id="saved-chats-list" class="saved-chats-list"></div>
   </div>
 </div>
 
@@ -4451,6 +4494,7 @@ document.addEventListener('click', function(e) {
 });
 
 async function renderSavedPage() {
+  renderSavedChatsPage();
   const grid  = document.getElementById('saved-grid');
   const empty = document.getElementById('saved-empty');
   if (!grid) return;
@@ -5198,6 +5242,34 @@ function askChip(el) {
   runAskTripMade();
 }
 
+// Chat-thread state for the CURRENT visit to the Ask TripMade page — every
+// question+answer pair asked this session, in order. Cleared whenever a
+// fresh chat starts (page load, or openSavedChat() replacing it with a
+// previously-saved thread). This is what gets written to `ask_chats` when
+// the visitor hits "Save this chat" — see saveAskChat() below.
+let _askTurns = [];
+// Set once a chat has been saved at least once (either just now, or loaded
+// via openSavedChat()) so further saves UPDATE that same row instead of
+// creating duplicates every time.
+let _askChatId = null;
+
+function resetAskChat() {
+  _askTurns = [];
+  _askChatId = null;
+  const resultsEl = document.getElementById('ask-results');
+  resultsEl.innerHTML = '';
+  resultsEl.style.display = 'none';
+  const example = document.getElementById('ask-example');
+  if (example) example.style.display = 'block';
+  document.getElementById('ask-chat-toolbar').style.display = 'none';
+  const btn = document.getElementById('ask-save-btn');
+  if (btn) btn.textContent = '💾 Save this chat';
+  const statusEl = document.getElementById('ask-save-status');
+  if (statusEl) statusEl.textContent = '';
+  const input = document.getElementById('ask-input');
+  if (input) { input.value = ''; input.focus(); }
+}
+
 async function runAskTripMade() {
   if (!ASK_TRIPMADE_ENABLED) return;
   const input = document.getElementById('ask-input');
@@ -5211,27 +5283,52 @@ async function runAskTripMade() {
   const example = document.getElementById('ask-example');
   if (example) example.style.display = 'none';
   resultsEl.style.display = 'block';
-  resultsEl.innerHTML = '<div class="ask-error">Finding a few places that fit…</div>';
+
+  // Chat mode: each question gets its own turn, appended below whatever's
+  // already there — a previous answer is never wiped out by asking again.
+  const turn = { query: query, data: null, error: null };
+  _askTurns.push(turn);
+
+  const turnEl = document.createElement('div');
+  turnEl.className = 'ask-turn';
+  turnEl.innerHTML =
+    '<div class="ask-user-row"><div class="ask-user-bubble"></div></div>' +
+    '<div class="ask-turn-body"><div class="ask-error">Finding a few places that fit…</div></div>';
+  turnEl.querySelector('.ask-user-bubble').textContent = query;
+  resultsEl.appendChild(turnEl);
+  turnEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  input.value = '';
+  input.focus();
+
+  const bodyEl = turnEl.querySelector('.ask-turn-body');
 
   try {
     const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query } });
     if (error) throw error;
     if (data && data.error) {
-      resultsEl.innerHTML = '<div class="ask-error">' + data.error + '</div>';
+      turn.error = data.error;
+      bodyEl.innerHTML = '<div class="ask-error">' + data.error + '</div>';
       return;
     }
-    renderAskResults(data, query);
+    turn.data = data;
+    renderAskResults(bodyEl, data);
   } catch (e) {
     console.error('ask-tripmade failed', e);
-    resultsEl.innerHTML = '<div class="ask-error">Couldn\'t get suggestions just then — please try again in a moment.</div>';
+    turn.error = 'Couldn\'t get suggestions just then — please try again in a moment.';
+    bodyEl.innerHTML = '<div class="ask-error">' + turn.error + '</div>';
   } finally {
     btn.disabled = false;
     btn.textContent = 'Ask';
+    // Offer to save as soon as there's at least one real answer to save —
+    // no point showing it while every turn so far has errored.
+    if (_askTurns.some(function(t) { return t.data; })) {
+      document.getElementById('ask-chat-toolbar').style.display = 'flex';
+    }
   }
 }
 
-function renderAskResults(data, query) {
-  const resultsEl = document.getElementById('ask-results');
+function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
   const budgetMeta = data.budget_amount ? (dirLabel + data.currency + ' ' + data.budget_amount + '/night · ') : '';
 
@@ -5250,15 +5347,168 @@ function renderAskResults(data, query) {
       '</div>';
   }).join('');
 
-  resultsEl.innerHTML = '' +
+  bodyEl.innerHTML = '' +
     '<div class="ask-results-hd"><h3>Suggestions for ' + data.destination + '</h3><div class="ask-results-meta">' + budgetMeta + 'via Claude</div></div>' +
     '<div class="ask-results-grid">' + cardsHtml + '</div>' +
     '<div class="ask-crosssell">' +
       '<p><b>Want the full trip planned too?</b>Carry this destination and budget straight into TripMade\'s itinerary form.</p>' +
       '<button type="button" onclick="prefillItineraryFromAsk(' + JSON.stringify(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
     '</div>';
+}
 
-  window._lastAskQuery = query;
+// Re-renders a full stored chat (from the `ask_chats` table) back into the
+// page — used by openSavedChat(). Each turn is rebuilt exactly the way a
+// live one is, just from stored data instead of a fresh API call.
+function renderAskChatThread(turns) {
+  const resultsEl = document.getElementById('ask-results');
+  const example = document.getElementById('ask-example');
+  if (example) example.style.display = 'none';
+  resultsEl.style.display = 'block';
+  resultsEl.innerHTML = '';
+
+  turns.forEach(function(turn) {
+    const turnEl = document.createElement('div');
+    turnEl.className = 'ask-turn';
+    turnEl.innerHTML =
+      '<div class="ask-user-row"><div class="ask-user-bubble"></div></div>' +
+      '<div class="ask-turn-body"></div>';
+    turnEl.querySelector('.ask-user-bubble').textContent = turn.query;
+    resultsEl.appendChild(turnEl);
+    const bodyEl = turnEl.querySelector('.ask-turn-body');
+    if (turn.data) {
+      renderAskResults(bodyEl, turn.data);
+    } else {
+      bodyEl.innerHTML = '<div class="ask-error">' + (turn.error || 'No answer was returned for this question.') + '</div>';
+    }
+  });
+}
+
+// ── SAVE / LOAD ASK TRIPMADE CHATS ───────────────────────
+// Lets a customer save the whole question+answer thread they've built up
+// on the Ask TripMade page (see `ask_chats` table — one row per saved
+// chat, `messages` holds the full turn history as JSON) and come back to
+// it later from Saved > Saved chats.
+function askChatTitle(turns) {
+  const dests = [];
+  turns.forEach(function(t) {
+    if (t.data && t.data.destination && dests.indexOf(t.data.destination) === -1) dests.push(t.data.destination);
+  });
+  if (dests.length === 0) return turns[0] ? turns[0].query.slice(0, 60) : 'Ask TripMade chat';
+  if (dests.length <= 2) return dests.join(' · ');
+  return dests.slice(0, 2).join(' · ') + ' +' + (dests.length - 2) + ' more';
+}
+
+function saveAskChat() {
+  if (_askTurns.length === 0) return;
+  requireAccount(async function() {
+    const btn = document.getElementById('ask-save-btn');
+    const statusEl = document.getElementById('ask-save-status');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const currentUser = getUser();
+    const row = {
+      user_id: currentUser.id,
+      title: askChatTitle(_askTurns),
+      messages: _askTurns,
+      updated_at: new Date().toISOString(),
+    };
+
+    let error;
+    if (_askChatId) {
+      ({ error } = await sb.from('ask_chats').update(row).eq('id', _askChatId).eq('user_id', currentUser.id));
+    } else {
+      const { data, error: insertError } = await sb.from('ask_chats').insert(row).select('id').single();
+      error = insertError;
+      if (!error && data) _askChatId = data.id;
+    }
+
+    btn.disabled = false;
+    if (error) {
+      console.error('Save chat failed:', error);
+      btn.textContent = '💾 Save this chat';
+      if (statusEl) statusEl.textContent = 'Couldn\'t save just then — try again.';
+    } else {
+      btn.textContent = '💾 Update saved chat';
+      if (statusEl) statusEl.textContent = 'Saved ✓';
+    }
+  });
+}
+
+async function renderSavedChatsPage() {
+  const list = document.getElementById('saved-chats-list');
+  const empty = document.getElementById('saved-chats-empty');
+  if (!list) return;
+
+  const currentUser = getUser();
+  const emptyText = document.getElementById('saved-chats-empty-text');
+  const emptyBtn = document.getElementById('saved-chats-empty-btn');
+
+  if (!currentUser) {
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    if (emptyText) emptyText.textContent = 'Log in to see the chats you\'ve saved.';
+    if (emptyBtn) { emptyBtn.textContent = 'Log in →'; emptyBtn.setAttribute('onclick', 'openLoginModal()'); }
+    return;
+  }
+  if (emptyText) emptyText.textContent = 'You haven\'t saved any Ask TripMade chats yet.';
+  if (emptyBtn) { emptyBtn.textContent = 'Ask TripMade a question →'; emptyBtn.setAttribute('onclick', "showPage('ask')"); }
+
+  const { data: chats, error } = await sb.from('ask_chats')
+    .select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false });
+  if (error) { console.error('Loading saved chats failed:', error); return; }
+
+  if (!chats || chats.length === 0) {
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  list.style.display = '';
+  empty.style.display = 'none';
+
+  list.innerHTML = chats.map(function(c) {
+    const turnCount = Array.isArray(c.messages) ? c.messages.length : 0;
+    const dateStr = new Date(c.updated_at || c.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+    return '' +
+      '<div class="saved-chat-row">' +
+        '<div class="saved-chat-main">' +
+          '<div class="saved-chat-title">' + (c.title || 'Ask TripMade chat') + '</div>' +
+          '<div class="saved-chat-meta">' + turnCount + (turnCount === 1 ? ' question' : ' questions') + ' · ' + dateStr + '</div>' +
+        '</div>' +
+        '<div class="saved-chat-actions">' +
+          '<button type="button" class="saved-chat-open" onclick="openSavedChat(' + JSON.stringify(c.id) + ')">Open →</button>' +
+          '<button type="button" class="saved-chat-delete" onclick="deleteSavedChat(' + JSON.stringify(c.id) + ')" title="Delete">✕</button>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+}
+
+function openSavedChat(id) {
+  requireAccount(async function() {
+    const currentUser = getUser();
+    const { data: chat, error } = await sb.from('ask_chats').select('*').eq('id', id).eq('user_id', currentUser.id).single();
+    if (error || !chat) { console.error('Opening saved chat failed:', error); return; }
+
+    showPage('ask');
+    _askTurns = Array.isArray(chat.messages) ? chat.messages : [];
+    _askChatId = chat.id;
+    renderAskChatThread(_askTurns);
+    const toolbar = document.getElementById('ask-chat-toolbar');
+    const btn = document.getElementById('ask-save-btn');
+    const statusEl = document.getElementById('ask-save-status');
+    if (toolbar) toolbar.style.display = 'flex';
+    if (btn) btn.textContent = '💾 Update saved chat';
+    if (statusEl) statusEl.textContent = '';
+  });
+}
+
+async function deleteSavedChat(id) {
+  const currentUser = getUser();
+  if (!currentUser) return;
+  const { error } = await sb.from('ask_chats').delete().eq('id', id).eq('user_id', currentUser.id);
+  if (error) { console.error('Delete chat failed:', error); return; }
+  if (_askChatId === id) _askChatId = null;
+  renderSavedChatsPage();
 }
 
 // Lighter version of prefillItineraryFromTrip() for when all we have is a
