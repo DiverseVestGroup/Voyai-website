@@ -5297,8 +5297,12 @@ async function runAskTripMade() {
   if (example) example.style.display = 'none';
   resultsEl.style.display = 'block';
 
-  // Chat mode: each question gets its own turn, appended below whatever's
-  // already there — a previous answer is never wiped out by asking again.
+  // Chat mode: each question gets its own turn. _askTurns itself stays in
+  // chronological order (oldest first — matters for saveAskChat()'s title
+  // and for the clarifying-question follow-up logic below), but the newest
+  // turn is PREPENDED to the visible thread so it reads top-to-bottom as
+  // most-recent-first, right under the search box instead of buried below
+  // a long scroll of history.
   const turn = { query: query, data: null, error: null };
   _askTurns.push(turn);
 
@@ -5308,7 +5312,7 @@ async function runAskTripMade() {
     '<div class="ask-user-row"><div class="ask-user-bubble"></div></div>' +
     '<div class="ask-turn-body"><div class="ask-error">Finding a few places that fit…</div></div>';
   turnEl.querySelector('.ask-user-bubble').textContent = query;
-  resultsEl.appendChild(turnEl);
+  resultsEl.prepend(turnEl);
   turnEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   // If the previous answer was a clarifying question, fold the visitor's
@@ -5441,7 +5445,10 @@ function renderAskResults(bodyEl, data) {
 
 // Re-renders a full stored chat (from the `ask_chats` table) back into the
 // page — used by openSavedChat(). Each turn is rebuilt exactly the way a
-// live one is, just from stored data instead of a fresh API call.
+// live one is, just from stored data instead of a fresh API call. `turns`
+// stays stored oldest-first, but rendered newest-first (see runAskTripMade())
+// — walk it backwards so appending each one still builds top-to-bottom in
+// most-recent-first order.
 function renderAskChatThread(turns) {
   const resultsEl = document.getElementById('ask-results');
   const example = document.getElementById('ask-example');
@@ -5449,7 +5456,7 @@ function renderAskChatThread(turns) {
   resultsEl.style.display = 'block';
   resultsEl.innerHTML = '';
 
-  turns.forEach(function(turn) {
+  turns.slice().reverse().forEach(function(turn) {
     const turnEl = document.createElement('div');
     turnEl.className = 'ask-turn';
     turnEl.innerHTML =
