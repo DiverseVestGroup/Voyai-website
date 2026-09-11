@@ -386,6 +386,11 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-crosssell p b { display:block; font-size:15px; margin-bottom:2px; }
 .ask-crosssell button { flex-shrink:0; font-family:inherit; font-weight:700; font-size:13.5px; color:var(--accent); background:var(--bg2); border:1.5px solid var(--accent-mid); border-radius:var(--radius-sm); padding:10px 16px; cursor:pointer; }
 .ask-error { font-size:14px; color:var(--text-muted); padding:20px 0; }
+.ask-reply-text { font-size:14.5px; line-height:1.65; color:var(--text); padding:4px 0 2px; }
+.ask-redirect-card { margin-top:2px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:var(--radius); padding:16px 20px; flex-wrap:wrap; }
+.ask-redirect-card p { margin:0; font-size:14px; color:var(--text); flex:1; min-width:180px; }
+.ask-redirect-card button { flex-shrink:0; font-family:inherit; font-weight:700; font-size:13.5px; color:#fff; background:var(--accent); border:none; border-radius:var(--radius-sm); padding:10px 18px; cursor:pointer; white-space:nowrap; }
+.ask-dine-meta { font-size:12px; color:var(--text-dim); text-transform:capitalize; }
 
 /* Chat-thread mode: each question+answer pair is one .ask-turn, appended
    (not replacing) so the visitor can scroll back through everything
@@ -2811,7 +2816,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          .tour-provider-card grid (see Tours & experiences below for the
          pattern) or an embedded widget section (see the Klook section for
          that pattern). Don't invent a placeholder link — wait for a real one. -->
-    <div class="category-heading-wrap">
+    <div class="category-heading-wrap" id="tours-flights">
       <h3>✈️ Flights</h3>
       <p>Compare and book flights for your trip.</p>
     </div>
@@ -2837,7 +2842,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
 
-    <div class="category-heading-wrap">
+    <div class="category-heading-wrap" id="tours-accommodation">
       <h3>🏨 Accommodation</h3>
       <p>Hotels, apartments and stays wherever you're headed.</p>
     </div>
@@ -2873,7 +2878,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </a>
     </div>
 
-    <div class="category-heading-wrap">
+    <div class="category-heading-wrap" id="tours-insurance">
       <h3>🛡️ Travel insurance</h3>
       <p>Cover for your trip, sorted before you go.</p>
     </div>
@@ -2913,7 +2918,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          promote. Their dashboard login was shared in Lachlan's affiliate
          signup email but is Lachlan's own credential — not something to be
          entered anywhere by anyone other than him. -->
-    <div class="category-heading-wrap">
+    <div class="category-heading-wrap" id="tours-ferries">
       <h3>⛴️ Ferries</h3>
       <p>Book ferry tickets for island-hopping and coastal routes.</p>
     </div>
@@ -2939,7 +2944,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
 
-    <div class="category-heading-wrap">
+    <div class="category-heading-wrap" id="tours-experiences">
       <h3>🎟️ Tours &amp; experiences</h3>
       <p>Browse and book activities anywhere in the world — pick a platform below to see what's on offer.</p>
     </div>
@@ -5252,10 +5257,18 @@ let _askTurns = [];
 // via openSavedChat()) so further saves UPDATE that same row instead of
 // creating duplicates every time.
 let _askChatId = null;
+// Holds the (possibly already-merged) query text whenever the last answer
+// was a clarifying question — e.g. "cheapest flights to bali" after the
+// backend asked "where are you flying from?". The visitor's very next
+// message gets folded onto this before it's sent, since the backend is
+// stateless and only ever sees one combined question at a time; the
+// visitor still sees their own short reply as their chat bubble.
+let _pendingClarification = null;
 
 function resetAskChat() {
   _askTurns = [];
   _askChatId = null;
+  _pendingClarification = null;
   const resultsEl = document.getElementById('ask-results');
   resultsEl.innerHTML = '';
   resultsEl.style.display = 'none';
@@ -5298,25 +5311,35 @@ async function runAskTripMade() {
   resultsEl.appendChild(turnEl);
   turnEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+  // If the previous answer was a clarifying question, fold the visitor's
+  // raw reply onto it before sending — the backend is stateless and only
+  // ever sees one combined question, never the whole thread.
+  const apiQuery = _pendingClarification ? (_pendingClarification + ' ' + query) : query;
+
   input.value = '';
   input.focus();
 
   const bodyEl = turnEl.querySelector('.ask-turn-body');
 
   try {
-    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query } });
+    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery } });
     if (error) throw error;
     if (data && data.error) {
       turn.error = data.error;
       bodyEl.innerHTML = '<div class="ask-error">' + data.error + '</div>';
+      _pendingClarification = null;
       return;
     }
     turn.data = data;
-    renderAskResults(bodyEl, data);
+    // Another clarifying question chains onto the merged query so far;
+    // anything else means the question's been fully answered.
+    _pendingClarification = data.type === 'clarify' ? apiQuery : null;
+    renderAskTurnBody(bodyEl, data);
   } catch (e) {
     console.error('ask-tripmade failed', e);
     turn.error = 'Couldn\'t get suggestions just then — please try again in a moment.';
     bodyEl.innerHTML = '<div class="ask-error">' + turn.error + '</div>';
+    _pendingClarification = null;
   } finally {
     btn.disabled = false;
     btn.textContent = 'Ask';
@@ -5326,6 +5349,66 @@ async function runAskTripMade() {
       document.getElementById('ask-chat-toolbar').style.display = 'flex';
     }
   }
+}
+
+// Maps a redirect_to_category answer onto the right "Book your trip"
+// section — id's added to each category-heading-wrap div for this.
+const ASK_REDIRECT_META = {
+  flights: { label: '✈️ Search flights', anchor: 'tours-flights' },
+  insurance: { label: '🛡️ Browse travel insurance', anchor: 'tours-insurance' },
+  tours: { label: '🎟️ Browse tours & experiences', anchor: 'tours-experiences' },
+  ferries: { label: '⛴️ Search ferries', anchor: 'tours-ferries' },
+};
+
+function goToBookingSection(anchor) {
+  showPage('tours');
+  scrollToSection(anchor);
+}
+
+// Dispatches a single turn's answer to the right renderer by data.type —
+// suggest_stays is the original card-grid layout (renderAskResults);
+// the other four categories added 2026-09-11 each get their own shape.
+function renderAskTurnBody(bodyEl, data) {
+  if (data.type === 'clarify') {
+    bodyEl.innerHTML = '<div class="ask-reply-text">' + data.question + '</div>';
+    return;
+  }
+  if (data.type === 'transport') {
+    bodyEl.innerHTML = '<div class="ask-reply-text">' + data.answer + '</div>';
+    return;
+  }
+  if (data.type === 'redirect') {
+    const meta = ASK_REDIRECT_META[data.category] || { label: 'Browse on TripMade →', anchor: 'tours-flights' };
+    bodyEl.innerHTML =
+      '<div class="ask-redirect-card">' +
+        '<p>' + data.message + '</p>' +
+        '<button type="button" onclick="goToBookingSection(' + JSON.stringify(meta.anchor) + ')">' + meta.label + '</button>' +
+      '</div>';
+    return;
+  }
+  if (data.type === 'dining') {
+    renderAskDining(bodyEl, data);
+    return;
+  }
+  renderAskResults(bodyEl, data);
+}
+
+function renderAskDining(bodyEl, data) {
+  const cardsHtml = (data.suggestions || []).map(function(s) {
+    return '' +
+      '<div class="ask-stay-card">' +
+        '<div class="ask-stay-name">' + s.name + '</div>' +
+        '<div class="ask-dine-meta">' + s.venue_type + ' · ' + s.price_tier + '</div>' +
+        '<div class="ask-stay-desc">' + s.reason + '</div>' +
+        '<div class="ask-stay-foot" style="justify-content:flex-end;">' +
+          '<a class="ask-stay-cta" href="' + s.cta.url + '" target="_blank" rel="noopener noreferrer">' + s.cta.label + '</a>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+
+  bodyEl.innerHTML =
+    '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3><div class="ask-results-meta">via Claude</div></div>' +
+    '<div class="ask-results-grid">' + cardsHtml + '</div>';
 }
 
 function renderAskResults(bodyEl, data) {
@@ -5376,7 +5459,7 @@ function renderAskChatThread(turns) {
     resultsEl.appendChild(turnEl);
     const bodyEl = turnEl.querySelector('.ask-turn-body');
     if (turn.data) {
-      renderAskResults(bodyEl, turn.data);
+      renderAskTurnBody(bodyEl, turn.data);
     } else {
       bodyEl.innerHTML = '<div class="ask-error">' + (turn.error || 'No answer was returned for this question.') + '</div>';
     }
@@ -5492,6 +5575,7 @@ function openSavedChat(id) {
     showPage('ask');
     _askTurns = Array.isArray(chat.messages) ? chat.messages : [];
     _askChatId = chat.id;
+    _pendingClarification = null;
     renderAskChatThread(_askTurns);
     const toolbar = document.getElementById('ask-chat-toolbar');
     const btn = document.getElementById('ask-save-btn');
