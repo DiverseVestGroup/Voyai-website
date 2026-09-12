@@ -338,10 +338,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .tour-provider-desc { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:16px; }
 .tour-provider-cta { font-size:13px; font-weight:600; color:var(--accent); }
 @media (max-width:700px) { .tour-provider-grid { grid-template-columns:1fr; padding:0 20px 28px; } }
-.klook-widget-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
-.klook-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
-.klook-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
-@media (max-width:700px) { .klook-widget-intro, .klook-widget-wrap { padding-left:20px; padding-right:20px; } }
 .ferry-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .ferry-widget-card { max-width:340px; background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; }
 .ferry-widget-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); }
@@ -428,18 +424,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .saved-chat-open { font-family:inherit; font-weight:700; font-size:13px; color:var(--accent); background:var(--accent-light); border:1.5px solid var(--accent-mid); border-radius:999px; padding:7px 15px; cursor:pointer; white-space:nowrap; }
 .saved-chat-delete { font-family:inherit; font-size:12.5px; color:var(--text-dim); background:none; border:none; cursor:pointer; padding:7px 6px; }
 .saved-chat-delete:hover { color:var(--text-muted); }
-.klook-deals-intro { max-width:900px; margin:0 auto; padding:8px 48px 0; }
-.klook-deals-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
-.klook-deals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-.deal-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow-sm); }
-.deal-badge { display:inline-block; background:var(--accent-light); color:var(--accent); font-weight:700; font-size:13px; padding:3px 10px; border-radius:999px; margin-bottom:8px; }
-.deal-title { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; color:var(--text); margin-bottom:4px; }
-.deal-note { font-size:11px; color:var(--text-dim); margin-bottom:10px; line-height:1.4; }
-.deal-footer { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
-.deal-code { font-family:monospace; font-size:13px; font-weight:600; background:var(--bg); border:1px dashed var(--border-mid); border-radius:6px; padding:4px 10px; letter-spacing:0.5px; }
-.deal-copy-btn { font-size:12px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; padding:4px 4px; }
-.deal-expiry { font-size:11px; color:var(--text-dim); margin-top:8px; }
-@media (max-width:700px) { .klook-deals-intro, .klook-deals-wrap { padding-left:20px; padding-right:20px; } .klook-deals-grid { grid-template-columns:1fr; } }
 .category-heading-wrap { max-width:900px; margin:0 auto; padding:20px 48px 0; scroll-margin-top:80px; }
 .category-heading-wrap h3 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--text); margin:0 0 8px; letter-spacing:-0.01em; display:inline-block; padding-bottom:8px; border-bottom:3px solid var(--accent); }
 .category-heading-wrap p { font-size:13px; color:var(--text-muted); margin:0; }
@@ -450,7 +434,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .tour-search-bar input[type="text"] { flex:1; padding:12px 16px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; }
 .tour-search-bar button { padding:12px 22px; border:none; border-radius:10px; background:var(--accent); color:white; font-weight:600; font-size:14px; cursor:pointer; }
 .tour-search-note { max-width:900px; margin:0 auto 16px; padding:0 48px; font-size:12px; color:var(--text-dim); line-height:1.5; }
-.klook-search-link { display:block; margin-top:12px; font-size:13px; font-weight:600; color:var(--accent); text-decoration:underline; }
 @media (max-width:700px) { .tour-search-bar, .tour-search-note { padding-left:20px; padding-right:20px; } .tour-search-bar { flex-direction:column; } }
 .trip-card:hover { border-color:var(--accent-mid); transform:translateY(-3px); box-shadow:var(--shadow); }
 .trip-card.featured { grid-column:span 2; }
@@ -2977,11 +2960,11 @@ footer p { font-size:13px; color:var(--text-dim); }
            earlier — redundant once the search widget carries the same
            affiliate id. Ferryhopper's "xsmall" embed size (Lachlan tried
            simple → small → xsmall and this was the best fit). Plain iframe
-           embed — unlike Klook/Viator's widget scripts, this loads its own
+           embed — unlike Viator's widget script, this loads its own
            content the moment it's in the DOM regardless of the page being
            display:none, so no lazy-load-on-visit JS wrapper is needed here
-           (see loadKlookWidget()/loadViatorWidgets() further down for why
-           those two do need one). -->
+           (see loadViatorWidgets() further down for why that one does
+           need one). -->
       <div class="transport-subcol">
         <div class="transport-subheading">Ferries</div>
         <div class="ferry-widget-card">
@@ -3037,141 +3020,16 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Browse GetYourGuide →</div>
         </div>
       </a>
-    </div>
-
-    <div class="klook-widget-intro">
-      <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin:0 0 4px;">Or search Klook directly</h3>
-      <p style="font-size:13px;color:var(--text-muted);margin:0;">Browse and book Klook's tours, tickets and experiences right here — no need to leave this page.</p>
-    </div>
-    <div class="klook-widget-wrap">
-      <div class="klook-widget-card">
-        <ins class="klk-aff-widget" data-wid="133329" data-height="340px" data-adid="1410090" data-lang="" data-prod="search_vertical" data-currency=""><a href="//www.klook.com/?aid=">Klook.com</a></ins>
-        <a class="klook-search-link" id="klook-search-link" href="#" target="_blank" rel="noopener noreferrer sponsored" style="display:none;"></a>
-      </div>
-    </div>
-
-    <!-- Klook promo codes below are a curated subset of a larger coupon feed
-         Lachlan sourced — only codes with NO residency restriction, so any
-         visitor can actually redeem what's shown here. A few near-duplicate
-         codes (multiple Taiwan-attraction codes, an early-bird vs standard
-         Tai Hang code) were consolidated to the single best/longest-running
-         version of each to avoid showing confusingly similar codes side by
-         side. These are time-limited and WILL need refreshing periodically
-         — check expiry dates against Klook's current coupon feed. -->
-    <div class="klook-deals-intro">
-      <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin:0 0 4px;">Klook deals worth grabbing</h3>
-      <p style="font-size:13px;color:var(--text-muted);margin:0;">Copy a code below, then apply it at checkout on Klook. These work for any traveller — a few exclude residents of the destination country itself, which is standard for tourist-only rail passes.</p>
-    </div>
-    <div class="klook-deals-wrap">
-      <div class="klook-deals-grid">
-
-        <div class="deal-card">
-          <div class="deal-badge">15% off</div>
-          <div class="deal-title">Hokkaido Tours</div>
-          <div class="deal-footer">
-            <span class="deal-code">HOKKAIDOTOUR15OFF</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;HOKKAIDOTOUR15OFF&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 30 Sep 2026</div>
+      <a class="tour-provider-card" href="https://www.klook.com/?aid=1410090" target="_blank" rel="noopener noreferrer sponsored">
+        <div class="tour-provider-logo-wrap" style="background:#FFFFFF;">
+          <img src="data:image/png;base64,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" alt="Klook">
         </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">¥6,000 off</div>
-          <div class="deal-title">Shinkansen Same-day Luggage Delivery</div>
-          <div class="deal-footer">
-            <span class="deal-code">JRWDELIVERY</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;JRWDELIVERY&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 30 Sep 2026</div>
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Klook</div>
+          <div class="tour-provider-desc">Tours, attractions, activities and travel services across Asia and beyond.</div>
+          <div class="tour-provider-cta">Browse Klook →</div>
         </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">10% off</div>
-          <div class="deal-title">Kintetsu Rail Tickets</div>
-          <div class="deal-note">Not valid for residents of Japan</div>
-          <div class="deal-footer">
-            <span class="deal-code">KINTETSU</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;KINTETSU&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 10 Sep 2026</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">5% off</div>
-          <div class="deal-title">Switzerland Transportation Passes</div>
-          <div class="deal-footer">
-            <span class="deal-code">SWISSMOB10%OFF</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;SWISSMOB10%OFF&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 30 Sep 2026</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">8% off</div>
-          <div class="deal-title">JR Tokyo Wide Pass</div>
-          <div class="deal-note">Not valid for residents of Japan · max discount ¥1,500</div>
-          <div class="deal-footer">
-            <span class="deal-code">TWP8SUMMER</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;TWP8SUMMER&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 4 Oct 2026</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">10% off</div>
-          <div class="deal-title">Arts in the City: Revisit Tai Hang, Hong Kong</div>
-          <div class="deal-footer">
-            <span class="deal-code">VISITTAIHANG</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;VISITTAIHANG&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 31 Oct 2026</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">20% off</div>
-          <div class="deal-title">Mahanakhon SkyWalk, Bangkok</div>
-          <div class="deal-note">Selected ticket packages only</div>
-          <div class="deal-footer">
-            <span class="deal-code">SUNMSTB</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;SUNMSTB&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 28 Dec 2026</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">¥2,800 off</div>
-          <div class="deal-title">JR Takayama-Hokuriku Area Tourist Pass</div>
-          <div class="deal-note">Not valid for residents of Japan</div>
-          <div class="deal-footer">
-            <span class="deal-code">TAKAYAMA2800</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;TAKAYAMA2800&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 31 Mar 2027</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">5% off</div>
-          <div class="deal-title">Taiwan Attractions — Taipei 101, museums, gondola &amp; more</div>
-          <div class="deal-note">Max discount $8 USD</div>
-          <div class="deal-footer">
-            <span class="deal-code">TW_ATT5%</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;TW_ATT5%&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">Valid until 30 Sep 2026</div>
-        </div>
-
-        <div class="deal-card">
-          <div class="deal-badge">5% off</div>
-          <div class="deal-title">Your First Hotel Booking</div>
-          <div class="deal-note">Klook app only · first hotel booking only</div>
-          <div class="deal-footer">
-            <span class="deal-code">HOTELONAPP</span>
-            <button class="deal-copy-btn" onclick="copyDealCode(&#39;HOTELONAPP&#39;,this)">Copy code</button>
-          </div>
-          <div class="deal-expiry">No expiry</div>
-        </div>
-
-      </div>
+      </a>
     </div>
 
     <!-- The block below (search/country/city filters over embedded Viator widgets)
@@ -5907,21 +5765,6 @@ function loadViatorWidgets() {
   document.body.appendChild(s);
 }
 
-// Same lazy-load reasoning as loadViatorWidgets() above — Klook's own
-// snippet runs this script unconditionally at page load, but that would
-// mean it initialises while the Tours page is still display:none. Deferred
-// to first visit instead.
-let _klookLoaded = false;
-function loadKlookWidget() {
-  if (_klookLoaded) return;
-  _klookLoaded = true;
-  const s = document.createElement('script');
-  s.type = 'text/javascript';
-  s.async = true;
-  s.src = 'https://affiliate.klook.com/widget/fetch-iframe-init.js';
-  document.body.appendChild(s);
-}
-
 // Builds the country/city dropdown options on the Tours page from whatever
 // data-country/data-city attributes exist on .tour-widget-card elements —
 // so adding a new tour card (see "TO ADD MORE TOURS" comment above) is
@@ -5991,37 +5834,6 @@ function clearTourFilters() {
   filterTours();
 }
 
-// Copies a Klook deal code to the clipboard and briefly flips the clicked
-// button's label to confirm it worked, then reverts. Falls back to the
-// old textarea+execCommand trick if navigator.clipboard isn't available
-// (e.g. non-HTTPS contexts).
-function copyDealCode(code, btnEl) {
-  const finish = (ok) => {
-    if (!btnEl) return;
-    const original = btnEl.textContent;
-    btnEl.textContent = ok ? 'Copied!' : 'Copy failed';
-    btnEl.disabled = true;
-    setTimeout(() => { btnEl.textContent = original; btnEl.disabled = false; }, 1500);
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(code).then(() => finish(true)).catch(() => finish(false));
-  } else {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = code;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      finish(true);
-    } catch (e) {
-      finish(false);
-    }
-  }
-}
-
 // Hands one search query off to Viator's and Klook's own search results
 // pages (both confirmed working ?text=/?query= URL patterns). GetYourGuide
 // is deliberately left alone — their public site uses destination-slug
@@ -6044,13 +5856,6 @@ function searchAllTours() {
   if (viatorCard) viatorCard.href = viatorUrl;
   if (viatorCta) viatorCta.textContent = 'See "' + q + '" on Viator →';
 
-  const klookLink = document.getElementById('klook-search-link');
-  if (klookLink) {
-    klookLink.href = klookUrl;
-    klookLink.textContent = 'See "' + q + '" on Klook →';
-    klookLink.style.display = '';
-  }
-
   if (note) {
     note.textContent = 'Opened "' + q + '" on Viator and Klook in new tabs — GetYourGuide doesn\'t support a pre-filled search link, so its card still opens their homepage.';
   }
@@ -6069,7 +5874,6 @@ window.showPage = function(id, linkEl) {
   _origShowPage(id, linkEl);
   if (id === 'tours') {
     loadViatorWidgets();
-    loadKlookWidget();
   }
   if (id === 'form') {
     goToStep(1);
