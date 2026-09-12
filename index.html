@@ -297,6 +297,12 @@ hr { border:none; border-top:1px solid var(--border); }
 .cat-tab .tc { font-size:11px; background:var(--bg3); color:var(--text-dim); padding:1px 6px; border-radius:10px; font-weight:400; }
 .cat-tab.active .tc { background:var(--accent-light); color:var(--accent); }
 
+/* ── BOOK YOUR TRIP — jump nav (contents-page style tab bar) ── */
+.tour-jump-nav { display:flex; gap:4px; overflow-x:auto; border-bottom:1px solid var(--border); max-width:900px; margin:0 auto; padding:0 48px; -webkit-overflow-scrolling:touch; }
+.tour-jump-tab { display:flex; align-items:center; gap:6px; padding:12px 16px; font-size:13px; font-weight:600; font-family:'DM Sans',sans-serif; color:var(--text-muted); background:none; border:none; border-bottom:2.5px solid transparent; white-space:nowrap; cursor:pointer; transition:color .15s,border-color .15s; }
+.tour-jump-tab:hover { color:var(--accent); border-bottom-color:var(--accent-mid); }
+@media (max-width:700px) { .tour-jump-nav { padding-left:20px; padding-right:20px; } }
+
 .filter-bar { padding:14px 48px; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .filter-lbl { font-size:12px; font-weight:500; color:var(--text-dim); }
 .f-chip { display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:20px; border:1.5px solid var(--border-mid); background:white; font-size:12px; color:var(--text-muted); transition:all .15s; white-space:nowrap; }
@@ -349,6 +355,12 @@ hr { border:none; border-top:1px solid var(--border); }
 .flight-widget-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); margin-bottom:2px; }
 .flight-widget-desc { font-size:13px; color:var(--text-muted); line-height:1.4; margin-bottom:14px; }
 @media (max-width:700px) { .flight-widget-wrap { padding-left:20px; padding-right:20px; } }
+
+/* ── TRANSPORT (Transfer Services + Ferries side by side) ──── */
+.transport-subgrid { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; max-width:900px; margin:0 auto; padding:0 48px 28px; }
+.transport-subheading { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--text); margin:0 0 8px; }
+.transport-subcol .flight-widget-card, .transport-subcol .ferry-widget-card { height:100%; }
+@media (max-width:700px) { .transport-subgrid { grid-template-columns:1fr; padding-left:20px; padding-right:20px; } }
 
 /* ── ASK TRIPMADE ──────────────────────────────────────── */
 .ask-wrap { max-width:900px; margin:0 auto; padding:0 48px 60px; }
@@ -427,12 +439,12 @@ hr { border:none; border-top:1px solid var(--border); }
 .deal-copy-btn { font-size:12px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; padding:4px 4px; }
 .deal-expiry { font-size:11px; color:var(--text-dim); margin-top:8px; }
 @media (max-width:700px) { .klook-deals-intro, .klook-deals-wrap { padding-left:20px; padding-right:20px; } .klook-deals-grid { grid-template-columns:1fr; } }
-.category-heading-wrap { max-width:900px; margin:0 auto; padding:20px 48px 0; }
-.category-heading-wrap h3 { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin:0 0 4px; }
+.category-heading-wrap { max-width:900px; margin:0 auto; padding:20px 48px 0; scroll-margin-top:80px; }
+.category-heading-wrap h3 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--text); margin:0 0 8px; letter-spacing:-0.01em; display:inline-block; padding-bottom:8px; border-bottom:3px solid var(--accent); }
 .category-heading-wrap p { font-size:13px; color:var(--text-muted); margin:0; }
 .category-body-wrap { max-width:900px; margin:0 auto; padding:12px 48px 8px; }
 .coming-soon-card { border:1.5px dashed var(--border-mid); border-radius:var(--radius); padding:20px; color:var(--text-dim); font-size:13px; text-align:center; }
-@media (max-width:700px) { .category-heading-wrap, .category-body-wrap { padding-left:20px; padding-right:20px; } }
+@media (max-width:700px) { .category-heading-wrap, .category-body-wrap { padding-left:20px; padding-right:20px; } .category-heading-wrap h3 { font-size:23px; letter-spacing:-0.015em; } }
 .tour-search-bar { display:flex; gap:10px; max-width:900px; margin:16px auto 4px; padding:0 48px; }
 .tour-search-bar input[type="text"] { flex:1; padding:12px 16px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; }
 .tour-search-bar button { padding:12px 22px; border:none; border-radius:10px; background:var(--accent); color:white; font-weight:600; font-size:14px; cursor:pointer; }
@@ -2809,6 +2821,22 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2 style="margin-bottom:6px;">Book your trip</h2>
       <p>Everything you need for your next trip, in one place — flights, stays, insurance, tours and experiences.</p>
     </div>
+    <!-- Jump nav (2026-09-12) — contents-page style tab bar so visitors can
+         see everything on offer and jump straight to a category instead of
+         scrolling the whole page. Plain buttons calling the existing
+         scrollToSection() helper (same one the nav bar and Ask TripMade
+         redirect cards already use) — no active/highlight-on-scroll state,
+         just a jump link, so it needed none of the .cat-tab filtering
+         logic further down the page. Keep this list in sync with the
+         category-heading-wrap ids below if a category is ever added,
+         renamed or reordered. -->
+    <div class="tour-jump-nav">
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-flights')">✈️ Flights</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-accommodation')">🏨 Accommodation</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-insurance')">🛡️ Travel insurance</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-ferries')">🚐 Transport</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-experiences')">🎟️ Tours &amp; experiences</button>
+    </div>
     <!-- Each category below (Flights, Accommodation, Travel insurance) is a
          placeholder until a real affiliate link/program exists for it — see
          the affiliate traffic plan doc for candidate programs to sign up
@@ -2918,29 +2946,48 @@ footer p { font-size:13px; color:var(--text-dim); }
          promote. Their dashboard login was shared in Lachlan's affiliate
          signup email but is Lachlan's own credential — not something to be
          entered anywhere by anyone other than him. -->
+    <!-- Transport (2026-09-12, restructured from a standalone "Ferries"
+         heading on Lachlan's call) — one parent heading covering both
+         ground/airport transfers and ferries, laid out as two side-by-side
+         sub-columns each with their own smaller subheading: Transfer
+         Services first (left), Ferries second (right). Kept
+         id="tours-ferries" on the parent wrap so the existing Ask TripMade
+         redirect anchor (ASK_REDIRECT_META.ferries → #tours-ferries)
+         still scrolls to the right place. -->
     <div class="category-heading-wrap" id="tours-ferries">
-      <h3>⛴️ Ferries</h3>
-      <p>Book ferry tickets for island-hopping and coastal routes.</p>
+      <h3>🚐 Transport</h3>
+      <p>Airport transfers, private rides and ferry routes for getting around at your destination.</p>
     </div>
-    <!-- The plain Ferryhopper link card that used to sit here was removed —
-         redundant now that the search widget below carries the same
-         affiliate id (aff_uid=tpmdco baked into the iframe src), and having
-         both side by side looked unbalanced (a half-width logo card next to
-         a taller widget). The widget alone is both the promo and the
-         booking path now. Ferryhopper's "xsmall" embed size (Lachlan tried
-         simple → small → xsmall and this was the best fit). The embed
-         tool's default src used the /el/ (Greek) locale — swapped to /en/
-         here to match the rest of the site. Plain iframe embed — unlike
-         Klook/Viator's widget scripts, this loads its own content the
-         moment it's in the DOM regardless of the page being display:none,
-         so no lazy-load-on-visit JS wrapper is needed here (see
-         loadKlookWidget()/loadViatorWidgets() further down for why those
-         two do need one). -->
-    <div class="ferry-widget-wrap">
-      <div class="ferry-widget-card">
-        <div class="ferry-widget-name">Search Ferryhopper</div>
-        <div class="ferry-widget-desc">Search and book ferry routes across 33+ countries in Europe and Asia — right here, no need to leave this page.</div>
-        <iframe width="390" height="310" scrolling="no" frameborder="0" src="https://www.ferryhopper.com/en/embed/xsmall?aff_uid=tpmdco" title="Ferryhopper ferry search"></iframe>
+    <div class="transport-subgrid">
+      <!-- Transfer Services — Travelpayouts widget, same account as the
+           Flights search widget above (trs=571230/shmarker=774757 match),
+           different campaign_id/promo_id pair Lachlan generated for airport
+           transfers specifically. -->
+      <div class="transport-subcol">
+        <div class="transport-subheading">Transfer Services</div>
+        <div class="flight-widget-card">
+          <div class="flight-widget-name">Search transfers</div>
+          <div class="flight-widget-desc">Compare and book airport transfers and private rides — search right here, no need to leave this page.</div>
+          <script async src="https://tpwdgt.com/content?trs=571230&amp;shmarker=774757&amp;locale=en&amp;show_header=true&amp;powered_by=true&amp;campaign_id=627&amp;promo_id=8951" charset="utf-8"></script>
+        </div>
+      </div>
+      <!-- Ferryhopper is a real, live affiliate link (aff_uid=tpmdco). The
+           plain link card that used to sit next to this widget was removed
+           earlier — redundant once the search widget carries the same
+           affiliate id. Ferryhopper's "xsmall" embed size (Lachlan tried
+           simple → small → xsmall and this was the best fit). Plain iframe
+           embed — unlike Klook/Viator's widget scripts, this loads its own
+           content the moment it's in the DOM regardless of the page being
+           display:none, so no lazy-load-on-visit JS wrapper is needed here
+           (see loadKlookWidget()/loadViatorWidgets() further down for why
+           those two do need one). -->
+      <div class="transport-subcol">
+        <div class="transport-subheading">Ferries</div>
+        <div class="ferry-widget-card">
+          <div class="ferry-widget-name">Search Ferryhopper</div>
+          <div class="ferry-widget-desc">Search and book ferry routes across 33+ countries in Europe and Asia — right here, no need to leave this page.</div>
+          <iframe width="390" height="310" scrolling="no" frameborder="0" src="https://www.ferryhopper.com/en/embed/xsmall?aff_uid=tpmdco" title="Ferryhopper ferry search"></iframe>
+        </div>
       </div>
     </div>
 
