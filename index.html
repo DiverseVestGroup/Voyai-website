@@ -357,9 +357,10 @@ hr { border:none; border-top:1px solid var(--border); }
 @media (max-width:700px) { .flight-widget-wrap { padding-left:20px; padding-right:20px; } }
 
 /* ── TRANSPORT (Transfer Services + Ferries side by side) ──── */
-.transport-subgrid { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; max-width:900px; margin:0 auto; padding:0 48px 28px; }
-.transport-subheading { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--text); margin:0 0 8px; }
+.transport-subgrid { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; max-width:900px; margin:0 auto; padding:16px 48px 28px; }
+.transport-subheading { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.005em; color:var(--text); margin:0 0 8px; }
 .transport-subcol .flight-widget-card, .transport-subcol .ferry-widget-card { height:100%; }
+.transport-subcol .ferry-widget-card { max-width:none; width:100%; }
 @media (max-width:700px) { .transport-subgrid { grid-template-columns:1fr; padding-left:20px; padding-right:20px; } }
 
 /* ── ASK TRIPMADE ──────────────────────────────────────── */
