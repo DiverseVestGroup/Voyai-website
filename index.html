@@ -477,6 +477,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .form-step .form-sub { font-size:15px; color:var(--text-muted); margin-bottom:32px; line-height:1.55; }
 .form-group { margin-bottom:22px; }
 .form-label { display:block; font-size:13px; font-weight:600; margin-bottom:7px; color:var(--text); }
+.accom-dest-name { font-size:17px; font-weight:800; color:var(--accent); margin-left:2px; }
 .form-label span { font-weight:400; color:var(--text-dim); }
 .form-input, .form-select, .form-textarea {
   width:100%; padding:13px 16px;
@@ -2685,15 +2686,17 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
       <div class="form-group" style="margin-top:8px;">
-        <!-- Accommodation style — rendered by renderAccomStyleGroups() (called
-             on entering step 5). One-destination trips get the original
-             single "Accommodation style" block; multi-destination trips get
+        <!-- Accommodation style + notes — rendered by renderAccomStyleGroups()
+             (called on entering step 5). One-destination trips get the
+             original single unlabelled group; multi-destination trips get
              one labelled group per destination ("Accommodation style for
-             Rome", "Accommodation style for Amsterdam", ...) so travellers
-             mixing e.g. a villa in Italy with a hotel in Amsterdam can set
-             each stop separately. See selectAccomOpt() / accomStyleByDest. -->
+             Rome", "Accommodation style for Amsterdam", ...) — each with its
+             own style picker AND its own "Anything specific?" notes field,
+             so travellers mixing e.g. a splashed-out villa in Italy with a
+             cheaper hotel in Amsterdam can set both per stop. See
+             selectAccomOpt()/accomStyleByDest and
+             updateAccomNotes()/accomNotesByDest. -->
         <div id="accom-style-groups"></div>
-        <input class="form-input" id="f-accom-notes" type="text" style="margin-top:10px;" placeholder="Anything specific? e.g. 3-star is fine, just need it clean and central / must have a pool / no hostels please">
       </div>
       <div class="form-group" style="margin-top:8px;">
         <label class="form-label">Trip pace</label>
@@ -5045,6 +5048,7 @@ function selectOpt(el, group) {
 // isn't lost; a brand-new destination defaults to "Boutique", matching
 // the original single-group default.
 let accomStyleByDest = {};
+let accomNotesByDest = {};
 const ACCOM_OPTIONS = [
   ['🏨', 'Hotel', 'Any star rating'],
   ['🏠', 'Airbnb / Villa', 'Home away from home'],
@@ -5060,6 +5064,10 @@ function selectAccomOpt(el, dest) {
   accomStyleByDest[dest] = el.querySelector('.opt-label').textContent.trim();
 }
 
+function updateAccomNotes(el, dest) {
+  accomNotesByDest[dest] = el.value;
+}
+
 function renderAccomStyleGroups() {
   const wrap = document.getElementById('accom-style-groups');
   if (!wrap) return;
@@ -5068,13 +5076,24 @@ function renderAccomStyleGroups() {
   wrap.innerHTML = dests.map((dest, i) => {
     if (!accomStyleByDest[dest]) accomStyleByDest[dest] = 'Boutique';
     const current = accomStyleByDest[dest];
-    const heading = multi ? ('Accommodation style for ' + dest.replace(/</g, '&lt;')) : 'Accommodation style';
+    const notesVal = (accomNotesByDest[dest] || '').replace(/"/g, '&quot;');
+    // The destination name renders bigger/bold/teal (same treatment as the
+    // "Ask TripMade" / "Book your trip" nav highlights) so each location's
+    // group is easy to tell apart at a glance on a multi-stop trip; "Accommodation
+    // style for" stays as plain small label text either way.
+    const heading = multi
+      ? ('Accommodation style for <span class="accom-dest-name">' + dest.replace(/</g, '&lt;') + '</span>')
+      : 'Accommodation style';
     const destAttr = dest.replace(/'/g, "\\'");
     const opts = ACCOM_OPTIONS.map(([icon, label, sub]) => {
       const sel = label === current ? ' selected' : '';
       return '<div class="form-opt' + sel + '" onclick="selectAccomOpt(this,\'' + destAttr + '\')"><div class="opt-icon">' + icon + '</div><div class="opt-label">' + label + '</div><div class="opt-sub">' + sub + '</div></div>';
     }).join('');
-    return '<div class="form-group accom-group"' + (i > 0 ? ' style="margin-top:18px;"' : '') + '><label class="form-label">' + heading + '</label><div class="form-options">' + opts + '</div></div>';
+    const notesPlaceholder = multi
+      ? ('Anything specific for ' + dest.replace(/"/g, '&quot;') + '? e.g. 3-star is fine, must have a pool, no hostels')
+      : 'Anything specific? e.g. 3-star is fine, just need it clean and central / must have a pool / no hostels please';
+    const notesInput = '<input class="form-input" id="accom-notes-' + i + '" type="text" style="margin-top:10px;" value="' + notesVal + '" oninput="updateAccomNotes(this,\'' + destAttr + '\')" placeholder="' + notesPlaceholder + '">';
+    return '<div class="form-group accom-group"' + (i > 0 ? ' style="margin-top:18px;"' : '') + '><label class="form-label">' + heading + '</label><div class="form-options">' + opts + '</div>' + notesInput + '</div>';
   }).join('');
 }
 
@@ -5737,13 +5756,18 @@ async function submitForm() {
     occasion:     document.getElementById('f-occasion').value,
     budget:       getBudgetValue(),
     currency:     getFormCurrencyCode(),
-    accomNotes:   document.getElementById('f-accom-notes').value,
-    // One entry per destination — e.g. [{destination:'Rome',style:'Airbnb / Villa'},
-    // {destination:'Amsterdam',style:'Hotel'}] for a multi-stop trip, or a
+    // accomNotes: a single combined string kept for backward compatibility
+    // (older Supabase column / any existing Make.com mapping) — per-destination
+    // notes are joined with " | " when there's more than one stop.
+    accomNotes:   selectedDestinations.length > 1
+      ? selectedDestinations.map(d => (accomNotesByDest[d] || '').trim()).filter(Boolean).join(' | ')
+      : (accomNotesByDest[selectedDestinations[0] || ''] || '').trim(),
+    // One entry per destination — e.g. [{destination:'Rome',style:'Airbnb / Villa',notes:'must have a pool'},
+    // {destination:'Amsterdam',style:'Hotel',notes:''}] for a multi-stop trip, or a
     // single entry for a one-destination trip. NOTE for whoever wires this into
-    // the Claude prompt: accommodation style wasn't sent to Make at all before
-    // this — accomNotes (free text) was the only accommodation signal.
-    accomStyles:  selectedDestinations.map(d => ({ destination: d, style: accomStyleByDest[d] || 'Boutique' })),
+    // the Claude prompt: accommodation style/notes weren't sent to Make per-destination
+    // before this — accomNotes (one combined free-text field) was the only accommodation signal.
+    accomStyles:  selectedDestinations.map(d => ({ destination: d, style: accomStyleByDest[d] || 'Boutique', notes: (accomNotesByDest[d] || '').trim() })),
     vibes:        [...document.querySelectorAll('.form-opt.multi.selected')].map(el => el.querySelector('.opt-label').textContent),
     mustHave:     document.getElementById('f-musthave').value,
     avoid:        document.getElementById('f-avoid').value,
