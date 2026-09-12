@@ -19,6 +19,7 @@
   --blue:#378ADD;   --blue-light:#E6F1FB;
   --amber:#BA7517;  --amber-light:#FAEEDA;
   --purple:#7F77DD; --purple-light:#EEEDFE;
+  --error:#D93025;  --error-light:#FDECEA;
   --bg:#F5F5F5; --bg2:#FFFFFF; --bg3:#F5F5F5;
   --border:rgba(0,0,0,0.08); --border-mid:rgba(0,0,0,0.13);
   --text:#1A1A1A; --text-muted:#6B6B6B; --text-dim:#ADADAD;
@@ -2677,22 +2678,21 @@ footer p { font-size:13px; color:var(--text-dim); }
               <option value="JPY">JPY (¥)</option>
             </select>
           </div>
-          <input type="range" id="f-budget-slider" min="500" max="100000" step="1000" value="8000" oninput="updateBudgetDisplay(this.value)" style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
+          <input type="range" id="f-budget-slider" min="500" max="50000" step="500" value="8000" oninput="updateBudgetDisplay(this.value)" style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
           <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);">
-            <span id="budget-min-label">$500</span><span id="budget-max-label">$100,000+</span>
+            <span id="budget-min-label">$500</span><span id="budget-max-label">$50,000+</span>
           </div>
         </div>
       </div>
       <div class="form-group" style="margin-top:8px;">
-        <label class="form-label">Accommodation style</label>
-        <div class="form-options">
-          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏨</div><div class="opt-label">Hotel</div><div class="opt-sub">Any star rating</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🏠</div><div class="opt-label">Airbnb / Villa</div><div class="opt-sub">Home away from home</div></div>
-          <div class="form-opt selected" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">✨</div><div class="opt-label">Boutique</div><div class="opt-sub">Unique &amp; stylish</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🌴</div><div class="opt-label">Resort</div><div class="opt-sub">All-inclusive vibes</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🎒</div><div class="opt-label">Budget</div><div class="opt-sub">Hostel / cheap &amp; cheerful</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;accom&#39;)"><div class="opt-icon">🤷</div><div class="opt-label">Surprise me</div><div class="opt-sub">Best value option</div></div>
-        </div>
+        <!-- Accommodation style — rendered by renderAccomStyleGroups() (called
+             on entering step 5). One-destination trips get the original
+             single "Accommodation style" block; multi-destination trips get
+             one labelled group per destination ("Accommodation style for
+             Rome", "Accommodation style for Amsterdam", ...) so travellers
+             mixing e.g. a villa in Italy with a hotel in Amsterdam can set
+             each stop separately. See selectAccomOpt() / accomStyleByDest. -->
+        <div id="accom-style-groups"></div>
         <input class="form-input" id="f-accom-notes" type="text" style="margin-top:10px;" placeholder="Anything specific? e.g. 3-star is fine, just need it clean and central / must have a pool / no hostels please">
       </div>
       <div class="form-group" style="margin-top:8px;">
@@ -2868,6 +2868,24 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="category-heading-wrap" id="tours-accommodation">
       <h3>🏨 Accommodation</h3>
       <p>Hotels, apartments and stays wherever you're headed.</p>
+    </div>
+    <!-- Trip.com search widget (2026-09-12) — real embeddable iframe from
+         Lachlan's Trip.com partner dashboard (ad unit S19788582, same
+         Allianceid/SID as the card below), giving Accommodation its own
+         full search box the same way Flights has one above. The iframe's
+         generated embed code ships with a duplicate style="" attribute
+         (invalid HTML) — merged into one here. Trip.com's box renders at
+         a fixed 900x200; wrapped in a max-width:100% + overflow-x:auto
+         container so it scales down on narrower screens without Trip.com
+         needing to re-issue the embed at a different size. -->
+    <div class="flight-widget-wrap">
+      <div class="flight-widget-card">
+        <div class="flight-widget-name">Search stays on Trip.com</div>
+        <div class="flight-widget-desc">Hotels, apartments and more for your dates — search right here, no need to leave this page.</div>
+        <div style="max-width:900px;overflow-x:auto;">
+          <iframe src="https://www.trip.com/partners/ad/S19788582?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=" style="width:900px;max-width:100%;height:200px;border:none;" scrolling="no" id="S19788582" title="Trip.com search"></iframe>
+        </div>
+      </div>
     </div>
     <div class="tour-provider-grid">
       <!-- Real, tracked affiliate link (Allianceid/SID params) — rel includes "sponsored".
@@ -3524,7 +3542,7 @@ function applyCurrency(currency) {
   const maxEl = document.getElementById('budget-max-label');
   const symbol = CURRENCY_SYMBOLS[currency] || '$';
   if (minEl) minEl.textContent = symbol + '500';
-  if (maxEl) maxEl.textContent = symbol + '100,000+';
+  if (maxEl) maxEl.textContent = symbol + '50,000+';
   const slider = document.getElementById('f-budget-slider');
   if (slider) updateBudgetDisplay(slider.value);
 }
@@ -4810,13 +4828,14 @@ function markInvalid(id) {
   if (id === 'f-dest') {
     const box = document.getElementById('dest-multiselect');
     const search = document.getElementById('dest-search');
-    if (box) box.style.borderColor = 'var(--accent)';
+    if (box) { box.style.borderColor = 'var(--error)'; box.style.boxShadow = '0 0 0 3px ' + 'var(--error-light)'; }
     if (search) search.focus();
     return;
   }
   const el = document.getElementById(id);
   if (!el) return;
-  el.style.borderColor = 'var(--accent)';
+  el.style.borderColor = 'var(--error)';
+  el.style.boxShadow = '0 0 0 3px var(--error-light)';
   el.focus();
 }
 
@@ -4824,11 +4843,11 @@ function clearInvalid(ids) {
   ids.forEach(id => {
     if (id === 'f-dest') {
       const box = document.getElementById('dest-multiselect');
-      if (box) box.style.borderColor = '';
+      if (box) { box.style.borderColor = ''; box.style.boxShadow = ''; }
       return;
     }
     const el = document.getElementById(id);
-    if (el) el.style.borderColor = '';
+    if (el) { el.style.borderColor = ''; el.style.boxShadow = ''; }
   });
 }
 
@@ -4851,10 +4870,10 @@ function validateStep(from) {
     const anyVibe = document.querySelectorAll('#step3 .form-opt.multi.selected').length > 0;
     const note = document.querySelector('#step3 .vibe-multi-note');
     if (!anyVibe) {
-      if (note) { note.style.color = 'var(--accent)'; note.textContent = 'Please select at least one vibe to continue'; }
+      if (note) { note.style.color = 'var(--error)'; note.style.fontWeight = '700'; note.style.fontStyle = 'normal'; note.textContent = 'Please select at least one vibe to continue'; }
       return false;
     }
-    if (note) { note.style.color = ''; note.textContent = '✓ Select multiple — we\'ll weave them across your days'; }
+    if (note) { note.style.color = ''; note.style.fontWeight = ''; note.style.fontStyle = ''; note.textContent = '✓ Select multiple — we\'ll weave them across your days'; }
     return true;
   }
   // Steps 4 and 5 have sensible defaults / are optional — nothing to gate here.
@@ -4876,6 +4895,7 @@ function goToStep(n) {
   document.getElementById('step' + n).classList.add('active');
   currentStep = n;
   updateProgress(n);
+  if (n === 5) renderAccomStyleGroups();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -4907,8 +4927,8 @@ function updateBudgetDisplay(val) {
   val = parseInt(val);
   const display = document.getElementById('budget-display');
   const symbol = formCurrencySymbol();
-  const isMax = val >= 100000;
-  display.textContent = symbol + (isMax ? '100,000+' : val.toLocaleString());
+  const isMax = val >= 50000;
+  display.textContent = symbol + (isMax ? '50,000+' : val.toLocaleString());
 }
 
 function getBudgetValue() {
@@ -4916,7 +4936,7 @@ function getBudgetValue() {
   if (!el) return '';
   const val = parseInt(el.value);
   const symbol = formCurrencySymbol();
-  return symbol + (val >= 100000 ? '100,000+' : val.toLocaleString());
+  return symbol + (val >= 50000 ? '50,000+' : val.toLocaleString());
 }
 
 function getFormCurrencyCode() {
@@ -5011,6 +5031,51 @@ function selectOpt(el, group) {
     if (!o.classList.contains('multi')) o.classList.remove('selected');
   });
   el.classList.add('selected');
+}
+
+// ── ACCOMMODATION STYLE, PER DESTINATION ─────────────────
+// A single-destination trip still shows one plain "Accommodation style"
+// group, same as before. A multi-destination trip (selectedDestinations
+// from Step 1, e.g. a Rome + Amsterdam trip) instead gets one group per
+// stop ("Accommodation style for Rome", "Accommodation style for
+// Amsterdam"...) so a traveller can pick a villa for Italy and a hotel
+// for Amsterdam on the same request. accomStyleByDest persists selections
+// across re-renders (going back to Step 1 to tweak destinations, then
+// forward again) so an earlier choice for a stop that's still in the list
+// isn't lost; a brand-new destination defaults to "Boutique", matching
+// the original single-group default.
+let accomStyleByDest = {};
+const ACCOM_OPTIONS = [
+  ['🏨', 'Hotel', 'Any star rating'],
+  ['🏠', 'Airbnb / Villa', 'Home away from home'],
+  ['✨', 'Boutique', 'Unique &amp; stylish'],
+  ['🌴', 'Resort', 'All-inclusive vibes'],
+  ['🎒', 'Budget', 'Hostel / cheap &amp; cheerful'],
+  ['🤷', 'Surprise me', 'Best value option'],
+];
+
+function selectAccomOpt(el, dest) {
+  el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  accomStyleByDest[dest] = el.querySelector('.opt-label').textContent.trim();
+}
+
+function renderAccomStyleGroups() {
+  const wrap = document.getElementById('accom-style-groups');
+  if (!wrap) return;
+  const dests = selectedDestinations.length ? selectedDestinations : [''];
+  const multi = dests.length > 1;
+  wrap.innerHTML = dests.map((dest, i) => {
+    if (!accomStyleByDest[dest]) accomStyleByDest[dest] = 'Boutique';
+    const current = accomStyleByDest[dest];
+    const heading = multi ? ('Accommodation style for ' + dest.replace(/</g, '&lt;')) : 'Accommodation style';
+    const destAttr = dest.replace(/'/g, "\\'");
+    const opts = ACCOM_OPTIONS.map(([icon, label, sub]) => {
+      const sel = label === current ? ' selected' : '';
+      return '<div class="form-opt' + sel + '" onclick="selectAccomOpt(this,\'' + destAttr + '\')"><div class="opt-icon">' + icon + '</div><div class="opt-label">' + label + '</div><div class="opt-sub">' + sub + '</div></div>';
+    }).join('');
+    return '<div class="form-group accom-group"' + (i > 0 ? ' style="margin-top:18px;"' : '') + '><label class="form-label">' + heading + '</label><div class="form-options">' + opts + '</div></div>';
+  }).join('');
 }
 
 // Trip type tiles (Solo/Couple/Friends group/Family) — Solo always means
@@ -5673,6 +5738,12 @@ async function submitForm() {
     budget:       getBudgetValue(),
     currency:     getFormCurrencyCode(),
     accomNotes:   document.getElementById('f-accom-notes').value,
+    // One entry per destination — e.g. [{destination:'Rome',style:'Airbnb / Villa'},
+    // {destination:'Amsterdam',style:'Hotel'}] for a multi-stop trip, or a
+    // single entry for a one-destination trip. NOTE for whoever wires this into
+    // the Claude prompt: accommodation style wasn't sent to Make at all before
+    // this — accomNotes (free text) was the only accommodation signal.
+    accomStyles:  selectedDestinations.map(d => ({ destination: d, style: accomStyleByDest[d] || 'Boutique' })),
     vibes:        [...document.querySelectorAll('.form-opt.multi.selected')].map(el => el.querySelector('.opt-label').textContent),
     mustHave:     document.getElementById('f-musthave').value,
     avoid:        document.getElementById('f-avoid').value,
