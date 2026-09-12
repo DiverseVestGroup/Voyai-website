@@ -338,6 +338,8 @@ hr { border:none; border-top:1px solid var(--border); }
 .tour-provider-desc { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:16px; }
 .tour-provider-cta { font-size:13px; font-weight:600; color:var(--accent); }
 @media (max-width:700px) { .tour-provider-grid { grid-template-columns:1fr; padding:0 20px 28px; } }
+.tour-provider-grid > .tour-provider-card:last-child:nth-child(odd) { grid-column:1 / -1; max-width:calc(50% - 10px); margin:0 auto; }
+@media (max-width:700px) { .tour-provider-grid > .tour-provider-card:last-child:nth-child(odd) { max-width:none; } }
 .ferry-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .ferry-widget-card { max-width:340px; background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; }
 .ferry-widget-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); }
@@ -2851,6 +2853,15 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="flight-widget-name">Search flights</div>
         <div class="flight-widget-desc">Compare prices across airlines and travel sites — search right here, no need to leave this page.</div>
         <script async src="https://tpwdgt.com/content?currency=usd&trs=571230&shmarker=774757&locale=en&stops=any&show_hotels=true&powered_by=true&border_radius=0&plain=true&color_button=%2300A991&color_button_text=%23ffffff&promo_id=3414&campaign_id=111" charset="utf-8"></script>
+        <!-- Real Kiwi.com affiliate deep link (Travelpayouts tpk.mx shortlink,
+             same Travelpayouts account as the widget script above), added
+             2026-09-12 per Lachlan. The widget above is a general multi-site
+             comparison box with no Kiwi-specific tracking of its own, so this
+             plain tracked link sits underneath it as a direct, monetized
+             "search Kiwi" option. -->
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+          <a class="tour-provider-cta" href="https://kiwi.tpk.mx/wrtE1TIB" target="_blank" rel="noopener noreferrer sponsored">Search Kiwi Flights →</a>
+        </div>
       </div>
     </div>
 
@@ -2859,20 +2870,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p>Hotels, apartments and stays wherever you're headed.</p>
     </div>
     <div class="tour-provider-grid">
-      <a class="tour-provider-card" href="https://www.booking.com/" target="_blank" rel="noopener noreferrer">
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">Booking.com</div>
-          <div class="tour-provider-desc">Hotels, apartments and homes worldwide, with free cancellation on most stays.</div>
-          <div class="tour-provider-cta">Visit Booking.com →</div>
-        </div>
-      </a>
-      <a class="tour-provider-card" href="https://www.agoda.com/" target="_blank" rel="noopener noreferrer">
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">Agoda</div>
-          <div class="tour-provider-desc">Strong hotel deals and availability across Asia-Pacific and beyond.</div>
-          <div class="tour-provider-cta">Visit Agoda →</div>
-        </div>
-      </a>
       <!-- Real, tracked affiliate link (Allianceid/SID params) — rel includes "sponsored".
            NOTE: the logo below is the image Lachlan supplied for this card, but it's TripMade's
            own "Trip." app icon (blue rounded square, white wordmark, amber dot) rather than
@@ -2886,6 +2883,20 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-name">Trip.com</div>
           <div class="tour-provider-desc">Flights, hotels, trains and airport transfers — one of the world's largest online travel platforms.</div>
           <div class="tour-provider-cta">Visit Trip.com →</div>
+        </div>
+      </a>
+      <a class="tour-provider-card" href="https://www.booking.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Booking.com</div>
+          <div class="tour-provider-desc">Hotels, apartments and homes worldwide, with free cancellation on most stays.</div>
+          <div class="tour-provider-cta">Visit Booking.com →</div>
+        </div>
+      </a>
+      <a class="tour-provider-card" href="https://www.agoda.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Agoda</div>
+          <div class="tour-provider-desc">Strong hotel deals and availability across Asia-Pacific and beyond.</div>
+          <div class="tour-provider-cta">Visit Agoda →</div>
         </div>
       </a>
     </div>
