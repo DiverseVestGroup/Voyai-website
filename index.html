@@ -4988,10 +4988,13 @@ function hideDestSuggestions() {
   if (box) { box.classList.remove('open'); box.innerHTML = ''; }
 }
 
+let destSuggestIndex = -1;
+
 function showDestSuggestions(query) {
   const box = document.getElementById('dest-suggestions');
   if (!box) return;
   const q = query.trim().toLowerCase();
+  destSuggestIndex = -1;
   if (!q) { hideDestSuggestions(); return; }
 
   const matches = getDestList()
@@ -5012,15 +5015,59 @@ function showDestSuggestions(query) {
   box.classList.add('open');
 }
 
+function destSuggestItems() {
+  const box = document.getElementById('dest-suggestions');
+  if (!box) return [];
+  return Array.from(box.querySelectorAll('.dest-suggestion-item'));
+}
+
+function highlightDestSuggest(idx) {
+  const items = destSuggestItems();
+  if (!items.length) { destSuggestIndex = -1; return; }
+  if (idx < 0) idx = items.length - 1;
+  if (idx >= items.length) idx = 0;
+  destSuggestIndex = idx;
+  items.forEach((el, i) => el.classList.toggle('active', i === destSuggestIndex));
+  items[destSuggestIndex].scrollIntoView({ block: 'nearest' });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const search = document.getElementById('dest-search');
   if (!search) return;
 
   search.addEventListener('input', function() { showDestSuggestions(this.value); });
   search.addEventListener('keydown', function(e) {
+    const box = document.getElementById('dest-suggestions');
+    const isOpen = box && box.classList.contains('open');
+
+    if (e.key === 'ArrowDown') {
+      if (!isOpen) { showDestSuggestions(this.value); }
+      if (destSuggestItems().length) {
+        e.preventDefault();
+        highlightDestSuggest(destSuggestIndex + 1);
+      }
+      return;
+    }
+    if (e.key === 'ArrowUp') {
+      if (isOpen && destSuggestItems().length) {
+        e.preventDefault();
+        highlightDestSuggest(destSuggestIndex - 1);
+      }
+      return;
+    }
     if (e.key === 'Enter') {
       e.preventDefault();
-      addDestination(this.value);
+      const items = destSuggestItems();
+      if (isOpen && destSuggestIndex >= 0 && items[destSuggestIndex]) {
+        items[destSuggestIndex].click();
+      } else {
+        addDestination(this.value);
+      }
+      return;
+    }
+    if (e.key === 'Escape') {
+      hideDestSuggestions();
+      return;
     }
   });
   search.addEventListener('focus', function() { if (this.value) showDestSuggestions(this.value); });
@@ -5327,7 +5374,8 @@ async function runAskTripMade() {
   const bodyEl = turnEl.querySelector('.ask-turn-body');
 
   try {
-    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery } });
+    const askCurrency = (_currentUser && _currentUser.currency) || _currentCurrency || 'AUD';
+    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery, currency: askCurrency } });
     if (error) throw error;
     if (data && data.error) {
       turn.error = data.error;
@@ -5354,6 +5402,17 @@ async function runAskTripMade() {
       document.getElementById('ask-chat-toolbar').style.display = 'flex';
     }
   }
+}
+
+// Safely embeds a JS string as a single-quoted literal inside an
+// onclick="..." HTML attribute (which is itself double-quoted). Plain
+// JSON.stringify(str) wraps the value in DOUBLE quotes, which prematurely
+// closes a double-quoted HTML attribute the moment the string is anything
+// but pure digits — silently breaking the click handler. Use this instead
+// of JSON.stringify() any time a string (not a number) is being spliced
+// into an onclick="..." attribute.
+function jsStrAttr(s) {
+  return "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 }
 
 // Maps a redirect_to_category answer onto the right "Book your trip"
@@ -5387,7 +5446,7 @@ function renderAskTurnBody(bodyEl, data) {
     bodyEl.innerHTML =
       '<div class="ask-redirect-card">' +
         '<p>' + data.message + '</p>' +
-        '<button type="button" onclick="goToBookingSection(' + JSON.stringify(meta.anchor) + ')">' + meta.label + '</button>' +
+        '<button type="button" onclick="goToBookingSection(' + jsStrAttr(meta.anchor) + ')">' + meta.label + '</button>' +
       '</div>';
     return;
   }
@@ -5412,13 +5471,13 @@ function renderAskDining(bodyEl, data) {
   }).join('');
 
   bodyEl.innerHTML =
-    '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3><div class="ask-results-meta">via Claude</div></div>' +
+    '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3></div>' +
     '<div class="ask-results-grid">' + cardsHtml + '</div>';
 }
 
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
-  const budgetMeta = data.budget_amount ? (dirLabel + data.currency + ' ' + data.budget_amount + '/night · ') : '';
+  const budgetMeta = data.budget_amount ? (dirLabel + data.currency + ' ' + data.budget_amount + '/night') : '';
 
   const cardsHtml = (data.suggestions || []).map(function(s) {
     const ctaClass = s.cta && s.cta.isAffiliate ? 'ask-stay-cta' : 'ask-stay-cta fallback';
@@ -5436,11 +5495,11 @@ function renderAskResults(bodyEl, data) {
   }).join('');
 
   bodyEl.innerHTML = '' +
-    '<div class="ask-results-hd"><h3>Suggestions for ' + data.destination + '</h3><div class="ask-results-meta">' + budgetMeta + 'via Claude</div></div>' +
+    '<div class="ask-results-hd"><h3>Suggestions for ' + data.destination + '</h3>' + (budgetMeta ? ('<div class="ask-results-meta">' + budgetMeta + '</div>') : '') + '</div>' +
     '<div class="ask-results-grid">' + cardsHtml + '</div>' +
     '<div class="ask-crosssell">' +
       '<p><b>Want the full trip planned too?</b>Carry this destination and budget straight into TripMade\'s itinerary form.</p>' +
-      '<button type="button" onclick="prefillItineraryFromAsk(' + JSON.stringify(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
+      '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
     '</div>';
 }
 
@@ -5567,8 +5626,8 @@ async function renderSavedChatsPage() {
           '<div class="saved-chat-meta">' + turnCount + (turnCount === 1 ? ' question' : ' questions') + ' · ' + dateStr + '</div>' +
         '</div>' +
         '<div class="saved-chat-actions">' +
-          '<button type="button" class="saved-chat-open" onclick="openSavedChat(' + JSON.stringify(c.id) + ')">Open →</button>' +
-          '<button type="button" class="saved-chat-delete" onclick="deleteSavedChat(' + JSON.stringify(c.id) + ')" title="Delete">✕</button>' +
+          '<button type="button" class="saved-chat-open" onclick="openSavedChat(' + jsStrAttr(c.id) + ')">Open →</button>' +
+          '<button type="button" class="saved-chat-delete" onclick="deleteSavedChat(' + jsStrAttr(c.id) + ')" title="Delete">✕</button>' +
         '</div>' +
       '</div>';
   }).join('');
