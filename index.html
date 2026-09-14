@@ -154,6 +154,19 @@ nav {
 .hero-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 .btn-primary { background:var(--accent); color:white; border:none; padding:14px 30px; border-radius:10px; font-size:15px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(13,115,119,.3); }
 .btn-primary:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 6px 22px rgba(13,115,119,.42); }
+.btn-hero-shake { animation:heroBtnShake 4.5s ease-in-out infinite; }
+.btn-hero-shake:hover { animation-play-state:paused; }
+@keyframes heroBtnShake {
+  0%, 88%, 100% { transform:translateX(0) rotate(0); }
+  90% { transform:translateX(-4px) rotate(-1.5deg); }
+  91.5% { transform:translateX(3px) rotate(1.5deg); }
+  93% { transform:translateX(-3px) rotate(-1deg); }
+  94.5% { transform:translateX(2px) rotate(1deg); }
+  96% { transform:translateX(-1px) rotate(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-hero-shake { animation:none; }
+}
 .btn-secondary { background:white; color:var(--text); border:1.5px solid var(--border-mid); padding:14px 28px; border-radius:10px; font-size:15px; transition:border-color .2s; }
 .btn-secondary:hover { border-color:#aaa; }
 
@@ -718,7 +731,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <h1 class="fu1">Your Trip...<br><span class="red">Made.</span></h1>
     <p class="fu2">Tell us your vibe, your dates, and how many people you are travelling with. TripMade builds you a free personalised itinerary — then when you're ready, we handle all the bookings too.</p>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="requireAccount(function(){showPage(&#39;form&#39;);})">Get my free itinerary →</button>
+      <button class="btn-primary btn-hero-shake" onclick="requireAccount(function(){showPage(&#39;form&#39;);})">Get my free itinerary →</button>
       <button class="btn-secondary" onclick="scrollToSection(&#39;how&#39;)">See how it works</button>
     </div>
   </div>
