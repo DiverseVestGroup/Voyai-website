@@ -248,22 +248,44 @@ hr { border:none; border-top:1px solid var(--border); }
 .itin-sub   { font-size:12px; color:var(--text-muted); margin-top:1px; }
 .all-booked { background:var(--green-light); color:#0F6E56; border:1px solid var(--green-mid); font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
 
-.day-block { padding:16px 22px; border-bottom:1px solid var(--border); }
+.day-block { padding:0; border-bottom:1px solid var(--border); }
 .day-block:last-child { border-bottom:none; }
-.day-lbl { font-size:10px; font-weight:600; letter-spacing:.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:12px; }
-.evt-list { display:flex; flex-direction:column; gap:8px; }
-.evt { display:flex; align-items:center; gap:10px; }
-.evt-time { font-size:11px; color:var(--text-dim); min-width:44px; font-family:'Syne',sans-serif; font-weight:600; }
-.evt-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.day-lbl-row { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; background:#1A1A1A; padding:10px 22px; }
+.day-lbl { font-size:13px; font-weight:800; color:#ffffff; letter-spacing:.3px; text-transform:uppercase; }
+.day-extend-btn { font-family:inherit; font-size:11px; font-weight:700; color:#7FDBDA; background:none; border:none; padding:0; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap; }
+.day-extend-btn:hover { text-decoration:underline; }
+.day-extend-btn .chev { display:inline-block; transition:transform .2s; }
+.day-extend-btn.open .chev { transform:rotate(90deg); }
+.evt-list { display:flex; flex-direction:column; padding:12px 22px 4px; }
+.evt { display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px dashed var(--border); }
+.evt:last-child { border-bottom:none; padding-bottom:0; }
+.evt:first-child { padding-top:0; }
+.evt-time { font-size:11px; color:var(--text-dim); min-width:40px; font-family:'Syne',sans-serif; font-weight:600; padding-top:2px; }
+.evt-dot-col { display:flex; flex-direction:column; align-items:center; padding-top:6px; }
+.evt-dot  { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.dot-flight, .dot-transport { background:#2F6FED; }
+.dot-hotel { background:#0F9D66; }
+.dot-food { background:#E2725B; }
+.dot-activity { background:#D9A404; }
+.dot-event { background:#8B5CF6; }
+.evt-body { flex:1; }
 .evt-name { font-size:13px; flex:1; line-height:1.35; }
+.evt-label { font-size:13px; font-weight:800; color:var(--text); line-height:1.35; }
+.evt-blurb { font-size:11.5px; color:var(--text-muted); line-height:1.45; margin-top:2px; }
 .evt-price{ font-size:11px; color:var(--green); font-weight:600; font-family:'Syne',sans-serif; white-space:nowrap; }
 .ebadge   { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:600; white-space:nowrap; }
 .eb-ok  { background:var(--green-light); color:#0F6E56; }
 .eb-res { background:var(--blue-light);  color:#185FA5; }
 .eb-wait{ background:var(--accent-light);color:var(--accent); }
-.tip { display:flex; align-items:flex-start; gap:6px; padding:7px 10px; background:var(--bg2); border-radius:8px; margin-top:2px; }
-.tip-dot { width:5px; height:5px; border-radius:50%; background:var(--text-dim); flex-shrink:0; margin-top:5px; }
-.tip span { font-size:11px; color:var(--text-muted); font-style:italic; line-height:1.5; }
+.day-extend-panel { display:none; margin:6px 22px 16px; padding-top:14px; border-top:1px dashed var(--border); }
+.day-extend-panel.open { display:block; }
+.day-extend-sec { margin-bottom:12px; }
+.day-extend-sec:last-of-type { margin-bottom:0; }
+.day-extend-sec h4 { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); margin-bottom:5px; }
+.day-extend-sec p { font-size:13px; color:var(--text); line-height:1.6; margin:0; }
+.tip { background:#FAEEDA; border-left:3px solid #BA7517; border-radius:0 6px 6px 0; padding:10px 14px; margin-top:12px; }
+.tip-lbl { font-size:10px; font-weight:800; color:#854F0B; text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px; }
+.tip-text { font-size:12px; color:#5C3B0C; line-height:1.5; }
 
 .connector { display:flex; align-items:center; gap:12px; padding:14px 20px; background:var(--blue-light); border:1.5px solid #B5D4F4; border-radius:var(--radius); margin-bottom:14px; }
 .conn-icon  { font-size:20px; }
@@ -272,10 +294,10 @@ hr { border:none; border-top:1px solid var(--border); }
 .conn-price { font-size:13px; font-weight:700; font-family:'Syne',sans-serif; color:#185FA5; white-space:nowrap; }
 .conn-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; background:#B5D4F4; color:#0C447C; white-space:nowrap; }
 
-.legend { display:flex; gap:18px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+.legend { display:flex; gap:14px; justify-content:flex-start; margin:2px 0 18px; flex-wrap:wrap; }
 .leg { display:flex; align-items:center; gap:5px; }
-.leg-dot { width:8px; height:8px; border-radius:50%; }
-.leg span { font-size:12px; color:var(--text-muted); }
+.leg-dot { width:7px; height:7px; border-radius:50%; }
+.leg span { font-size:11px; color:var(--text-muted); }
 
 /* WAITLIST */
 .waitlist { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 48px; text-align:center; }
@@ -881,58 +903,212 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$6,630</div><div class="sum-sub red">$370 under budget</div></div>
     </div>
 
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#2F6FED;"></div><span>Flights &amp; transfers</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#D9A404;"></div><span>Activities</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#E2725B;"></div><span>Food &amp; dining</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#0F9D66;"></div><span>Accommodation</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#8B5CF6;"></div><span>Events &amp; nightlife</span></div>
+    </div>
+
     <!-- ROME -->
     <div class="itin-block">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div class="dest-icon sight">🏛️</div><div><div class="itin-title">Rome, Italy — 10–14 September</div><div class="itin-sub">Sightseeing · Efficient routing · Skip-the-line throughout</div></div></div>
+        <div class="itin-hdr-l"><div class="dest-icon sight">&#127963;&#65039;</div><div><div class="itin-title">Rome, Italy &mdash; 10&ndash;14 September</div><div class="itin-sub">Sightseeing &middot; Efficient routing &middot; Skip-the-line throughout</div></div></div>
         <div class="all-booked">ALL BOOKED</div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 1 — Wed · Arrival</div>
+      <div class="day-block" id="day-block-1">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 1 &mdash; Wed &middot; Arrival</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-1" onclick="toggleDayExtend('1')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">06:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Fly SYD → FCO — Emirates EK415 via Dubai</div><div class="evt-price">$1,890pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">19:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Private transfer FCO → Hotel</div><div class="evt-price">$48</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Hotel Campo de' Fiori, Centro Storico</div><div class="evt-price">$300/n</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">21:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Osteria del Pegno (3 min walk)</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt">
+            <div class="evt-time">06:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-flight"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Fly SYD &rarr; FCO &mdash; Emirates EK415 via Dubai</div>
+              <div class="evt-blurb">Depart 6am, ~22h total with a Dubai stopover, arrives Rome early evening local time.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">19:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-transport"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Private transfer FCO &rarr; Hotel</div>
+              <div class="evt-blurb">Pre-booked and tracked door to door &mdash; no queuing for a taxi after a long flight.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">20:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-hotel"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Check-in &mdash; Hotel Campo de' Fiori, Centro Storico</div>
+              <div class="evt-blurb">Boutique 4-star right in the historic centre &mdash; walkable to everything for the next 4 nights.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">21:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Dinner &mdash; Osteria del Pegno (3 min walk)</div>
+              <div class="evt-blurb">Reserved so you can eat straight away &mdash; no wandering Rome exhausted looking for a table.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-1">
+          <div class="day-extend-sec"><h4>Morning</h4><p>You're airborne by 6am, direct to Dubai on Emirates &mdash; settle in, this is the longest leg of the whole trip at just under 14 hours. Two full meal services and on-demand entertainment make it manageable; if you want extra legroom, it's worth asking about an exit-row seat at check-in, since Emirates typically releases a handful on the morning of departure.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>A stopover in Dubai before the connecting flight into Rome &mdash; around 2 hours on the ground, plenty of time to stretch your legs between gates without the stress of a tight connection. Both flights are booked as one Emirates ticket, so your bags are checked straight through to Rome and both boarding passes print at Sydney.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Touch down at Fiumicino around 7:30pm local time. Your private transfer is waiting at arrivals with a name board, tracked against your actual landing time rather than a fixed pickup slot, so there's no standing around after a long flight. You're checked into Hotel Campo de' Fiori by 8:30pm &mdash; a boutique 4-star two minutes from Campo de' Fiori square itself, and walkable to almost everything on this leg of the trip. A reserved table at Osteria del Pegno, three minutes' walk away, means dinner's sorted before you've even unpacked &mdash; the cacio e pepe is what the place is known for.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Your arrival transfer is timed to your actual landing time, not a guess &mdash; nobody's left waiting around at Fiumicino.</div></div>
         </div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 2 — Thu · Vatican &amp; Trastevere</div>
+      <div class="day-block" id="day-block-2">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 2 &mdash; Thu &middot; Vatican &amp; Trastevere</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-2" onclick="toggleDayExtend('2')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">08:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Vatican Museums + Sistine Chapel — skip-the-line</div><div class="evt-price">$38pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: 8am entry avoids 90% of crowds. Most tourists arrive at 10am.</span></div>
-          <div class="evt"><div class="evt-time">11:30</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">St Peter's Basilica + dome climb</div><div class="evt-price">Free</div><div class="ebadge eb-ok">Confirmed</div></div>
-          <div class="evt"><div class="evt-time">14:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Lunch — Pizzarium Bonci, Prati</div><div class="evt-price">$18pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">16:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Castel Sant'Angelo — guided tour</div><div class="evt-price">$22pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">19:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Da Enzo al 29, Trastevere</div><div class="evt-price">$62pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt">
+            <div class="evt-time">08:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Vatican Museums + Sistine Chapel &mdash; skip-the-line</div>
+              <div class="evt-blurb">Early skip-the-line entry &mdash; beats roughly 90% of the day's crowds.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">11:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">St Peter's Basilica + dome climb</div>
+              <div class="evt-blurb">Free entry, dome climb booked for the best rooftop view in Rome.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">14:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Lunch &mdash; Pizzarium Bonci, Prati</div>
+              <div class="evt-blurb">Rome's most famous pizza al taglio, a short walk from the Vatican.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">16:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Castel Sant'Angelo &mdash; guided tour</div>
+              <div class="evt-blurb">Riverside fortress-turned-museum, guided so you don't miss the history.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">19:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Dinner &mdash; Da Enzo al 29, Trastevere</div>
+              <div class="evt-blurb">Reserved table at one of Trastevere's best-loved trattorias.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-2">
+          <div class="day-extend-sec"><h4>Morning</h4><p>Doors open at the Vatican Museums right at 8am &mdash; booked deliberately at that time, since it beats roughly 90% of the day's crowds through to the Sistine Chapel, otherwise the single most congested room in Rome by mid-morning. From there it's a 10-minute walk around to St Peter's Basilica, free to enter, with the dome climb booked for 11am &mdash; 551 steps in total, though the first stretch can be done by lift if you'd rather save your legs for the view over St Peter's Square at the top.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>Lunch is booked at Pizzarium Bonci in Prati &mdash; widely considered Rome's best pizza al taglio, sold by weight so you can try a few different toppings without committing to a full pizza, and an easy 8-minute walk from the Vatican. Afterwards, a guided tour through Castel Sant'Angelo, the riverside fortress-turned-museum that was once the papal escape route from the Vatican via a secret elevated passage &mdash; your guide covers that history on the way up to one of the city's best rooftop views back over St Peter's.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's reserved at Da Enzo al 29 in Trastevere &mdash; a tiny, family-run trattoria that's consistently one of the neighbourhood's most loved, which is exactly why a booking matters here; walk-ins regularly wait over an hour. Get there a few minutes early and use the wait to wander Trastevere's cobbled backstreets, one of the prettiest parts of Rome after dark.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">8am entry at the Vatican avoids roughly 90% of the day's visitors &mdash; most tourists don't arrive until 10am.</div></div>
         </div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 3 — Fri · Ancient Rome &amp; Hidden gems</div>
+      <div class="day-block" id="day-block-3">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 3 &mdash; Fri &middot; Ancient Rome &amp; Hidden gems</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-3" onclick="toggleDayExtend('3')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">07:45</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Colosseum + Roman Forum — priority access, guided</div><div class="evt-price">$52pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Colosseum sells out 3 weeks ahead. Pre-booked for you automatically.</span></div>
-          <div class="evt"><div class="evt-time">12:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Lunch — Supplì Roma, street food near Forum</div><div class="evt-price">$12pp</div><div class="ebadge eb-ok">Confirmed</div></div>
-          <div class="evt"><div class="evt-time">15:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Borghese Gallery — timed entry (must pre-book)</div><div class="evt-price">$28pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">20:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Il Sorpasso, aperitivo + dinner</div><div class="evt-price">$48pp</div><div class="ebadge eb-res">Reserved</div></div>
+          <div class="evt">
+            <div class="evt-time">07:45</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Colosseum + Roman Forum &mdash; priority access, guided</div>
+              <div class="evt-blurb">Priority access booked three weeks out &mdash; the Colosseum sells out fast.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">12:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Lunch &mdash; Suppl&igrave; Roma, street food near Forum</div>
+              <div class="evt-blurb">Quick, cheap and genuinely excellent &mdash; Rome's classic fried rice balls.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">15:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Borghese Gallery &mdash; timed entry (must pre-book)</div>
+              <div class="evt-blurb">Bernini and Caravaggio in one room &mdash; entry only possible with a pre-booked slot.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">20:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Dinner &mdash; Il Sorpasso, aperitivo + dinner</div>
+              <div class="evt-blurb">Reserved for aperitivo through to dinner in one relaxed sitting.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-3">
+          <div class="day-extend-sec"><h4>Morning</h4><p>Priority, guided access into the Colosseum and Roman Forum &mdash; booked three weeks out, since the Colosseum regularly sells out well ahead of most people's travel dates, especially in peak season. Your guide takes you through the arena floor and underground chambers most general-admission tickets don't include, then continues on through the Forum and Palatine Hill on the same ticket.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>A quick, cheap lunch at Suppl&igrave; Roma near the Forum &mdash; Rome's classic fried rice balls, done properly, and a fraction of the price of anywhere directly on the tourist strip. Then a timed entry slot at the Borghese Gallery at 3pm &mdash; tickets are strictly time-slotted and routinely sell out weeks ahead, so this one's locked in well in advance. Bernini's sculpture and Caravaggio's paintings share the same few rooms, and visits are capped at two hours, which is enough to see everything without rushing.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's booked at Il Sorpasso &mdash; a wine bar and kitchen that runs aperitivo straight through to dinner in one relaxed sitting, so there's no rushing between two venues after a full day on your feet. Their small-plates menu changes daily depending on what's fresh at the market that morning.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">The Colosseum regularly sells out three weeks in advance &mdash; pre-booked for you automatically so it's one less thing to think about.</div></div>
         </div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 4 — Sat · Final morning then fly to Ibiza</div>
+      <div class="day-block" id="day-block-4">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 4 &mdash; Sat &middot; Final morning then fly to Ibiza</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-4" onclick="toggleDayExtend('4')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">09:00</div><div class="evt-dot" style="background:var(--amber);"></div><div class="evt-name">Trevi Fountain + Pantheon — early, no crowds</div><div class="evt-price">Free</div><div class="ebadge eb-ok">Confirmed</div></div>
-          <div class="evt"><div class="evt-time">11:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Brunch — Antico Caffè Greco (since 1760)</div><div class="evt-price">$24pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">13:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Transfer to FCO — pre-booked, tracked in app</div><div class="evt-price">$48</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt">
+            <div class="evt-time">09:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Trevi Fountain + Pantheon &mdash; early, no crowds</div>
+              <div class="evt-blurb">Both free, both close to empty before 9am, unlike later in the day.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">11:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Brunch &mdash; Antico Caff&egrave; Greco (since 1760)</div>
+              <div class="evt-blurb">Rome's oldest caf&eacute; &mdash; a proper send-off before flying out.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">13:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-transport"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Transfer to FCO &mdash; pre-booked, tracked in app</div>
+              <div class="evt-blurb">Timed to your flight, tracked live so there's no last-minute scramble.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-4">
+          <div class="day-extend-sec"><h4>Morning</h4><p>An early, uncrowded pass through the Trevi Fountain and the Pantheon &mdash; both free to visit, and both close to empty before 9am, compared with the crowds that build steadily from mid-morning onward. Toss a coin into the Trevi with your right hand over your left shoulder if you want the classic guarantee of a return trip to Rome &mdash; pure tradition, but worth doing anyway.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>A relaxed final brunch at Antico Caff&egrave; Greco, Rome's oldest caf&eacute;, open continuously since 1760 and once a regular haunt of Byron and Keats &mdash; a proper, unhurried send-off before the transfer to the airport rather than a rushed coffee at the gate.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Your pre-booked, live-tracked transfer gets you to Fiumicino with a comfortable buffer before the Vueling flight across to Ibiza &mdash; a short 2h15 hop, landing at 18:35 local time, ready for the next four nights. Vueling's cabin bag allowance is tighter than Emirates' &mdash; worth checking yours fits their sizer before you leave the hotel.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Rome hotel checkout is typically 11am, well before this day's low-key sightseeing wraps up &mdash; ask reception to hold your bags for the morning, it's standard practice at Campo de' Fiori and saves carrying them around the city.</div></div>
         </div>
       </div>
     </div>
 
     <!-- CONNECTOR FLIGHT -->
     <div class="connector">
-      <div class="conn-icon">✈️</div>
+      <div class="conn-icon">&#9992;&#65039;</div>
       <div style="flex:1;">
-        <div class="conn-title">Rome FCO → Ibiza IBZ — Vueling VY6241</div>
-        <div class="conn-sub">Saturday 14 Sep · Departs 16:20 · Arrives 18:35 · 2h 15m direct</div>
+        <div class="conn-title">Rome FCO &rarr; Ibiza IBZ &mdash; Vueling VY6241</div>
+        <div class="conn-sub">Saturday 14 Sep &middot; Departs 16:20 &middot; Arrives 18:35 &middot; 2h 15m direct</div>
       </div>
       <div class="conn-price">$230pp</div>
       <div class="conn-badge">Booked</div>
@@ -941,55 +1117,177 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- IBIZA -->
     <div class="itin-block">
       <div class="itin-hdr party">
-        <div class="itin-hdr-l"><div class="dest-icon party">🎉</div><div><div class="itin-title">Ibiza, Spain — 14–18 September</div><div class="itin-sub">Party · Club bookings · Pre-events · Recovery built in</div></div></div>
+        <div class="itin-hdr-l"><div class="dest-icon party">&#127881;</div><div><div class="itin-title">Ibiza, Spain &mdash; 14&ndash;18 September</div><div class="itin-sub">Party &middot; Club bookings &middot; Pre-events &middot; Recovery built in</div></div></div>
         <div class="all-booked">ALL BOOKED</div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 5 — Sat · Arrival &amp; first night out</div>
+      <div class="day-block" id="day-block-5">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 5 &mdash; Sat &middot; Arrival &amp; first night out</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-5" onclick="toggleDayExtend('5')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">18:35</div><div class="evt-dot" style="background:var(--green);"></div><div class="evt-name">Check-in — Ushuaïa Beach Hotel, Playa d'en Bossa</div><div class="evt-price">$420/n</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Ushuaïa sits directly on the beach with its own open-air club — no transport needed on night 1.</span></div>
-          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Jockey Club Sunset Beach (beachfront)</div><div class="evt-price">$68pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">23:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Ushuaïa Ibiza Beach Club — Tiësto closing party</div><div class="evt-price">$110pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt">
+            <div class="evt-time">18:35</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-hotel"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Check-in &mdash; Ushua&iuml;a Beach Hotel, Playa d'en Bossa</div>
+              <div class="evt-blurb">Beachfront with its own open-air club &mdash; no transport needed on night one.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">20:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Dinner &mdash; Jockey Club Sunset Beach (beachfront)</div>
+              <div class="evt-blurb">Reserved beachfront table, timed for sunset.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">23:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Ushua&iuml;a Ibiza Beach Club &mdash; Ti&euml;sto closing party</div>
+              <div class="evt-blurb">Booked entry to one of the island's biggest closing parties.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-5">
+          <div class="day-extend-sec"><h4>Morning</h4><p>The Vueling flight from Rome lands into Ibiza at 18:35 &mdash; a short, easy 2h15 hop across the Mediterranean, so there's no early start today and no need to rush breakfast in Rome.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>Straight from the airport into Ushua&iuml;a Beach Hotel in Playa d'en Bossa &mdash; a 10-minute transfer from Ibiza airport, beachfront, with its own open-air club on site, so there's genuinely no need to arrange transport for the first night. Rooms here book out fast around the closing parties, so this one was locked in as soon as the September dates were confirmed.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's reserved at Jockey Club Sunset Beach, right on the sand, timed so you're seated for sunset before booked entry into Ushua&iuml;a's closing party with Ti&euml;sto &mdash; about as strong a first night as Ibiza gets. Doors for the party are from 5pm, but the venue's a two-minute walk from your room, so there's no rush to get there right on time.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Ushua&iuml;a sits directly on the beach with its own open-air club, so night one needs zero transport planning.</div></div>
         </div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 6 — Sun · Pool day &amp; Pacha</div>
+      <div class="day-block" id="day-block-6">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 6 &mdash; Sun &middot; Pool day &amp; Pacha</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-6" onclick="toggleDayExtend('6')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">13:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Recovery brunch — La Paloma, San Lorenzo</div><div class="evt-price">$38pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">15:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Sunset catamaran — 3hr, open bar</div><div class="evt-price">$85pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Catamaran departs Ibiza Town marina — perfect sunset views of Dalt Vila. Sells out fast in September.</span></div>
-          <div class="evt"><div class="evt-time">21:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — El Chiringuito, Es Cavallet beach</div><div class="evt-price">$72pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">00:00</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">Pacha Ibiza — Eric Prydz presents HOLO</div><div class="evt-price">$120pp</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt">
+            <div class="evt-time">13:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Recovery brunch &mdash; La Paloma, San Lorenzo</div>
+              <div class="evt-blurb">Easy, laid-back brunch spot to recover before round two.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">15:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Sunset catamaran &mdash; 3hr, open bar</div>
+              <div class="evt-blurb">3 hours on the water with an open bar, timed for golden hour.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">21:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Dinner &mdash; El Chiringuito, Es Cavallet beach</div>
+              <div class="evt-blurb">Reserved beach-club dinner on one of Ibiza's quieter stretches of sand.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">00:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Pacha Ibiza &mdash; Eric Prydz presents HOLO</div>
+              <div class="evt-blurb">Booked entry to Pacha's biggest weekly residency.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-6">
+          <div class="day-extend-sec"><h4>Morning</h4><p>A slow recovery brunch at La Paloma in San Lorenzo &mdash; a garden restaurant set among orange groves inland from the coast, deliberately laid-back and away from the beach clubs, which makes it the right pace for the morning after a big first night.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>A 3-hour sunset catamaran with open bar, departing Ibiza Town marina at 5:30pm and timed so golden hour hits right as you're passing Dalt Vila, the walled old town &mdash; this route and time slot sells out fast in September, so it's booked well ahead rather than left to chance. A transfer from Ushua&iuml;a to the marina is included.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's reserved at El Chiringuito on Es Cavallet beach &mdash; one of Ibiza's quieter, more low-key stretches of sand, a deliberate contrast to the catamaran &mdash; before booked entry to Pacha for Eric Prydz's HOLO residency at midnight. Pacha's door policy is relaxed for pre-booked ticket holders, so there's no queuing required.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">The sunset catamaran departs from Ibiza Town marina and gives the best view of Dalt Vila at golden hour &mdash; it sells out quickly in September.</div></div>
         </div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 7 — Mon · Beach &amp; DC10</div>
+      <div class="day-block" id="day-block-7">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 7 &mdash; Mon &middot; Beach &amp; DC10</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-7" onclick="toggleDayExtend('7')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">14:00</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Cala Comte beach — taxi pre-booked, sunbeds reserved</div><div class="evt-price">$22pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: Cala Comte has the clearest water on the island. Sunbed reservation avoids the 9am queue.</span></div>
-          <div class="evt"><div class="evt-time">18:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Sunset drinks — Café del Mar, San Antonio</div><div class="evt-price">$30pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">20:30</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Dinner — Can Pilot, traditional Ibizan grill</div><div class="evt-price">$55pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">23:30</div><div class="evt-dot" style="background:var(--purple);"></div><div class="evt-name">DC10 — Circoloco Monday (legendary weekly)</div><div class="evt-price">$70pp</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="tip"><div class="tip-dot"></div><span>TripMade tip: DC10 Circoloco is one of Ibiza's most iconic nights. Arrives late on purpose — doors from midnight.</span></div>
+          <div class="evt">
+            <div class="evt-time">14:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Cala Comte beach &mdash; taxi pre-booked, sunbeds reserved</div>
+              <div class="evt-blurb">Clearest water on the island &mdash; reservation skips the 9am queue.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">18:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Sunset drinks &mdash; Caf&eacute; del Mar, San Antonio</div>
+              <div class="evt-blurb">Reserved for Ibiza's original sunset-watching spot.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">20:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Dinner &mdash; Can Pilot, traditional Ibizan grill</div>
+              <div class="evt-blurb">Reserved table at a proper Ibizan grill, away from the tourist strip.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">23:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">DC10 &mdash; Circoloco Monday (legendary weekly)</div>
+              <div class="evt-blurb">Doors from midnight on purpose &mdash; one of Ibiza's most iconic nights.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-7">
+          <div class="day-extend-sec"><h4>Morning</h4><p>A pre-booked taxi to Cala Comte on the west coast, with sunbeds already reserved &mdash; widely regarded as having the clearest water on the island, and the reservation skips the queue that builds from around 9am for a good spot on the sand. Bring reef-safe sunscreen &mdash; a couple of the beach clubs here have started asking for it specifically.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>Sunset drinks at Caf&eacute; del Mar in San Antonio &mdash; Ibiza's original sunset-watching spot since the 1980s, and still the benchmark everyone else on the strip is copying. A table's reserved ahead, since the terrace fills up well before sunset itself on a clear evening.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's booked at Can Pilot, a proper Ibizan grill well away from the tourist strip, before entry into DC10 for Circoloco's Monday night &mdash; doors deliberately booked from midnight rather than earlier, since this is one of the island's most iconic weekly parties and doesn't properly get going until later. It runs through to midday Tuesday for anyone with the stamina.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Cala Comte has the clearest water on the island, and DC10's Circoloco starts late on purpose &mdash; doors don't open until midnight.</div></div>
         </div>
       </div>
-      <div class="day-block">
-        <div class="day-lbl">Day 8 — Tue · Final day &amp; departure</div>
+      <div class="day-block" id="day-block-8">
+        <div class="day-lbl-row">
+          <div class="day-lbl">Day 8 &mdash; Tue &middot; Final day &amp; departure</div>
+          <button type="button" class="day-extend-btn" id="day-extend-btn-8" onclick="toggleDayExtend('8')">Expand this day <span class="chev">&rarr;</span></button>
+        </div>
         <div class="evt-list">
-          <div class="evt"><div class="evt-time">13:00</div><div class="evt-dot" style="background:var(--accent);"></div><div class="evt-name">Final brunch — Babylon Beach, Es Canar</div><div class="evt-price">$30pp</div><div class="ebadge eb-res">Reserved</div></div>
-          <div class="evt"><div class="evt-time">15:30</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Transfer to IBZ airport — pre-booked taxi</div><div class="evt-price">$32</div><div class="ebadge eb-ok">Booked</div></div>
-          <div class="evt"><div class="evt-time">18:10</div><div class="evt-dot" style="background:var(--blue);"></div><div class="evt-name">Fly IBZ → DXB → SYD — Emirates connecting</div><div class="evt-price">Included</div><div class="ebadge eb-ok">Booked</div></div>
+          <div class="evt">
+            <div class="evt-time">13:00</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Final brunch &mdash; Babylon Beach, Es Canar</div>
+              <div class="evt-blurb">One last relaxed beachfront brunch before the airport.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">15:30</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-transport"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Transfer to IBZ airport &mdash; pre-booked taxi</div>
+              <div class="evt-blurb">Timed to your flight, no last-minute taxi hunting.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">18:10</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-flight"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Fly IBZ &rarr; DXB &rarr; SYD &mdash; Emirates connecting</div>
+              <div class="evt-blurb">Connecting via Dubai, booked as one ticket door to door.</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-extend-panel" id="day-extend-panel-8">
+          <div class="day-extend-sec"><h4>Morning</h4><p>One last relaxed brunch at Babylon Beach in Es Canar before the trip winds down &mdash; a quieter spot on the island's northeast coast, away from the party areas, for an easy final morning.</p></div>
+          <div class="day-extend-sec"><h4>Afternoon</h4><p>A pre-booked taxi to Ibiza Airport, timed with a comfortable buffer before check-in closes, so there's no last-minute scramble on the way out. Ibiza's airport gets especially busy with departing party traffic on Mondays, which this timing accounts for.</p></div>
+          <div class="day-extend-sec"><h4>Evening</h4><p>The Emirates connection home via Dubai is booked as one ticket door to door &mdash; check in once in Ibiza and your bags are checked straight through to Sydney, with no need to collect and recheck them in Dubai. You land back in Sydney early the following morning, with a day up your sleeve before you're back at work.</p></div>
+          <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Since your bags are checked through on one ticket, there's no need to build extra time into the Dubai layover for baggage &mdash; just enjoy the stopover lounge if your fare includes one.</div></div>
         </div>
       </div>
-    </div>
-
-    <div class="legend">
-      <div class="leg"><div class="leg-dot" style="background:var(--blue);"></div><span>Flights &amp; transfers</span></div>
-      <div class="leg"><div class="leg-dot" style="background:var(--amber);"></div><span>Attractions</span></div>
-      <div class="leg"><div class="leg-dot" style="background:var(--accent);"></div><span>Food &amp; dining</span></div>
-      <div class="leg"><div class="leg-dot" style="background:var(--green);"></div><span>Accommodation</span></div>
-      <div class="leg"><div class="leg-dot" style="background:var(--purple);"></div><span>Clubs &amp; events</span></div>
     </div>
 
     <div style="text-align:center;margin-top:32px;">
@@ -3473,6 +3771,35 @@ function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
   }, 80);
+}
+
+// ── SAMPLE ITINERARY — per-day "extend" accordion ──────
+// Opening a day's detail collapses whichever other day was open
+// (one open at a time); once open it stays open until toggled again
+// or another day is opened.
+let _openDayExtendId = null;
+function toggleDayExtend(dayId) {
+  const panel = document.getElementById('day-extend-panel-' + dayId);
+  const btn = document.getElementById('day-extend-btn-' + dayId);
+  if (!panel || !btn) return;
+  const isOpen = panel.classList.contains('open');
+
+  if (_openDayExtendId && _openDayExtendId !== dayId) {
+    const prevPanel = document.getElementById('day-extend-panel-' + _openDayExtendId);
+    const prevBtn = document.getElementById('day-extend-btn-' + _openDayExtendId);
+    if (prevPanel) prevPanel.classList.remove('open');
+    if (prevBtn) prevBtn.classList.remove('open');
+  }
+
+  if (isOpen) {
+    panel.classList.remove('open');
+    btn.classList.remove('open');
+    _openDayExtendId = null;
+  } else {
+    panel.classList.add('open');
+    btn.classList.add('open');
+    _openDayExtendId = dayId;
+  }
 }
 
 // ── CATEGORY TABS ────────────────────────────────────────
