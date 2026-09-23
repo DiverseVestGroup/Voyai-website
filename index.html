@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!-- saved from url=(0020)https://tripmade.co/ -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TripMade — My trip. Made.</title>
 <!-- Real icon (2026-09-09) — Lachlan sent the exact icon graphic to use (a jetliner silhouette on the brand teal square) and asked to replace the old inline SVG favicon with it. The old SVG favicon (a simple text ✈ glyph) is what iOS Safari was falling back away from as a generic plane emoji in the first place, so this fully replaces it rather than sitting alongside it — every icon reference now comes from the same PNG source, so there is nothing left that could render inconsistently. -->
@@ -45,7 +44,6 @@ body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text)
 footer { margin-top:auto; }
 a { text-decoration:none; color:inherit; }
 button { cursor:pointer; font-family:'DM Sans',sans-serif; }
-
 /* ── NAV ────────────────────────────────────────────────── */
 nav {
   position:sticky; top:0; z-index:200;
@@ -86,7 +84,6 @@ nav {
 .nav-collapse { display:flex; align-items:center; justify-content:space-between; flex:1; margin-left:32px; }
 .nav-right { display:flex; align-items:center; gap:16px; }
 .nav-hamburger { display:none; }
-
 /* ── MOBILE NAV (hamburger dropdown) ─────────────────────────────
    Breakpoint is 1100px, not 640px — logo + 5 links + divider + Saved +
    account + Join waitlist genuinely need ~1140px on one line before they
@@ -129,15 +126,12 @@ nav {
 @media(max-width:640px){
   nav{padding:0 16px}
 }
-
 /* ── PAGE SECTIONS ──────────────────────────────────────── */
 .page { display:none; }
 .page.active { display:block; }
-
 /* ══════════════════════════════════════════════════════════
    LANDING PAGE
 ══════════════════════════════════════════════════════════ */
-
 /* HERO */
 .hero { padding:88px 48px 72px; max-width:880px; margin:0 auto; text-align:center; }
 .hero-pill {
@@ -169,7 +163,6 @@ nav {
 }
 .btn-secondary { background:white; color:var(--text); border:1.5px solid var(--border-mid); padding:14px 28px; border-radius:10px; font-size:15px; transition:border-color .2s; }
 .btn-secondary:hover { border-color:#aaa; }
-
 /* TRUST BAR */
 .trust-bar { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); display:flex; justify-content:center; }
 .trust-item { flex:1; max-width:200px; padding:20px 16px; text-align:center; border-right:1px solid var(--border); }
@@ -177,7 +170,6 @@ nav {
 .trust-num { font-family:'Syne',sans-serif; font-size:24px; font-weight:700; margin-bottom:3px; }
 .trust-num span { color:var(--accent); }
 .trust-label { font-size:12px; color:var(--text-muted); }
-
 /* HOW IT WORKS */
 .section { padding:72px 48px; max-width:1100px; margin:0 auto; }
 .section-hd { text-align:center; margin-bottom:48px; }
@@ -191,7 +183,6 @@ nav {
 .step-icon { width:40px; height:40px; background:var(--accent-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:12px; }
 .step h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:7px; }
 .step p  { font-size:13px; color:var(--text-muted); line-height:1.6; }
-
 /* VIBES */
 .vibes-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
 .testimonial-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
@@ -205,13 +196,11 @@ nav {
 .tags { display:flex; gap:6px; flex-wrap:wrap; }
 .tag  { font-size:11px; padding:3px 9px; border-radius:20px; border:1px solid var(--border-mid); color:var(--text-muted); background:var(--bg2); }
 hr { border:none; border-top:1px solid var(--border); }
-
 /* ── ITINERARY SHARED STYLES ───────────────────────────── */
 .itin-wrap { padding:0 48px 72px; max-width:1100px; margin:0 auto; }
 .itin-intro { text-align:center; margin-bottom:36px; }
 .itin-intro h2 { font-family:'Syne',sans-serif; font-size:34px; font-weight:800; letter-spacing:-.02em; margin-bottom:8px; }
 .itin-intro p  { font-size:15px; color:var(--text-muted); }
-
 .route-bar {
   display:flex; align-items:center; justify-content:center; gap:6px;
   flex-wrap:wrap; margin-bottom:24px;
@@ -225,7 +214,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .route-nights { font-size:11px; color:var(--text-muted); padding-left:15px; }
 .route-arrow  { font-size:14px; color:var(--text-dim); margin:0 6px; }
 .vibe-pill { font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; }
-
 .sum-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:24px; }
 .sum-card { background:var(--bg2); border-radius:10px; padding:14px 12px; text-align:center; }
 .sum-card.total { background:var(--accent-light); border:1px solid var(--accent-mid); }
@@ -235,7 +223,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .sum-val.red { color:var(--accent); }
 .sum-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
 .sum-sub.red { color:var(--accent); }
-
 .itin-block { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; }
 .itin-hdr { padding:14px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
 .itin-hdr.sight { background:#FFFDF7; }
@@ -247,7 +234,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .itin-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
 .itin-sub   { font-size:12px; color:var(--text-muted); margin-top:1px; }
 .all-booked { background:var(--green-light); color:#0F6E56; border:1px solid var(--green-mid); font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
-
 .day-block { padding:0; border-bottom:1px solid var(--border); }
 .day-block:last-child { border-bottom:none; }
 .day-lbl-row { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; background:#1A1A1A; padding:10px 22px; }
@@ -286,19 +272,16 @@ hr { border:none; border-top:1px solid var(--border); }
 .tip { background:#FAEEDA; border-left:3px solid #BA7517; border-radius:0 6px 6px 0; padding:10px 14px; margin-top:12px; }
 .tip-lbl { font-size:10px; font-weight:800; color:#854F0B; text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px; }
 .tip-text { font-size:12px; color:#5C3B0C; line-height:1.5; }
-
 .connector { display:flex; align-items:center; gap:12px; padding:14px 20px; background:var(--blue-light); border:1.5px solid #B5D4F4; border-radius:var(--radius); margin-bottom:14px; }
 .conn-icon  { font-size:20px; }
 .conn-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:#185FA5; }
 .conn-sub   { font-size:12px; color:var(--blue); margin-top:1px; }
 .conn-price { font-size:13px; font-weight:700; font-family:'Syne',sans-serif; color:#185FA5; white-space:nowrap; }
 .conn-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; background:#B5D4F4; color:#0C447C; white-space:nowrap; }
-
 .legend { display:flex; gap:14px; justify-content:flex-start; margin:2px 0 18px; flex-wrap:wrap; }
 .leg { display:flex; align-items:center; gap:5px; }
 .leg-dot { width:7px; height:7px; border-radius:50%; }
 .leg span { font-size:11px; color:var(--text-muted); }
-
 /* WAITLIST */
 .waitlist { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 48px; text-align:center; }
 .waitlist-inner { max-width:500px; margin:0 auto; }
@@ -319,7 +302,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .wl-form-full input:focus, .wl-form-full select:focus { border-color:var(--accent); }
 .wl-form button:hover { opacity:.88; }
 .wl-note { font-size:12px; color:var(--text-dim); }
-
 /* ══════════════════════════════════════════════════════════
    INSPIRATION PAGE
 ══════════════════════════════════════════════════════════ */
@@ -332,13 +314,11 @@ hr { border:none; border-top:1px solid var(--border); }
 .cat-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 .cat-tab .tc { font-size:11px; background:var(--bg3); color:var(--text-dim); padding:1px 6px; border-radius:10px; font-weight:400; }
 .cat-tab.active .tc { background:var(--accent-light); color:var(--accent); }
-
 /* ── BOOK YOUR TRIP — jump nav (contents-page style tab bar) ── */
 .tour-jump-nav { display:flex; gap:4px; overflow-x:auto; border-bottom:1px solid var(--border); max-width:900px; margin:0 auto; padding:0 48px; -webkit-overflow-scrolling:touch; }
 .tour-jump-tab { display:flex; align-items:center; gap:6px; padding:12px 16px; font-size:13px; font-weight:600; font-family:'DM Sans',sans-serif; color:var(--text-muted); background:none; border:none; border-bottom:2.5px solid transparent; white-space:nowrap; cursor:pointer; transition:color .15s,border-color .15s; }
 .tour-jump-tab:hover { color:var(--accent); border-bottom-color:var(--accent-mid); }
 @media (max-width:700px) { .tour-jump-nav { padding-left:20px; padding-right:20px; } }
-
 .filter-bar { padding:14px 48px; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .filter-lbl { font-size:12px; font-weight:500; color:var(--text-dim); }
 .f-chip { display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:20px; border:1.5px solid var(--border-mid); background:white; font-size:12px; color:var(--text-muted); transition:all .15s; white-space:nowrap; }
@@ -354,7 +334,6 @@ hr { border:none; border-top:1px solid var(--border); }
    to make the "indicative" caveat stick. Boxed rather than plain small
    print so it doesn't get missed sitting right next to real numbers. */
 .trip-price-note { font-size:12px; color:var(--text-dim); background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin:0 0 24px; }
-
 .cards-grid { padding:28px 48px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1200px; margin:0 auto; }
 .trip-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .2s; box-shadow:var(--shadow-sm); }
 .tour-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); min-height:120px; width:100%; }
@@ -382,21 +361,18 @@ hr { border:none; border-top:1px solid var(--border); }
 .ferry-widget-desc { font-size:13px; color:var(--text-muted); line-height:1.4; margin-bottom:6px; }
 @media (max-width:700px) { .ferry-widget-wrap { padding-left:20px; padding-right:20px; } }
 .ferry-widget-card iframe { max-width:100%; border-radius:8px; }
-
 /* ── FLIGHT SEARCH WIDGET (Travelpayouts) ─────────────────── */
 .flight-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
 .flight-widget-card { background:white; border:1.5px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:20px; }
 .flight-widget-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); margin-bottom:2px; }
 .flight-widget-desc { font-size:13px; color:var(--text-muted); line-height:1.4; margin-bottom:14px; }
 @media (max-width:700px) { .flight-widget-wrap { padding-left:20px; padding-right:20px; } }
-
 /* ── TRANSPORT (Transfer Services + Ferries side by side) ──── */
 .transport-subgrid { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; max-width:900px; margin:0 auto; padding:16px 48px 28px; }
 .transport-subheading { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.005em; color:var(--text); margin:0 0 8px; }
 .transport-subcol .flight-widget-card, .transport-subcol .ferry-widget-card { height:100%; }
 .transport-subcol .ferry-widget-card { max-width:none; width:100%; }
 @media (max-width:700px) { .transport-subgrid { grid-template-columns:1fr; padding-left:20px; padding-right:20px; } }
-
 /* ── ASK TRIPMADE ──────────────────────────────────────── */
 .ask-wrap { max-width:900px; margin:0 auto; padding:0 48px 60px; }
 @media (max-width:700px) { .ask-wrap { padding-left:20px; padding-right:20px; } }
@@ -438,7 +414,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-redirect-card p { margin:0; font-size:14px; color:var(--text); flex:1; min-width:180px; }
 .ask-redirect-card button { flex-shrink:0; font-family:inherit; font-weight:700; font-size:13.5px; color:#fff; background:var(--accent); border:none; border-radius:var(--radius-sm); padding:10px 18px; cursor:pointer; white-space:nowrap; }
 .ask-dine-meta { font-size:12px; color:var(--text-dim); text-transform:capitalize; }
-
 /* Chat-thread mode: each question+answer pair is one .ask-turn, appended
    (not replacing) so the visitor can scroll back through everything
    they've asked this session — see runAskTripMade(). */
@@ -451,7 +426,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-save-btn { font-family:inherit; font-weight:700; font-size:13px; color:var(--accent); background:var(--accent-light); border:1.5px solid var(--accent-mid); border-radius:999px; padding:8px 16px; cursor:pointer; transition:filter .15s; }
 .ask-save-btn:hover:not(:disabled) { filter:brightness(1.05); }
 .ask-save-btn:disabled { opacity:.6; cursor:default; }
-
 /* Saved chats list — on the Saved page, alongside Saved trips. */
 .saved-chats-list { display:flex; flex-direction:column; gap:10px; }
 .saved-chat-row { display:flex; align-items:center; justify-content:space-between; gap:14px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:14px 18px; }
@@ -495,7 +469,6 @@ hr { border:none; border-top:1px solid var(--border); }
 .load-more-wrap { text-align:center; padding:8px 48px 48px; }
 .load-more { background:white; border:1.5px solid var(--border-mid); color:var(--text-muted); padding:11px 30px; border-radius:10px; font-size:13px; transition:border-color .2s,color .2s; }
 .load-more:hover { border-color:var(--accent); color:var(--accent); }
-
 /* ── ITINERARY FORM PAGE ────────────────────────────────── */
 .form-page { max-width:720px; margin:0 auto; padding:56px 32px 80px; }
 .form-progress { display:flex; align-items:center; gap:0; margin-bottom:48px; }
@@ -523,7 +496,6 @@ hr { border:none; border-top:1px solid var(--border); }
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--accent); }
 .form-textarea { min-height:120px; resize:vertical; line-height:1.6; }
-
 /* ── DESTINATION MULTI-SELECT ─────────────────────────────── */
 .dest-multiselect {
   position:relative; width:100%; min-height:52px;
@@ -561,7 +533,6 @@ hr { border:none; border-top:1px solid var(--border); }
 }
 .dest-suggestion-item:hover, .dest-suggestion-item.active { background:var(--accent-light); color:var(--accent); }
 .dest-suggestion-item.add-custom { color:var(--text-muted); font-style:italic; border-top:1px solid var(--border); }
-
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .form-options { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
 .form-options.two-col { grid-template-columns:repeat(2,1fr); }
@@ -593,29 +564,24 @@ hr { border:none; border-top:1px solid var(--border); }
   .form-options{grid-template-columns:repeat(2,1fr)}
   .form-options.two-col{grid-template-columns:1fr 1fr}
 }
-
 /* ── FOOTER ─────────────────────────────────────────────── */
 footer { padding:36px 48px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); background:var(--bg2); }
 footer p { font-size:13px; color:var(--text-dim); }
 .footer-links { display:flex; gap:24px; }
 .footer-links a { font-size:13px; color:var(--text-dim); transition:color .2s; }
 .footer-links a:hover { color:var(--text); }
-
 /* ── SOCIAL STRIP ──────────────────────────────────────── */
 .social-strip { background:var(--accent); padding:9px 0; overflow:hidden; }
 .social-strip-inner { display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; padding:0 48px; }
 .ss-item { display:flex; align-items:center; gap:7px; font-size:13px; color:rgba(255,255,255,.9); white-space:nowrap; }
 .ss-item strong { color:#fff; font-weight:600; }
-
 /* ── AFFILIATE STRIP ────────────────────────────────────── */
 .aff-strip { padding:28px 48px; background:var(--bg2); border-top:1px solid var(--border); text-align:center; }
 .aff-strip-label { font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em; margin-bottom:14px; }
 .aff-logos { display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
 .aff-logo { font-size:12px; font-weight:600; color:var(--text-muted); padding:7px 16px; border:1.5px solid var(--border-mid); border-radius:8px; background:white; letter-spacing:.01em; white-space:nowrap; }
-
 /* ── FREE BADGE ─────────────────────────────────────────── */
 .free-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-light); border:1px solid var(--green-mid); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; color:var(--green); margin-bottom:12px; }
-
 /* ── DESTINATIONS SECTION ───────────────────────────────── */
 #destinations { padding:80px 48px; }
 .dest-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
@@ -627,11 +593,9 @@ footer p { font-size:13px; color:var(--text-dim); }
 .dest-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:white; margin-bottom:2px; }
 .dest-sub { font-size:12px; color:rgba(255,255,255,.8); }
 .dest-badge { position:absolute; top:12px; right:12px; background:rgba(255,255,255,.95); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; }
-
 /* ── PHOTO CARD STYLES ──────────────────────────────────── */
 .card-img-photo { position:absolute; inset:0; background-size:cover; background-position:center; }
 .card-img-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 60%); }
-
 /* ── MOBILE ─────────────────────────────────────────────── */
 @media(max-width:900px){
   .dest-grid{grid-template-columns:repeat(2,1fr)}
@@ -664,7 +628,6 @@ footer p { font-size:13px; color:var(--text-dim); }
   .social-strip-inner{gap:20px}
   .aff-strip{padding:20px}
 }
-
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
@@ -698,7 +661,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       document.head.appendChild(script);
   })();
 </script>
-
 <!-- PostHog — site analytics (Product Analytics, Web Analytics, Session
      Replay). EU region, project "TripMade" (id 269884), set up 2026-09-09.
      Standard install snippet from PostHog's own onboarding — nothing custom.
@@ -716,7 +678,6 @@ footer p { font-size:13px; color:var(--text-dim); }
 </script>
 </head>
 <body>
-
 <!-- ══ NAV ══════════════════════════════════════════════ -->
 <!-- .nav-collapse wraps the link list + account/CTA area so mobile can
      toggle them together as one dropdown panel below ~1100px width; on
@@ -738,15 +699,14 @@ footer p { font-size:13px; color:var(--text-dim); }
     </ul>
     <div class="nav-right">
       <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a>
+      <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;inbox&#39;,this);renderInboxPage()">📥 Inbox</a>
       <span id="nav-account" style="font-size:13px;color:var(--text-muted);"></span>
       <button class="nav-cta" id="nav-waitlist-btn" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;);joinWaitlist();">Join waitlist</button>
     </div>
   </div>
 </nav>
-
 <!-- ══ LANDING PAGE ══════════════════════════════════════ -->
 <div id="page-landing" class="page active">
-
   <!-- HERO -->
   <div class="hero">
     <div class="hero-pill fu"><div class="dot"></div>Bookings Handled by TripMade Coming Soon</div>
@@ -757,7 +717,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button class="btn-secondary" onclick="scrollToSection(&#39;how&#39;)">See how it works</button>
     </div>
   </div>
-
   <!-- TRUST BAR -->
   <div class="trust-bar">
     <div class="trust-item"><div class="trust-num">&lt;5<span>min</span></div><div class="trust-label">Average plan time</div></div>
@@ -765,7 +724,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="trust-item"><div class="trust-num">190<span>+</span></div><div class="trust-label">Destinations</div></div>
     <div class="trust-item"><div class="trust-num">$<span>0</span></div><div class="trust-label">Itinerary Fee</div></div>
   </div>
-
   <!-- HOW IT WORKS -->
   <div id="how" class="section">
     <div class="section-hd"><h2>How TripMade works</h2><p>Four steps from idea to fully booked holiday</p></div>
@@ -776,9 +734,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, hotel, dinner and event can be booked with TripMade.</p></div>
     </div>
   </div>
-
   <hr>
-
   <!-- VIBES -->
   <div id="vibes" class="section">
     <div class="section-hd"><h2>Choose your vibe</h2><p>TripMade builds a completely different itinerary for each trip type</p></div>
@@ -805,8 +761,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
   </div>
-
-
   <!-- ══ POPULAR DESTINATIONS ══════════════════════════════ -->
   <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
     <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — TripMade builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
@@ -868,7 +822,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
   </div>
-
   <hr>
   <!-- ITINERARY EXAMPLE -->
   <div class="itin-wrap">
@@ -876,7 +829,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>A sample TripMade itinerary</h2>
       <p>Rome + Ibiza — 8 days — Multi-vibe — $7,000 AUD budget · Departing Sydney</p>
     </div>
-
     <!-- Route bar -->
     <div class="route-bar">
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
@@ -893,7 +845,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="route-arrow">→</div>
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
     </div>
-
     <!-- Summary -->
     <div class="sum-grid">
       <div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$2,120</div><div class="sum-sub">return + connection</div></div>
@@ -902,7 +853,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$950</div><div class="sum-sub">all reserved</div></div>
       <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$6,630</div><div class="sum-sub red">$370 under budget</div></div>
     </div>
-
     <div class="legend">
       <div class="leg"><div class="leg-dot" style="background:#2F6FED;"></div><span>Flights &amp; transfers</span></div>
       <div class="leg"><div class="leg-dot" style="background:#D9A404;"></div><span>Activities</span></div>
@@ -910,7 +860,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="leg"><div class="leg-dot" style="background:#0F9D66;"></div><span>Accommodation</span></div>
       <div class="leg"><div class="leg-dot" style="background:#8B5CF6;"></div><span>Events &amp; nightlife</span></div>
     </div>
-
     <!-- ROME -->
     <div class="itin-block">
       <div class="itin-hdr sight">
@@ -1102,7 +1051,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
-
     <!-- CONNECTOR FLIGHT -->
     <div class="connector">
       <div class="conn-icon">&#9992;&#65039;</div>
@@ -1113,7 +1061,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="conn-price">$230pp</div>
       <div class="conn-badge">Booked</div>
     </div>
-
     <!-- IBIZA -->
     <div class="itin-block">
       <div class="itin-hdr party">
@@ -1289,12 +1236,10 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
-
     <div style="text-align:center;margin-top:32px;">
       <button class="btn-primary" onclick="showPage(&#39;inspo&#39;)">See more trip inspiration →</button>
     </div>
   </div>
-
   <!-- ══ TESTIMONIALS ═══════════════════════════════════════ -->
   <div class="section" style="max-width:1100px;">
     <div class="section-hd">
@@ -1323,7 +1268,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <a id="google-review-link" href="#" target="_blank" rel="noopener" class="btn-secondary" style="display:none;padding:11px 22px;text-decoration:none;">Leave us a Google review</a>
     </div>
   </div>
-
   <!-- WAITLIST -->
   <div id="waitlist" class="waitlist">
     <div class="waitlist-inner">
@@ -1360,12 +1304,9 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
-
 </div><!-- end landing -->
-
 <!-- ══ INSPIRATION PAGE ══════════════════════════════════ -->
 <div id="page-inspo" class="page">
-
   <div class="inspo-header">
     <h1>Trip inspiration</h1>
     <p>Real itineraries built by TripMade. Find your trip, then book it in minutes.</p>
@@ -1381,7 +1322,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button class="cat-tab" data-cat="relax" onclick="setCat(this)">🏖️ Beach &amp; relax <span class="tc">13</span></button>
     </div>
   </div>
-
   <div class="filter-bar">
     <span class="filter-lbl">Budget</span>
     <button class="f-chip active" data-group="budget" data-budget="any" onclick="toggleF(this,&#39;budget&#39;)">Any budget</button>
@@ -1412,9 +1352,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </select>
     <div class="results-count">Showing 18 trips</div>
   </div>
-
   <p class="inspo-price-note">Prices shown are indicative to dates/trip duration selected.</p>
-
   <div class="cards-grid">
     <!-- Featured -->
     <div class="trip-card featured" data-cat="party sightseeing" data-budget="4300" data-dur="8" data-region="Europe" data-group="Couple">
@@ -1486,7 +1424,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-body"><div class="card-dest">Marrakech + Sahara, Morocco</div><div class="card-sub">9 days · 2–4 people · Culture &amp; desert</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🐪 Desert camp</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🛍️ Souks</span></div></div>
       <div class="card-footer"><div class="card-price">$3,400 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <!-- Santorini -->
     <div class="trip-card" data-cat="honeymoon romantic relax" data-budget="4900" data-dur="7" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Romantic</span></div>
@@ -1541,7 +1478,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-body"><div class="card-dest">Amalfi Coast, Italy</div><div class="card-sub">8 days · 2–4 adults · Clifftop villages &amp; sea</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🍋 Positano</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛵ Boat hire</span></div></div>
       <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <!-- Pebble Beach Golf -->
     <div class="trip-card" data-cat="golf" data-budget="8900" data-dur="6" data-region="Americas" data-group="Small group (3–6)">
       <div class="card-img" style="background:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#3B6D11;">⛳ Golf</span></div>
@@ -1632,7 +1568,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-body"><div class="card-dest">Everest Base Camp, Nepal</div><div class="card-sub">14 days · Solo or small group · Himalayan trek</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🏔️ EBC trek</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏕️ Teahouse stays</span></div></div>
       <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
-
     <!-- Bora Bora -->
     <div class="trip-card" data-cat="honeymoon romantic relax" data-budget="14900" data-dur="8" data-region="Pacific" data-group="Couple">
       <div class="card-img" style="background:url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
@@ -1747,61 +1682,51 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-body"><div class="card-dest">Positano, Italy</div><div class="card-sub">6 days · Couple · Clifftop villa &amp; sunset dinners</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌅 Clifftop views</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🍝 Private chef dinner</span></div></div>
       <div class="card-footer"><div class="card-price">$4,600 <span>per person</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
-
     <!-- LOAD MORE BATCH (hidden until Load more is clicked) -->
     <div class="trip-card trip-card-more" data-cat="hiking adventure" data-budget="3600" data-dur="8" data-region="Pacific" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
       <div class="card-body"><div class="card-dest">Queenstown, New Zealand</div><div class="card-sub">8 days · Couple · Alpine adventure &amp; lakes</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🥾 Milford Sound</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🚣 Adventure sports</span></div></div>
       <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="sightseeing party" data-budget="3600" data-dur="6" data-region="Europe" data-group="Small group (3–6)">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Lisbon, Portugal</div><div class="card-sub">6 days · Group of 4 · Old town &amp; nightlife</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🚋 Tram 28</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🎶 Fado bars</span></div></div>
       <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="adventure sightseeing" data-budget="4200" data-dur="9" data-region="Africa" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#378ADD;">🏄 Adventure</span></div>
       <div class="card-body"><div class="card-dest">Cape Town, South Africa</div><div class="card-sub">9 days · Couple · Winelands &amp; coastline</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#378ADD;">🍷 Winelands</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏔️ Table Mountain</span></div></div>
       <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="honeymoon romantic relax" data-budget="4200" data-dur="7" data-region="Pacific" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#993556;">💍 Honeymoon</span></div>
       <div class="card-body"><div class="card-dest">Fiji</div><div class="card-sub">7 days · Couple · Overwater bure &amp; reef</div><div class="card-meta"><span class="ctag" style="background:#FBEAF0;color:#993556;">🌺 Private island</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🤿 Snorkelling</span></div></div>
       <div class="card-footer"><div class="card-price">$4,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="party honeymoon" data-budget="3600" data-dur="6" data-region="Americas" data-group="Small group (3–6)">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--accent);">🔥 Party</span></div>
       <div class="card-body"><div class="card-dest">Tulum, Mexico</div><div class="card-sub">6 days · Group of 5 · Beach clubs &amp; cenotes</div><div class="card-meta"><span class="ctag" style="background:var(--accent-light);color:var(--accent);">🏖️ Beach clubs</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🕳️ Cenote diving</span></div></div>
       <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="sightseeing adventure" data-budget="5600" data-dur="8" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Norwegian Fjords</div><div class="card-sub">8 days · Couple · Fjord cruise &amp; hiking</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">⛴️ Fjord cruise</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🥾 Trolltunga hike</span></div></div>
       <div class="card-footer"><div class="card-price">$5,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="sightseeing" data-budget="3600" data-dur="8" data-region="Africa" data-group="Small group (3–6)">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#854F0B;">🗺️ Sightseeing</span></div>
       <div class="card-body"><div class="card-dest">Cairo &amp; the Nile, Egypt</div><div class="card-sub">8 days · Group of 4 · Pyramids &amp; river cruise</div><div class="card-meta"><span class="ctag" style="background:var(--amber-light);color:#854F0B;">🐫 Pyramids</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">⛴️ Nile cruise</span></div></div>
       <div class="card-footer"><div class="card-price">$3,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
-
     <div class="trip-card trip-card-more" data-cat="hiking sightseeing" data-budget="5900" data-dur="7" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&amp;q=80&#39;) center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#185FA5;">⛰️ Hiking</span></div>
       <div class="card-body"><div class="card-dest">Swiss Alps</div><div class="card-sub">7 days · Couple · Alpine villages &amp; scenic rail</div><div class="card-meta"><span class="ctag" style="background:var(--blue-light);color:#185FA5;">🚞 Glacier Express</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">🏔️ Matterhorn views</span></div></div>
       <div class="card-footer"><div class="card-price">$5,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button></div>
     </div>
   </div><!-- end cards-grid -->
-
   <div class="load-more-wrap">
     <button class="load-more" onclick="loadMore(this)">Load more trips (8 more)</button>
   </div>
-
   <!-- WAITLIST ON INSPO PAGE -->
   <div class="waitlist">
     <div class="waitlist-inner">
@@ -1815,13 +1740,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="wl-note">No spam. Launching Q3 2026 — open to travellers worldwide.</div>
     </div>
   </div>
-
 </div><!-- end inspo -->
-
 <!-- ══ ITINERARY FORM PAGE ══════════════════════════════════ -->
 <div id="page-form" class="page">
   <div class="form-page">
-
     <!-- Progress bar -->
     <div class="form-progress">
       <div class="form-progress-step"><div class="fp-dot done" id="fp1">1</div><div class="fp-line done" id="fl1"></div></div>
@@ -1831,7 +1753,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-progress-step"><div class="fp-dot done" id="fp5">5</div><div class="fp-line done" id="fl5"></div></div>
       <div class="form-progress-step"><div class="fp-dot active done" id="fp6">6</div></div>
     </div>
-
     <!-- STEP 1 — Where & When -->
     <div class="form-step" id="step1">
       <div class="form-eyebrow">Step 1 of 6</div>
@@ -2849,7 +2770,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(1)">Next →</button>
       </div>
     </div>
-
     <!-- STEP 2 — Who's travelling -->
     <div class="form-step" id="step2">
       <div class="form-eyebrow">Step 2 of 6</div>
@@ -2891,7 +2811,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(2)">Next →</button>
       </div>
     </div>
-
     <!-- STEP 3 — Vibe & Experience -->
     <div class="form-step" id="step3">
       <div class="form-eyebrow">Step 3 of 6</div>
@@ -2925,7 +2844,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(3)">Next →</button>
       </div>
     </div>
-
     <!-- STEP 4 — Existing bookings -->
     <div class="form-step" id="step4">
       <div class="form-eyebrow">Step 4 of 6</div>
@@ -2938,7 +2856,6 @@ footer p { font-size:13px; color:var(--text-dim); }
 — Hotel: W Barcelona booked 14–17 Sep
 — Already bought tickets to Primavera Sound festival on 16 Sep
 — Friend is meeting us in Ibiza on the 18th
-
 ...or leave blank if you&#39;re starting from scratch"></textarea>
       </div>
       <div class="form-group">
@@ -2968,7 +2885,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
-
     <!-- STEP 5 — Budget & Style -->
     <div class="form-step" id="step5">
       <div class="form-eyebrow">Step 5 of 6</div>
@@ -3038,7 +2954,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" onclick="nextStep(5)">Next →</button>
       </div>
     </div>
-
     <!-- STEP 6 — Email -->
     <div class="form-step" id="step6">
       <div class="form-eyebrow">Step 6 of 6 — Almost done!</div>
@@ -3064,7 +2979,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="form-next" style="padding:14px 40px;font-size:15px;" onclick="submitForm()">Send my itinerary ✈</button>
       </div>
     </div>
-
     <!-- SUCCESS STATE -->
     <div class="form-step active" id="step-success">
       <div class="form-success">
@@ -3081,29 +2995,24 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="btn-primary" onclick="showPage(&#39;landing&#39;)">Back to home</button>
       </div>
     </div>
-
   </div>
 </div><!-- end form page -->
-
 <!-- ══ TOURS & EXPERIENCES PAGE ══════════════════════════
      Browsable, bookable activities — each card is a Viator affiliate widget.
      Clicking through and booking earns TripMade a commission at no extra
      cost to the traveller (disclosed below, per FTC/ACCC affiliate rules).
-
      TO ADD MORE TOURS: grab a new widget snippet from the Viator partner
      dashboard (partner ID stays the same, only data-vi-widget-ref changes
      per tour), then copy one .tour-widget-card block below and swap in the
      new data-vi-widget-ref. The Viator loader itself only needs to load
      once per page — see loadViatorWidgets() further down — so you never
      need to touch any script tags, just add more widget divs.
-
      Also set data-country, data-city and a short data-keywords list (comma
      separated, lowercase, whatever a traveller might search — activity type,
      landmark name, etc.) on the .tour-widget-card wrapper, and add a matching
      .tour-card-label above the widget div. The filter bar below reads these
      attributes to build its country/city dropdowns and to match search text,
      so a card added without them just won't show up when filters are active.
-
      LAYOUT NOTE: each widget gets its own full-width row (.tours-grid-wrap
      is a single column, not a 3-across grid like the trip cards). A Viator
      "category/destination" widget already lays its own tours out as tiles
@@ -3178,7 +3087,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
-
     <div class="category-heading-wrap" id="tours-accommodation">
       <h3>🏨 Accommodation</h3>
       <p>Hotels, apartments and stays wherever you're headed.</p>
@@ -3232,7 +3140,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </a>
     </div>
-
     <div class="category-heading-wrap" id="tours-insurance">
       <h3>🛡️ Travel insurance</h3>
       <p>Cover for your trip, sorted before you go.</p>
@@ -3253,7 +3160,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </a>
     </div>
-
     <!-- Ferryhopper is a real, live affiliate link (aff_uid=tpmdco), unlike
          the placeholder homepage links above — hence rel="sponsored" here.
          Logo is the real file Lachlan sent (base64 webp), matching the
@@ -3317,7 +3223,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
-
     <div class="category-heading-wrap" id="tours-experiences">
       <h3>🎟️ Tours &amp; experiences</h3>
       <p>Browse and book activities anywhere in the world — pick a platform below to see what's on offer.</p>
@@ -3374,7 +3279,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </a>
     </div>
-
     <!-- The block below (search/country/city filters over embedded Viator widgets)
          was the original on-site Tours page, kept here but hidden rather than
          deleted, in case a curated in-page browsing experience is wanted again
@@ -3413,7 +3317,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 </div>
-
 <!-- ══ ASK TRIPMADE PAGE ═════════════════════════════════
      Quick-answer accommodation search, separate from the full itinerary
      form. Calls the "ask-tripmade" Supabase Edge Function, which calls
@@ -3449,7 +3352,6 @@ footer p { font-size:13px; color:var(--text-dim); }
         <span id="ask-save-status" class="ask-save-status"></span>
         <button type="button" id="ask-save-btn" class="ask-save-btn" onclick="saveAskChat()">💾 Save this chat</button>
       </div>
-
       <!-- Static example, not generated — just shows visitors the format
            results will take, and fills the space under the search box before
            anyone's asked anything so the page doesn't look empty. Shown by
@@ -3488,7 +3390,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 </div>
-
 <!-- ══ SAVED TRIPS PAGE ══════════════════════════════════ -->
 <div id="page-saved" class="page">
   <div class="section" style="padding-top:48px;">
@@ -3502,7 +3403,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button id="saved-empty-btn" class="btn-primary" onclick="showPage(&#39;inspo&#39;)">Browse trip inspiration →</button>
     </div>
     <div id="saved-grid" class="cards-grid" style="padding:0;"></div>
-
     <!-- Saved Ask TripMade chats — a whole question+answer thread saved
          from the Ask TripMade page (see saveAskChat()/openSavedChat() in
          the script), so a customer can pick up an earlier conversation
@@ -3518,7 +3418,60 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div id="saved-chats-list" class="saved-chats-list"></div>
   </div>
 </div>
-
+<!-- ══ INBOX PAGE (itineraries TripMade has delivered to this account) ═══
+     Replaces the old "paywalled PDF" plan — itineraries live here on the
+     site instead, with per-day/unlock-all payment happening live via
+     Stripe Checkout + the itineraries table (see
+     tripmade-onsite-itinerary-inbox-progress.md). The emailed PDF (still
+     sent by the same Make.com pipelines) stays available as a secondary
+     download from the detail view below, unaffected. ═══════════════ -->
+<div id="page-inbox" class="page">
+  <div class="section" style="padding-top:48px;">
+    <div class="section-hd" style="text-align:left;margin-bottom:28px;">
+      <h2 style="margin-bottom:6px;">Your inbox</h2>
+      <p>Itineraries TripMade has built for you, ready to view any time.</p>
+    </div>
+    <div id="inbox-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
+      <div style="font-size:40px;margin-bottom:12px;">📥</div>
+      <p id="inbox-empty-text" style="font-size:15px;margin-bottom:18px;">You don&#39;t have any itineraries yet.</p>
+      <button id="inbox-empty-btn" class="btn-primary" onclick="requireAccount(function(){showPage(&#39;form&#39;);})">Get my free itinerary →</button>
+    </div>
+    <div id="inbox-list" class="saved-chats-list"></div>
+  </div>
+</div>
+<!-- ══ INBOX ITINERARY DETAIL (single itinerary, populated dynamically) ══
+     Reuses the exact .day-block/.evt-list/.day-extend-panel/.tip markup
+     from the homepage's sample-itinerary accordion (see toggleDayExtend()
+     for that one) — but driven from the itineraries table's `days` jsonb
+     instead of hand-written HTML, and with its own toggleInboxDayExtend()
+     so this accordion's ids never collide with the homepage's. ══════════ -->
+<div id="page-inbox-detail" class="page">
+  <div class="itin-wrap" style="padding-top:40px;">
+    <button type="button" onclick="backToInboxList()" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;padding:0;margin-bottom:18px;">← Back to inbox</button>
+    <div class="itin-intro">
+      <h2 id="ibx-title">Your trip</h2>
+      <p id="ibx-meta"></p>
+    </div>
+    <div id="ibx-unlock-banner" style="display:none;background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;font-size:13px;color:var(--accent);font-weight:600;">✓ Unlocked — enjoy the rest of your trip!</div>
+    <div class="sum-grid" id="ibx-sum-grid"></div>
+    <p class="trip-price-note">Prices shown are indicative — see each day for exactly what&#39;s planned.</p>
+    <div class="itin-block" id="ibx-unlock-all-block">
+      <div class="itin-hdr party">
+        <div class="itin-hdr-l"><div class="dest-icon party">🔓</div><div><div class="itin-title">Unlock every day</div><div class="itin-sub" id="ibx-unlock-all-sub">Unlock the whole itinerary at once and save 10%</div></div></div>
+        <button type="button" class="btn-primary" id="ibx-unlock-all-btn" onclick="unlockInboxAll()">Unlock all days →</button>
+      </div>
+    </div>
+    <div class="itin-block">
+      <div class="itin-hdr sight">
+        <div class="itin-hdr-l"><div class="dest-icon sight">🗺️</div><div><div class="itin-title" id="ibx-block-title">Your day-by-day itinerary</div><div class="itin-sub">Tap a day to expand it once it&#39;s unlocked</div></div></div>
+      </div>
+      <div id="ibx-days"></div>
+    </div>
+    <div style="text-align:center;margin:28px 0 20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a id="ibx-pdf-link" href="javascript:void(0)" target="_blank" rel="noopener" class="btn-secondary" style="display:none;">📄 Download as PDF</a>
+    </div>
+  </div>
+</div>
 <!-- ══ SIGN-UP GATE MODAL ════════════════════════════════ -->
 <div id="signup-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
   <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
@@ -3528,7 +3481,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Quick sign up</h3>
     <p id="su-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Just a few details so we can save this for you and send your itinerary.</p>
-
     <div id="su-step-details" style="display:flex;flex-direction:column;gap:12px;">
       <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
@@ -3546,38 +3498,29 @@ footer p { font-size:13px; color:var(--text-dim); }
         <option>Word of mouth</option><option>Other</option>
       </select>
     </div>
-
     <div id="su-step-code" style="display:none;flex-direction:column;gap:12px;">
       <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
-
     <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
-
     <button class="btn-primary" id="su-submit-btn" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a code →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">Already have an account? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeSignupModal();openLoginModal()">Log in</a></p>
   </div>
 </div>
-
 <!-- ══ TESTIMONIAL MODAL ══════════════════════════════════ -->
 <div id="testimonial-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
   <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
     <div id="tm-form-step">
       <h3 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin:0 0 6px;">Leave a review</h3>
       <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Tell other travellers what your TripMade experience was like. We'll check it over before it goes live on the site.</p>
-
       <div id="tm-stars" style="display:flex;gap:6px;font-size:30px;color:var(--border-mid);margin-bottom:16px;user-select:none;">
         <span data-star="1" onclick="setTestimonialRating(1)" style="cursor:pointer;">★</span><span data-star="2" onclick="setTestimonialRating(2)" style="cursor:pointer;">★</span><span data-star="3" onclick="setTestimonialRating(3)" style="cursor:pointer;">★</span><span data-star="4" onclick="setTestimonialRating(4)" style="cursor:pointer;">★</span><span data-star="5" onclick="setTestimonialRating(5)" style="cursor:pointer;">★</span>
       </div>
-
       <textarea id="tm-text" rows="4" placeholder="What was your experience with TripMade like?" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
-
       <p id="tm-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please choose a star rating and write a few words.</p>
-
       <button class="btn-primary" id="tm-submit-btn" style="width:100%;margin-top:18px;" onclick="submitTestimonial()">Submit review</button>
       <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeTestimonialModal()">Cancel</button>
     </div>
-
     <div id="tm-thanks-step" style="display:none;text-align:center;">
       <div style="font-size:36px;margin-bottom:10px;">🙏</div>
       <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin:0 0 8px;">Thanks for the review!</h3>
@@ -3586,7 +3529,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 </div>
-
 <!-- ══ LOG-IN MODAL ═══════════════════════════════════════ -->
 <div id="login-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
   <div style="background:white;border-radius:var(--radius-lg);max-width:420px;width:100%;padding:32px;box-shadow:var(--shadow-lg);">
@@ -3596,23 +3538,18 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Log in</h3>
     <p id="li-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your email and we&#39;ll send you a login code — pick up right where you left off, on any device.</p>
-
     <div id="li-step-email" style="display:flex;flex-direction:column;gap:12px;">
       <input id="li-email" type="email" placeholder="Email address" autocomplete="username" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
-
     <div id="li-step-code" style="display:none;flex-direction:column;gap:12px;">
       <input id="li-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
-
     <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter a valid email address.</p>
-
     <button class="btn-primary" id="li-submit-btn" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a code →</button>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeLoginModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">New here? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeLoginModal();openSignupModal()">Sign up</a></p>
   </div>
 </div>
-
 <!-- ══ PRIVACY POLICY (DRAFT) ═════════════════════════════ -->
 <div id="page-privacy" class="page">
   <div class="section" style="max-width:760px;">
@@ -3621,7 +3558,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Privacy Policy</h2>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
-
     <div style="font-size:14px;line-height:1.8;color:var(--text);">
       <p style="margin-bottom:18px;"><b>1. Who we are.</b> TripMade Pty Ltd ("TripMade", "we", "us") is an Australian company that builds personalised travel itineraries for customers. This policy explains what personal information we collect, how we use it, and the choices you have.</p>
       <p style="margin-bottom:18px;"><b>2. Information we collect.</b> When you use TripMade, we may collect your name, email address, phone number, country, and the travel preferences you provide (destination, dates, budget, group size, and similar details) so we can generate and deliver your itinerary.</p>
@@ -3633,7 +3569,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 </div>
-
 <!-- ══ TERMS OF SERVICE (DRAFT) ═══════════════════════════ -->
 <div id="page-terms" class="page">
   <div class="section" style="max-width:760px;">
@@ -3642,7 +3577,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Terms &amp; Conditions</h2>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
-
     <div style="font-size:14px;line-height:1.8;color:var(--text);">
       <p style="margin-bottom:18px;"><b>1. Acceptance.</b> By using TripMade, you agree to these terms. If you don't agree, please don't use our service.</p>
       <p style="margin-bottom:18px;"><b>2. Our service.</b> TripMade generates personalised travel itineraries based on the information you provide. Itineraries are suggestions only — we don't currently book or confirm flights, hotels, or activities on your behalf.</p>
@@ -3654,7 +3588,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 </div>
-
 <!-- ══ TRIP DETAIL PAGE (populated dynamically) ═══════════ -->
 <div id="page-tripdetail" class="page">
   <div class="itin-wrap" style="padding-top:40px;">
@@ -3662,7 +3595,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2 id="td-title">Trip</h2>
       <p id="td-meta"></p>
     </div>
-
     <div class="route-bar">
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
       <div class="route-arrow">→</div>
@@ -3673,17 +3605,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="route-arrow">→</div>
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
     </div>
-
     <div class="sum-grid" id="td-sum-grid"></div>
     <p class="trip-price-note">Prices shown are indicative to dates/trip duration selected.</p>
-
     <div class="itin-block">
       <div class="itin-hdr sight">
         <div class="itin-hdr-l"><div class="dest-icon sight">🗺️</div><div><div class="itin-title" id="td-block-title">Trip highlights</div><div class="itin-sub">Sample outline — your full day-by-day itinerary is personalised once you get in touch</div></div></div>
       </div>
       <div id="td-days"></div>
     </div>
-
     <!-- Bookable experiences for this specific destination, when we have a
          matching Viator widget for it (see TOUR_WIDGETS_BY_DESTINATION) —
          hidden entirely when there isn't one yet, rather than showing an
@@ -3694,13 +3623,11 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div id="td-tours-grid" class="tours-grid-wrap" style="padding:16px;gap:16px;max-width:none;"></div>
     </div>
-
     <div style="text-align:center;margin-top:32px;padding-bottom:20px;">
       <button class="btn-primary" onclick="requireAccount(function(){ const c = window._currentTripCard; showPage(&#39;form&#39;); prefillItineraryFromTrip(c); })">Get my personalised itinerary for this trip →</button>
     </div>
   </div>
 </div>
-
 <!-- ══ FOOTER ════════════════════════════════════════════ -->
 <footer>
   <div>
@@ -3719,7 +3646,6 @@ footer p { font-size:13px; color:var(--text-dim); }
     <a href="https://tripmade.co/#" onclick="return false;" style="cursor:default;opacity:.5;" title="Coming soon">TikTok</a>
   </div>
 </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -3739,7 +3665,6 @@ function showPage(id, linkEl) {
   window.scrollTo(0, 0);
   closeMobileNav();
 }
-
 // ── MOBILE NAV (hamburger dropdown) ──────────────────────
 // Only the CSS toggling changes on mobile (see .nav-mobile-open in the
 // stylesheet) — the same nav-links/nav-right markup is reused for desktop
@@ -3765,14 +3690,12 @@ document.addEventListener('click', function(e) {
   if (!nav || !nav.classList.contains('nav-mobile-open')) return;
   if (!e.target.closest('#site-nav')) closeMobileNav();
 });
-
 function scrollToSection(id) {
   setTimeout(() => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
   }, 80);
 }
-
 // ── SAMPLE ITINERARY — per-day "extend" accordion ──────
 // Opening a day's detail collapses whichever other day was open
 // (one open at a time); once open it stays open until toggled again
@@ -3783,14 +3706,12 @@ function toggleDayExtend(dayId) {
   const btn = document.getElementById('day-extend-btn-' + dayId);
   if (!panel || !btn) return;
   const isOpen = panel.classList.contains('open');
-
   if (_openDayExtendId && _openDayExtendId !== dayId) {
     const prevPanel = document.getElementById('day-extend-panel-' + _openDayExtendId);
     const prevBtn = document.getElementById('day-extend-btn-' + _openDayExtendId);
     if (prevPanel) prevPanel.classList.remove('open');
     if (prevBtn) prevBtn.classList.remove('open');
   }
-
   if (isOpen) {
     panel.classList.remove('open');
     btn.classList.remove('open');
@@ -3801,7 +3722,6 @@ function toggleDayExtend(dayId) {
     _openDayExtendId = dayId;
   }
 }
-
 // ── CATEGORY TABS ────────────────────────────────────────
 function setCat(el) {
   document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
@@ -3809,14 +3729,12 @@ function setCat(el) {
   const label = el.textContent.trim();
   filterCards();
 }
-
 // ── BUDGET / DURATION FILTERS ────────────────────────────
 function toggleF(el, group) {
   document.querySelectorAll('.f-chip[data-group="' + group + '"]').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   filterCards();
 }
-
 // ── CARD FILTERING LOGIC ─────────────────────────────────
 // ── CURRENCY CONVERSION ───────────────────────────────────
 // Static snapshot rates (1 AUD = X). Good enough for display purposes —
@@ -3839,7 +3757,6 @@ function defaultCurrencyForCountry(country) {
   return COUNTRY_CURRENCY[country] || 'USD';
 }
 let _currentCurrency = 'AUD';
-
 // Applies whatever currency is currently active to every currency picker on
 // the page (Inspiration page + itinerary form can each have their own),
 // keeping them all in sync whether the change came from the profile menu,
@@ -3849,7 +3766,6 @@ function syncCurrencySelects() {
     sel.value = _currentCurrency;
   });
 }
-
 function formatPrice(audAmount) {
   const rate = CURRENCY_RATES[_currentCurrency] || 1;
   const symbol = CURRENCY_SYMBOLS[_currentCurrency] || 'A$';
@@ -3858,7 +3774,6 @@ function formatPrice(audAmount) {
   converted = _currentCurrency === 'JPY' ? Math.round(converted / 10) * 10 : Math.round(converted);
   return symbol + converted.toLocaleString();
 }
-
 // Single source of truth for "what currency is active right now" — called
 // from the Inspiration page's currency picker, the itinerary form's, and on
 // login (seeded from the account's saved currency). Keeps every picker on
@@ -3867,7 +3782,6 @@ function formatPrice(audAmount) {
 function applyCurrency(currency) {
   _currentCurrency = currency;
   syncCurrencySelects();
-
   document.querySelectorAll('.trip-card').forEach(card => {
     const budget = parseInt(card.dataset.budget || '0');
     if (!budget) return;
@@ -3875,10 +3789,8 @@ function applyCurrency(currency) {
     if (!priceEl || !priceEl.firstChild) return;
     priceEl.firstChild.textContent = formatPrice(budget) + ' ';
   });
-
   // If a trip detail page is currently open, re-render its cost breakdown too
   if (window._currentTripCard) renderTripDetail(window._currentTripCard);
-
   // Itinerary form: no conversion (it's the traveller's own stated budget,
   // not an advertised price), just relabel the slider with the new symbol.
   const minEl = document.getElementById('budget-min-label');
@@ -3889,26 +3801,22 @@ function applyCurrency(currency) {
   const slider = document.getElementById('f-budget-slider');
   if (slider) updateBudgetDisplay(slider.value);
 }
-
 // Itinerary form's own currency picker delegates straight to applyCurrency()
 // so both pickers and every price display stay in lockstep either way.
 function onFormCurrencyChange(code) {
   applyCurrency(code);
 }
-
 function filterCards() {
   const activeCat   = document.querySelector('.cat-tab.active');
   const activeBudget= document.querySelector('.f-chip[data-group="budget"].active');
   const activeDur   = document.querySelector('.f-chip[data-group="duration"].active');
   const activeRegion= document.querySelector('.f-select[data-group="region"]');
   const activeGroup = document.querySelector('.f-select[data-group="groupsize"]');
-
   const cat    = activeCat    ? activeCat.dataset.cat       : 'all';
   const budget = activeBudget ? activeBudget.dataset.budget : 'any';
   const dur    = activeDur    ? activeDur.dataset.dur       : 'any';
   const region = activeRegion ? activeRegion.value          : 'any';
   const grp    = activeGroup  ? activeGroup.value           : 'any';
-
   let visible = 0;
   document.querySelectorAll('.trip-card').forEach(card => {
     const cardCat    = card.dataset.cat    || '';
@@ -3916,37 +3824,30 @@ function filterCards() {
     const cardDur    = parseInt(card.dataset.dur    || '0');
     const cardRegion = card.dataset.region || '';
     const cardGroup  = card.dataset.group  || '';
-
     let catMatch    = true;
     let budgetMatch = true;
     let durMatch    = true;
     let regionMatch = true;
     let groupMatch  = true;
-
     // A trip's data-cat can list more than one vibe (e.g. "party sightseeing")
     // so a single selected category tab needs to appear as one of its
     // space-separated words specifically — not just anywhere in the string,
     // so e.g. "art" as a category could never accidentally match "party".
     if (cat !== 'all' && !cardCat.split(' ').includes(cat)) catMatch = false;
-
     if (budget === 'under3k'  && cardBudget >= 3000)  budgetMatch = false;
     if (budget === '3to6k'    && (cardBudget < 3000  || cardBudget >= 6000))  budgetMatch = false;
     if (budget === '6to12k'   && (cardBudget < 6000  || cardBudget >= 12000)) budgetMatch = false;
     if (budget === 'over12k'  && cardBudget < 12000)  budgetMatch = false;
-
     if (dur === 'weekend' && cardDur > 3)   durMatch = false;
     if (dur === '1week'   && (cardDur < 4  || cardDur > 9))  durMatch = false;
     if (dur === '2weeks'  && (cardDur < 10 || cardDur > 20)) durMatch = false;
     if (dur === '1month'  && cardDur < 21)  durMatch = false;
-
     if (region !== 'Any region' && region !== 'any' && cardRegion !== region) regionMatch = false;
     if (grp !== 'Any group size' && grp !== 'any' && cardGroup !== grp) groupMatch = false;
-
     // A card must satisfy every active filter at once (category AND budget
     // AND duration AND region AND group size) — this is what actually makes
     // the buttons filter the results down, instead of just reordering them.
     const isMatch = catMatch && budgetMatch && durMatch && regionMatch && groupMatch;
-
     // .trip-card-more cards are the ones still collapsed behind "Load more"
     // (hidden via CSS, class-based) — clearing the inline style here on a
     // match defers back to that CSS rule, so they correctly stay hidden
@@ -3954,11 +3855,9 @@ function filterCards() {
     card.style.display = isMatch ? '' : 'none';
     if (isMatch && !card.classList.contains('trip-card-more')) visible++;
   });
-
   const counter = document.querySelector('.results-count');
   if (counter) counter.textContent = 'Showing ' + visible + (visible === 1 ? ' trip' : ' trips');
 }
-
 // ── ACCOUNT / LOGIN — real Supabase Auth accounts via MAGIC LINK (no
 // passwords anywhere), persisted server-side so a visitor can log into the
 // SAME account from any device. signInWithOtp() handles both "I'm new" and
@@ -3978,7 +3877,6 @@ let _pendingSignupCallback = null;
 // case the link gets clicked on a different device/tab than the one that
 // signed up.)
 let _pendingProfileData = null;
-
 // Captured once, on load — whichever campaign link brought this visitor in,
 // silently attached to their profile if/when they sign up. Doesn't require
 // them to tell us anything; just reads standard utm_* query params if a
@@ -3991,11 +3889,9 @@ const _utmParams = (function() {
     utmCampaign: p.get('utm_campaign') || ''
   };
 })();
-
 function getUser() {
   return _currentUser;
 }
-
 // Turns Supabase's raw auth error messages into something a visitor can act
 // on, instead of a generic "something went wrong" that hides what actually
 // happened (and makes real bugs impossible to tell apart from, e.g., simply
@@ -4013,7 +3909,6 @@ function friendlyAuthError(err) {
   }
   return msg || 'Something went wrong — please try again.';
 }
-
 // Loads the profile row for a Supabase Auth user into the in-memory cache
 // and refreshes the nav. Called on initial page load and after every
 // auth change so `_currentUser` always reflects the real session. Creates
@@ -4028,7 +3923,6 @@ async function hydrateCurrentUser(authUser) {
     if (typeof posthog !== 'undefined') posthog.reset();
     _currentUser = null; renderAuthNav(); return;
   }
-
   // Guard against stale anonymous sessions from the old (pre-OTP) sign-up
   // system: those users have no email/name/phone/anything, and a browser
   // that still had one cached in localStorage from before would otherwise
@@ -4042,9 +3936,7 @@ async function hydrateCurrentUser(authUser) {
     renderAuthNav();
     return;
   }
-
   let { data: profile } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
-
   if (!profile) {
     const meta = authUser.user_metadata || {};
     const seed = {
@@ -4062,7 +3954,6 @@ async function hydrateCurrentUser(authUser) {
     // Australia → AUD — computed after the fact so it always tracks
     // whatever country ended up in the seed, wherever it came from.
     seed.currency = defaultCurrencyForCountry(seed.country);
-
     // Plain INSERT, not upsert — this is deliberate. hydrateCurrentUser()
     // runs on every auth event, including silent background token
     // refreshes (Supabase swaps the access token roughly hourly while a
@@ -4079,10 +3970,8 @@ async function hydrateCurrentUser(authUser) {
     // the webhook entirely — the welcome email only ever fires on the one
     // request that actually wins the race to create the row for real.
     const { data: created } = await sb.from('profiles').insert(seed).select().maybeSingle();
-
     if (created) {
       profile = created;
-
       // First time this person has ever been seen — triggers the "Welcome to
       // TripMade" email. That logic lives in the "Integration Webhooks — PDF
       // rebuild" scenario (filtered on source === 'signup_gate'), which is
@@ -4102,7 +3991,6 @@ async function hydrateCurrentUser(authUser) {
     }
   }
   _pendingProfileData = null;
-
   _currentUser = {
     id: authUser.id,
     email: authUser.email || (profile && profile.email) || '',
@@ -4112,7 +4000,6 @@ async function hydrateCurrentUser(authUser) {
     currency: (profile && profile.currency) || defaultCurrencyForCountry((profile && profile.country) || ''),
     joinedWaitlist: false
   };
-
   // Tie this browser's PostHog activity to the real signed-in person
   // instead of just an anonymous session id. `identify()` is idempotent —
   // safe to call on every hydrate (including the silent background token
@@ -4128,23 +4015,19 @@ async function hydrateCurrentUser(authUser) {
       currency: _currentUser.currency
     });
   }
-
   // Tracked in its own table (separate from `profiles`, which is every
   // account regardless of intent) so the business can see exactly who has
   // deliberately opted in as an interested early customer.
   const { data: wl } = await sb.from('waitlist_signups').select('user_id').eq('user_id', authUser.id).maybeSingle();
   _currentUser.joinedWaitlist = !!wl;
-
   // The account's saved currency becomes the site-wide default the moment
   // someone's logged in — Inspiration page prices and the itinerary form
   // both pick it up via the shared _currentCurrency + .currency-picker sync.
   _currentCurrency = _currentUser.currency;
   syncCurrencySelects();
   applyCurrency(_currentCurrency);
-
   renderAuthNav();
 }
-
 async function initAuth() {
   // Registered before getSession() so we never miss a SIGNED_IN event that
   // fires while Supabase is parsing a magic-link token out of the URL.
@@ -4158,12 +4041,9 @@ async function initAuth() {
       if (cb) cb();
     }
   });
-
   handleAuthLinkError();
-
   const { data: { session } } = await sb.auth.getSession();
   await hydrateCurrentUser(session ? session.user : null);
-
   // A "how was your trip?" follow-up email can link straight to the review
   // form instead of just the homepage — e.g. tripmade.co/?leavereview=1.
   // Checked only after hydrateCurrentUser resolves, so an already-logged-in
@@ -4171,14 +4051,13 @@ async function initAuth() {
   if (new URLSearchParams(window.location.search).get('leavereview') === '1') {
     requireAccount(openTestimonialModal);
   }
-
   // Deep-link support — e.g. tripmade.co/?page=tours opens straight to the
   // Tours & experiences page instead of the homepage, so it can be used as
   // a stable, shareable URL (link-in-bio, an ad, an email CTA) without
   // anyone needing to click through the nav first. Checked after
   // hydrateCurrentUser resolves, same as the leavereview flag above; only
   // an allowlisted set of pages can be deep-linked to this way.
-  const DEEP_LINKABLE_PAGES = ['inspo', 'tours', 'saved', 'ask'];
+  const DEEP_LINKABLE_PAGES = ['inspo', 'tours', 'saved', 'ask', 'inbox'];
   const deepLinkPage = new URLSearchParams(window.location.search).get('page');
   if (deepLinkPage && DEEP_LINKABLE_PAGES.includes(deepLinkPage)) {
     const navLink = Array.from(document.querySelectorAll('.nav-page-link')).find(a =>
@@ -4186,9 +4065,23 @@ async function initAuth() {
     );
     showPage(deepLinkPage, navLink);
     if (deepLinkPage === 'saved') renderSavedPage();
+    if (deepLinkPage === 'inbox') {
+      // A Stripe Checkout redirect lands back here as
+      // ?page=inbox&itinerary=<id>&unlocked=1 (see create-checkout-session's
+      // success_url) — jump straight to that itinerary instead of the bare
+      // list, flagged so renderInboxDetail() shows the confirmation banner
+      // and openInboxItinerary() re-fetches once in case the webhook hasn't
+      // landed yet.
+      const itinId = new URLSearchParams(window.location.search).get('itinerary');
+      if (itinId) {
+        const justUnlocked = new URLSearchParams(window.location.search).get('unlocked') === '1';
+        requireAccount(function() { openInboxItinerary(itinId, justUnlocked); });
+      } else {
+        renderInboxPage();
+      }
+    }
   }
 }
-
 // Fallback safety net: if the email's link is ever clicked instead of the
 // code being typed in (e.g. if the email template still shows both), and
 // that link was already used, too old, or otherwise invalid, Supabase
@@ -4198,31 +4091,25 @@ async function initAuth() {
 function handleAuthLinkError() {
   const hash = window.location.hash;
   if (!hash || hash.indexOf('error=') === -1) return;
-
   const params = new URLSearchParams(hash.slice(1));
   const code = params.get('error_code');
-
   let message = 'That link no longer works — please request a new one.';
   if (code === 'otp_expired') {
     message = 'That link has expired or was already used — request a fresh one below.';
   }
-
   openLoginModal();
   const errorEl = document.getElementById('li-error');
   if (errorEl) { errorEl.textContent = message; errorEl.style.display = 'block'; }
-
   // Clean the error out of the visible URL so it doesn't linger on refresh/share.
   history.replaceState(null, '', window.location.pathname + window.location.search);
 }
 document.addEventListener('DOMContentLoaded', initAuth);
-
 function renderAuthNav() {
   const el = document.getElementById('nav-account');
   if (!el) return;
   if (_currentUser) {
     const name = _currentUser.name || _currentUser.email || 'there';
     const initial = (name.trim().charAt(0) || '?').toUpperCase();
-
     // Only show fields that actually have a value — a blank "Country:" line
     // looks broken, and not everyone will have all four filled in.
     const infoRows = [
@@ -4231,11 +4118,9 @@ function renderAuthNav() {
       { label: null,      value: _currentUser.phone },
       { label: null,      value: _currentUser.country }
     ].filter(r => r.value);
-
     const rowsHtml = infoRows.map((r, i) =>
       '<div style="font-size:' + (i === 0 ? '14px;font-weight:600;color:var(--text);' : '12.5px;color:var(--text-muted);') + 'margin-bottom:3px;word-break:break-word;">' + r.value + '</div>'
     ).join('');
-
     el.innerHTML =
       '<div style="position:relative;">' +
         '<button type="button" onclick="toggleProfileMenu(event)" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:8px;font-family:inherit;">' +
@@ -4258,7 +4143,6 @@ function renderAuthNav() {
           '<button onclick="logoutUser()" style="width:100%;margin-top:2px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
         '</div>' +
       '</div>';
-
     // The <select> above always renders with AUD's <option> first — force
     // it to the account's actual saved currency (syncCurrencySelects() also
     // covers this select on every future currency change).
@@ -4273,14 +4157,12 @@ function renderAuthNav() {
   }
   renderWaitlistCTA();
 }
-
 function toggleProfileMenu(e) {
   if (e) e.stopPropagation();
   const menu = document.getElementById('profile-menu');
   if (!menu) return;
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
-
 // Changing currency from the profile menu updates the saved default for
 // this account (not just this visit), and immediately re-prices everything
 // currently on screen via the same applyCurrency() pipeline as every other
@@ -4299,14 +4181,12 @@ document.addEventListener('click', function(e) {
   if (!menu || menu.style.display !== 'block') return;
   if (!e.target.closest('#nav-account')) menu.style.display = 'none';
 });
-
 async function logoutUser() {
   await sb.auth.signOut();
   _currentUser = null;
   renderAuthNav();
   showPage('landing', document.querySelector('.nav-links a'));
 }
-
 // ── WAITLIST — a deliberate opt-in, tracked in its own `waitlist_signups`
 // table (separate from `profiles`, which is just "has an account" — e.g.
 // someone who only ever logged in to save a trip). This is what lets the
@@ -4314,7 +4194,6 @@ async function logoutUser() {
 async function joinWaitlist() {
   if (!getUser()) { requireAccount(joinWaitlist); return; }
   if (_currentUser.joinedWaitlist) return;
-
   const { error } = await sb.from('waitlist_signups').upsert({
     user_id: _currentUser.id,
     name: _currentUser.name,
@@ -4322,12 +4201,9 @@ async function joinWaitlist() {
     phone: _currentUser.phone,
     country: _currentUser.country
   }, { onConflict: 'user_id' });
-
   if (error) { console.error('Join waitlist failed:', error); return; }
-
   _currentUser.joinedWaitlist = true;
   renderWaitlistCTA();
-
   // Backup feed into the existing Make.com pipeline, tagged distinctly from
   // a plain account signup so it can be routed/filtered separately. Triggers
   // the "You're on the waitlist" email in the "Integration Webhooks — PDF
@@ -4340,13 +4216,11 @@ async function joinWaitlist() {
     body: JSON.stringify({ source: 'waitlist_join', id: _currentUser.id, name: _currentUser.name, email: _currentUser.email, phone: _currentUser.phone, country: _currentUser.country, joinedAt: new Date().toISOString() })
   });
 }
-
 // Reflects join-state everywhere the waitlist CTA appears: the nav button,
 // and the inline landing-page section (which swaps its whole detailed form
 // out for a single button once we already know who's asking).
 function renderWaitlistCTA() {
   const joined = !!(_currentUser && _currentUser.joinedWaitlist);
-
   const navBtn = document.getElementById('nav-waitlist-btn');
   if (navBtn) {
     navBtn.textContent = joined ? 'Joined waitlist ✓' : 'Join waitlist';
@@ -4358,7 +4232,6 @@ function renderWaitlistCTA() {
       joinWaitlist();
     };
   }
-
   const formWrap     = document.getElementById('waitlist-form-wrap');
   const loggedInWrap = document.getElementById('waitlist-loggedin-wrap');
   if (formWrap && loggedInWrap) {
@@ -4377,7 +4250,6 @@ function renderWaitlistCTA() {
       loggedInWrap.style.display = 'none';
     }
   }
-
   // Inspiration page's bottom waitlist section — runs on every render (page
   // load, login, right after joining via the nav button or homepage form),
   // so someone who already joined elsewhere sees that reflected here too
@@ -4398,50 +4270,41 @@ function renderWaitlistCTA() {
     }
   }
 }
-
 function requireAccount(callback) {
   if (getUser()) { callback(); return; }
   _pendingSignupCallback = callback;
   resetSignupModalToDetailsStep();
   document.getElementById('signup-modal').style.display = 'flex';
 }
-
 function closeSignupModal() {
   document.getElementById('signup-modal').style.display = 'none';
   _pendingSignupCallback = null;
 }
-
 function openLoginModal() {
   resetLoginModalToEmailStep();
   document.getElementById('login-modal').style.display = 'flex';
 }
-
 function openSignupModal() {
   resetSignupModalToDetailsStep();
   document.getElementById('signup-modal').style.display = 'flex';
 }
-
 function closeLoginModal() {
   document.getElementById('login-modal').style.display = 'none';
   document.getElementById('li-error').style.display = 'none';
 }
-
 // ── TESTIMONIALS ──────────────────────────────────────────
 // Set this once TripMade has a live Google Business Profile to add a
 // "Leave us a Google review" button alongside the on-site one — the short
 // review-link URL from the profile (looks like https://g.page/r/XXXXXXX/review),
 // not the general maps listing link. Leave blank until then.
 const GOOGLE_REVIEW_URL = '';
-
 let _testimonialRating = 0;
-
 function setTestimonialRating(n) {
   _testimonialRating = n;
   document.querySelectorAll('#tm-stars span').forEach(function(el) {
     el.style.color = (parseInt(el.dataset.star, 10) <= n) ? 'var(--amber)' : 'var(--border-mid)';
   });
 }
-
 function openTestimonialModal() {
   _testimonialRating = 0;
   setTestimonialRating(0);
@@ -4453,18 +4316,14 @@ function openTestimonialModal() {
   if (btn) { btn.textContent = 'Submit review'; btn.disabled = false; }
   document.getElementById('testimonial-modal').style.display = 'flex';
 }
-
 function closeTestimonialModal() {
   document.getElementById('testimonial-modal').style.display = 'none';
 }
-
 async function submitTestimonial() {
   const text    = document.getElementById('tm-text').value.trim();
   const errorEl = document.getElementById('tm-error');
   const user    = getUser();
-
   if (!user) { closeTestimonialModal(); requireAccount(openTestimonialModal); return; }
-
   if (!_testimonialRating || text.length < 10) {
     errorEl.textContent = !_testimonialRating
       ? 'Please choose a star rating.'
@@ -4473,10 +4332,8 @@ async function submitTestimonial() {
     return;
   }
   errorEl.style.display = 'none';
-
   const btn = document.getElementById('tm-submit-btn');
   if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
-
   try {
     const { error } = await sb.from('testimonials').insert({
       user_id: user.id,
@@ -4486,7 +4343,6 @@ async function submitTestimonial() {
       review_text: text
     });
     if (error) throw error;
-
     // Notify the TripMade team so a submitted review actually gets seen and
     // actioned, instead of silently sitting unapproved in Supabase — routed
     // through the same working Make.com pipeline as signup/itinerary emails
@@ -4497,7 +4353,6 @@ async function submitTestimonial() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: 'testimonial_submitted', name: user.name, email: user.email, rating: _testimonialRating, review_text: text, submittedAt: new Date().toISOString() })
     });
-
     document.getElementById('tm-form-step').style.display = 'none';
     document.getElementById('tm-thanks-step').style.display = 'block';
   } catch (err) {
@@ -4507,7 +4362,6 @@ async function submitTestimonial() {
     if (btn) { btn.textContent = 'Submit review'; btn.disabled = false; }
   }
 }
-
 // Public section — anyone (including logged-out visitors) can see approved
 // reviews. Swaps the 3 hardcoded samples out for real ones the moment at
 // least one exists; falls back to the samples untouched otherwise.
@@ -4516,7 +4370,6 @@ async function renderTestimonials() {
     const glink = document.getElementById('google-review-link');
     if (glink) { glink.href = GOOGLE_REVIEW_URL; glink.style.display = 'inline-block'; }
   }
-
   try {
     const { data, error } = await sb.from('testimonials')
       .select('name,rating,review_text,created_at')
@@ -4525,12 +4378,10 @@ async function renderTestimonials() {
       .limit(9);
     if (error) throw error;
     if (!data || !data.length) return; // keep the samples as-is
-
     const grid = document.getElementById('testimonial-grid');
     const subhead = document.getElementById('testimonials-subhead');
     if (subhead) subhead.textContent = 'Real reviews from real travellers';
     if (!grid) return;
-
     grid.innerHTML = data.map(function(t) {
       const stars = '★★★★★'.slice(0, t.rating) + '☆☆☆☆☆'.slice(0, 5 - t.rating);
       const safeName = (t.name || 'TripMade traveller').replace(/</g, '&lt;');
@@ -4546,12 +4397,10 @@ async function renderTestimonials() {
   }
 }
 document.addEventListener('DOMContentLoaded', renderTestimonials);
-
 // Runs the Inspiration page's filters once on load so the "Showing X trips"
 // counter reflects reality from the start, instead of the hardcoded
 // placeholder text that was sitting in the markup.
 document.addEventListener('DOMContentLoaded', filterCards);
-
 // Puts the sign-up modal back to "enter your details" — used whenever it's
 // (re)opened, so a stale "enter your code" state from a previous attempt
 // never lingers.
@@ -4569,7 +4418,6 @@ function resetSignupModalToDetailsStep() {
   const errorEl = document.getElementById('su-error');
   if (errorEl) errorEl.style.display = 'none';
 }
-
 // Same idea for the log-in modal.
 function resetLoginModalToEmailStep() {
   const step1 = document.getElementById('li-step-email');
@@ -4585,7 +4433,6 @@ function resetLoginModalToEmailStep() {
   const errorEl = document.getElementById('li-error');
   if (errorEl) errorEl.style.display = 'none';
 }
-
 // STEP 1 — request a 6-digit code by email. A code (rather than a link)
 // means whoever checks the email can hand the code back to the ORIGINAL
 // device/browser that asked for it, instead of getting logged in on
@@ -4597,7 +4444,6 @@ async function submitSignup() {
   const country   = document.getElementById('su-country').value;
   const heardFrom = document.getElementById('su-heard-from').value;
   const errorEl   = document.getElementById('su-error');
-
   if (!name || !email || !email.includes('@') || !phone) {
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Please fill in your name, email and phone.';
@@ -4605,10 +4451,8 @@ async function submitSignup() {
     return;
   }
   errorEl.style.display = 'none';
-
   const submitBtn = document.getElementById('su-submit-btn');
   if (submitBtn) { submitBtn.textContent = 'Sending code...'; submitBtn.disabled = true; }
-
   try {
     _pendingProfileData = { name, phone, country, heardFrom };
     const { error } = await sb.auth.signInWithOtp({
@@ -4616,7 +4460,6 @@ async function submitSignup() {
       options: { data: { name, phone, country, heardFrom }, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
-
     document.getElementById('su-step-details').style.display = 'none';
     document.getElementById('su-step-code').style.display = 'flex';
     document.getElementById('su-intro').textContent = 'Enter the 6-digit code we sent to ' + email + '.';
@@ -4635,7 +4478,6 @@ async function submitSignup() {
     if (submitBtn) { submitBtn.textContent = 'Email me a code →'; submitBtn.disabled = false; }
   }
 }
-
 // STEP 2 — verify the code the visitor typed back in. Success here hands
 // back a real session synchronously (no URL/redirect involved at all), and
 // the existing onAuthStateChange listener takes it from there: hydrates the
@@ -4643,7 +4485,6 @@ async function submitSignup() {
 async function verifySignupCode(email) {
   const code    = document.getElementById('su-code').value.trim();
   const errorEl = document.getElementById('su-error');
-
   if (!code) {
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Enter the 6-digit code from your email.';
@@ -4651,10 +4492,8 @@ async function verifySignupCode(email) {
     return;
   }
   errorEl.style.display = 'none';
-
   const submitBtn = document.getElementById('su-submit-btn');
   if (submitBtn) { submitBtn.textContent = 'Verifying...'; submitBtn.disabled = true; }
-
   try {
     const { error } = await sb.auth.verifyOtp({ email, token: code, type: 'email' });
     if (error) throw error;
@@ -4666,13 +4505,11 @@ async function verifySignupCode(email) {
     if (submitBtn) { submitBtn.textContent = 'Verify code →'; submitBtn.disabled = false; }
   }
 }
-
 // STEP 1 — request a 6-digit code by email (see submitSignup for why a code
 // beats a link: it's typed back into the same device that asked for it).
 async function submitLogin() {
   const email   = document.getElementById('li-email').value.trim();
   const errorEl = document.getElementById('li-error');
-
   if (!email || !email.includes('@')) {
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Please enter a valid email address.';
@@ -4680,17 +4517,14 @@ async function submitLogin() {
     return;
   }
   errorEl.style.display = 'none';
-
   const submitBtn = document.getElementById('li-submit-btn');
   if (submitBtn) { submitBtn.textContent = 'Sending code...'; submitBtn.disabled = true; }
-
   try {
     const { error } = await sb.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
-
     document.getElementById('li-step-email').style.display = 'none';
     document.getElementById('li-step-code').style.display = 'flex';
     document.getElementById('li-intro').textContent = 'Enter the 6-digit code we sent to ' + email + '.';
@@ -4709,14 +4543,12 @@ async function submitLogin() {
     if (submitBtn) { submitBtn.textContent = 'Email me a code →'; submitBtn.disabled = false; }
   }
 }
-
 // STEP 2 — verify the code. Success hands back a session synchronously;
 // the existing onAuthStateChange listener closes the modal and resumes
 // whatever was pending.
 async function verifyLoginCode(email) {
   const code    = document.getElementById('li-code').value.trim();
   const errorEl = document.getElementById('li-error');
-
   if (!code) {
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Enter the 6-digit code from your email.';
@@ -4724,10 +4556,8 @@ async function verifyLoginCode(email) {
     return;
   }
   errorEl.style.display = 'none';
-
   const submitBtn = document.getElementById('li-submit-btn');
   if (submitBtn) { submitBtn.textContent = 'Verifying...'; submitBtn.disabled = true; }
-
   try {
     const { error } = await sb.auth.verifyOtp({ email, token: code, type: 'email' });
     if (error) throw error;
@@ -4739,13 +4569,11 @@ async function verifyLoginCode(email) {
     if (submitBtn) { submitBtn.textContent = 'Verify code →'; submitBtn.disabled = false; }
   }
 }
-
 // ── SAVE / WISHLIST HEARTS — reads and writes the real `saved_trips`
 // table so a saved trip shows up again from any device that logs in.
 document.addEventListener('click', function(e) {
   if (!e.target.classList.contains('card-save')) return;
   const btn = e.target;
-
   requireAccount(async function() {
     const card = btn.closest('.trip-card');
     const dest = card.querySelector('.card-dest') ? card.querySelector('.card-dest').textContent : 'Trip';
@@ -4754,11 +4582,9 @@ document.addEventListener('click', function(e) {
     const imgStyle = imgEl ? imgEl.getAttribute('style') : '';
     const imgMatch = imgStyle && imgStyle.match(/url\(['"]?(.*?)['"]?\)/);
     const img = imgMatch ? imgMatch[1] : '';
-
     const nowSaved = btn.classList.toggle('saved');
     btn.textContent = nowSaved ? '♥' : '♡';
     btn.style.color = nowSaved ? 'var(--accent)' : '';
-
     const currentUser = getUser();
     if (nowSaved) {
       const { error } = await sb.from('saved_trips').insert({
@@ -4770,22 +4596,18 @@ document.addEventListener('click', function(e) {
         .eq('user_id', currentUser.id).eq('destination', dest);
       if (error) console.error('Unsave trip failed:', error);
     }
-
     showPage('saved');
     renderSavedPage();
   });
 });
-
 async function renderSavedPage() {
   renderSavedChatsPage();
   const grid  = document.getElementById('saved-grid');
   const empty = document.getElementById('saved-empty');
   if (!grid) return;
-
   const currentUser = getUser();
   const emptyText = document.getElementById('saved-empty-text');
   const emptyBtn  = document.getElementById('saved-empty-btn');
-
   if (!currentUser) {
     grid.style.display = 'none';
     empty.style.display = 'block';
@@ -4795,11 +4617,9 @@ async function renderSavedPage() {
   }
   if (emptyText) emptyText.textContent = 'You haven\'t saved any trips yet.';
   if (emptyBtn)  { emptyBtn.textContent = 'Browse trip inspiration →'; emptyBtn.setAttribute('onclick', "showPage('inspo')"); }
-
   const { data: liked, error } = await sb.from('saved_trips')
     .select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
   if (error) { console.error('Loading saved trips failed:', error); return; }
-
   if (!liked || liked.length === 0) {
     grid.style.display = 'none';
     empty.style.display = 'block';
@@ -4807,7 +4627,6 @@ async function renderSavedPage() {
   }
   grid.style.display = '';
   empty.style.display = 'none';
-
   grid.innerHTML = liked.map(t => `
     <div class="trip-card">
       <div class="card-img" style="background:url('${t.image_url}') center/cover;">
@@ -4819,7 +4638,6 @@ async function renderSavedPage() {
     </div>
   `).join('');
 }
-
 async function unsaveTrip(dest) {
   const currentUser = getUser();
   if (!currentUser) return;
@@ -4828,7 +4646,6 @@ async function unsaveTrip(dest) {
   if (error) console.error('Unsave trip failed:', error);
   renderSavedPage();
 }
-
 // Popular-destination tiles (homepage) link straight into that destination's
 // specific sample trip on the Inspiration page, instead of just dropping the
 // visitor on the Inspiration page in general — matched by the exact
@@ -4848,7 +4665,6 @@ function openDestinationTrip(exactDestText) {
     showPage('inspo');
   }
 }
-
 // ── "BOOK THIS TRIP" BUTTONS ─────────────────────────────
 function bookTrip(card) {
   if (!card) return;
@@ -4857,7 +4673,6 @@ function bookTrip(card) {
   showPage('tripdetail');
   window.scrollTo(0, 0);
 }
-
 // Curated Viator affiliate widgets, matched to specific sample-trip
 // destinations — shown on that trip's detail page as a "Book experiences
 // for this trip" section (see renderTripDetail below), on top of the full
@@ -4870,7 +4685,6 @@ const TOUR_WIDGETS_BY_DESTINATION = {
     { partnerId: 'P00317698', widgetRef: 'W-3f6b9dc8-ece2-4314-a9d6-8886cc0d3044' }
   ]
 };
-
 function renderTripDetail(card) {
   const destEl  = card.querySelector('.card-dest');
   const dest    = destEl ? destEl.textContent.trim() : 'Your trip';
@@ -4882,14 +4696,12 @@ function renderTripDetail(card) {
   const vibeText = pillEl ? pillEl.textContent.trim() : 'Sightseeing';
   const subEl   = card.querySelector('.card-sub');
   const subText = subEl ? subEl.textContent.trim() : (dur + ' days · ' + group + ' · ' + vibeText);
-
   document.getElementById('td-title').textContent = dest;
   document.getElementById('td-meta').textContent = subText;
   document.getElementById('td-dest-name').textContent = dest;
   document.getElementById('td-vibe-pill').textContent = vibeText;
   document.getElementById('td-nights').textContent = dur + ' nights';
   document.getElementById('td-block-title').textContent = dest + ' highlights';
-
   // Flights are based on a realistic baseline for the region flown to from
   // Sydney — NOT a percentage of the advertised price, since long-haul airfare
   // is a largely fixed cost regardless of trip length or budget tier. Refreshed
@@ -4906,7 +4718,6 @@ function renderTripDetail(card) {
   // long-haul international fares) would badly overstate their real cost.
   const flightOverride = card.dataset.flight ? parseInt(card.dataset.flight) : null;
   const flights = flightOverride || regionFlightBaseline[region] || 1900;
-
   const advertisedTotal = parseInt(card.dataset.budget || '4000') || 4000;
   const nights = parseInt(dur) || 5;
   // Make sure there's enough left over for at least modest hotels/food —
@@ -4914,7 +4725,6 @@ function renderTripDetail(card) {
   // flight alone, the total gets bumped up rather than showing near-$0 hotels.
   const minPlausibleTotal = flights + (nights * 90) + 300;
   const total = Math.max(advertisedTotal, minPlausibleTotal);
-
   const remainder = total - flights;
   const hotels     = Math.round(remainder * 0.50 / 10) * 10;
   const activities = Math.round(remainder * 0.30 / 10) * 10;
@@ -4922,14 +4732,12 @@ function renderTripDetail(card) {
   // All figures below are raw AUD — formatPrice() converts to whatever
   // currency is currently selected on the Inspiration page.
   const totalDisplay = total > advertisedTotal ? formatPrice(total) : (priceText || formatPrice(total));
-
   document.getElementById('td-sum-grid').innerHTML =
     '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">' + formatPrice(flights) + '</div><div class="sum-sub">return, from SYD</div></div>' +
     '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">' + formatPrice(hotels) + '</div><div class="sum-sub">' + dur + ' nights</div></div>' +
     '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">' + formatPrice(activities) + '</div><div class="sum-sub">indicative</div></div>' +
     '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">' + formatPrice(food) + '</div><div class="sum-sub">indicative</div></div>' +
     '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + totalDisplay + '</div><div class="sum-sub red">per person from SYD</div></div>';
-
   const shortDest = dest.split(',')[0].split('+')[0].trim();
   const vibeLower = vibeText.replace(/^\S+\s/, '').toLowerCase();
   const lastDay = parseInt(dur) || 7;
@@ -4941,7 +4749,6 @@ function renderTripDetail(card) {
   document.getElementById('td-days').innerHTML = days.map(d =>
     '<div class="day-block"><div class="day-lbl">' + d.label + '</div><div class="evt-list"><div class="evt"><div class="evt-name">' + d.text + '</div></div></div></div>'
   ).join('');
-
   // "Book experiences for this trip" — only shown when we actually have a
   // matching Viator widget for this exact destination.
   const toursBlock = document.getElementById('td-tours-block');
@@ -4960,27 +4767,23 @@ function renderTripDetail(card) {
     }
   }
 }
-
 // ── WAITLIST FORM SUBMISSION ─────────────────────────────
 function submitWaitlist(btn) {
   const form  = btn.closest('.wl-form');
   const input = form.querySelector('input[type="email"]');
   const email = input.value.trim();
-
   if (!email || !email.includes('@')) {
     input.style.borderColor = 'var(--accent)';
     input.placeholder = 'Please enter a valid email';
     input.focus();
     return;
   }
-
   btn.textContent = '✓ You\'re on the list!';
   btn.style.background = 'var(--green)';
   btn.disabled = true;
   input.disabled = true;
   input.value = '';
   input.placeholder = email + ' — confirmed!';
-
   // Sends the signup to the same Make.com pipeline as the logged-in "Join
   // the waitlist" button, tagged identically ('waitlist_join') so both paths
   // trigger the same "You're on the waitlist" email — reached via the
@@ -4991,7 +4794,6 @@ function submitWaitlist(btn) {
     body: JSON.stringify({ source: 'waitlist_join', email: email, joinedAt: new Date().toISOString() })
   }).catch(err => console.error('Waitlist signup failed to send:', err));
 }
-
 // Opens the same Quick Sign Up modal used by "Get my free itinerary" — pre-fills
 // the email if they'd already typed one in the waitlist box first.
 // Visually marks an inline "Join the waitlist" form (email input + button
@@ -5011,17 +4813,14 @@ function markInlineWaitlistFormJoined(btn, input, confirmedLabel) {
     input.placeholder = confirmedLabel || 'Confirmed!';
   }
 }
-
 function joinWaitlistCTA(btn) {
   const form  = btn.closest('.wl-form');
   const input = form ? form.querySelector('input[type="email"]') : null;
   const typedEmail = input ? input.value.trim() : '';
-
   if (typedEmail && !getUser()) {
     const suEmail = document.getElementById('su-email');
     if (suEmail) suEmail.value = typedEmail;
   }
-
   requireAccount(async function() {
     // Actually join (DB upsert + notification webhook) instead of just
     // faking success in the UI — joinWaitlist() itself no-ops harmlessly
@@ -5030,7 +4829,6 @@ function joinWaitlistCTA(btn) {
     markInlineWaitlistFormJoined(btn, input, (typedEmail || 'You') + ' — confirmed!');
   });
 }
-
 // Full inline waitlist sign-up — same fields as the popup, no modal needed
 // since they're already sitting right there on the page.
 // STEP 1 — request a 6-digit code by email.
@@ -5041,7 +4839,6 @@ async function submitWaitlistFull(btn) {
   const country   = document.getElementById('wl-country').value;
   const heardFrom = document.getElementById('wl-heard-from').value;
   const errorEl   = document.getElementById('wl-error');
-
   if (!name || !email || !email.includes('@') || !phone) {
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Please fill in your name, email and phone.';
@@ -5049,10 +4846,8 @@ async function submitWaitlistFull(btn) {
     return;
   }
   errorEl.style.display = 'none';
-
   btn.textContent = 'Sending code...';
   btn.disabled = true;
-
   try {
     _pendingProfileData = { name, phone, country, heardFrom };
     // Once the code is verified and a real session exists, join them to the
@@ -5063,7 +4858,6 @@ async function submitWaitlistFull(btn) {
       options: { data: { name, phone, country, heardFrom }, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
-
     document.getElementById('wl-step-details').style.display = 'none';
     document.getElementById('wl-step-code').style.display = 'block';
     errorEl.style.color = 'var(--green)';
@@ -5083,7 +4877,6 @@ async function submitWaitlistFull(btn) {
     btn.disabled = false;
   }
 }
-
 // STEP 2 — verify the code. Success hands back a session synchronously;
 // the existing onAuthStateChange listener runs the pending joinWaitlist()
 // callback and renderWaitlistCTA() swaps this whole form out for the
@@ -5091,7 +4884,6 @@ async function submitWaitlistFull(btn) {
 async function verifyWaitlistCode(email, btn) {
   const code    = document.getElementById('wl-code').value.trim();
   const errorEl = document.getElementById('wl-error');
-
   if (!code) {
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = 'Enter the 6-digit code from your email.';
@@ -5099,10 +4891,8 @@ async function verifyWaitlistCode(email, btn) {
     return;
   }
   errorEl.style.display = 'none';
-
   btn.textContent = 'Verifying...';
   btn.disabled = true;
-
   try {
     const { error } = await sb.auth.verifyOtp({ email, token: code, type: 'email' });
     if (error) throw error;
@@ -5115,58 +4905,48 @@ async function verifyWaitlistCode(email, btn) {
     btn.disabled = false;
   }
 }
-
 // ── FREE ITINERARY FORM ──────────────────────────────────
 function getItinerary(btn) {
   const form  = btn.closest('.wl-form');
   const input = form.querySelector('input[type="email"]');
   const email = input.value.trim();
-
   if (!email || !email.includes('@')) {
     input.style.borderColor = 'var(--accent)';
     input.placeholder = 'Please enter a valid email';
     input.focus();
     return;
   }
-
   // Show loading state
   btn.textContent = '⏳ Sending...';
   btn.disabled = true;
-
   setTimeout(() => {
     btn.textContent = '✓ Check your inbox!';
     btn.style.background = 'var(--green)';
     input.disabled = true;
     input.value = '';
     input.placeholder = 'Itinerary sent to ' + email;
-
     // 👉 Replace with your Make.com webhook URL:
     // fetch('YOUR_MAKE_WEBHOOK_URL', { method:'POST', body: JSON.stringify({ email }) });
   }, 1200);
 }
-
 // ── LOAD MORE ────────────────────────────────────────────
 function loadMore(btn) {
   btn.textContent = 'Loading...';
   btn.disabled = true;
   setTimeout(() => {
     document.querySelectorAll('.trip-card-more').forEach(c => c.classList.remove('trip-card-more'));
-
     // Newly revealed cards now need to be checked against whatever filters
     // are currently active, same as everything else.
     filterCards();
     applyCurrency(_currentCurrency);
-
     btn.textContent = 'All trips loaded ✓';
     btn.style.color = 'var(--green)';
     btn.style.borderColor = 'var(--green)';
   }, 800);
 }
-
 // ── FORM STEPS ───────────────────────────────────────────
 let currentStep = 1;
 const totalSteps = 6;
-
 function markInvalid(id) {
   if (id === 'f-dest') {
     const box = document.getElementById('dest-multiselect');
@@ -5181,7 +4961,6 @@ function markInvalid(id) {
   el.style.boxShadow = '0 0 0 3px var(--error-light)';
   el.focus();
 }
-
 function clearInvalid(ids) {
   ids.forEach(id => {
     if (id === 'f-dest') {
@@ -5193,7 +4972,6 @@ function clearInvalid(ids) {
     if (el) { el.style.borderColor = ''; el.style.boxShadow = ''; }
   });
 }
-
 function validateStep(from) {
   if (from === 1) {
     clearInvalid(['f-dest', 'f-depart', 'f-return', 'f-from']);
@@ -5222,17 +5000,14 @@ function validateStep(from) {
   // Steps 4 and 5 have sensible defaults / are optional — nothing to gate here.
   return true;
 }
-
 function nextStep(from) {
   if (!validateStep(from)) return;
   if (from === 6) { submitForm(); return; }
   goToStep(from + 1);
 }
-
 function prevStep(from) {
   goToStep(from - 1);
 }
-
 function goToStep(n) {
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step' + n).classList.add('active');
@@ -5241,7 +5016,6 @@ function goToStep(n) {
   if (n === 5) renderAccomStyleGroups();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 function updateProgress(n) {
   for (let i = 1; i <= totalSteps; i++) {
     const dot  = document.getElementById('fp' + i);
@@ -5253,7 +5027,6 @@ function updateProgress(n) {
     if (line) line.classList.toggle('done', i < n);
   }
 }
-
 // ── BUDGET SLIDER ─────────────────────────────────────────
 // The slider's number is a straight amount in whichever currency the
 // traveller has picked for the form (no FX conversion here — unlike the
@@ -5265,7 +5038,6 @@ function formCurrencySymbol() {
   const code = el ? el.value : (_currentCurrency || 'AUD');
   return CURRENCY_SYMBOLS[code] || '$';
 }
-
 function updateBudgetDisplay(val) {
   val = parseInt(val);
   const display = document.getElementById('budget-display');
@@ -5273,7 +5045,6 @@ function updateBudgetDisplay(val) {
   const isMax = val >= 50000;
   display.textContent = symbol + (isMax ? '50,000+' : val.toLocaleString());
 }
-
 function getBudgetValue() {
   const el = document.getElementById('f-budget-slider');
   if (!el) return '';
@@ -5281,22 +5052,17 @@ function getBudgetValue() {
   const symbol = formCurrencySymbol();
   return symbol + (val >= 50000 ? '50,000+' : val.toLocaleString());
 }
-
 function getFormCurrencyCode() {
   const el = document.getElementById('f-currency');
   return el ? el.value : (_currentCurrency || 'AUD');
 }
-
 // ── DATE SYNC ──────────────────────────────────────────────
 // (handled by flatpickr's rangePlugin — see init in DOMContentLoaded below)
-
 // ── DESTINATION MULTI-SELECT ──────────────────────────────
 let selectedDestinations = [];
-
 function getDestList() {
   return Array.from(document.querySelectorAll('#dest-list-data option')).map(o => o.value);
 }
-
 function renderDestTags() {
   const tagsEl = document.getElementById('dest-tags');
   const hiddenEl = document.getElementById('f-dest');
@@ -5306,7 +5072,6 @@ function renderDestTags() {
   ).join('');
   hiddenEl.value = selectedDestinations.join(', ');
 }
-
 function addDestination(name) {
   name = name.trim();
   if (!name) return;
@@ -5317,50 +5082,40 @@ function addDestination(name) {
   if (search) { search.value = ''; search.focus(); }
   hideDestSuggestions();
 }
-
 function removeDestination(name) {
   selectedDestinations = selectedDestinations.filter(d => d !== name);
   renderDestTags();
 }
-
 function hideDestSuggestions() {
   const box = document.getElementById('dest-suggestions');
   if (box) { box.classList.remove('open'); box.innerHTML = ''; }
 }
-
 let destSuggestIndex = -1;
-
 function showDestSuggestions(query) {
   const box = document.getElementById('dest-suggestions');
   if (!box) return;
   const q = query.trim().toLowerCase();
   destSuggestIndex = -1;
   if (!q) { hideDestSuggestions(); return; }
-
   const matches = getDestList()
     .filter(d => d.toLowerCase().includes(q))
     .filter(d => !selectedDestinations.some(s => s.toLowerCase() === d.toLowerCase()))
     .slice(0, 8);
-
   let html = matches.map(d =>
     '<div class="dest-suggestion-item" onclick="addDestination(\'' + d.replace(/'/g, "\\'") + '\')">' + d + '</div>'
   ).join('');
-
   const exactMatch = getDestList().some(d => d.toLowerCase() === q);
   if (!exactMatch) {
     html += '<div class="dest-suggestion-item add-custom" onclick="addDestination(document.getElementById(\'dest-search\').value)">Add "' + query.trim().replace(/"/g, '') + '" →</div>';
   }
-
   box.innerHTML = html;
   box.classList.add('open');
 }
-
 function destSuggestItems() {
   const box = document.getElementById('dest-suggestions');
   if (!box) return [];
   return Array.from(box.querySelectorAll('.dest-suggestion-item'));
 }
-
 function highlightDestSuggest(idx) {
   const items = destSuggestItems();
   if (!items.length) { destSuggestIndex = -1; return; }
@@ -5370,16 +5125,13 @@ function highlightDestSuggest(idx) {
   items.forEach((el, i) => el.classList.toggle('active', i === destSuggestIndex));
   items[destSuggestIndex].scrollIntoView({ block: 'nearest' });
 }
-
 document.addEventListener('DOMContentLoaded', function() {
   const search = document.getElementById('dest-search');
   if (!search) return;
-
   search.addEventListener('input', function() { showDestSuggestions(this.value); });
   search.addEventListener('keydown', function(e) {
     const box = document.getElementById('dest-suggestions');
     const isOpen = box && box.classList.contains('open');
-
     if (e.key === 'ArrowDown') {
       if (!isOpen) { showDestSuggestions(this.value); }
       if (destSuggestItems().length) {
@@ -5415,14 +5167,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!document.getElementById('dest-multiselect').contains(e.target)) hideDestSuggestions();
   });
 });
-
 function selectOpt(el, group) {
   el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => {
     if (!o.classList.contains('multi')) o.classList.remove('selected');
   });
   el.classList.add('selected');
 }
-
 // ── ACCOMMODATION STYLE, PER DESTINATION ─────────────────
 // A single-destination trip still shows one plain "Accommodation style"
 // group, same as before. A multi-destination trip (selectedDestinations
@@ -5444,17 +5194,14 @@ const ACCOM_OPTIONS = [
   ['🎒', 'Budget', 'Hostel / cheap &amp; cheerful'],
   ['🤷', 'Surprise me', 'Best value option'],
 ];
-
 function selectAccomOpt(el, dest) {
   el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   accomStyleByDest[dest] = el.querySelector('.opt-label').textContent.trim();
 }
-
 function updateAccomNotes(el, dest) {
   accomNotesByDest[dest] = el.value;
 }
-
 function renderAccomStyleGroups() {
   const wrap = document.getElementById('accom-style-groups');
   if (!wrap) return;
@@ -5483,7 +5230,6 @@ function renderAccomStyleGroups() {
     return '<div class="form-group accom-group"' + (i > 0 ? ' style="margin-top:18px;"' : '') + '><label class="form-label">' + heading + '</label><div class="form-options">' + opts + '</div>' + notesInput + '</div>';
   }).join('');
 }
-
 // Trip type tiles (Solo/Couple/Friends group/Family) — Solo always means
 // exactly one traveller and Couple always means exactly two, so the
 // "Number of travellers" dropdown auto-fills and locks for both; Friends
@@ -5493,7 +5239,6 @@ function selectTripType(el) {
   const label = el.querySelector('.opt-label').textContent.trim();
   const pax = document.getElementById('f-pax');
   const fixedCount = (label === 'Solo') ? '1' : (label === 'Couple') ? '2' : null;
-
   if (fixedCount) {
     pax.value = fixedCount;
     pax.disabled = true;
@@ -5509,11 +5254,9 @@ function selectTripType(el) {
     pax.style.cursor = '';
   }
 }
-
 function toggleVibe(el) {
   el.classList.toggle('selected');
 }
-
 // ── PREFILL ITINERARY FORM FROM A SAMPLE TRIP ────────────────────────────
 // "Get my personalised itinerary for this trip" on a sample trip's detail
 // page used to dump the traveller into a completely blank 6-step form, even
@@ -5529,10 +5272,8 @@ function toggleVibe(el) {
 // prefilled beforehand would just get wiped out immediately.
 function prefillItineraryFromTrip(card) {
   if (!card) return;
-
   const dest = document.getElementById('td-dest-name').textContent.trim();
   addDestination(dest);
-
   // Trip type tile + traveller count, from the card's group tag
   const tripTypeMap = { 'Solo': 'Solo', 'Couple': 'Couple', 'Small group (3–6)': 'Friends group' };
   const tileLabel = tripTypeMap[card.dataset.group || ''];
@@ -5542,14 +5283,12 @@ function prefillItineraryFromTrip(card) {
     });
     if (tile) selectTripType(tile);
   }
-
   // Occasion — the card's main vibe pill (e.g. "💍 Honeymoon" → "Honeymoon")
   const pillEl = card.querySelector('.card-vibe-pill');
   const occasionEl = document.getElementById('f-occasion');
   if (occasionEl && pillEl) {
     occasionEl.value = pillEl.textContent.trim().replace(/^[^\p{L}]+/u, '').trim();
   }
-
   // Vibe tiles (step 3) — map the card's category tags onto the form's own
   // vibe options so the same trip vibe carries across
   const catToVibe = {
@@ -5563,7 +5302,6 @@ function prefillItineraryFromTrip(card) {
     const label = el.querySelector('.opt-label').textContent.trim();
     el.classList.toggle('selected', wantedVibes.has(label));
   });
-
   // Budget + currency — the card's advertised price, converted into the
   // traveller's currency and dragged onto the slider (capped at its max)
   const budgetAud = parseInt(card.dataset.budget || '0') || 0;
@@ -5578,11 +5316,9 @@ function prefillItineraryFromTrip(card) {
     sliderEl.value = Math.min(Math.max(convertedBudget, parseInt(sliderEl.min)), parseInt(sliderEl.max));
     updateBudgetDisplay(sliderEl.value);
   }
-
   // Flying from — a sensible default, easy for them to change
   const fromEl = document.getElementById('f-from');
   if (fromEl && !fromEl.value) fromEl.value = 'Sydney';
-
   // There's no dedicated field for "which sample trip this started from", so
   // fold it into the must-have box's placeholder as a visible starting point
   const mustHaveEl = document.getElementById('f-musthave');
@@ -5590,11 +5326,9 @@ function prefillItineraryFromTrip(card) {
     const dur = card.dataset.dur;
     mustHaveEl.placeholder = 'Starting point: the "' + dest + '"' + (dur ? (' (' + dur + '-day)') : '') + ' sample trip — tell us what to keep, add or change.';
   }
-
   const step1Sub = document.getElementById('step1-sub');
   if (step1Sub) step1Sub.textContent = 'We\'ve pre-filled this from the "' + dest + '" trip — change anything you like before sending it.';
 }
-
 // ── ASK TRIPMADE ──────────────────────────────────────────
 // Calls the "ask-tripmade" Supabase Edge Function (Claude does the actual
 // suggesting; the function attaches a Book/Compare CTA per its own
@@ -5605,7 +5339,6 @@ function prefillItineraryFromTrip(card) {
 // nothing else needs to change. The search bar, Ask button and example
 // chips re-enable themselves; initAskComingSoon() handles that.
 const ASK_TRIPMADE_ENABLED = true;
-
 function initAskComingSoon() {
   if (ASK_TRIPMADE_ENABLED) return;
   const input = document.getElementById('ask-input');
@@ -5619,7 +5352,6 @@ function initAskComingSoon() {
   document.querySelectorAll('.ask-chip').forEach(function(c) { c.classList.add('disabled'); });
 }
 initAskComingSoon();
-
 // The static example block stays visible whether the feature is live or
 // still "coming soon" — it fills the space under the search box and shows
 // visitors the format results take. It's only hidden once a real query
@@ -5627,14 +5359,12 @@ initAskComingSoon();
 // take its place. Nothing to init here beyond the element's default
 // display:block in the markup — this comment is just documenting why
 // there's no coming-soon-only toggle for it any more.
-
 function askChip(el) {
   if (!ASK_TRIPMADE_ENABLED) return;
   const input = document.getElementById('ask-input');
   input.value = el.dataset.q;
   runAskTripMade();
 }
-
 // Chat-thread state for the CURRENT visit to the Ask TripMade page — every
 // question+answer pair asked this session, in order. Cleared whenever a
 // fresh chat starts (page load, or openSavedChat() replacing it with a
@@ -5652,7 +5382,6 @@ let _askChatId = null;
 // stateless and only ever sees one combined question at a time; the
 // visitor still sees their own short reply as their chat bubble.
 let _pendingClarification = null;
-
 function resetAskChat() {
   _askTurns = [];
   _askChatId = null;
@@ -5670,7 +5399,6 @@ function resetAskChat() {
   const input = document.getElementById('ask-input');
   if (input) { input.value = ''; input.focus(); }
 }
-
 async function runAskTripMade() {
   if (!ASK_TRIPMADE_ENABLED) return;
   const input = document.getElementById('ask-input');
@@ -5678,13 +5406,11 @@ async function runAskTripMade() {
   const resultsEl = document.getElementById('ask-results');
   const query = input.value.trim();
   if (!query) { input.focus(); return; }
-
   btn.disabled = true;
   btn.textContent = 'Thinking…';
   const example = document.getElementById('ask-example');
   if (example) example.style.display = 'none';
   resultsEl.style.display = 'block';
-
   // Chat mode: each question gets its own turn. _askTurns itself stays in
   // chronological order (oldest first — matters for saveAskChat()'s title
   // and for the clarifying-question follow-up logic below), but the newest
@@ -5693,7 +5419,6 @@ async function runAskTripMade() {
   // a long scroll of history.
   const turn = { query: query, data: null, error: null };
   _askTurns.push(turn);
-
   const turnEl = document.createElement('div');
   turnEl.className = 'ask-turn';
   turnEl.innerHTML =
@@ -5702,17 +5427,13 @@ async function runAskTripMade() {
   turnEl.querySelector('.ask-user-bubble').textContent = query;
   resultsEl.prepend(turnEl);
   turnEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
   // If the previous answer was a clarifying question, fold the visitor's
   // raw reply onto it before sending — the backend is stateless and only
   // ever sees one combined question, never the whole thread.
   const apiQuery = _pendingClarification ? (_pendingClarification + ' ' + query) : query;
-
   input.value = '';
   input.focus();
-
   const bodyEl = turnEl.querySelector('.ask-turn-body');
-
   try {
     const askCurrency = (_currentUser && _currentUser.currency) || _currentCurrency || 'AUD';
     const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery, currency: askCurrency } });
@@ -5743,7 +5464,6 @@ async function runAskTripMade() {
     }
   }
 }
-
 // Safely embeds a JS string as a single-quoted literal inside an
 // onclick="..." HTML attribute (which is itself double-quoted). Plain
 // JSON.stringify(str) wraps the value in DOUBLE quotes, which prematurely
@@ -5754,7 +5474,6 @@ async function runAskTripMade() {
 function jsStrAttr(s) {
   return "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 }
-
 // Maps a redirect_to_category answer onto the right "Book your trip"
 // section — id's added to each category-heading-wrap div for this.
 const ASK_REDIRECT_META = {
@@ -5763,12 +5482,10 @@ const ASK_REDIRECT_META = {
   tours: { label: '🎟️ Browse tours & experiences', anchor: 'tours-experiences' },
   ferries: { label: '⛴️ Search ferries', anchor: 'tours-ferries' },
 };
-
 function goToBookingSection(anchor) {
   showPage('tours');
   scrollToSection(anchor);
 }
-
 // Dispatches a single turn's answer to the right renderer by data.type —
 // suggest_stays is the original card-grid layout (renderAskResults);
 // the other four categories added 2026-09-11 each get their own shape.
@@ -5796,7 +5513,6 @@ function renderAskTurnBody(bodyEl, data) {
   }
   renderAskResults(bodyEl, data);
 }
-
 function renderAskDining(bodyEl, data) {
   const cardsHtml = (data.suggestions || []).map(function(s) {
     return '' +
@@ -5809,16 +5525,13 @@ function renderAskDining(bodyEl, data) {
         '</div>' +
       '</div>';
   }).join('');
-
   bodyEl.innerHTML =
     '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3></div>' +
     '<div class="ask-results-grid">' + cardsHtml + '</div>';
 }
-
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
   const budgetMeta = data.budget_amount ? (dirLabel + data.currency + ' ' + data.budget_amount + '/night') : '';
-
   const cardsHtml = (data.suggestions || []).map(function(s) {
     const ctaClass = s.cta && s.cta.isAffiliate ? 'ask-stay-cta' : 'ask-stay-cta fallback';
     const flagHtml = s.cta && s.cta.isAffiliate ? '' : '<div class="ask-stay-flag">no live affiliate yet</div>';
@@ -5833,7 +5546,6 @@ function renderAskResults(bodyEl, data) {
         flagHtml +
       '</div>';
   }).join('');
-
   bodyEl.innerHTML = '' +
     '<div class="ask-results-hd"><h3>Suggestions for ' + data.destination + '</h3>' + (budgetMeta ? ('<div class="ask-results-meta">' + budgetMeta + '</div>') : '') + '</div>' +
     '<div class="ask-results-grid">' + cardsHtml + '</div>' +
@@ -5842,7 +5554,6 @@ function renderAskResults(bodyEl, data) {
       '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
     '</div>';
 }
-
 // Re-renders a full stored chat (from the `ask_chats` table) back into the
 // page — used by openSavedChat(). Each turn is rebuilt exactly the way a
 // live one is, just from stored data instead of a fresh API call. `turns`
@@ -5855,7 +5566,6 @@ function renderAskChatThread(turns) {
   if (example) example.style.display = 'none';
   resultsEl.style.display = 'block';
   resultsEl.innerHTML = '';
-
   turns.slice().reverse().forEach(function(turn) {
     const turnEl = document.createElement('div');
     turnEl.className = 'ask-turn';
@@ -5872,7 +5582,6 @@ function renderAskChatThread(turns) {
     }
   });
 }
-
 // ── SAVE / LOAD ASK TRIPMADE CHATS ───────────────────────
 // Lets a customer save the whole question+answer thread they've built up
 // on the Ask TripMade page (see `ask_chats` table — one row per saved
@@ -5887,7 +5596,6 @@ function askChatTitle(turns) {
   if (dests.length <= 2) return dests.join(' · ');
   return dests.slice(0, 2).join(' · ') + ' +' + (dests.length - 2) + ' more';
 }
-
 function saveAskChat() {
   if (_askTurns.length === 0) return;
   requireAccount(async function() {
@@ -5895,7 +5603,6 @@ function saveAskChat() {
     const statusEl = document.getElementById('ask-save-status');
     btn.disabled = true;
     btn.textContent = 'Saving…';
-
     const currentUser = getUser();
     const row = {
       user_id: currentUser.id,
@@ -5903,7 +5610,6 @@ function saveAskChat() {
       messages: _askTurns,
       updated_at: new Date().toISOString(),
     };
-
     let error;
     if (_askChatId) {
       ({ error } = await sb.from('ask_chats').update(row).eq('id', _askChatId).eq('user_id', currentUser.id));
@@ -5912,7 +5618,6 @@ function saveAskChat() {
       error = insertError;
       if (!error && data) _askChatId = data.id;
     }
-
     btn.disabled = false;
     if (error) {
       console.error('Save chat failed:', error);
@@ -5924,16 +5629,13 @@ function saveAskChat() {
     }
   });
 }
-
 async function renderSavedChatsPage() {
   const list = document.getElementById('saved-chats-list');
   const empty = document.getElementById('saved-chats-empty');
   if (!list) return;
-
   const currentUser = getUser();
   const emptyText = document.getElementById('saved-chats-empty-text');
   const emptyBtn = document.getElementById('saved-chats-empty-btn');
-
   if (!currentUser) {
     list.style.display = 'none';
     empty.style.display = 'block';
@@ -5943,11 +5645,9 @@ async function renderSavedChatsPage() {
   }
   if (emptyText) emptyText.textContent = 'You haven\'t saved any Ask TripMade chats yet.';
   if (emptyBtn) { emptyBtn.textContent = 'Ask TripMade a question →'; emptyBtn.setAttribute('onclick', "showPage('ask')"); }
-
   const { data: chats, error } = await sb.from('ask_chats')
     .select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false });
   if (error) { console.error('Loading saved chats failed:', error); return; }
-
   if (!chats || chats.length === 0) {
     list.style.display = 'none';
     empty.style.display = 'block';
@@ -5955,7 +5655,6 @@ async function renderSavedChatsPage() {
   }
   list.style.display = '';
   empty.style.display = 'none';
-
   list.innerHTML = chats.map(function(c) {
     const turnCount = Array.isArray(c.messages) ? c.messages.length : 0;
     const dateStr = new Date(c.updated_at || c.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
@@ -5972,13 +5671,11 @@ async function renderSavedChatsPage() {
       '</div>';
   }).join('');
 }
-
 function openSavedChat(id) {
   requireAccount(async function() {
     const currentUser = getUser();
     const { data: chat, error } = await sb.from('ask_chats').select('*').eq('id', id).eq('user_id', currentUser.id).single();
     if (error || !chat) { console.error('Opening saved chat failed:', error); return; }
-
     showPage('ask');
     _askTurns = Array.isArray(chat.messages) ? chat.messages : [];
     _askChatId = chat.id;
@@ -5992,7 +5689,6 @@ function openSavedChat(id) {
     if (statusEl) statusEl.textContent = '';
   });
 }
-
 async function deleteSavedChat(id) {
   const currentUser = getUser();
   if (!currentUser) return;
@@ -6001,7 +5697,265 @@ async function deleteSavedChat(id) {
   if (_askChatId === id) _askChatId = null;
   renderSavedChatsPage();
 }
-
+// ── INBOX (delivered itineraries — live on-site viewer, pay-to-unlock) ───
+// One row per generated/regenerated itinerary in the `itineraries` table,
+// written by the Make.com pipelines via the record-itinerary edge function
+// (see tripmade-onsite-itinerary-inbox-progress.md for the full
+// architecture). `days` is jsonb: an array of
+// {day_number, day_title, date_label, morning, afternoon, evening, tip,
+// highlights:[{time,category,icon,label,blurb}]}. `unlocked_days`/
+// `unlock_all` gate what's shown here — those columns are flipped
+// server-side by the stripe-webhook edge function after a real payment;
+// RLS only grants this client UPDATE on the `status` column, so there's no
+// way to unlock a day from here except by actually paying for it.
+let _currentInboxItinerary = null;
+const INBOX_CATEGORY_DOT = {
+  flight: 'dot-flight', transport: 'dot-transport', hotel: 'dot-hotel',
+  food: 'dot-food', activity: 'dot-activity', event: 'dot-event'
+};
+async function renderInboxPage() {
+  const list = document.getElementById('inbox-list');
+  const empty = document.getElementById('inbox-empty');
+  if (!list) return;
+  const currentUser = getUser();
+  const emptyText = document.getElementById('inbox-empty-text');
+  const emptyBtn = document.getElementById('inbox-empty-btn');
+  if (!currentUser) {
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    if (emptyText) emptyText.textContent = 'Log in to see the itineraries TripMade has built for you.';
+    if (emptyBtn) { emptyBtn.textContent = 'Log in →'; emptyBtn.setAttribute('onclick', 'openLoginModal()'); }
+    return;
+  }
+  if (emptyText) emptyText.textContent = "You don't have any itineraries yet.";
+  if (emptyBtn) { emptyBtn.textContent = 'Get my free itinerary →'; emptyBtn.setAttribute('onclick', "requireAccount(function(){showPage('form');})"); }
+  const { data: itins, error } = await sb.from('itineraries')
+    .select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+  if (error) { console.error('Loading inbox failed:', error); return; }
+  if (!itins || itins.length === 0) {
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  list.style.display = '';
+  empty.style.display = 'none';
+  list.innerHTML = itins.map(function(it) {
+    const dest = it.destination || (it.summary && it.summary.trip_title) || 'Your trip';
+    const dateStr = it.summary && it.summary.date_range ? it.summary.date_range : '';
+    const dayCount = Array.isArray(it.days) ? it.days.length : 0;
+    const unlockedCount = it.unlock_all ? dayCount : (Array.isArray(it.unlocked_days) ? it.unlocked_days.length : 0);
+    const lockLabel = it.unlock_all ? 'All days unlocked' : (unlockedCount + ' / ' + dayCount + ' days unlocked');
+    const badge = it.status === 'new' ? '<span style="background:var(--accent);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">NEW</span>' : '';
+    return '' +
+      '<div class="saved-chat-row">' +
+        '<div class="saved-chat-main">' +
+          '<div class="saved-chat-title">' + dest + badge + '</div>' +
+          '<div class="saved-chat-meta">' + (dateStr ? dateStr + ' · ' : '') + dayCount + (dayCount === 1 ? ' day' : ' days') + ' · ' + lockLabel + '</div>' +
+        '</div>' +
+        '<div class="saved-chat-actions">' +
+          '<button type="button" class="saved-chat-open" onclick="openInboxItinerary(' + jsStrAttr(it.id) + ')">Open →</button>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+}
+function backToInboxList() {
+  showPage('inbox');
+  renderInboxPage();
+}
+async function openInboxItinerary(id, justUnlocked) {
+  requireAccount(async function() {
+    const currentUser = getUser();
+    const { data: itin, error } = await sb.from('itineraries').select('*').eq('id', id).eq('user_id', currentUser.id).maybeSingle();
+    if (error || !itin) { console.error('Opening itinerary failed:', error); showPage('inbox'); renderInboxPage(); return; }
+    _currentInboxItinerary = itin;
+    showPage('inbox-detail');
+    renderInboxDetail(itin, !!justUnlocked);
+    if (itin.status !== 'viewed') {
+      sb.from('itineraries').update({ status: 'viewed' }).eq('id', itin.id).eq('user_id', currentUser.id)
+        .then(function(res) { if (res.error) console.error('Marking itinerary viewed failed:', res.error); });
+    }
+    // Stripe's webhook can land a beat after the browser bounces back from
+    // Checkout — if we arrived via a fresh success redirect and the row
+    // doesn't show the unlock yet, give it one short re-fetch rather than
+    // leaving the customer looking at a "still locked" screen they just
+    // paid to open.
+    if (justUnlocked && !itin.unlock_all) {
+      setTimeout(async function() {
+        const { data: fresh } = await sb.from('itineraries').select('*').eq('id', id).eq('user_id', currentUser.id).maybeSingle();
+        if (fresh) { _currentInboxItinerary = fresh; renderInboxDetail(fresh, true); }
+      }, 1800);
+    }
+  });
+}
+function inboxDayLocked(itin, dayNumber) {
+  if (itin.unlock_all) return false;
+  return !(Array.isArray(itin.unlocked_days) && itin.unlocked_days.includes(dayNumber));
+}
+// Mirrors create-checkout-session's own pricing exactly (PRICE_PER_DAY_CENTS
+// = 100, BUNDLE_DISCOUNT = 0.10) so what's shown here always matches what
+// Stripe actually charges. Deliberately NOT run through formatPrice()/
+// _currentCurrency — the charge itself is always in the itinerary's own
+// stored `currency`, not whatever display currency happens to be picked
+// elsewhere on the site.
+function inboxUnlockPrice(itin, mode) {
+  const currency = itin.currency || 'AUD';
+  const symbol = CURRENCY_SYMBOLS[currency] || (currency + ' ');
+  if (mode === 'day') return symbol + '1';
+  const totalDays = Array.isArray(itin.days) ? itin.days.length : 0;
+  const unlockedCount = Array.isArray(itin.unlocked_days) ? itin.unlocked_days.length : 0;
+  const remaining = totalDays - unlockedCount;
+  const amount = remaining * 1 * 0.9;
+  return symbol + (Number.isInteger(amount) ? amount : amount.toFixed(2));
+}
+function renderInboxDetail(itin, justUnlocked) {
+  const dest = itin.destination || (itin.summary && itin.summary.trip_title) || 'Your trip';
+  const summary = itin.summary || {};
+  document.getElementById('ibx-title').textContent = summary.trip_title || dest;
+  document.getElementById('ibx-meta').textContent = (summary.date_range || '') + (summary.nights ? ' · ' + summary.nights + ' nights' : '');
+  document.getElementById('ibx-block-title').textContent = dest + ' — day by day';
+  const banner = document.getElementById('ibx-unlock-banner');
+  if (banner) banner.style.display = justUnlocked ? 'block' : 'none';
+  const sumGrid = document.getElementById('ibx-sum-grid');
+  if (sumGrid) {
+    const currency = itin.currency || 'AUD';
+    const symbol = CURRENCY_SYMBOLS[currency] || (currency + ' ');
+    const money = function(v) { return v ? symbol + Number(v).toLocaleString() : '—'; };
+    sumGrid.innerHTML =
+      '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">' + money(summary.flights_cost) + '</div><div class="sum-sub">return</div></div>' +
+      '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">' + money(summary.hotels_cost) + '</div><div class="sum-sub">' + (summary.nights || '') + ' nights</div></div>' +
+      '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">' + money(summary.activities_cost) + '</div><div class="sum-sub">indicative</div></div>' +
+      '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">' + money(summary.food_cost) + '</div><div class="sum-sub">indicative</div></div>' +
+      '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + money(summary.total_cost) + '</div><div class="sum-sub red">per person</div></div>';
+  }
+  const days = Array.isArray(itin.days) ? itin.days : [];
+  const totalDays = days.length;
+  const unlockedCount = itin.unlock_all ? totalDays : (Array.isArray(itin.unlocked_days) ? itin.unlocked_days.length : 0);
+  const allBlock = document.getElementById('ibx-unlock-all-block');
+  const allBtn = document.getElementById('ibx-unlock-all-btn');
+  const allSub = document.getElementById('ibx-unlock-all-sub');
+  if (allBlock) {
+    if (itin.unlock_all || unlockedCount >= totalDays) {
+      allBlock.style.display = 'none';
+    } else {
+      allBlock.style.display = '';
+      const remaining = totalDays - unlockedCount;
+      if (allSub) allSub.textContent = 'Unlock the remaining ' + remaining + (remaining === 1 ? ' day' : ' days') + ' at once and save 10%, instead of paying per day';
+      if (allBtn) allBtn.textContent = 'Unlock all days — ' + inboxUnlockPrice(itin, 'all') + ' →';
+    }
+  }
+  document.getElementById('ibx-days').innerHTML = days.map(function(d) {
+    const locked = inboxDayLocked(itin, d.day_number);
+    const dayId = itin.id + '-' + d.day_number;
+    const label = 'Day ' + d.day_number + (d.day_title ? ' — ' + d.day_title : '') + (d.date_label ? ' · ' + d.date_label : '');
+    if (locked) {
+      return '' +
+        '<div class="day-block">' +
+          '<div class="day-lbl-row">' +
+            '<div class="day-lbl">' + label + '</div>' +
+            '<button type="button" class="day-extend-btn" onclick="unlockInboxDay(' + d.day_number + ')">🔒 Unlock this day — ' + inboxUnlockPrice(itin, 'day') + '</button>' +
+          '</div>' +
+        '</div>';
+    }
+    const highlights = Array.isArray(d.highlights) ? d.highlights : [];
+    const evtHtml = highlights.map(function(h) {
+      const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
+      return '' +
+        '<div class="evt">' +
+          '<div class="evt-time">' + (h.time || '') + '</div>' +
+          '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
+          '<div class="evt-body">' +
+            '<div class="evt-label">' + (h.icon ? h.icon + ' ' : '') + (h.label || '') + '</div>' +
+            '<div class="evt-blurb">' + (h.blurb || '') + '</div>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+    const tipHtml = d.tip ? '<div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">' + d.tip + '</div></div>' : '';
+    return '' +
+      '<div class="day-block">' +
+        '<div class="day-lbl-row">' +
+          '<div class="day-lbl">' + label + '</div>' +
+          '<button type="button" class="day-extend-btn" id="day-extend-btn-' + dayId + '" onclick="toggleInboxDayExtend(' + jsStrAttr(dayId) + ')">Expand this day <span class="chev">&rarr;</span></button>' +
+        '</div>' +
+        '<div class="evt-list">' + evtHtml + '</div>' +
+        '<div class="day-extend-panel" id="day-extend-panel-' + dayId + '">' +
+          (d.morning ? '<div class="day-extend-sec"><h4>Morning</h4><p>' + d.morning + '</p></div>' : '') +
+          (d.afternoon ? '<div class="day-extend-sec"><h4>Afternoon</h4><p>' + d.afternoon + '</p></div>' : '') +
+          (d.evening ? '<div class="day-extend-sec"><h4>Evening</h4><p>' + d.evening + '</p></div>' : '') +
+          tipHtml +
+        '</div>' +
+      '</div>';
+  }).join('');
+  const pdfLink = document.getElementById('ibx-pdf-link');
+  if (pdfLink) {
+    if (itin.pdf_url) { pdfLink.style.display = 'inline-block'; pdfLink.setAttribute('href', itin.pdf_url); }
+    else { pdfLink.style.display = 'none'; }
+  }
+}
+// Separate from the homepage sample itinerary's toggleDayExtend() — this
+// one works off inbox-specific, per-itinerary-per-day element ids, so the
+// two accordions (a static sample on the homepage, a live one here) never
+// fight over the same DOM ids if both happen to be rendered at once.
+let _openInboxDayId = null;
+function toggleInboxDayExtend(dayId) {
+  const panel = document.getElementById('day-extend-panel-' + dayId);
+  const btn = document.getElementById('day-extend-btn-' + dayId);
+  if (!panel || !btn) return;
+  if (_openInboxDayId && _openInboxDayId !== dayId) {
+    const prevPanel = document.getElementById('day-extend-panel-' + _openInboxDayId);
+    const prevBtn = document.getElementById('day-extend-btn-' + _openInboxDayId);
+    if (prevPanel) prevPanel.classList.remove('open');
+    if (prevBtn) { prevBtn.classList.remove('open'); prevBtn.innerHTML = 'Expand this day <span class="chev">&rarr;</span>'; }
+  }
+  const nowOpen = panel.classList.toggle('open');
+  btn.classList.toggle('open', nowOpen);
+  btn.innerHTML = nowOpen ? 'Collapse this day <span class="chev">&rarr;</span>' : 'Expand this day <span class="chev">&rarr;</span>';
+  _openInboxDayId = nowOpen ? dayId : null;
+}
+// Calls the create-checkout-session edge function with the signed-in
+// visitor's own Supabase access token (it re-validates ownership of the
+// itinerary server-side against that token — see the function's own
+// comments) and returns the Stripe Checkout session it creates, or null on
+// any error (after showing the visitor something useful).
+async function callCreateCheckoutSession(payload) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { openLoginModal(); return null; }
+  let res, data;
+  try {
+    res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify(payload)
+    });
+    data = await res.json();
+  } catch (err) {
+    console.error('create-checkout-session request failed:', err);
+    alert("Couldn't start checkout just then — please try again.");
+    return null;
+  }
+  if (!res.ok) {
+    if (data.error === 'payments_not_configured') {
+      alert("Unlocking isn't switched on yet — check back soon.");
+    } else if (data.error === 'already_unlocked' && _currentInboxItinerary) {
+      // Out of sync with what's on screen (e.g. unlocked in another tab) —
+      // just refresh from the DB instead of showing a confusing error.
+      openInboxItinerary(_currentInboxItinerary.id, false);
+    } else {
+      alert(data.message || "Couldn't start checkout just then — please try again.");
+    }
+    return null;
+  }
+  return data;
+}
+async function unlockInboxDay(dayNumber) {
+  if (!_currentInboxItinerary) return;
+  const data = await callCreateCheckoutSession({ itinerary_id: _currentInboxItinerary.id, mode: 'day', day_number: dayNumber });
+  if (data && data.url) window.location.href = data.url;
+}
+async function unlockInboxAll() {
+  if (!_currentInboxItinerary) return;
+  const data = await callCreateCheckoutSession({ itinerary_id: _currentInboxItinerary.id, mode: 'all' });
+  if (data && data.url) window.location.href = data.url;
+}
 // Lighter version of prefillItineraryFromTrip() for when all we have is a
 // destination + (maybe) a budget figure, not a full sample-trip card.
 function prefillItineraryFromAsk(destination, budgetAmount) {
@@ -6022,20 +5976,16 @@ function prefillItineraryFromAsk(destination, budgetAmount) {
     if (step1Sub) step1Sub.textContent = 'We\'ve pre-filled this from your Ask TripMade question — change anything you like before sending it.';
   });
 }
-
 // ── EXISTING BOOKING FILE UPLOAD ─────────────────────────
 let _selectedUploadFile = null;
-
 function handleFileSelect(input) {
   const file = input.files[0];
   if (!file) return;
-
   if (file.size > 10 * 1024 * 1024) {
     alert('That file is over 10MB — please choose a smaller one.');
     input.value = '';
     return;
   }
-
   _selectedUploadFile = file;
   document.getElementById('upload-placeholder').style.display = 'none';
   const selected = document.getElementById('upload-selected');
@@ -6043,7 +5993,6 @@ function handleFileSelect(input) {
   document.getElementById('upload-filename').textContent = '📄 ' + file.name;
   document.getElementById('upload-box').classList.add('has-file');
 }
-
 function clearFileSelect() {
   _selectedUploadFile = null;
   document.getElementById('f-upload').value = '';
@@ -6051,7 +6000,6 @@ function clearFileSelect() {
   document.getElementById('upload-selected').style.display = 'none';
   document.getElementById('upload-box').classList.remove('has-file');
 }
-
 // Shared Supabase Storage upload — used by both the "existing booking" file
 // uploader (Step 4) and the inspiration image uploader (Step 5).
 async function uploadToStorage(file) {
@@ -6076,22 +6024,17 @@ async function uploadToStorage(file) {
     return '';
   }
 }
-
 async function uploadExistingBookingFile() {
   return uploadToStorage(_selectedUploadFile);
 }
-
 async function uploadInspirationImage() {
   return uploadToStorage(_selectedImageFile);
 }
-
 // ── INSPIRATION IMAGE UPLOAD (Step 5) ────────────────────
 let _selectedImageFile = null;
-
 function handleImageSelect(input) {
   const file = input.files[0];
   if (!file) return;
-
   if (file.size > 10 * 1024 * 1024) {
     alert('That file is over 10MB — please choose a smaller one.');
     input.value = '';
@@ -6102,19 +6045,16 @@ function handleImageSelect(input) {
     input.value = '';
     return;
   }
-
   _selectedImageFile = file;
   document.getElementById('image-upload-placeholder').style.display = 'none';
   const selected = document.getElementById('image-upload-selected');
   selected.style.display = 'flex';
   document.getElementById('image-upload-filename').textContent = file.name;
   document.getElementById('image-upload-box').classList.add('has-file');
-
   const reader = new FileReader();
   reader.onload = e => { document.getElementById('image-upload-preview').src = e.target.result; };
   reader.readAsDataURL(file);
 }
-
 function clearImageSelect() {
   _selectedImageFile = null;
   document.getElementById('f-image-upload').value = '';
@@ -6122,8 +6062,6 @@ function clearImageSelect() {
   document.getElementById('image-upload-selected').style.display = 'none';
   document.getElementById('image-upload-box').classList.remove('has-file');
 }
-
-
 async function submitForm() {
   const name = document.getElementById('f-name').value.trim();
   if (!name) {
@@ -6137,13 +6075,10 @@ async function submitForm() {
     document.getElementById('f-email').focus();
     return;
   }
-
   const submitBtn = document.querySelector('#step6 .form-next');
   if (submitBtn) { submitBtn.textContent = 'Sending...'; submitBtn.disabled = true; }
-
   const uploadedFileUrl = await uploadExistingBookingFile();
   const uploadedImageUrl = await uploadInspirationImage();
-
   // Collect all form data
   const formData = {
     destination:  document.getElementById('f-dest').value,
@@ -6178,9 +6113,7 @@ async function submitForm() {
     email:        email,
     phone:        document.getElementById('f-phone').value,
   };
-
   console.log('Itinerary request:', formData);
-
   // 👉 TEMPORARY: pointed at the "Integration Webhooks — PDF rebuild" test scenario
   // while we build the new PDF pipeline. Swap back to the original webhook once done.
   fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
@@ -6188,7 +6121,6 @@ async function submitForm() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
   });
-
   // Also keep a queryable copy in Supabase — this form captures the richest
   // signal we have of real travel intent (destination, dates, budget, trip
   // vibe, party composition), and until now it only ever left the site via
@@ -6215,20 +6147,17 @@ async function submitForm() {
     existing_booking: formData.existing,
     notes: formData.notes
   }).then(({ error }) => { if (error) console.error('Saving itinerary request failed:', error); });
-
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-success').classList.add('active');
   document.querySelectorAll('.fp-dot').forEach(d => d.classList.add('done'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 // ── REGION / GROUP SIZE SELECTS ──────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.f-select').forEach(sel => {
     sel.addEventListener('change', filterCards);
   });
-
   // Linked departure/return date range calendar — selecting a departure
   // date carries it into the return calendar and highlights every day between.
   if (window.flatpickr) {
@@ -6240,7 +6169,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-
 function updateTripLength(selectedDates) {
   const el = document.getElementById('trip-length');
   if (!el) return;
@@ -6250,7 +6178,6 @@ function updateTripLength(selectedDates) {
   if (days <= 0) { el.textContent = ''; return; }
   el.textContent = days + (days === 1 ? ' day' : ' days');
 }
-
 // Loads the Viator partner widget script the first time someone actually
 // visits the Tours & experiences page, rather than on every page load.
 // Deliberately lazy for two reasons: (1) no point loading a third-party
@@ -6269,7 +6196,6 @@ function loadViatorWidgets() {
   s.src = 'https://www.viator.com/orion/partner/widget.js';
   document.body.appendChild(s);
 }
-
 // Builds the country/city dropdown options on the Tours page from whatever
 // data-country/data-city attributes exist on .tour-widget-card elements —
 // so adding a new tour card (see "TO ADD MORE TOURS" comment above) is
@@ -6294,7 +6220,6 @@ function populateTourFilterOptions() {
   filterTours();
 }
 document.addEventListener('DOMContentLoaded', populateTourFilterOptions);
-
 // AND-matches the search box, country dropdown and city dropdown against
 // each .tour-widget-card's data attributes. Search checks the card's label
 // text plus its data-keywords list, so a query like "wine" or "river cruise"
@@ -6328,7 +6253,6 @@ function filterTours() {
   if (emptyEl) emptyEl.style.display = (cards.length && visible === 0) ? '' : 'none';
   gridEl.style.display = (cards.length && visible === 0) ? 'none' : '';
 }
-
 function clearTourFilters() {
   const searchEl = document.getElementById('tours-search');
   const countryEl = document.getElementById('tours-country-filter');
@@ -6338,7 +6262,6 @@ function clearTourFilters() {
   if (cityEl) cityEl.value = '';
   filterTours();
 }
-
 // Hands one search query off to Viator's and Klook's own search results
 // pages (both confirmed working ?text=/?query= URL patterns). GetYourGuide
 // is deliberately left alone — their public site uses destination-slug
@@ -6352,19 +6275,15 @@ function searchAllTours() {
   const q = input.value.trim();
   if (!q) { input.focus(); return; }
   const encoded = encodeURIComponent(q);
-
   const viatorUrl = 'https://www.viator.com/searchResults/all?text=' + encoded + '&pid=P00317698&mcid=42383&medium=link&medium_version=selector';
   const klookUrl = 'https://www.klook.com/en-US/search/result/?query=' + encoded + '&aid=1410090';
-
   const viatorCard = document.getElementById('tour-card-viator');
   const viatorCta = document.getElementById('tour-card-viator-cta');
   if (viatorCard) viatorCard.href = viatorUrl;
   if (viatorCta) viatorCta.textContent = 'See "' + q + '" on Viator →';
-
   if (note) {
     note.textContent = 'Opened "' + q + '" on Viator and Klook in new tabs — GetYourGuide doesn\'t support a pre-filled search link, so its card still opens their homepage.';
   }
-
   // Clicking "Search" should visibly do something right away, not just quietly
   // update link targets for someone to notice and click through later — so
   // open both results directly. Both calls are synchronous inside this click
@@ -6373,7 +6292,6 @@ function searchAllTours() {
   window.open(viatorUrl, '_blank', 'noopener,noreferrer');
   window.open(klookUrl, '_blank', 'noopener,noreferrer');
 }
-
 const _origShowPage = showPage;
 window.showPage = function(id, linkEl) {
   _origShowPage(id, linkEl);
