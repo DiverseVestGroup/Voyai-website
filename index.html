@@ -1292,6 +1292,10 @@ footer p { font-size:13px; color:var(--text-dim); }
             <option>Word of mouth</option><option>Other</option>
           </select>
         </div>
+        <label id="wl-marketing-row" style="display:flex;align-items:flex-start;gap:10px;max-width:520px;margin:12px auto 0;text-align:left;cursor:pointer;">
+          <input id="wl-marketing-optin" type="checkbox" style="width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--accent);">
+          <span style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Yes, send me travel deals and inspiration by email. <span style="opacity:.75;">(Optional — separate from your itinerary or waitlist spot, which you'll get either way.)</span></span>
+        </label>
         <div id="wl-step-code" style="display:none;max-width:280px;margin:0 auto;">
           <input id="wl-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
         </div>
@@ -2958,7 +2962,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="form-step" id="step6">
       <div class="form-eyebrow">Step 6 of 6 — Almost done!</div>
       <h2>Where do we send it?</h2>
-      <p class="form-sub">Your free personalised itinerary will be in your inbox within minutes. No spam, ever.</p>
+      <p class="form-sub">Your free personalised itinerary will be ready in your TripMade Inbox within minutes — we'll also email you the moment it's there. No spam, ever.</p>
       <div class="form-group">
         <label class="form-label">Your name</label>
         <input class="form-input" id="f-name" type="text" placeholder="First name">
@@ -2984,15 +2988,16 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-success">
         <div class="success-icon">✈</div>
         <h2>You're all set!</h2>
-        <p>We're building your personalised itinerary right now. Expect it in your inbox within 5 minutes — check your spam just in case.</p>
+        <p>We're building your personalised itinerary right now. It'll be ready in your <strong>TripMade Inbox</strong> within 5 minutes, and we'll email you a link the second it lands — check your spam just in case.</p>
         <div style="background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:28px;text-align:left;font-size:13px;line-height:1.8;color:var(--text-muted);">
           <strong style="color:var(--text);display:block;margin-bottom:8px;">What happens next:</strong>
           🔍 Our team reviews your brief and builds your day-by-day plan<br>
           ✍️ A TripMade team member checks everything before it goes out<br>
-          📧 Your itinerary lands in your inbox — usually within 5 min<br>
-          💬 Reply to the email with any tweaks — we'll update it for free
+          📥 It lands in your TripMade Inbox — usually within 5 min, with an email to let you know<br>
+          💬 Reply to that email with any tweaks — we'll update it for free
         </div>
-        <button class="btn-primary" onclick="showPage(&#39;landing&#39;)">Back to home</button>
+        <button class="btn-primary" style="margin-bottom:12px;" onclick="showPage('inbox'); renderInboxPage();">View my Inbox →</button>
+        <button class="btn-secondary" onclick="showPage(&#39;landing&#39;)">Back to home</button>
       </div>
     </div>
   </div>
@@ -3498,6 +3503,10 @@ footer p { font-size:13px; color:var(--text-dim); }
         <option>Word of mouth</option><option>Other</option>
       </select>
     </div>
+    <label id="su-marketing-row" style="display:flex;align-items:flex-start;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-mid);cursor:pointer;">
+      <input id="su-marketing-optin" type="checkbox" style="width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--accent);">
+      <span style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Yes, send me travel deals and inspiration by email. <span style="color:var(--text);opacity:.7;">(Optional — this is separate from your itinerary, which we'll send either way.)</span></span>
+    </label>
     <div id="su-step-code" style="display:none;flex-direction:column;gap:12px;">
       <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
@@ -3946,6 +3955,12 @@ async function hydrateCurrentUser(authUser) {
       phone: (_pendingProfileData && _pendingProfileData.phone) || meta.phone || '',
       country: (_pendingProfileData && _pendingProfileData.country) || meta.country || '',
       heard_from: (_pendingProfileData && _pendingProfileData.heardFrom) || meta.heardFrom || '',
+      // Only true if they actively ticked the box — unchecked by default, so
+      // no consent recorded means no marketing email, ever. Never flip this
+      // to true from anywhere else (e.g. a default or an upsert), since that
+      // would silently opt someone in without them having said yes.
+      marketing_opt_in: !!((_pendingProfileData && _pendingProfileData.marketingOptIn) || meta.marketingOptIn),
+      marketing_opt_in_at: ((_pendingProfileData && _pendingProfileData.marketingOptIn) || meta.marketingOptIn) ? new Date().toISOString() : null,
       utm_source: _utmParams.utmSource,
       utm_medium: _utmParams.utmMedium,
       utm_campaign: _utmParams.utmCampaign
@@ -4443,6 +4458,7 @@ async function submitSignup() {
   const phone     = document.getElementById('su-phone').value.trim();
   const country   = document.getElementById('su-country').value;
   const heardFrom = document.getElementById('su-heard-from').value;
+  const marketingOptIn = document.getElementById('su-marketing-optin').checked;
   const errorEl   = document.getElementById('su-error');
   if (!name || !email || !email.includes('@') || !phone) {
     errorEl.style.color = 'var(--accent)';
@@ -4454,10 +4470,12 @@ async function submitSignup() {
   const submitBtn = document.getElementById('su-submit-btn');
   if (submitBtn) { submitBtn.textContent = 'Sending code...'; submitBtn.disabled = true; }
   try {
-    _pendingProfileData = { name, phone, country, heardFrom };
+    _pendingProfileData = { name, phone, country, heardFrom, marketingOptIn };
+    const marketingRow = document.getElementById('su-marketing-row');
+    if (marketingRow) marketingRow.style.display = 'none';
     const { error } = await sb.auth.signInWithOtp({
       email,
-      options: { data: { name, phone, country, heardFrom }, emailRedirectTo: window.location.origin + window.location.pathname }
+      options: { data: { name, phone, country, heardFrom, marketingOptIn }, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
     document.getElementById('su-step-details').style.display = 'none';
@@ -4838,6 +4856,7 @@ async function submitWaitlistFull(btn) {
   const phone     = document.getElementById('wl-phone').value.trim();
   const country   = document.getElementById('wl-country').value;
   const heardFrom = document.getElementById('wl-heard-from').value;
+  const marketingOptIn = document.getElementById('wl-marketing-optin').checked;
   const errorEl   = document.getElementById('wl-error');
   if (!name || !email || !email.includes('@') || !phone) {
     errorEl.style.color = 'var(--accent)';
@@ -4849,13 +4868,15 @@ async function submitWaitlistFull(btn) {
   btn.textContent = 'Sending code...';
   btn.disabled = true;
   try {
-    _pendingProfileData = { name, phone, country, heardFrom };
+    _pendingProfileData = { name, phone, country, heardFrom, marketingOptIn };
+    const marketingRow = document.getElementById('wl-marketing-row');
+    if (marketingRow) marketingRow.style.display = 'none';
     // Once the code is verified and a real session exists, join them to the
     // waitlist automatically — that's the whole point of this form.
     _pendingSignupCallback = joinWaitlist;
     const { error } = await sb.auth.signInWithOtp({
       email,
-      options: { data: { name, phone, country, heardFrom }, emailRedirectTo: window.location.origin + window.location.pathname }
+      options: { data: { name, phone, country, heardFrom, marketingOptIn }, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
     document.getElementById('wl-step-details').style.display = 'none';
