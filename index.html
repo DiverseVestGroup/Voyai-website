@@ -3084,7 +3084,16 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="flight-widget-card">
         <div class="flight-widget-name">Search flights</div>
         <div class="flight-widget-desc">Compare prices across airlines and travel sites — search right here, no need to leave this page.</div>
-        <script async src="https://tpwdgt.com/content?currency=usd&trs=571230&shmarker=774757&locale=en&stops=any&show_hotels=true&powered_by=true&border_radius=0&plain=true&color_button=%2300A991&color_button_text=%23ffffff&promo_id=3414&campaign_id=111" charset="utf-8"></script>
+        <!-- 2026-09-26: this used to be a static <script src="...&currency=usd&...">
+             tag, so the widget always searched in USD no matter what currency
+             the visitor had selected on TripMade (found when Lachlan's brother
+             tested it and it came back in USD). Replaced with loadFlightWidget()
+             below, which (re)injects the script with the SITE's currently
+             active currency (_currentCurrency) — called once on page load and
+             again from applyCurrency() every time the currency picker changes,
+             so the widget always matches whatever's selected elsewhere on the
+             site (or the signed-in customer's saved currency). -->
+        <div id="flight-widget-script-container"></div>
         <!-- Real Kiwi.com affiliate deep link (Travelpayouts tpk.mx shortlink,
              same Travelpayouts account as the widget script above), added
              2026-09-12 per Lachlan. The widget above is a general multi-site
@@ -3802,9 +3811,25 @@ function formatPrice(audAmount) {
 // login (seeded from the account's saved currency). Keeps every picker on
 // the page and every price display in sync with each other, wherever the
 // change came from.
+// (Re)injects the Travelpayouts flight-search widget script with the given
+// currency. A <script src="..."> tag only ever runs once, so switching
+// currency means removing the old one and appending a fresh one — plain
+// src-swapping doesn't re-trigger it.
+function loadFlightWidget(currency) {
+  const container = document.getElementById('flight-widget-script-container');
+  if (!container) return;
+  container.innerHTML = '';
+  const script = document.createElement('script');
+  script.async = true;
+  script.charset = 'utf-8';
+  script.src = 'https://tpwdgt.com/content?currency=' + encodeURIComponent((currency || 'AUD').toLowerCase()) +
+    '&trs=571230&shmarker=774757&locale=en&stops=any&show_hotels=true&powered_by=true&border_radius=0&plain=true&color_button=%2300A991&color_button_text=%23ffffff&promo_id=3414&campaign_id=111';
+  container.appendChild(script);
+}
 function applyCurrency(currency) {
   _currentCurrency = currency;
   syncCurrencySelects();
+  loadFlightWidget(currency);
   document.querySelectorAll('.trip-card').forEach(card => {
     const budget = parseInt(card.dataset.budget || '0');
     if (!budget) return;
@@ -4430,6 +4455,11 @@ document.addEventListener('DOMContentLoaded', renderTestimonials);
 // counter reflects reality from the start, instead of the hardcoded
 // placeholder text that was sitting in the markup.
 document.addEventListener('DOMContentLoaded', filterCards);
+// Safety net so the flight-search widget always loads with the correct
+// currency on first paint, even before any of applyCurrency()'s other call
+// sites (login hydration, a picker change, etc.) have run. Whichever runs
+// last wins — harmless, since they'll always agree once hydration finishes.
+document.addEventListener('DOMContentLoaded', function() { loadFlightWidget(_currentCurrency); });
 // Puts the sign-up modal back to "enter your details" — used whenever it's
 // (re)opened, so a stale "enter your code" state from a previous attempt
 // never lingers.
