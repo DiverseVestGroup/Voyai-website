@@ -5892,19 +5892,27 @@ function renderInboxDetail(itin, justUnlocked) {
   }
   const days = Array.isArray(itin.days) ? itin.days : [];
   // 2026-09-23: every day now renders in full for everyone, free — Lachlan's
-  // call (see tripmade-onsite-itinerary-inbox-progress.md). Paying used to be
-  // what unlocked this content at all; now it needs to unlock something
-  // genuinely extra on top, which doesn't exist yet (no new field the AI
-  // generates beyond what's below). Rather than take payment for literally
-  // nothing — which is exactly the bug Jai hit earlier tonight, just
-  // deliberately this time — the unlock UI stays hidden until that richer
-  // paid layer is designed and built (flagged for the Friday session). The
-  // Stripe/webhook plumbing itself is untouched and ready to switch back on.
+  // call (see tripmade-onsite-itinerary-inbox-progress.md), briefly reversed
+  // (unlock UI hidden site-wide, everything shown free) while there was
+  // nothing genuinely extra to sell. 2026-09-26 per Lachlan: paywall is back
+  // on — "Expand this day" only works once that day is actually paid for,
+  // matching what's live in production today. The Stripe/webhook plumbing
+  // (unlockInboxDay/unlockInboxAll) was never removed, just unused.
   const allBlock = document.getElementById('ibx-unlock-all-block');
-  if (allBlock) allBlock.style.display = 'none';
+  if (allBlock) {
+    allBlock.style.display = itin.unlock_all ? 'none' : 'flex';
+    const subEl = document.getElementById('ibx-unlock-all-sub');
+    const btnEl = document.getElementById('ibx-unlock-all-btn');
+    const totalDays = days.length;
+    const unlockedCount = Array.isArray(itin.unlocked_days) ? itin.unlocked_days.length : 0;
+    const remaining = totalDays - unlockedCount;
+    if (subEl) subEl.textContent = 'Unlock the remaining ' + remaining + ' day' + (remaining === 1 ? '' : 's') + ' at once and save 10%, instead of paying per day';
+    if (btnEl) btnEl.textContent = 'Unlock all days — ' + inboxUnlockPrice(itin, 'all') + ' →';
+  }
   document.getElementById('ibx-days').innerHTML = days.map(function(d) {
     const dayId = itin.id + '-' + d.day_number;
     const label = 'Day ' + d.day_number + (d.day_title ? ' — ' + d.day_title : '') + (d.date_label ? ' · ' + d.date_label : '');
+    const locked = inboxDayLocked(itin, d.day_number);
     const highlights = Array.isArray(d.highlights) ? d.highlights : [];
     const evtHtml = highlights.map(function(h) {
       const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
@@ -5918,6 +5926,20 @@ function renderInboxDetail(itin, justUnlocked) {
           '</div>' +
         '</div>';
     }).join('');
+    // Locked day: no extend button at all, just a plain unlock CTA. The
+    // full morning/afternoon/evening/tip text is never written into the DOM
+    // for a locked day — nothing to inspect/reveal client-side even before
+    // it's clicked.
+    if (locked) {
+      return '' +
+        '<div class="day-block">' +
+          '<div class="day-lbl-row">' +
+            '<div class="day-lbl">' + label + '</div>' +
+            '<button type="button" class="day-extend-btn" onclick="unlockInboxDay(' + d.day_number + ')">🔒 Unlock this day — ' + inboxUnlockPrice(itin, 'day') + '</button>' +
+          '</div>' +
+          '<div class="evt-list">' + evtHtml + '</div>' +
+        '</div>';
+    }
     const tipHtml = d.tip ? '<div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">' + d.tip + '</div></div>' : '';
     return '' +
       '<div class="day-block">' +
@@ -5948,15 +5970,25 @@ function renderInboxDetail(itin, justUnlocked) {
 // download-itinerary-pdf fresh every time, which reads the itinerary's
 // REAL current unlock state and builds the PDF to match: locked days get
 // the header + highlights only, unlocked days get the full day.
+//
+// 2026-09-26 fix: the first version called window.open() only AFTER
+// awaiting the fetch — by then the browser no longer considers it a
+// direct result of the click, so most browsers' popup blockers silently
+// swallow it. No error, no visible failure, just nothing happens (exactly
+// what Lachlan saw). Fix: open a blank tab SYNCHRONOUSLY, inside the click
+// handler itself, then point that already-open tab at the PDF once it's
+// ready — this stays within the user-gesture window the whole time.
 async function downloadInboxItineraryPdf() {
   const itin = _currentInboxItinerary;
   const btn = document.getElementById('ibx-pdf-link');
   if (!itin || !btn) return;
+  const pdfTab = window.open('', '_blank');
   const { data: sessionData } = await sb.auth.getSession();
   const token = sessionData && sessionData.session && sessionData.session.access_token;
-  if (!token) { requireAccount(function() {}); return; }
+  if (!token) { if (pdfTab) pdfTab.close(); requireAccount(function() {}); return; }
   btn.disabled = true;
   btn.textContent = 'Preparing your PDF…';
+  if (pdfTab) { try { pdfTab.document.write('Preparing your PDF…'); } catch (_e) {} }
   try {
     const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/download-itinerary-pdf', {
       method: 'POST',
@@ -5966,12 +5998,15 @@ async function downloadInboxItineraryPdf() {
     const data = await res.json();
     if (!res.ok || !data.download_url) {
       console.error('PDF generation failed:', data);
+      if (pdfTab) pdfTab.close();
       alert("Couldn't generate your PDF just then — please try again in a moment.");
       return;
     }
-    window.open(data.download_url, '_blank');
+    if (pdfTab) { pdfTab.location.href = data.download_url; }
+    else { window.open(data.download_url, '_blank'); }
   } catch (e) {
     console.error('PDF generation failed:', e);
+    if (pdfTab) pdfTab.close();
     alert("Couldn't generate your PDF just then — please try again in a moment.");
   } finally {
     btn.disabled = false;
