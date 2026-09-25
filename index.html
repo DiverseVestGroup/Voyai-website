@@ -2978,6 +2978,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:10px;padding:14px 16px;margin-bottom:24px;font-size:13px;color:var(--accent);line-height:1.6;">
         ✓ <strong>100% free.</strong> No credit card. No catch. Your itinerary will be hand-reviewed by the TripMade team before it lands in your inbox.
       </div>
+      <label id="f-marketing-row" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:24px;padding-top:14px;border-top:1px solid var(--border-mid);cursor:pointer;">
+        <input id="f-marketing-optin" type="checkbox" style="width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--accent);">
+        <span style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Yes, send me travel deals and inspiration by email. <span style="color:var(--text);opacity:.7;">(Optional — this is separate from your itinerary, which we'll send either way.)</span></span>
+      </label>
       <div class="form-nav">
         <button class="form-back" onclick="prevStep(6)">← Back</button>
         <button class="form-next" style="padding:14px 40px;font-size:15px;" onclick="submitForm()">Send my itinerary ✈</button>
@@ -3473,7 +3477,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div id="ibx-days"></div>
     </div>
     <div style="text-align:center;margin:28px 0 20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a id="ibx-pdf-link" href="javascript:void(0)" target="_blank" rel="noopener" class="btn-secondary" style="display:none;">📄 Download as PDF</a>
+      <button type="button" id="ibx-pdf-link" onclick="downloadInboxItineraryPdf()" class="btn-secondary" style="display:none;">📄 Download as PDF</button>
     </div>
   </div>
 </div>
@@ -3563,18 +3567,23 @@ footer p { font-size:13px; color:var(--text-dim); }
 <div id="page-privacy" class="page">
   <div class="section" style="max-width:760px;">
     <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
-      This is a draft placeholder. It has not been reviewed by a lawyer and should be replaced with a proper policy before launch.
+      This is a working draft written to reflect what TripMade actually does today. It has not been reviewed by a lawyer and should get that review before launch — in particular the Australian Privacy Act / APP references below.
     </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Privacy Policy</h2>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
     <div style="font-size:14px;line-height:1.8;color:var(--text);">
-      <p style="margin-bottom:18px;"><b>1. Who we are.</b> TripMade Pty Ltd ("TripMade", "we", "us") is an Australian company that builds personalised travel itineraries for customers. This policy explains what personal information we collect, how we use it, and the choices you have.</p>
-      <p style="margin-bottom:18px;"><b>2. Information we collect.</b> When you use TripMade, we may collect your name, email address, phone number, country, and the travel preferences you provide (destination, dates, budget, group size, and similar details) so we can generate and deliver your itinerary.</p>
-      <p style="margin-bottom:18px;"><b>3. How we use it.</b> We use your information to generate your itinerary, send it to you by email, improve our service, and — if you've opted in — send you occasional updates about TripMade. We do not sell your personal information to third parties.</p>
-      <p style="margin-bottom:18px;"><b>4. Affiliate links.</b> Itineraries may include links to booking partners (such as flight, hotel, and activity providers). If you book through these links, TripMade may earn a commission at no extra cost to you.</p>
-      <p style="margin-bottom:18px;"><b>5. Data storage.</b> Your information is stored securely using third-party providers (including Google Workspace and our automation tools) and is not retained for longer than necessary to provide our service.</p>
-      <p style="margin-bottom:18px;"><b>6. Your rights.</b> You can request access to, correction of, or deletion of your personal information at any time by contacting hello@tripmade.co.</p>
-      <p style="margin-bottom:0;"><b>7. Contact.</b> Questions about this policy can be sent to hello@tripmade.co.</p>
+      <p style="margin-bottom:18px;"><b>1. Who we are.</b> TripMade Pty Ltd ("TripMade", "we", "us") is an Australian company that builds personalised travel itineraries for customers. This policy explains what personal information we collect, how we use it, who we share it with, and the choices you have.</p>
+      <p style="margin-bottom:18px;"><b>2. Information we collect.</b> Depending on how you use TripMade, we may collect: your name, email address, phone number and country; the travel preferences you give us (destination, dates, budget, group size, vibe, must-haves, things to avoid, and similar trip details); messages you send our Ask TripMade assistant; account sign-in activity; and, if you leave one, a review or testimonial. We collect this when you request an itinerary, join the waitlist, create an account, save a trip, use Ask TripMade, or leave a review.</p>
+      <p style="margin-bottom:18px;"><b>3. How we use it.</b> We use your information to generate and deliver your itinerary, respond to Ask TripMade questions, let you save trips and pick up where you left off, process any optional paid features you choose (see Terms &amp; Conditions), and improve our service. We only email you travel deals and inspiration if you've ticked the box to opt in when giving us your details — that's always a separate, optional choice from getting the itinerary or waitlist confirmation you asked for. We do not sell your personal information to third parties.</p>
+      <p style="margin-bottom:18px;"><b>4. Who we share it with.</b> We use a small number of service providers to run TripMade, and your information passes through them only as needed to provide the service: Supabase (database and account sign-in), Make.com (automation that connects our forms, email and PDF generation), Anthropic's Claude (to help write your itinerary and answer Ask TripMade questions), APITemplate.io (to generate your itinerary PDF), Google Workspace (email delivery, form intake, file storage), Stripe (payment processing, for optional paid features), and analytics tooling used to understand how the site is used. None of these providers may use your information for their own purposes beyond providing their service to us.</p>
+      <p style="margin-bottom:18px;"><b>5. Affiliate links.</b> Itineraries may include links to booking partners (such as flight, hotel, activity, insurance or eSIM providers). If you book through these links, TripMade may earn a commission at no extra cost to you. We don't share more than the minimum needed for that link to work (e.g. a tracking parameter in the URL) — we don't hand your personal details to these partners unless you go on to book directly with them yourself.</p>
+      <p style="margin-bottom:18px;"><b>6. Cookies and analytics.</b> We use cookies and similar technology to keep you signed in and to understand, in aggregate, how people use the site (which pages are visited, roughly how long a session takes) so we can improve it. This doesn't include selling your data to advertisers.</p>
+      <p style="margin-bottom:18px;"><b>7. Data storage and retention.</b> Your information is stored securely with the providers listed in section 4, some of which may store or process data outside Australia. We keep it for as long as your account is active or as needed to provide the service, and delete or de-identify it when it's no longer needed, unless we're required to keep it longer by law.</p>
+      <p style="margin-bottom:18px;"><b>8. Security.</b> We take reasonable technical and organisational steps to protect your information, including access controls on our database so only you (and, where relevant, our team) can see your own records. No system is 100% secure, and we can't guarantee absolute security.</p>
+      <p style="margin-bottom:18px;"><b>9. Children.</b> TripMade is not directed at children and we don't knowingly collect personal information from anyone under 18.</p>
+      <p style="margin-bottom:18px;"><b>10. Your rights.</b> You can ask to access, correct, or delete your personal information at any time, and you can withdraw marketing consent at any time (that stops future marketing emails; it doesn't affect itineraries or account emails you've asked for). If you're in Australia, this is handled under the Privacy Act 1988 (Cth) and the Australian Privacy Principles; if you believe we haven't met our obligations, you can also raise it with the Office of the Australian Information Commissioner (OAIC). To exercise any of these, contact hello@tripmade.co.</p>
+      <p style="margin-bottom:18px;"><b>11. Changes to this policy.</b> We may update this policy as our service evolves. We'll update the "last updated" date above when we do.</p>
+      <p style="margin-bottom:0;"><b>12. Contact.</b> Questions about this policy, or to exercise your rights above, can be sent to hello@tripmade.co.</p>
     </div>
   </div>
 </div>
@@ -3582,18 +3591,23 @@ footer p { font-size:13px; color:var(--text-dim); }
 <div id="page-terms" class="page">
   <div class="section" style="max-width:760px;">
     <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
-      This is a draft placeholder. It has not been reviewed by a lawyer and should be replaced with proper terms before launch.
+      This is a working draft written to reflect what TripMade actually does today. It has not been reviewed by a lawyer and should get that review before launch — in particular sections 5 and 9 below (payment terms and liability).
     </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Terms &amp; Conditions</h2>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
     <div style="font-size:14px;line-height:1.8;color:var(--text);">
       <p style="margin-bottom:18px;"><b>1. Acceptance.</b> By using TripMade, you agree to these terms. If you don't agree, please don't use our service.</p>
-      <p style="margin-bottom:18px;"><b>2. Our service.</b> TripMade generates personalised travel itineraries based on the information you provide. Itineraries are suggestions only — we don't currently book or confirm flights, hotels, or activities on your behalf.</p>
-      <p style="margin-bottom:18px;"><b>3. Accuracy.</b> While we aim for accuracy, prices, availability, and details in your itinerary (including affiliate links) are estimates at the time of generation and may change before you book. Always confirm final prices and availability directly with the relevant provider.</p>
-      <p style="margin-bottom:18px;"><b>4. Affiliate commissions.</b> TripMade may earn a commission when you book through links in your itinerary. This does not affect the price you pay.</p>
-      <p style="margin-bottom:18px;"><b>5. No liability for bookings.</b> TripMade is not a travel agent and is not responsible for bookings made directly with third-party providers, including cancellations, delays, or disputes.</p>
-      <p style="margin-bottom:18px;"><b>6. Changes.</b> We may update these terms from time to time as our service evolves.</p>
-      <p style="margin-bottom:0;"><b>7. Contact.</b> Questions about these terms can be sent to hello@tripmade.co.</p>
+      <p style="margin-bottom:18px;"><b>2. Our service.</b> TripMade generates personalised travel itineraries based on the information you provide, using a combination of AI assistance and human review. Itineraries are suggestions only — we don't currently book or confirm flights, hotels, or activities on your behalf unless you separately arrange that with us.</p>
+      <p style="margin-bottom:18px;"><b>3. Your account.</b> Some features (saving trips, joining the waitlist, viewing your itinerary in the Inbox) require an account, verified by a one-time code sent to your email. You're responsible for keeping access to your own email account secure, since that's how you sign in.</p>
+      <p style="margin-bottom:18px;"><b>4. Accuracy.</b> While we aim for accuracy, prices, availability, and details in your itinerary (including affiliate links) are estimates at the time of generation and may change before you book. Always confirm final prices and availability directly with the relevant provider before booking.</p>
+      <p style="margin-bottom:18px;"><b>5. Optional paid features.</b> Some parts of TripMade — such as unlocking extra detail on your itinerary — may involve a one-off fee, processed securely through Stripe. The price is shown before you pay. Once the paid content has been delivered to you, the fee is generally non-refundable, except where you're entitled to a remedy under the Australian Consumer Law (for example, if the service wasn't provided as described).</p>
+      <p style="margin-bottom:18px;"><b>6. Affiliate commissions.</b> TripMade may earn a commission when you book through links in your itinerary. This does not affect the price you pay, and any booking you make through a partner link is a contract between you and that partner, not with TripMade.</p>
+      <p style="margin-bottom:18px;"><b>7. No liability for bookings.</b> TripMade is not a travel agent and is not responsible for bookings made directly with third-party providers, including cancellations, delays, changes, or disputes — those are between you and the provider.</p>
+      <p style="margin-bottom:18px;"><b>8. Acceptable use.</b> Please don't use TripMade to submit false information, attempt to scrape or resell our itineraries at scale, or interfere with the service. We may suspend or close an account that does.</p>
+      <p style="margin-bottom:18px;"><b>9. Limitation of liability.</b> To the extent permitted by law, TripMade's liability to you for any claim relating to the service is limited to the amount you paid us (if any) for the specific feature the claim relates to. Nothing in these terms excludes any guarantee or right you have under the Australian Consumer Law that can't lawfully be excluded.</p>
+      <p style="margin-bottom:18px;"><b>10. Changes.</b> We may update these terms from time to time as our service evolves. Continuing to use TripMade after an update means you accept the new terms.</p>
+      <p style="margin-bottom:18px;"><b>11. Governing law.</b> These terms are governed by the laws of New South Wales, Australia.</p>
+      <p style="margin-bottom:0;"><b>12. Contact.</b> Questions about these terms can be sent to hello@tripmade.co.</p>
     </div>
   </div>
 </div>
@@ -5764,14 +5778,12 @@ async function renderInboxPage() {
     const dest = it.destination || (it.summary && it.summary.trip_title) || 'Your trip';
     const dateStr = it.summary && it.summary.date_range ? it.summary.date_range : '';
     const dayCount = Array.isArray(it.days) ? it.days.length : 0;
-    const unlockedCount = it.unlock_all ? dayCount : (Array.isArray(it.unlocked_days) ? it.unlocked_days.length : 0);
-    const lockLabel = it.unlock_all ? 'All days unlocked' : (unlockedCount + ' / ' + dayCount + ' days unlocked');
     const badge = it.status === 'new' ? '<span style="background:var(--accent);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">NEW</span>' : '';
     return '' +
       '<div class="saved-chat-row">' +
         '<div class="saved-chat-main">' +
           '<div class="saved-chat-title">' + dest + badge + '</div>' +
-          '<div class="saved-chat-meta">' + (dateStr ? dateStr + ' · ' : '') + dayCount + (dayCount === 1 ? ' day' : ' days') + ' · ' + lockLabel + '</div>' +
+          '<div class="saved-chat-meta">' + (dateStr ? dateStr + ' · ' : '') + dayCount + (dayCount === 1 ? ' day' : ' days') + '</div>' +
         '</div>' +
         '<div class="saved-chat-actions">' +
           '<button type="button" class="saved-chat-open" onclick="openInboxItinerary(' + jsStrAttr(it.id) + ')">Open →</button>' +
@@ -5849,34 +5861,20 @@ function renderInboxDetail(itin, justUnlocked) {
       '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + money(summary.total_cost) + '</div><div class="sum-sub red">per person</div></div>';
   }
   const days = Array.isArray(itin.days) ? itin.days : [];
-  const totalDays = days.length;
-  const unlockedCount = itin.unlock_all ? totalDays : (Array.isArray(itin.unlocked_days) ? itin.unlocked_days.length : 0);
+  // 2026-09-23: every day now renders in full for everyone, free — Lachlan's
+  // call (see tripmade-onsite-itinerary-inbox-progress.md). Paying used to be
+  // what unlocked this content at all; now it needs to unlock something
+  // genuinely extra on top, which doesn't exist yet (no new field the AI
+  // generates beyond what's below). Rather than take payment for literally
+  // nothing — which is exactly the bug Jai hit earlier tonight, just
+  // deliberately this time — the unlock UI stays hidden until that richer
+  // paid layer is designed and built (flagged for the Friday session). The
+  // Stripe/webhook plumbing itself is untouched and ready to switch back on.
   const allBlock = document.getElementById('ibx-unlock-all-block');
-  const allBtn = document.getElementById('ibx-unlock-all-btn');
-  const allSub = document.getElementById('ibx-unlock-all-sub');
-  if (allBlock) {
-    if (itin.unlock_all || unlockedCount >= totalDays) {
-      allBlock.style.display = 'none';
-    } else {
-      allBlock.style.display = '';
-      const remaining = totalDays - unlockedCount;
-      if (allSub) allSub.textContent = 'Unlock the remaining ' + remaining + (remaining === 1 ? ' day' : ' days') + ' at once and save 10%, instead of paying per day';
-      if (allBtn) allBtn.textContent = 'Unlock all days — ' + inboxUnlockPrice(itin, 'all') + ' →';
-    }
-  }
+  if (allBlock) allBlock.style.display = 'none';
   document.getElementById('ibx-days').innerHTML = days.map(function(d) {
-    const locked = inboxDayLocked(itin, d.day_number);
     const dayId = itin.id + '-' + d.day_number;
     const label = 'Day ' + d.day_number + (d.day_title ? ' — ' + d.day_title : '') + (d.date_label ? ' · ' + d.date_label : '');
-    if (locked) {
-      return '' +
-        '<div class="day-block">' +
-          '<div class="day-lbl-row">' +
-            '<div class="day-lbl">' + label + '</div>' +
-            '<button type="button" class="day-extend-btn" onclick="unlockInboxDay(' + d.day_number + ')">🔒 Unlock this day — ' + inboxUnlockPrice(itin, 'day') + '</button>' +
-          '</div>' +
-        '</div>';
-    }
     const highlights = Array.isArray(d.highlights) ? d.highlights : [];
     const evtHtml = highlights.map(function(h) {
       const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
@@ -5908,8 +5906,46 @@ function renderInboxDetail(itin, justUnlocked) {
   }).join('');
   const pdfLink = document.getElementById('ibx-pdf-link');
   if (pdfLink) {
-    if (itin.pdf_url) { pdfLink.style.display = 'inline-block'; pdfLink.setAttribute('href', itin.pdf_url); }
-    else { pdfLink.style.display = 'none'; }
+    pdfLink.style.display = days.length ? 'inline-block' : 'none';
+    pdfLink.disabled = false;
+    pdfLink.textContent = '📄 Download as PDF';
+  }
+}
+// 2026-09-25: PDF downloads used to link straight to a single static file
+// Make generated once, in full, at itinerary creation time — completely
+// unaware of the per-day $1 unlock paywall, so anyone could get every
+// day's full write-up for free just by clicking Download. This now calls
+// download-itinerary-pdf fresh every time, which reads the itinerary's
+// REAL current unlock state and builds the PDF to match: locked days get
+// the header + highlights only, unlocked days get the full day.
+async function downloadInboxItineraryPdf() {
+  const itin = _currentInboxItinerary;
+  const btn = document.getElementById('ibx-pdf-link');
+  if (!itin || !btn) return;
+  const { data: sessionData } = await sb.auth.getSession();
+  const token = sessionData && sessionData.session && sessionData.session.access_token;
+  if (!token) { requireAccount(function() {}); return; }
+  btn.disabled = true;
+  btn.textContent = 'Preparing your PDF…';
+  try {
+    const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/download-itinerary-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ itinerary_id: itin.id }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.download_url) {
+      console.error('PDF generation failed:', data);
+      alert("Couldn't generate your PDF just then — please try again in a moment.");
+      return;
+    }
+    window.open(data.download_url, '_blank');
+  } catch (e) {
+    console.error('PDF generation failed:', e);
+    alert("Couldn't generate your PDF just then — please try again in a moment.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📄 Download as PDF';
   }
 }
 // Separate from the homepage sample itinerary's toggleDayExtend() — this
@@ -6133,6 +6169,7 @@ async function submitForm() {
     name:         document.getElementById('f-name').value,
     email:        email,
     phone:        document.getElementById('f-phone').value,
+    marketingOptIn: document.getElementById('f-marketing-optin').checked,
   };
   console.log('Itinerary request:', formData);
   // 👉 TEMPORARY: pointed at the "Integration Webhooks — PDF rebuild" test scenario
@@ -6166,7 +6203,9 @@ async function submitForm() {
     must_have: formData.mustHave,
     avoid: formData.avoid,
     existing_booking: formData.existing,
-    notes: formData.notes
+    notes: formData.notes,
+    marketing_opt_in: !!formData.marketingOptIn,
+    marketing_opt_in_at: formData.marketingOptIn ? new Date().toISOString() : null
   }).then(({ error }) => { if (error) console.error('Saving itinerary request failed:', error); });
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
