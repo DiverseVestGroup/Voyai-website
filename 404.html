@@ -1,1 +1,17 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TripMade</title>
+<script>
+(function () {
+  var map = { '/inbox': 'inbox', '/saved': 'saved', '/ask': 'ask', '/book': 'tours', '/inspiration': 'inspo' };
+  var path = (location.pathname || '/').toLowerCase().replace(/\/+$/, '');
+  location.replace(map[path] ? '/?page=' + map[path] : '/');
+})();
+</script>
+<style>body{margin:0;font-family:system-ui,sans-serif;background:#fff;color:#555;display:flex;align-items:center;justify-content:center;height:100vh;}</style>
+</head>
+<body>Taking you to TripMade…</body>
+</html>
