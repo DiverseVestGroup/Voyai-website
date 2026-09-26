@@ -263,7 +263,22 @@ hr { border:none; border-top:1px solid var(--border); }
 .eb-ok  { background:var(--green-light); color:#0F6E56; }
 .eb-res { background:var(--blue-light);  color:#185FA5; }
 .eb-wait{ background:var(--accent-light);color:var(--accent); }
-.day-extend-panel { display:none; margin:6px 22px 16px; padding-top:14px; border-top:1px dashed var(--border); }
+/* 2026-09-26: "Expand this day" now elaborates on each individual timed item
+   in place (the old Morning/Afternoon/Evening sections are gone). Each .evt
+   carries an .evt-detail that stays hidden until its .day-block is expanded. */
+/* 2026-09-26: affiliate "Book" buttons on itinerary line items. Added by
+   decorateItineraryAffiliates() on the right-hand side of any flight,
+   transfer, train, ferry, car hire or hotel check-in item. */
+.evt-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.evt-head .evt-label { flex:1; min-width:0; }
+.evt-book { flex-shrink:0; margin-top:-1px; display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--accent); background:#fff; border:1.5px solid var(--accent); border-radius:20px; padding:4px 10px; text-decoration:none; white-space:nowrap; line-height:1.2; transition:background .15s,color .15s; }
+.evt-book:hover { background:var(--accent); color:#fff; }
+.aff-note { font-size:11px; color:var(--text-dim); text-align:center; padding:10px 22px 14px; }
+@media (max-width:480px) { .evt-book { font-size:10.5px; padding:4px 8px; } }
+.evt-detail { display:none; font-size:13px; color:var(--text); line-height:1.6; margin-top:6px; }
+.day-block.expanded .evt-detail { display:block; }
+.day-block.expanded .evt { padding-bottom:6px; }
+.day-extend-panel { display:none; margin:6px 22px 16px; }
 .day-extend-panel.open { display:block; }
 .day-extend-sec { margin-bottom:12px; }
 .day-extend-sec:last-of-type { margin-bottom:0; }
@@ -918,7 +933,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-flight"></div></div>
             <div class="evt-body">
               <div class="evt-label">Fly SYD &rarr; FCO &mdash; Emirates EK415 via Dubai</div>
-              <div class="evt-blurb">Depart 6am, ~22h total with a Dubai stopover, arrives Rome early evening local time.</div>
+              <div class="evt-detail">You're airborne by 6am on Emirates to Dubai &mdash; the longest leg of the whole trip at just under 14 hours, with two full meal services and on-demand entertainment to make it manageable. Around 2 hours on the ground in Dubai before the connection into Rome, enough to stretch your legs without the stress of a tight connection. It's all one ticket, so your bags are checked straight through to Rome and both boarding passes print in Sydney. If you want extra legroom, ask about an exit-row seat at check-in &mdash; Emirates typically releases a handful on the morning of departure.</div>
             </div>
           </div>
           <div class="evt">
@@ -926,7 +941,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-transport"></div></div>
             <div class="evt-body">
               <div class="evt-label">Private transfer FCO &rarr; Hotel</div>
-              <div class="evt-blurb">Pre-booked and tracked door to door &mdash; no queuing for a taxi after a long flight.</div>
+              <div class="evt-detail">You touch down at Fiumicino around 7:30pm local time. Your driver is waiting at arrivals with a name board, tracked against your actual landing time rather than a fixed pickup slot &mdash; land early or late and nobody's left waiting. No taxi queue, no haggling over fares after 22 hours of travel.</div>
             </div>
           </div>
           <div class="evt">
@@ -934,7 +949,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-hotel"></div></div>
             <div class="evt-body">
               <div class="evt-label">Check-in &mdash; Hotel Campo de' Fiori, Centro Storico</div>
-              <div class="evt-blurb">Boutique 4-star right in the historic centre &mdash; walkable to everything for the next 4 nights.</div>
+              <div class="evt-detail">A boutique 4-star two minutes from Campo de' Fiori square itself, and walkable to almost everything on this leg of the trip &mdash; the Pantheon, Piazza Navona and Trastevere are all within about 15 minutes on foot. You're here for 4 nights, so it's worth properly unpacking tonight rather than living out of the suitcase.</div>
             </div>
           </div>
           <div class="evt">
@@ -942,14 +957,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Dinner &mdash; Osteria del Pegno (3 min walk)</div>
-              <div class="evt-blurb">Reserved so you can eat straight away &mdash; no wandering Rome exhausted looking for a table.</div>
+              <div class="evt-detail">A reserved table three minutes' walk from the hotel, so dinner's sorted before you've even unpacked &mdash; no wandering Rome exhausted looking for somewhere with a free table. Romans eat late, so 9:30pm lands right in the middle of the dinner rush rather than the tail end of it. Keep it simple tonight: a plate of cacio e pepe and an early night sets you up for the 8am Vatican start.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-1">
-          <div class="day-extend-sec"><h4>Morning</h4><p>You're airborne by 6am, direct to Dubai on Emirates &mdash; settle in, this is the longest leg of the whole trip at just under 14 hours. Two full meal services and on-demand entertainment make it manageable; if you want extra legroom, it's worth asking about an exit-row seat at check-in, since Emirates typically releases a handful on the morning of departure.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>A stopover in Dubai before the connecting flight into Rome &mdash; around 2 hours on the ground, plenty of time to stretch your legs between gates without the stress of a tight connection. Both flights are booked as one Emirates ticket, so your bags are checked straight through to Rome and both boarding passes print at Sydney.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Touch down at Fiumicino around 7:30pm local time. Your private transfer is waiting at arrivals with a name board, tracked against your actual landing time rather than a fixed pickup slot, so there's no standing around after a long flight. You're checked into Hotel Campo de' Fiori by 8:30pm &mdash; a boutique 4-star two minutes from Campo de' Fiori square itself, and walkable to almost everything on this leg of the trip. A reserved table at Osteria del Pegno, three minutes' walk away, means dinner's sorted before you've even unpacked &mdash; the cacio e pepe is what the place is known for.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Your arrival transfer is timed to your actual landing time, not a guess &mdash; nobody's left waiting around at Fiumicino.</div></div>
         </div>
       </div>
@@ -964,7 +976,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Vatican Museums + Sistine Chapel &mdash; skip-the-line</div>
-              <div class="evt-blurb">Early skip-the-line entry &mdash; beats roughly 90% of the day's crowds.</div>
+              <div class="evt-detail">Doors open at the Vatican Museums right at 8am &mdash; booked deliberately at that time, since it beats roughly 90% of the day's crowds through to the Sistine Chapel, otherwise the single most congested room in Rome by mid-morning. Skip-the-line entry means you walk straight past the general queue that already wraps around the walls. Shoulders and knees need to be covered, so dress for it before you leave the hotel.</div>
             </div>
           </div>
           <div class="evt">
@@ -972,7 +984,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">St Peter's Basilica + dome climb</div>
-              <div class="evt-blurb">Free entry, dome climb booked for the best rooftop view in Rome.</div>
+              <div class="evt-detail">A 10-minute walk around from the museums to St Peter's Basilica, which is free to enter. The dome climb is booked in &mdash; 551 steps in total, though the first stretch can be done by lift if you'd rather save your legs for the view over St Peter's Square at the top. The last section narrows and leans with the curve of the dome, so it's worth knowing that going in if tight spaces bother you.</div>
             </div>
           </div>
           <div class="evt">
@@ -980,7 +992,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Lunch &mdash; Pizzarium Bonci, Prati</div>
-              <div class="evt-blurb">Rome's most famous pizza al taglio, a short walk from the Vatican.</div>
+              <div class="evt-detail">Pizzarium Bonci in Prati &mdash; widely considered Rome's best pizza al taglio, sold by weight so you can try a few different toppings without committing to a full pizza. An easy 8-minute walk from the Vatican. It's standing room only with a few stools outside, so grab your slices and eat on the go like the locals do.</div>
             </div>
           </div>
           <div class="evt">
@@ -988,7 +1000,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Castel Sant'Angelo &mdash; guided tour</div>
-              <div class="evt-blurb">Riverside fortress-turned-museum, guided so you don't miss the history.</div>
+              <div class="evt-detail">A guided tour through Castel Sant'Angelo, the riverside fortress-turned-museum that was once the papal escape route from the Vatican via a secret elevated passage. Your guide covers that history on the way up to the top terrace, one of the city's best rooftop views back over St Peter's and the Tiber.</div>
             </div>
           </div>
           <div class="evt">
@@ -996,14 +1008,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Dinner &mdash; Da Enzo al 29, Trastevere</div>
-              <div class="evt-blurb">Reserved table at one of Trastevere's best-loved trattorias.</div>
+              <div class="evt-detail">Dinner's reserved at Da Enzo al 29 in Trastevere &mdash; a tiny, family-run trattoria that's consistently one of the neighbourhood's most loved, which is exactly why a booking matters here; walk-ins regularly wait over an hour. Get there a few minutes early and use the time to wander Trastevere's cobbled backstreets, one of the prettiest parts of Rome after dark.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-2">
-          <div class="day-extend-sec"><h4>Morning</h4><p>Doors open at the Vatican Museums right at 8am &mdash; booked deliberately at that time, since it beats roughly 90% of the day's crowds through to the Sistine Chapel, otherwise the single most congested room in Rome by mid-morning. From there it's a 10-minute walk around to St Peter's Basilica, free to enter, with the dome climb booked for 11am &mdash; 551 steps in total, though the first stretch can be done by lift if you'd rather save your legs for the view over St Peter's Square at the top.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>Lunch is booked at Pizzarium Bonci in Prati &mdash; widely considered Rome's best pizza al taglio, sold by weight so you can try a few different toppings without committing to a full pizza, and an easy 8-minute walk from the Vatican. Afterwards, a guided tour through Castel Sant'Angelo, the riverside fortress-turned-museum that was once the papal escape route from the Vatican via a secret elevated passage &mdash; your guide covers that history on the way up to one of the city's best rooftop views back over St Peter's.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's reserved at Da Enzo al 29 in Trastevere &mdash; a tiny, family-run trattoria that's consistently one of the neighbourhood's most loved, which is exactly why a booking matters here; walk-ins regularly wait over an hour. Get there a few minutes early and use the wait to wander Trastevere's cobbled backstreets, one of the prettiest parts of Rome after dark.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">8am entry at the Vatican avoids roughly 90% of the day's visitors &mdash; most tourists don't arrive until 10am.</div></div>
         </div>
       </div>
@@ -1018,7 +1027,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Colosseum + Roman Forum &mdash; priority access, guided</div>
-              <div class="evt-blurb">Priority access booked three weeks out &mdash; the Colosseum sells out fast.</div>
+              <div class="evt-detail">Priority, guided access into the Colosseum and Roman Forum &mdash; booked three weeks out, since the Colosseum regularly sells out well ahead of most people's travel dates, especially in peak season. Your guide takes you through the arena floor and underground chambers most general-admission tickets don't include, then continues on through the Forum and Palatine Hill on the same ticket. Wear proper walking shoes &mdash; it's uneven ancient stone for most of the morning.</div>
             </div>
           </div>
           <div class="evt">
@@ -1026,7 +1035,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Lunch &mdash; Suppl&igrave; Roma, street food near Forum</div>
-              <div class="evt-blurb">Quick, cheap and genuinely excellent &mdash; Rome's classic fried rice balls.</div>
+              <div class="evt-detail">A quick, cheap lunch at Suppl&igrave; Roma near the Forum &mdash; Rome's classic fried rice balls with a molten mozzarella centre, done properly, and a fraction of the price of anywhere directly on the tourist strip. Order a couple each plus a slice of pizza bianca to keep the energy up for the afternoon.</div>
             </div>
           </div>
           <div class="evt">
@@ -1034,7 +1043,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Borghese Gallery &mdash; timed entry (must pre-book)</div>
-              <div class="evt-blurb">Bernini and Caravaggio in one room &mdash; entry only possible with a pre-booked slot.</div>
+              <div class="evt-detail">A timed 3pm entry at the Borghese Gallery &mdash; tickets are strictly time-slotted and routinely sell out weeks ahead, so this one's locked in well in advance. Bernini's sculpture and Caravaggio's paintings share the same few rooms, and visits are capped at two hours, which is enough to see everything without rushing. Bags have to be checked at the entrance, so arrive 20 minutes early.</div>
             </div>
           </div>
           <div class="evt">
@@ -1042,14 +1051,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Dinner &mdash; Il Sorpasso, aperitivo + dinner</div>
-              <div class="evt-blurb">Reserved for aperitivo through to dinner in one relaxed sitting.</div>
+              <div class="evt-detail">Dinner's booked at Il Sorpasso &mdash; a wine bar and kitchen that runs aperitivo straight through to dinner in one relaxed sitting, so there's no rushing between two venues after a full day on your feet. The small-plates menu changes daily depending on what's fresh at the market that morning, so ask what's good tonight rather than ordering off memory.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-3">
-          <div class="day-extend-sec"><h4>Morning</h4><p>Priority, guided access into the Colosseum and Roman Forum &mdash; booked three weeks out, since the Colosseum regularly sells out well ahead of most people's travel dates, especially in peak season. Your guide takes you through the arena floor and underground chambers most general-admission tickets don't include, then continues on through the Forum and Palatine Hill on the same ticket.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>A quick, cheap lunch at Suppl&igrave; Roma near the Forum &mdash; Rome's classic fried rice balls, done properly, and a fraction of the price of anywhere directly on the tourist strip. Then a timed entry slot at the Borghese Gallery at 3pm &mdash; tickets are strictly time-slotted and routinely sell out weeks ahead, so this one's locked in well in advance. Bernini's sculpture and Caravaggio's paintings share the same few rooms, and visits are capped at two hours, which is enough to see everything without rushing.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's booked at Il Sorpasso &mdash; a wine bar and kitchen that runs aperitivo straight through to dinner in one relaxed sitting, so there's no rushing between two venues after a full day on your feet. Their small-plates menu changes daily depending on what's fresh at the market that morning.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">The Colosseum regularly sells out three weeks in advance &mdash; pre-booked for you automatically so it's one less thing to think about.</div></div>
         </div>
       </div>
@@ -1064,7 +1070,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Trevi Fountain + Pantheon &mdash; early, no crowds</div>
-              <div class="evt-blurb">Both free, both close to empty before 9am, unlike later in the day.</div>
+              <div class="evt-detail">An early, uncrowded pass through the Trevi Fountain and the Pantheon &mdash; both close to empty before 9am, compared with the crowds that build steadily from mid-morning onward. The Trevi is free; the Pantheon has a small entry ticket of around &euro;5. Toss a coin into the Trevi with your right hand over your left shoulder for the classic guarantee of a return trip to Rome &mdash; pure tradition, but worth doing anyway.</div>
             </div>
           </div>
           <div class="evt">
@@ -1072,7 +1078,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Brunch &mdash; Antico Caff&egrave; Greco (since 1760)</div>
-              <div class="evt-blurb">Rome's oldest caf&eacute; &mdash; a proper send-off before flying out.</div>
+              <div class="evt-detail">A relaxed final brunch at Antico Caff&egrave; Greco, Rome's oldest caf&eacute;, open since 1760 and once a regular haunt of Byron and Keats. Sit down inside among the old paintings rather than standing at the bar &mdash; it costs more, but it's a proper, unhurried send-off from Rome rather than a rushed coffee at the gate.</div>
             </div>
           </div>
           <div class="evt">
@@ -1080,14 +1086,19 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-transport"></div></div>
             <div class="evt-body">
               <div class="evt-label">Transfer to FCO &mdash; pre-booked, tracked in app</div>
-              <div class="evt-blurb">Timed to your flight, tracked live so there's no last-minute scramble.</div>
+              <div class="evt-detail">Your pre-booked, live-tracked transfer gets you to Fiumicino with a comfortable buffer before the flight &mdash; around 45 minutes from the centre, tracked so the driver adjusts if traffic's heavy. Ask the hotel to hold your bags after checkout so you're not carrying them around Rome all morning.</div>
+            </div>
+          </div>
+          <div class="evt">
+            <div class="evt-time">16:20</div>
+            <div class="evt-dot-col"><div class="evt-dot dot-flight"></div></div>
+            <div class="evt-body">
+              <div class="evt-label">Fly FCO &rarr; IBZ &mdash; Vueling</div>
+              <div class="evt-detail">A short, easy 2h15 hop across the Mediterranean, landing into Ibiza at 18:35 local time, ready for the next four nights. Vueling's cabin bag allowance is tighter than Emirates', so check yours fits their sizer before you leave the hotel &mdash; paying for a bag online beforehand is much cheaper than at the gate.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-4">
-          <div class="day-extend-sec"><h4>Morning</h4><p>An early, uncrowded pass through the Trevi Fountain and the Pantheon &mdash; both free to visit, and both close to empty before 9am, compared with the crowds that build steadily from mid-morning onward. Toss a coin into the Trevi with your right hand over your left shoulder if you want the classic guarantee of a return trip to Rome &mdash; pure tradition, but worth doing anyway.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>A relaxed final brunch at Antico Caff&egrave; Greco, Rome's oldest caf&eacute;, open continuously since 1760 and once a regular haunt of Byron and Keats &mdash; a proper, unhurried send-off before the transfer to the airport rather than a rushed coffee at the gate.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Your pre-booked, live-tracked transfer gets you to Fiumicino with a comfortable buffer before the Vueling flight across to Ibiza &mdash; a short 2h15 hop, landing at 18:35 local time, ready for the next four nights. Vueling's cabin bag allowance is tighter than Emirates' &mdash; worth checking yours fits their sizer before you leave the hotel.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Rome hotel checkout is typically 11am, well before this day's low-key sightseeing wraps up &mdash; ask reception to hold your bags for the morning, it's standard practice at Campo de' Fiori and saves carrying them around the city.</div></div>
         </div>
       </div>
@@ -1119,7 +1130,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-hotel"></div></div>
             <div class="evt-body">
               <div class="evt-label">Check-in &mdash; Ushua&iuml;a Beach Hotel, Playa d'en Bossa</div>
-              <div class="evt-blurb">Beachfront with its own open-air club &mdash; no transport needed on night one.</div>
+              <div class="evt-detail">The Vueling flight from Rome lands into Ibiza at 18:35, then it's a 10-minute transfer straight to Ushua&iuml;a Beach Hotel in Playa d'en Bossa &mdash; beachfront, with its own open-air club on site, so there's genuinely no need to arrange transport for the first night. Rooms here book out fast around the closing parties, so this one was locked in as soon as the September dates were confirmed.</div>
             </div>
           </div>
           <div class="evt">
@@ -1127,7 +1138,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Dinner &mdash; Jockey Club Sunset Beach (beachfront)</div>
-              <div class="evt-blurb">Reserved beachfront table, timed for sunset.</div>
+              <div class="evt-detail">Dinner's reserved at Jockey Club Sunset Beach, right on the sand, timed so you're seated for sunset. Mediterranean seafood and grilled fish are the thing to order here, and it's a short walk back along the beach to the hotel, so you can go straight from dinner to the party.</div>
             </div>
           </div>
           <div class="evt">
@@ -1135,14 +1146,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
             <div class="evt-body">
               <div class="evt-label">Ushua&iuml;a Ibiza Beach Club &mdash; Ti&euml;sto closing party</div>
-              <div class="evt-blurb">Booked entry to one of the island's biggest closing parties.</div>
+              <div class="evt-detail">Booked entry into Ushua&iuml;a's closing party with Ti&euml;sto &mdash; about as strong a first night as Ibiza gets. Doors open well before the headliner, but the venue's a two-minute walk from your room, so there's no rush to get there right on time and nothing to organise getting home.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-5">
-          <div class="day-extend-sec"><h4>Morning</h4><p>The Vueling flight from Rome lands into Ibiza at 18:35 &mdash; a short, easy 2h15 hop across the Mediterranean, so there's no early start today and no need to rush breakfast in Rome.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>Straight from the airport into Ushua&iuml;a Beach Hotel in Playa d'en Bossa &mdash; a 10-minute transfer from Ibiza airport, beachfront, with its own open-air club on site, so there's genuinely no need to arrange transport for the first night. Rooms here book out fast around the closing parties, so this one was locked in as soon as the September dates were confirmed.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's reserved at Jockey Club Sunset Beach, right on the sand, timed so you're seated for sunset before booked entry into Ushua&iuml;a's closing party with Ti&euml;sto &mdash; about as strong a first night as Ibiza gets. Doors for the party are from 5pm, but the venue's a two-minute walk from your room, so there's no rush to get there right on time.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Ushua&iuml;a sits directly on the beach with its own open-air club, so night one needs zero transport planning.</div></div>
         </div>
       </div>
@@ -1157,7 +1165,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Recovery brunch &mdash; La Paloma, San Lorenzo</div>
-              <div class="evt-blurb">Easy, laid-back brunch spot to recover before round two.</div>
+              <div class="evt-detail">A slow recovery brunch at La Paloma in San Lorenzo &mdash; a garden restaurant set among orange groves inland from the coast, deliberately laid-back and away from the beach clubs, which makes it the right pace for the morning after a big first night.</div>
             </div>
           </div>
           <div class="evt">
@@ -1165,7 +1173,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Sunset catamaran &mdash; 3hr, open bar</div>
-              <div class="evt-blurb">3 hours on the water with an open bar, timed for golden hour.</div>
+              <div class="evt-detail">A 3-hour sunset catamaran with open bar, including a transfer from Ushua&iuml;a to Ibiza Town marina. It departs at 5:30pm, timed so golden hour hits right as you're passing Dalt Vila, the walled old town. This route and time slot sells out fast in September, so it's booked well ahead rather than left to chance.</div>
             </div>
           </div>
           <div class="evt">
@@ -1173,7 +1181,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Dinner &mdash; El Chiringuito, Es Cavallet beach</div>
-              <div class="evt-blurb">Reserved beach-club dinner on one of Ibiza's quieter stretches of sand.</div>
+              <div class="evt-detail">Dinner's reserved at El Chiringuito on Es Cavallet beach &mdash; one of Ibiza's quieter, more low-key stretches of sand, a deliberate contrast to the catamaran. Easy seafood and paella with your feet almost in the sand, and a chance to reset before the late one.</div>
             </div>
           </div>
           <div class="evt">
@@ -1181,14 +1189,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
             <div class="evt-body">
               <div class="evt-label">Pacha Ibiza &mdash; Eric Prydz presents HOLO</div>
-              <div class="evt-blurb">Booked entry to Pacha's biggest weekly residency.</div>
+              <div class="evt-detail">Booked entry to Pacha for Eric Prydz's HOLO residency at midnight &mdash; one of the biggest shows on the island, built around a huge holographic stage production. Pacha's door policy is relaxed for pre-booked ticket holders, so there's no queuing required.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-6">
-          <div class="day-extend-sec"><h4>Morning</h4><p>A slow recovery brunch at La Paloma in San Lorenzo &mdash; a garden restaurant set among orange groves inland from the coast, deliberately laid-back and away from the beach clubs, which makes it the right pace for the morning after a big first night.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>A 3-hour sunset catamaran with open bar, departing Ibiza Town marina at 5:30pm and timed so golden hour hits right as you're passing Dalt Vila, the walled old town &mdash; this route and time slot sells out fast in September, so it's booked well ahead rather than left to chance. A transfer from Ushua&iuml;a to the marina is included.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's reserved at El Chiringuito on Es Cavallet beach &mdash; one of Ibiza's quieter, more low-key stretches of sand, a deliberate contrast to the catamaran &mdash; before booked entry to Pacha for Eric Prydz's HOLO residency at midnight. Pacha's door policy is relaxed for pre-booked ticket holders, so there's no queuing required.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">The sunset catamaran departs from Ibiza Town marina and gives the best view of Dalt Vila at golden hour &mdash; it sells out quickly in September.</div></div>
         </div>
       </div>
@@ -1203,7 +1208,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Cala Comte beach &mdash; taxi pre-booked, sunbeds reserved</div>
-              <div class="evt-blurb">Clearest water on the island &mdash; reservation skips the 9am queue.</div>
+              <div class="evt-detail">A pre-booked taxi to Cala Comte on the west coast, with sunbeds already reserved &mdash; widely regarded as having the clearest water on the island, and the reservation means you're not fighting for a spot on the sand. Bring reef-safe sunscreen &mdash; a couple of the beach clubs here have started asking for it specifically.</div>
             </div>
           </div>
           <div class="evt">
@@ -1211,7 +1216,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Sunset drinks &mdash; Caf&eacute; del Mar, San Antonio</div>
-              <div class="evt-blurb">Reserved for Ibiza's original sunset-watching spot.</div>
+              <div class="evt-detail">Sunset drinks at Caf&eacute; del Mar in San Antonio &mdash; Ibiza's original sunset-watching spot since the 1980s, and still the benchmark everyone else on the strip is copying. A table's reserved ahead, since the terrace fills up well before sunset itself on a clear evening.</div>
             </div>
           </div>
           <div class="evt">
@@ -1219,7 +1224,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Dinner &mdash; Can Pilot, traditional Ibizan grill</div>
-              <div class="evt-blurb">Reserved table at a proper Ibizan grill, away from the tourist strip.</div>
+              <div class="evt-detail">Dinner's booked at Can Pilot, a proper Ibizan grill well away from the tourist strip &mdash; big cuts of meat cooked over the fire and a local crowd rather than a club one. A solid, filling meal before the longest night of the trip.</div>
             </div>
           </div>
           <div class="evt">
@@ -1227,14 +1232,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
             <div class="evt-body">
               <div class="evt-label">DC10 &mdash; Circoloco Monday (legendary weekly)</div>
-              <div class="evt-blurb">Doors from midnight on purpose &mdash; one of Ibiza's most iconic nights.</div>
+              <div class="evt-detail">Entry into DC10 for Circoloco's Monday night &mdash; doors deliberately booked from midnight rather than earlier, since this is one of the island's most iconic weekly parties and doesn't properly get going until later. It runs through to midday Tuesday for anyone with the stamina.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-7">
-          <div class="day-extend-sec"><h4>Morning</h4><p>A pre-booked taxi to Cala Comte on the west coast, with sunbeds already reserved &mdash; widely regarded as having the clearest water on the island, and the reservation skips the queue that builds from around 9am for a good spot on the sand. Bring reef-safe sunscreen &mdash; a couple of the beach clubs here have started asking for it specifically.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>Sunset drinks at Caf&eacute; del Mar in San Antonio &mdash; Ibiza's original sunset-watching spot since the 1980s, and still the benchmark everyone else on the strip is copying. A table's reserved ahead, since the terrace fills up well before sunset itself on a clear evening.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>Dinner's booked at Can Pilot, a proper Ibizan grill well away from the tourist strip, before entry into DC10 for Circoloco's Monday night &mdash; doors deliberately booked from midnight rather than earlier, since this is one of the island's most iconic weekly parties and doesn't properly get going until later. It runs through to midday Tuesday for anyone with the stamina.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Cala Comte has the clearest water on the island, and DC10's Circoloco starts late on purpose &mdash; doors don't open until midnight.</div></div>
         </div>
       </div>
@@ -1249,7 +1251,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-food"></div></div>
             <div class="evt-body">
               <div class="evt-label">Final brunch &mdash; Babylon Beach, Es Canar</div>
-              <div class="evt-blurb">One last relaxed beachfront brunch before the airport.</div>
+              <div class="evt-detail">One last relaxed brunch at Babylon Beach in Es Canar &mdash; a quieter spot on the island's northeast coast, away from the party areas, for an easy final morning before the trip winds down.</div>
             </div>
           </div>
           <div class="evt">
@@ -1257,7 +1259,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-transport"></div></div>
             <div class="evt-body">
               <div class="evt-label">Transfer to IBZ airport &mdash; pre-booked taxi</div>
-              <div class="evt-blurb">Timed to your flight, no last-minute taxi hunting.</div>
+              <div class="evt-detail">A pre-booked taxi to Ibiza Airport, timed with a comfortable buffer before check-in closes, so there's no last-minute scramble on the way out. The airport gets especially busy with departing party traffic after the big Monday nights, which this timing accounts for.</div>
             </div>
           </div>
           <div class="evt">
@@ -1265,14 +1267,11 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-flight"></div></div>
             <div class="evt-body">
               <div class="evt-label">Fly IBZ &rarr; DXB &rarr; SYD &mdash; Emirates connecting</div>
-              <div class="evt-blurb">Connecting via Dubai, booked as one ticket door to door.</div>
+              <div class="evt-detail">The Emirates connection home via Dubai is booked as one ticket door to door &mdash; check in once in Ibiza and your bags are checked straight through to Sydney, with no need to collect and recheck them in Dubai. You land back in Sydney early the following morning, with a day up your sleeve before you're back at work.</div>
             </div>
           </div>
         </div>
         <div class="day-extend-panel" id="day-extend-panel-8">
-          <div class="day-extend-sec"><h4>Morning</h4><p>One last relaxed brunch at Babylon Beach in Es Canar before the trip winds down &mdash; a quieter spot on the island's northeast coast, away from the party areas, for an easy final morning.</p></div>
-          <div class="day-extend-sec"><h4>Afternoon</h4><p>A pre-booked taxi to Ibiza Airport, timed with a comfortable buffer before check-in closes, so there's no last-minute scramble on the way out. Ibiza's airport gets especially busy with departing party traffic on Mondays, which this timing accounts for.</p></div>
-          <div class="day-extend-sec"><h4>Evening</h4><p>The Emirates connection home via Dubai is booked as one ticket door to door &mdash; check in once in Ibiza and your bags are checked straight through to Sydney, with no need to collect and recheck them in Dubai. You land back in Sydney early the following morning, with a day up your sleeve before you're back at work.</p></div>
           <div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">Since your bags are checked through on one ticket, there's no need to build extra time into the Dubai layover for baggage &mdash; just enjoy the stopover lounge if your fare includes one.</div></div>
         </div>
       </div>
@@ -3882,16 +3881,19 @@ function toggleDayExtend(dayId) {
   if (_openDayExtendId && _openDayExtendId !== dayId) {
     const prevPanel = document.getElementById('day-extend-panel-' + _openDayExtendId);
     const prevBtn = document.getElementById('day-extend-btn-' + _openDayExtendId);
-    if (prevPanel) prevPanel.classList.remove('open');
+    if (prevPanel) { prevPanel.classList.remove('open'); const pb = prevPanel.closest('.day-block'); if (pb) pb.classList.remove('expanded'); }
     if (prevBtn) prevBtn.classList.remove('open');
   }
+  const block = panel.closest('.day-block');
   if (isOpen) {
     panel.classList.remove('open');
     btn.classList.remove('open');
+    if (block) block.classList.remove('expanded');
     _openDayExtendId = null;
   } else {
     panel.classList.add('open');
     btn.classList.add('open');
+    if (block) block.classList.add('expanded');
     _openDayExtendId = dayId;
   }
 }
@@ -5909,6 +5911,86 @@ async function deleteSavedChat(id) {
   if (_askChatId === id) _askChatId = null;
   renderSavedChatsPage();
 }
+// ── ITINERARY BOOKING LINKS (affiliate "Book" buttons on line items) ──
+// 2026-09-26 per Lachlan & Jai: any itinerary line item that's a flight,
+// transfer, trip to/from an airport, train, ferry, car hire or hotel
+// check-in gets a small "Book ... ↗" button on its RIGHT-hand side, linking
+// out to the matching affiliate partner. Works on both the homepage sample
+// itinerary and the live inbox itinerary — it reads each item's dot colour
+// (category) + label text, so the Make.com pipeline doesn't need to change.
+//
+// ONLY live, tracked (commission-earning) links are used here. To swap a
+// provider later (e.g. Booking.com once CJ approves, Welcome Pickups for
+// transfers), change the url in ITIN_AFFILIATES — nothing else.
+const ITIN_AFFILIATES = {
+  flight:   { label: 'Book flight',   url: 'https://kiwi.tpk.mx/wrtE1TIB' },                                                            // Kiwi.com via Travelpayouts
+  transfer: { label: 'Book transfer', url: 'https://www.trip.com/airport-transfers/?Allianceid=10472680&SID=330559720&trip_sub1=' },  // Trip.com
+  train:    { label: 'Book train',    url: 'https://www.trip.com/trains/?Allianceid=10472680&SID=330559720&trip_sub1=' },             // Trip.com
+  ferry:    { label: 'Book ferry',    url: 'https://www.ferryhopper.com/en/?aff_uid=tpmdco' },                                        // Ferryhopper
+  car:      { label: 'Book car',      url: 'https://www.trip.com/carhire/?Allianceid=10472680&SID=330559720&trip_sub1=' },            // Trip.com
+  stay:     { label: 'Book stay',     url: 'https://www.trip.com/hotels/?Allianceid=10472680&SID=330559720&trip_sub1=' }              // Trip.com (→ Booking.com once approved)
+};
+// Decide which booking link (if any) an item gets. Order matters: a ferry
+// or train mentioned in a "transport" item wins over the generic transfer.
+function itinAffiliateKind(category, label) {
+  const t = (label || '').toLowerCase();
+  if (/\bferry\b|ferries|hydrofoil|catamaran transfer/.test(t)) return 'ferry';
+  if (/\btrain\b|\brail\b|eurostar|shinkansen|\btgv\b|frecciarossa|\bice train/.test(t)) return 'train';
+  if (category === 'flight' || /\bfly\b|\bflight\b|✈/.test(t)) return 'flight';
+  if (/car hire|hire car|rental car|car rental|pick up (the |your )?car|collect (the |your )?car|road trip/.test(t)) return 'car';
+  if (category === 'transport' || /\btransfer\b|to (the )?airport|airport (transfer|pickup|pick-up)/.test(t)) return 'transfer';
+  if (/check[- ]?out\b/.test(t)) return null;
+  if (category === 'hotel' || /check[- ]?in\b/.test(t)) return 'stay';
+  return null;
+}
+const EVT_DOT_TO_CATEGORY = {
+  'dot-flight': 'flight', 'dot-transport': 'transport', 'dot-hotel': 'hotel',
+  'dot-food': 'food', 'dot-activity': 'activity', 'dot-event': 'event'
+};
+function decorateItineraryAffiliates(root) {
+  if (!root) return;
+  let added = 0;
+  root.querySelectorAll('.evt').forEach(function(evt) {
+    if (evt.querySelector('.evt-book')) { added++; return; }
+    const labelEl = evt.querySelector('.evt-label');
+    const dotEl = evt.querySelector('.evt-dot');
+    if (!labelEl || !dotEl) return;
+    let category = null;
+    for (const cls in EVT_DOT_TO_CATEGORY) if (dotEl.classList.contains(cls)) category = EVT_DOT_TO_CATEGORY[cls];
+    const kind = itinAffiliateKind(category, labelEl.textContent);
+    const aff = kind && ITIN_AFFILIATES[kind];
+    if (!aff) return;
+    const a = document.createElement('a');
+    a.className = 'evt-book';
+    a.href = aff.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer sponsored';
+    a.textContent = aff.label + ' ↗';
+    a.setAttribute('data-aff-kind', kind);
+    a.addEventListener('click', function(e) { e.stopPropagation(); });
+    // Button shares a row with the item's title (right-hand side), so the
+    // expanded write-up underneath still gets the full width on phones.
+    const head = document.createElement('div');
+    head.className = 'evt-head';
+    labelEl.parentNode.insertBefore(head, labelEl);
+    head.appendChild(labelEl);
+    head.appendChild(a);
+    added++;
+  });
+  // One short disclosure line per itinerary (ACCC/FTC), only if links exist.
+  if (added && !root.querySelector('.aff-note')) {
+    const note = document.createElement('div');
+    note.className = 'aff-note';
+    note.textContent = 'Booking links go to our travel partners. TripMade may earn a small commission at no extra cost to you.';
+    const blocks = root.querySelectorAll('.itin-block');
+    if (blocks.length) blocks[blocks.length - 1].appendChild(note);
+    else root.appendChild(note);
+  }
+}
+document.addEventListener('DOMContentLoaded', function() {
+  const sample = document.getElementById('day-block-1');
+  if (sample) decorateItineraryAffiliates(sample.closest('.itin-block').parentElement);
+});
 // ── INBOX (delivered itineraries — live on-site viewer, pay-to-unlock) ───
 // One row per generated/regenerated itinerary in the `itineraries` table,
 // written by the Make.com pipelines via the record-itinerary edge function
@@ -6069,18 +6151,29 @@ function renderInboxDetail(itin, justUnlocked) {
     // elaboration used to live here (as h.blurb) for both locked and
     // unlocked days; 2026-09-26 per Lachlan that's been pulled out entirely
     // — it now only shows once a day is expanded (paid), and with much more
-    // detail than the old blurb (see evtDetailHtml below).
-    const evtHtml = highlights.map(function(h) {
-      const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
-      return '' +
-        '<div class="evt">' +
-          '<div class="evt-time">' + (h.time || '') + '</div>' +
-          '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
-          '<div class="evt-body">' +
-            '<div class="evt-label">' + (h.icon ? h.icon + ' ' : '') + (h.label || '') + '</div>' +
-          '</div>' +
-        '</div>';
-    }).join('');
+    // detail than the old blurb (see buildEvtHtml below).
+    // 2026-09-26 (later) per Lachlan: expanding a day now elaborates on
+    // EVERY individual timed item, directly underneath that item — no more
+    // Morning/Afternoon/Evening sections, and no second copy of the list.
+    // Each unlocked item carries a hidden .evt-detail that shows once its
+    // .day-block gets the `expanded` class (see toggleInboxDayExtend).
+    // Locked days never get .evt-detail written into the DOM at all.
+    const buildEvtHtml = function(withDetail) {
+      return highlights.map(function(h) {
+        const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
+        const detailText = withDetail ? (h.detail || h.blurb || '') : '';
+        return '' +
+          '<div class="evt">' +
+            '<div class="evt-time">' + (h.time || '') + '</div>' +
+            '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
+            '<div class="evt-body">' +
+              '<div class="evt-label">' + (h.icon ? h.icon + ' ' : '') + (h.label || '') + '</div>' +
+              (detailText ? '<div class="evt-detail">' + detailText + '</div>' : '') +
+            '</div>' +
+          '</div>';
+      }).join('');
+    };
+    const evtHtml = buildEvtHtml(!locked);
     // Locked day: no extend button at all, just a plain unlock CTA. The
     // full morning/afternoon/evening/tip text is never written into the DOM
     // for a locked day — nothing to inspect/reveal client-side even before
@@ -6095,25 +6188,16 @@ function renderInboxDetail(itin, justUnlocked) {
           '<div class="evt-list">' + evtHtml + '</div>' +
         '</div>';
     }
-    // Expanded (paid) panel: per-stop detail first — this is the payoff for
-    // paying, so it needs to actually be worth reading (cuisine, timing,
-    // tips/tricks, practical info), not just the old one-line blurb. Falls
-    // back to h.blurb for older itineraries generated before the `detail`
-    // field existed, so nothing goes blank for past customers.
-    const evtDetailHtml = highlights.map(function(h) {
-      const detailText = h.detail || h.blurb || '';
-      if (!detailText) return '';
-      const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
-      return '' +
-        '<div class="evt">' +
-          '<div class="evt-time">' + (h.time || '') + '</div>' +
-          '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
-          '<div class="evt-body">' +
-            '<div class="evt-label">' + (h.icon ? h.icon + ' ' : '') + (h.label || '') + '</div>' +
-            '<div class="evt-blurb">' + detailText + '</div>' +
-          '</div>' +
-        '</div>';
-    }).join('');
+    // Safety net for old itineraries only: if not a single item has any
+    // per-item text (rows generated before `detail`/`blurb` existed), fall
+    // back to the old day-part write-up so a paid day never expands to
+    // nothing. New itineraries always have per-item detail, so they never
+    // show Morning/Afternoon/Evening.
+    const hasItemDetail = highlights.some(function(h) { return h.detail || h.blurb; });
+    const legacyHtml = hasItemDetail ? '' :
+      (d.morning ? '<div class="day-extend-sec"><h4>Morning</h4><p>' + d.morning + '</p></div>' : '') +
+      (d.afternoon ? '<div class="day-extend-sec"><h4>Afternoon</h4><p>' + d.afternoon + '</p></div>' : '') +
+      (d.evening ? '<div class="day-extend-sec"><h4>Evening</h4><p>' + d.evening + '</p></div>' : '');
     const tipHtml = d.tip ? '<div class="tip"><div class="tip-lbl">TripMade Tip</div><div class="tip-text">' + d.tip + '</div></div>' : '';
     return '' +
       '<div class="day-block">' +
@@ -6123,14 +6207,12 @@ function renderInboxDetail(itin, justUnlocked) {
         '</div>' +
         '<div class="evt-list">' + evtHtml + '</div>' +
         '<div class="day-extend-panel" id="day-extend-panel-' + dayId + '">' +
-          (evtDetailHtml ? '<div class="evt-list" style="margin-bottom:14px;">' + evtDetailHtml + '</div>' : '') +
-          (d.morning ? '<div class="day-extend-sec"><h4>Morning</h4><p>' + d.morning + '</p></div>' : '') +
-          (d.afternoon ? '<div class="day-extend-sec"><h4>Afternoon</h4><p>' + d.afternoon + '</p></div>' : '') +
-          (d.evening ? '<div class="day-extend-sec"><h4>Evening</h4><p>' + d.evening + '</p></div>' : '') +
+          legacyHtml +
           tipHtml +
         '</div>' +
       '</div>';
   }).join('');
+  decorateItineraryAffiliates(document.getElementById('ibx-days'));
   const pdfLink = document.getElementById('ibx-pdf-link');
   if (pdfLink) {
     pdfLink.style.display = days.length ? 'inline-block' : 'none';
@@ -6200,10 +6282,12 @@ function toggleInboxDayExtend(dayId) {
   if (_openInboxDayId && _openInboxDayId !== dayId) {
     const prevPanel = document.getElementById('day-extend-panel-' + _openInboxDayId);
     const prevBtn = document.getElementById('day-extend-btn-' + _openInboxDayId);
-    if (prevPanel) prevPanel.classList.remove('open');
+    if (prevPanel) { prevPanel.classList.remove('open'); const pb = prevPanel.closest('.day-block'); if (pb) pb.classList.remove('expanded'); }
     if (prevBtn) { prevBtn.classList.remove('open'); prevBtn.innerHTML = 'Expand this day <span class="chev">&rarr;</span>'; }
   }
   const nowOpen = panel.classList.toggle('open');
+  const block = panel.closest('.day-block');
+  if (block) block.classList.toggle('expanded', nowOpen);
   btn.classList.toggle('open', nowOpen);
   btn.innerHTML = nowOpen ? 'Collapse this day <span class="chev">&rarr;</span>' : 'Expand this day <span class="chev">&rarr;</span>';
   _openInboxDayId = nowOpen ? dayId : null;
