@@ -5924,12 +5924,11 @@ async function deleteSavedChat(id) {
 // transfers), change the url in ITIN_AFFILIATES — nothing else.
 // Commission comparison (checked 2026-09-26): transfers — Welcome Pickups
 // 8% vs Trip.com 5%; flights — Kiwi ~3% vs Trip.com 0.5-0.8%; hotels —
-// Trip.com 5-7%. So: all transfers/taxis → Welcome Pickups (swap the
-// `transfer` url below once the Welcome link exists), flights → Kiwi,
+// Trip.com 5-7%. So: all transfers/taxis → Welcome Pickups, flights → Kiwi,
 // stays/trains/car hire → Trip.com.
 const ITIN_AFFILIATES = {
   flight:   { label: 'Book flight',   url: 'https://kiwi.tpk.mx/wrtE1TIB' },                                                            // Kiwi.com via Travelpayouts
-  transfer: { label: 'Book transfer', url: 'https://www.trip.com/airport-transfers/?Allianceid=10472680&SID=330559720&trip_sub1=' },  // Trip.com
+  transfer: { label: 'Book transfer', url: 'https://tpk.mx/XuynAJG9' },                                                   // Welcome Pickups via Travelpayouts (8%) — all transfers & taxis
   train:    { label: 'Book train',    url: 'https://www.trip.com/trains/?Allianceid=10472680&SID=330559720&trip_sub1=' },             // Trip.com
   ferry:    { label: 'Book ferry',    url: 'https://www.ferryhopper.com/en/?aff_uid=tpmdco' },                                        // Ferryhopper
   car:      { label: 'Book car',      url: 'https://www.trip.com/carhire/?Allianceid=10472680&SID=330559720&trip_sub1=' },            // Trip.com
@@ -5980,7 +5979,7 @@ function itinAffiliateKind(category, label) {
   if (/\btrain\b|\brail\b|eurostar|shinkansen|\btgv\b|frecciarossa|\bice train/.test(t)) return 'train';
   if (category === 'flight' || /\bfly\b|\bflight\b|✈/.test(t)) return 'flight';
   if (/car hire|hire car|rental car|car rental|pick up (the |your )?car|collect (the |your )?car|road trip/.test(t)) return 'car';
-  if (category === 'transport' || /\btransfer\b|to (the )?airport|airport (transfer|pickup|pick-up)/.test(t)) return 'transfer';
+  if (category === 'transport' || /\btransfer\b|\btaxi\b|to (the )?airport|airport (transfer|pickup|pick-up)|private driver|chauffeur/.test(t)) return 'transfer';
   if (/check[- ]?out\b/.test(t)) return null;
   if (category === 'hotel' || /check[- ]?in\b/.test(t)) return 'stay';
   return null;
