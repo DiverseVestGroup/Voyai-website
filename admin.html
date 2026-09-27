@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>TripMade — Itinerary requests</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<!-- Private admin page (2026-09-26). Lists every itinerary request saved from
+     the site form, flags the ones that never got an itinerary delivered, and
+     lets Lachlan/Jai re-send any request through the Make.com pipeline with
+     the customer's original answers. Data comes from the Supabase edge
+     function rerun-itinerary-request; access needs the private ?key=… in the
+     bookmarked link. -->
+<style>
+  :root { --teal:#0D7377; --text:#1A1A1A; --muted:#6B6B6B; --bg:#F4F6F5; --red:#B3261E; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; padding:24px 16px 60px; }
+  main { max-width:920px; margin:0 auto; }
+  header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  h1 { font-size:22px; margin:0; }
+  .sub { color:var(--muted); font-size:14px; margin:4px 0 18px; }
+  h2 { font-size:16px; margin:26px 0 10px; }
+  .card { background:#fff; border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.06); display:flex; gap:12px; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; }
+  .meta { font-size:13px; color:#555; line-height:1.55; flex:1; min-width:240px; }
+  .meta b { color:var(--text); font-size:15px; }
+  .pill { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; margin-left:6px; vertical-align:1px; }
+  .delivered { background:#E3F4EC; color:#0F7A4A; }
+  .submitted { background:#FDECEA; color:var(--red); }
+  .rerun { background:#FFF4D6; color:#8A5A00; }
+  .before_tracking { background:#EEE; color:#666; }
+  button { background:var(--teal); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-weight:700; cursor:pointer; font-size:14px; white-space:nowrap; }
+  button.ghost { background:#fff; color:var(--teal); border:1.5px solid var(--teal); }
+  button:disabled { opacity:.5; cursor:default; }
+  details { margin-top:6px; }
+  summary { cursor:pointer; color:var(--teal); font-weight:600; }
+  pre { white-space:pre-wrap; word-break:break-word; background:#F7F7F7; padding:10px; border-radius:6px; font-size:12px; color:#333; }
+  .empty { background:#E3F4EC; color:#0F7A4A; padding:12px 14px; border-radius:10px; font-size:14px; }
+  .msg { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#1A1A1A; color:#fff; padding:12px 18px; border-radius:10px; font-size:14px; display:none; max-width:90vw; }
+  .err { color:var(--red); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>✈ Itinerary requests</h1>
+    <button class="ghost" onclick="load()">Refresh</button>
+  </header>
+  <p class="sub" id="sub">Loading…</p>
+  <h2>⚠️ Not delivered (older than 15 minutes)</h2>
+  <div id="stuck"></div>
+  <h2>Latest requests</h2>
+  <div id="recent"></div>
+</main>
+<div class="msg" id="msg"></div>
+<script>
+const API = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/rerun-itinerary-request';
+const KEY = new URLSearchParams(location.search).get('key') || '';
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function toast(t) { const m = document.getElementById('msg'); m.textContent = t; m.style.display = 'block'; clearTimeout(toast._t); toast._t = setTimeout(() => m.style.display = 'none', 6000); }
+function card(r) {
+  const st = r.status || 'submitted';
+  const label = st === 'delivered' ? 'Delivered' : st === 'rerun' ? 'Re-run sent (' + r.rerun_count + 'x)' : st === 'before_tracking' ? 'Before tracking' : 'Not delivered';
+  const when = new Date(r.created_at).toLocaleString('en-AU', { timeZone: 'Australia/Sydney', dateStyle: 'medium', timeStyle: 'short' });
+  const btn = (st === 'delivered' || st === 'before_tracking')
+    ? '<button class="ghost" onclick="rerun(\'' + r.id + '\', true, this)">Re-run anyway</button>'
+    : '<button onclick="rerun(\'' + r.id + '\', false, this)">Re-run</button>';
+  return '<div class="card"><div class="meta"><b>' + esc(r.destination || '(no destination)') + '</b><span class="pill ' + esc(st) + '">' + esc(label) + '</span><br>' +
+    esc(r.name) + ' · ' + esc(r.email) + (r.phone ? ' · ' + esc(r.phone) : '') + '<br>' +
+    esc(r.depart_date) + ' → ' + esc(r.return_date) + ' · ' + esc(r.travellers) + ' travellers · submitted ' + esc(when) +
+    '<details><summary>Everything they entered</summary><pre>' + esc(JSON.stringify(r.answers, null, 2)) + '</pre></details></div>' + btn + '</div>';
+}
+async function load() {
+  const sub = document.getElementById('sub');
+  if (!KEY) { sub.innerHTML = '<span class="err">Missing access key — open this page from the bookmarked link.</span>'; return; }
+  sub.textContent = 'Loading…';
+  try {
+    const res = await fetch(API + '?key=' + encodeURIComponent(KEY));
+    if (res.status === 401) { sub.innerHTML = '<span class="err">Wrong access key.</span>'; return; }
+    const d = await res.json();
+    sub.textContent = d.total + ' requests saved in total. Private page — don\'t share this link.';
+    document.getElementById('stuck').innerHTML = d.stuck.length ? d.stuck.map(card).join('') : '<div class="empty">Nothing stuck — every request has been delivered. 🎉</div>';
+    document.getElementById('recent').innerHTML = d.recent.map(card).join('');
+  } catch (e) { sub.innerHTML = '<span class="err">Couldn\'t load requests — check your connection and hit Refresh.</span>'; }
+}
+async function rerun(id, alreadyDelivered, btn) {
+  const warn = alreadyDelivered
+    ? 'This one was already delivered. Send it through again? The customer will get a second itinerary and email.'
+    : 'Re-send this request through the itinerary pipeline? The customer will get their itinerary and the "ready" email in 1–2 minutes.';
+  if (!confirm(warn)) return;
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const res = await fetch(API + '?key=' + encodeURIComponent(KEY) + '&id=' + encodeURIComponent(id), { method: 'POST' });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.error || 'failed');
+    toast('Re-run sent for ' + d.name + ' (' + d.destination + '). It should land in their Inbox in 1–2 minutes.');
+    setTimeout(load, 1500);
+  } catch (e) { btn.disabled = false; btn.textContent = 'Re-run'; toast('Couldn\'t send — nothing went out. Try again in a minute.'); }
+}
+load();
+</script>
+</body>
+</html>
