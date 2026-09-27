@@ -5966,6 +5966,38 @@ function kiwiFlightLink(label, dateIso) {
   if (dateIso) kiwi += '&departure=' + dateIso;
   return 'https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '.itinerary&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent(kiwi);
 }
+// 2026-09-27: partner sites open in the same currency the visitor has picked
+// on TripMade (AUD, USD, GBP…). Applied when the button is built AND again the
+// moment it's clicked, so switching currency later still carries through.
+//   - Trip.com (hotels/trains/cars): &curr=XXX
+//   - Kiwi.com flights (inside the Travelpayouts custom_url): &currency=XXX
+//   - Welcome Pickups / Ferryhopper: no URL setting exists — they use the
+//     traveller's own saved/auto-detected currency on their site.
+function tmAffCurrency() {
+  const c = (typeof _currentCurrency !== 'undefined' && _currentCurrency) || 'AUD';
+  return /^[A-Z]{3}$/.test(c) ? c : 'AUD';
+}
+function withTmCurrency(url) {
+  if (!url) return url;
+  const cur = tmAffCurrency();
+  try {
+    const u = new URL(url);
+    if (/(^|\.)trip\.com$/.test(u.hostname)) { u.searchParams.set('curr', cur); return u.toString(); }
+    const inner = u.searchParams.get('custom_url');
+    if (inner && /kiwi\.com/.test(inner)) {
+      const k = new URL(inner); k.searchParams.set('currency', cur);
+      u.searchParams.set('custom_url', k.toString());
+      return u.toString();
+    }
+  } catch (e) {}
+  return url;
+}
+// Any other Trip.com link on the site (e.g. Book your trip page) gets the
+// visitor's currency too, set at the moment it's clicked.
+document.addEventListener('click', function(e) {
+  const a = e.target && e.target.closest ? e.target.closest('a[href*="trip.com"]') : null;
+  if (a && !a.classList.contains('evt-book')) a.href = withTmCurrency(a.href);
+}, true);
 // Parses a trip start date stored as DD-MM-YYYY or YYYY-MM-DD.
 function parseTripStart(v) {
   const s = String(v || '').trim();
@@ -5992,7 +6024,7 @@ function itinAffiliateKind(category, label) {
   if (/\bferry\b|ferries|hydrofoil|catamaran transfer/.test(t)) return 'ferry';
   if (/\btrain\b|\brail\b|eurostar|shinkansen|\btgv\b|frecciarossa|\bice train/.test(t)) return 'train';
   if (category === 'flight' || /\bfly\b|\bflight\b|✈/.test(t)) return 'flight';
-  if (/car hire|hire car|rental car|car rental|pick up (the |your )?car|collect (the |your )?car|road trip/.test(t)) return 'car';
+  if (/car hire|hire car|rental car|car rental|pick up (the |your )?(hire |rental )?car|collect (the |your )?(hire |rental )?car|road trip|self[- ]?drive|campervan|motorhome/.test(t)) return 'car';
   if (category === 'transport' || /\btransfer\b|\btaxi\b|to (the )?airport|airport (transfer|pickup|pick-up)|private driver|chauffeur/.test(t)) return 'transfer';
   if (/check[- ]?out\b/.test(t)) return null;
   if (category === 'hotel' || /check[- ]?in\b/.test(t)) return 'stay';
@@ -6048,10 +6080,18 @@ function welcomeCitySlugFor() {
   }
   return null;
 }
+// 2026-09-27: only pre-fill an end of the transfer when we know the exact
+// place (an airport, hotel, port, station or named address). A vague end like
+// "Home" or "your accommodation" is left blank so the customer types their
+// own address on Welcome, instead of getting a guessed pin (e.g. "Home"
+// dropped on Sydney's city centre).
+const WELCOME_VAGUE_PLACE = /^\s*$|\b(home|house|residence|your (place|address|accommodation|hotel|stay|home)|accommodation|pick-?up|drop-?off|city cent(re|er)|cbd|downtown)\b/i;
+function welcomeEndKnown(name, lat, lng) {
+  return !WELCOME_VAGUE_PLACE.test(String(name || '')) && !isNaN(lat) && !isNaN(lng);
+}
 function welcomeTransferLink(t, citySlug, dateIso, time, pax) {
   if (!citySlug || !t) return null;
   const nums = ['from_lat', 'from_lng', 'to_lat', 'to_lng'].map(function(k) { return parseFloat(t[k]); });
-  if (nums.some(function(n) { return isNaN(n); })) return null;
   const q = new URLSearchParams();
   q.set('city', citySlug);
   if (dateIso) { const p = dateIso.split('-'); q.set('date', (+p[1]) + '/' + p[2] + '/' + p[0]); }
@@ -6059,12 +6099,19 @@ function welcomeTransferLink(t, citySlug, dateIso, time, pax) {
   q.set('passengers', String(pax || 2));
   q.set('luggage', String(pax || 2));
   const types = ['airport', 'hotel', 'port', 'train_station', 'address'];
-  q.set('from', t.from_name || 'Pickup'); q.set('from_address', t.from_name || 'Pickup');
-  q.set('from_lat', String(nums[0])); q.set('from_lng', String(nums[1]));
-  q.set('from_type', types.includes(t.from_type) ? t.from_type : 'address');
-  q.set('to', t.to_name || 'Drop-off'); q.set('to_address', t.to_name || 'Drop-off');
-  q.set('to_lat', String(nums[2])); q.set('to_lng', String(nums[3]));
-  q.set('to_type', types.includes(t.to_type) ? t.to_type : 'address');
+  const fromKnown = welcomeEndKnown(t.from_name, nums[0], nums[1]);
+  const toKnown = welcomeEndKnown(t.to_name, nums[2], nums[3]);
+  if (!fromKnown && !toKnown) return null; // caller falls back to the city's airport-transfer page
+  if (fromKnown) {
+    q.set('from', t.from_name); q.set('from_address', t.from_name);
+    q.set('from_lat', String(nums[0])); q.set('from_lng', String(nums[1]));
+    q.set('from_type', types.includes(t.from_type) ? t.from_type : 'address');
+  }
+  if (toKnown) {
+    q.set('to', t.to_name); q.set('to_address', t.to_name);
+    q.set('to_lat', String(nums[2])); q.set('to_lng', String(nums[3]));
+    q.set('to_type', types.includes(t.to_type) ? t.to_type : 'address');
+  }
   q.set('from_time_as_pickup', '1');
   const target = 'https://traveler.welcomepickups.com/en/' + citySlug + '/transfer/new?' + q.toString();
   return 'https://c627.travelpayouts.com/click?shmarker=' + TP_MARKER + '.itinerary&promo_id=8951&source_type=customlink&type=click&custom_url=' + encodeURIComponent(target);
@@ -6146,12 +6193,13 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     }
     const a = document.createElement('a');
     a.className = 'evt-book';
-    a.href = url;
+    a.href = withTmCurrency(url);
+    a.setAttribute('data-base-url', url);
     a.target = '_blank';
     a.rel = 'noopener noreferrer sponsored';
     a.textContent = aff.label + ' ↗';
     a.setAttribute('data-aff-kind', kind);
-    a.addEventListener('click', function(e) { e.stopPropagation(); });
+    a.addEventListener('click', function(e) { e.stopPropagation(); a.href = withTmCurrency(a.getAttribute('data-base-url') || a.href); });
     // Button shares a row with the item's title (right-hand side), so the
     // expanded write-up underneath still gets the full width on phones.
     const head = document.createElement('div');
