@@ -6683,6 +6683,11 @@ async function submitForm() {
     phone:        document.getElementById('f-phone').value,
     marketingOptIn: document.getElementById('f-marketing-optin').checked,
   };
+  // 2026-09-26: every request gets its own id, saved alongside the full
+  // payload in itinerary_requests, so a failed one can be re-run exactly as
+  // submitted from tripmade.co/admin.html.
+  formData.request_id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
   console.log('Itinerary request:', formData);
   // 👉 TEMPORARY: pointed at the "Integration Webhooks — PDF rebuild" test scenario
   // while we build the new PDF pipeline. Swap back to the original webhook once done.
@@ -6697,6 +6702,8 @@ async function submitForm() {
   // the webhook above with nothing kept on our side to query later.
   const loggedInUser = getUser();
   sb.from('itinerary_requests').insert({
+    id: formData.request_id,
+    payload: formData,
     user_id: loggedInUser ? loggedInUser.id : null,
     name: formData.name,
     email: formData.email,
