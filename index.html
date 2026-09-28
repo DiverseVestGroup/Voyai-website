@@ -3535,9 +3535,21 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2 id="ibx-title">Your trip</h2>
       <p id="ibx-meta"></p>
     </div>
+    <div class="ibx-share-bar" id="ibx-share-bar" style="display:none;">
+      <span id="ibx-share-who" class="ibx-share-who"></span>
+      <button type="button" class="btn-secondary ibx-share-btn" onclick="openShareModal()">👥 Share trip</button>
+    </div>
     <div id="ibx-unlock-banner" style="display:none;background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;font-size:13px;color:var(--accent);font-weight:600;">✓ Unlocked — enjoy the rest of your trip!</div>
     <div class="sum-grid" id="ibx-sum-grid"></div>
     <p class="trip-price-note">Prices shown are indicative — see each day for exactly what&#39;s planned.</p>
+    <div class="itin-block" id="ibx-bookings-block">
+      <div class="itin-hdr sight">
+        <div class="itin-hdr-l"><div class="dest-icon sight">🎫</div><div><div class="itin-title">My bookings</div><div class="itin-sub">Every booking number for this trip, in one place</div></div></div>
+        <button type="button" class="btn-primary" onclick="openAddBooking()">+ Add booking</button>
+      </div>
+      <div id="ibx-bookings-list" class="bk-list"></div>
+      <div class="bk-tip">📧 Tip: forward any booking confirmation email to <a id="bk-fwd-addr" href="mailto:bookings@tripmade.co">bookings@tripmade.co</a> from the email you use for TripMade, and we'll file it here automatically.</div>
+    </div>
     <div class="itin-block" id="ibx-unlock-all-block">
       <div class="itin-hdr party">
         <div class="itin-hdr-l"><div class="dest-icon party">🔓</div><div><div class="itin-title">Unlock every day</div><div class="itin-sub" id="ibx-unlock-all-sub">Unlock the whole itinerary at once and save 10%</div></div></div>
@@ -4259,6 +4271,18 @@ async function initAuth() {
   // form instead of just the homepage — e.g. tripmade.co/?leavereview=1.
   // Checked only after hydrateCurrentUser resolves, so an already-logged-in
   // visitor goes straight to the form instead of being asked to log in again.
+  // Trip invite links (2026-09-28): tripmade.co/?invite=<token>. Sign up / log
+  // in first, then join the trip and open it.
+  const inviteToken = new URLSearchParams(window.location.search).get('invite');
+  if (inviteToken) {
+    if (!getUser()) {
+      setTimeout(function() {
+        const intro = document.getElementById('su-intro');
+        if (intro) intro.textContent = "You've been invited to a trip on TripMade. Create your free account (or log in) to see it.";
+      }, 0);
+    }
+    requireAccount(function() { acceptTripInvite(inviteToken); });
+  }
   if (new URLSearchParams(window.location.search).get('leavereview') === '1') {
     requireAccount(openTestimonialModal);
   }
@@ -5983,12 +6007,17 @@ function tmAffCurrency() {
   const c = (typeof _currentCurrency !== 'undefined' && _currentCurrency) || 'AUD';
   return /^[A-Z]{3}$/.test(c) ? c : 'AUD';
 }
-function withTmCurrency(url) {
+// 2026-09-28: `tag` (e.g. itin_<trip id>) is added as the affiliate SubID
+// (Travelpayouts shmarker 774757.<tag>) / Trip.com trip_sub1, so booking
+// reports can be traced back to the TripMade trip that sent the click.
+function withTmCurrency(url, tag) {
   if (!url) return url;
   const cur = tmAffCurrency();
+  tag = /^[A-Za-z0-9_]{1,80}$/.test(tag || '') ? tag : '';
   try {
     const u = new URL(url);
-    if (/(^|\.)trip\.com$/.test(u.hostname)) { u.searchParams.set('curr', cur); return u.toString(); }
+    if (tag && u.searchParams.has('shmarker')) u.searchParams.set('shmarker', TP_MARKER + '.' + tag);
+    if (/(^|\.)trip\.com$/.test(u.hostname)) { u.searchParams.set('curr', cur); if (tag) u.searchParams.set('trip_sub1', tag); return u.toString(); }
     const inner = u.searchParams.get('custom_url');
     if (inner && /kiwi\.com/.test(inner)) {
       const k = new URL(inner); k.searchParams.set('currency', cur);
@@ -6199,8 +6228,9 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     }
     const a = document.createElement('a');
     a.className = 'evt-book';
-    a.href = withTmCurrency(url);
+    a.href = withTmCurrency(url, ctx.tag);
     a.setAttribute('data-base-url', url);
+    if (ctx.tag) a.setAttribute('data-aff-tag', ctx.tag);
     a.target = '_blank';
     a.rel = 'noopener noreferrer sponsored';
     // Phones: just "Book ↗" so the item's title gets the width (the icon
@@ -6208,7 +6238,7 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     a.innerHTML = 'Book<span class="evt-book-kind"> ' + aff.label.replace(/^Book /, '') + '</span> ↗';
     a.setAttribute('aria-label', aff.label);
     a.setAttribute('data-aff-kind', kind);
-    a.addEventListener('click', function(e) { e.stopPropagation(); a.href = withTmCurrency(a.getAttribute('data-base-url') || a.href); });
+    a.addEventListener('click', function(e) { e.stopPropagation(); a.href = withTmCurrency(a.getAttribute('data-base-url') || a.href, a.getAttribute('data-aff-tag')); });
     // Button shares a row with the item's title (right-hand side), so the
     // expanded write-up underneath still gets the full width on phones.
     const head = document.createElement('div');
@@ -6268,8 +6298,9 @@ async function renderInboxPage() {
   }
   if (emptyText) emptyText.textContent = "You don't have any itineraries yet.";
   if (emptyBtn) { emptyBtn.textContent = 'Get my free itinerary →'; emptyBtn.setAttribute('onclick', "requireAccount(function(){showPage('form');})"); }
+  // RLS returns the visitor's own trips plus any shared with them (2026-09-28).
   const { data: itins, error } = await sb.from('itineraries')
-    .select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    .select('*').order('created_at', { ascending: false });
   if (error) { console.error('Loading inbox failed:', error); return; }
   if (!itins || itins.length === 0) {
     list.style.display = 'none';
@@ -6282,7 +6313,9 @@ async function renderInboxPage() {
     const dest = it.destination || (it.summary && it.summary.trip_title) || 'Your trip';
     const dateStr = it.summary && it.summary.date_range ? it.summary.date_range : '';
     const dayCount = Array.isArray(it.days) ? it.days.length : 0;
-    const badge = it.status === 'new' ? '<span style="background:var(--accent);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">NEW</span>' : '';
+    const shared = it.user_id !== currentUser.id;
+    const badge = (it.status === 'new' && !shared ? '<span style="background:var(--accent);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">NEW</span>' : '') +
+      (shared ? '<span style="background:#EEF2FF;color:#3730A3;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">👥 SHARED WITH YOU</span>' : '');
     return '' +
       '<div class="saved-chat-row">' +
         '<div class="saved-chat-main">' +
@@ -6302,12 +6335,12 @@ function backToInboxList() {
 async function openInboxItinerary(id, justUnlocked) {
   requireAccount(async function() {
     const currentUser = getUser();
-    const { data: itin, error } = await sb.from('itineraries').select('*').eq('id', id).eq('user_id', currentUser.id).maybeSingle();
+    const { data: itin, error } = await sb.from('itineraries').select('*').eq('id', id).maybeSingle();
     if (error || !itin) { console.error('Opening itinerary failed:', error); showPage('inbox'); renderInboxPage(); return; }
     _currentInboxItinerary = itin;
     showPage('inbox-detail');
     renderInboxDetail(itin, !!justUnlocked);
-    if (itin.status !== 'viewed') {
+    if (itin.status !== 'viewed' && itin.user_id === currentUser.id) {
       sb.from('itineraries').update({ status: 'viewed' }).eq('id', itin.id).eq('user_id', currentUser.id)
         .then(function(res) { if (res.error) console.error('Marking itinerary viewed failed:', res.error); });
     }
@@ -6318,7 +6351,7 @@ async function openInboxItinerary(id, justUnlocked) {
     // paid to open.
     if (justUnlocked && !itin.unlock_all) {
       setTimeout(async function() {
-        const { data: fresh } = await sb.from('itineraries').select('*').eq('id', id).eq('user_id', currentUser.id).maybeSingle();
+        const { data: fresh } = await sb.from('itineraries').select('*').eq('id', id).maybeSingle();
         if (fresh) { _currentInboxItinerary = fresh; renderInboxDetail(fresh, true); }
       }, 1800);
     }
@@ -6461,7 +6494,10 @@ function renderInboxDetail(itin, justUnlocked) {
       '</div>';
   }).join('');
   decorateItineraryAffiliates(document.getElementById('ibx-days'), parseTripStart(itin.depart_date) || parseTripStart((itin.summary || {}).checkin_date),
-    { travellers: parseInt((itin.summary || {}).travellers_count, 10) || 2, totalDays: days.reduce(function(m, d) { return Math.max(m, d.day_number || 0); }, days.length), destination: itin.destination });
+    { travellers: parseInt((itin.summary || {}).travellers_count, 10) || 2, totalDays: days.reduce(function(m, d) { return Math.max(m, d.day_number || 0); }, days.length), destination: itin.destination,
+      tag: 'itin_' + String(itin.id || '').replace(/-/g, '') });
+  renderTripShareBar(itin);
+  loadTripBookings(itin);
   const pdfLink = document.getElementById('ibx-pdf-link');
   if (pdfLink) {
     pdfLink.style.display = days.length ? 'inline-block' : 'none';
@@ -7053,5 +7089,343 @@ async function sendFeedback() {
   btn.disabled = false; btn.textContent = 'Send feedback';
 }
 </script>
+<!-- ══ TRIP SHARING + MY BOOKINGS (2026-09-28) ═══════════════════════
+     Sharing: owner invites people by email (Supabase function trip-share);
+     invitees join via tripmade.co/?invite=<token> once signed in, and the
+     trip then shows in their Inbox too.
+     My bookings: booking confirmations per trip (table `bookings`), added by
+     forwarding confirmation emails to bookings@tripmade.co, pasting the
+     confirmation, uploading a PDF/screenshot (function bookings-import reads
+     them with AI), or typing them in. ═══════════════════════════════════ -->
+<style>
+.ibx-share-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--border,#E6E6E6);border-radius:var(--radius,12px);padding:12px 16px;margin:0 0 18px;}
+.ibx-share-who{font-size:13px;color:var(--text-muted,#6B6B6B);}
+.ibx-share-who b{color:var(--text,#1A1A1A);}
+.ibx-share-btn{padding:9px 16px !important;font-size:13px !important;}
+.tm-modal{display:none;position:fixed;inset:0;z-index:1002;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px;}
+.tm-modal .tm-box{background:#fff;border-radius:var(--radius-lg,16px);max-width:480px;width:100%;max-height:90vh;overflow:auto;padding:26px;box-shadow:var(--shadow-lg,0 10px 30px rgba(0,0,0,.2));}
+.tm-modal h3{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin:0 0 6px;}
+.tm-modal .tm-sub{font-size:13px;color:var(--text-muted,#6B6B6B);margin:0 0 16px;line-height:1.5;}
+.tm-modal input,.tm-modal textarea,.tm-modal select{width:100%;box-sizing:border-box;border:1.5px solid #E2E2E2;border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;margin-bottom:10px;background:#fff;}
+.tm-modal textarea{min-height:130px;resize:vertical;}
+.tm-row{display:flex;gap:10px;}
+.tm-row > *{flex:1;}
+.tm-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap;}
+.tm-actions button{border:none;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;}
+.tm-btn-main{background:var(--accent);color:#fff;}
+.tm-btn-light{background:#F1F1F1;color:#1A1A1A;}
+.tm-status{font-size:13px;min-height:18px;margin:4px 0 6px;}
+.tm-people{list-style:none;padding:0;margin:14px 0 0;border-top:1px solid #EEE;}
+.tm-people li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EEE;font-size:14px;}
+.tm-people small{color:var(--text-muted,#6B6B6B);font-size:12px;}
+.tm-link{background:none;border:none;color:#B3261E;font-size:12px;font-weight:700;cursor:pointer;padding:4px;font-family:inherit;}
+.tm-tabs{display:flex;gap:6px;margin:0 0 14px;background:#F4F6F5;border-radius:10px;padding:4px;}
+.tm-tabs button{flex:1;border:none;background:none;border-radius:8px;padding:8px 6px;font-size:13px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;}
+.tm-tabs button.on{background:#fff;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.bk-list{padding:4px 16px 0;}
+.bk-empty{font-size:13px;color:var(--text-muted,#6B6B6B);padding:14px 2px;}
+.bk-card{display:flex;gap:12px;padding:14px 2px;border-bottom:1px solid #EEE;}
+.bk-card:last-child{border-bottom:none;}
+.bk-ico{font-size:22px;line-height:1;width:30px;text-align:center;flex-shrink:0;padding-top:2px;}
+.bk-main{flex:1;min-width:0;}
+.bk-title{font-weight:700;font-size:14px;color:var(--text,#1A1A1A);}
+.bk-meta{font-size:12.5px;color:var(--text-muted,#6B6B6B);margin-top:3px;line-height:1.5;word-break:break-word;}
+.bk-ref{display:inline-flex;align-items:center;gap:8px;margin-top:6px;background:#F4F6F5;border-radius:8px;padding:5px 10px;font-size:12px;color:#555;}
+.bk-ref b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:#111;letter-spacing:.04em;}
+.bk-ref button{border:none;background:#fff;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;font-family:inherit;}
+.bk-del{background:none;border:none;color:#999;font-size:18px;cursor:pointer;align-self:flex-start;padding:0 4px;}
+.bk-del:hover{color:#B3261E;}
+.bk-tip{font-size:12.5px;color:var(--text-muted,#6B6B6B);padding:12px 18px 16px;line-height:1.5;border-top:1px solid #EEE;margin-top:6px;}
+.bk-tip a{color:var(--accent);font-weight:700;}
+#ibx-bookings-block .itin-hdr{flex-wrap:wrap;gap:10px;}
+@media (max-width:480px){.tm-row{flex-direction:column;gap:0;}.bk-list{padding:4px 10px 0;}}
+</style>
+
+<div id="share-modal" class="tm-modal" onclick="if(event.target===this)closeShareModal()">
+  <div class="tm-box" role="dialog" aria-labelledby="share-title">
+    <h3 id="share-title">Share this trip</h3>
+    <p class="tm-sub" id="share-sub">Invite your travel crew. They'll get an email with a link, and once they've signed in to TripMade the trip shows up in their Inbox too, with every booking link and anything you add to My Bookings.</p>
+    <div id="share-invite-form">
+      <input id="share-emails" type="text" placeholder="Their email(s), separated by commas" autocomplete="off">
+      <div class="tm-status" id="share-status"></div>
+      <div class="tm-actions">
+        <button type="button" class="tm-btn-light" onclick="closeShareModal()">Close</button>
+        <button type="button" class="tm-btn-main" id="share-send" onclick="sendTripInvites()">Send invites</button>
+      </div>
+    </div>
+    <div id="share-member-actions" style="display:none;" class="tm-actions">
+      <button type="button" class="tm-btn-light" onclick="leaveSharedTrip()" style="color:#B3261E;">Leave this trip</button>
+      <button type="button" class="tm-btn-main" onclick="closeShareModal()">Close</button>
+    </div>
+    <ul class="tm-people" id="share-people"></ul>
+  </div>
+</div>
+
+<div id="booking-modal" class="tm-modal" onclick="if(event.target===this)closeAddBooking()">
+  <div class="tm-box" role="dialog" aria-labelledby="bk-title">
+    <h3 id="bk-title">Add a booking</h3>
+    <p class="tm-sub">Drop in any confirmation (flight, hotel, transfer, tour…) and we'll pull out the booking number, dates and details for you.</p>
+    <div class="tm-tabs" id="bk-tabs">
+      <button type="button" data-tab="paste" class="on">Paste</button>
+      <button type="button" data-tab="upload">Upload</button>
+      <button type="button" data-tab="manual">Type it in</button>
+    </div>
+    <div data-pane="paste">
+      <textarea id="bk-paste" placeholder="Paste the confirmation email or booking details here…"></textarea>
+    </div>
+    <div data-pane="upload" style="display:none;">
+      <input id="bk-file" type="file" accept="application/pdf,image/png,image/jpeg,image/webp">
+      <p class="tm-sub" style="margin-top:-4px;">A PDF confirmation, e-ticket or screenshot (up to 8 MB).</p>
+    </div>
+    <div data-pane="manual" style="display:none;">
+      <div class="tm-row">
+        <select id="bk-type"><option value="flight">✈️ Flight</option><option value="hotel">🏨 Stay</option><option value="transfer">🚐 Transfer</option><option value="car">🚗 Car hire</option><option value="train">🚆 Train</option><option value="ferry">⛴️ Ferry</option><option value="activity">🎟️ Activity / tour</option><option value="insurance">🛡️ Insurance</option><option value="other">📄 Other</option></select>
+        <input id="bk-ref" type="text" placeholder="Booking reference">
+      </div>
+      <input id="bk-name" type="text" placeholder="What is it? e.g. Qantas QF1 Sydney → London">
+      <div class="tm-row">
+        <input id="bk-start" type="text" placeholder="Starts, e.g. 2026-10-30 07:15">
+        <input id="bk-end" type="text" placeholder="Ends (optional)">
+      </div>
+      <input id="bk-loc" type="text" placeholder="Address / place (optional)">
+      <input id="bk-notes" type="text" placeholder="Notes, e.g. terminal, room type (optional)">
+    </div>
+    <div class="tm-status" id="bk-status"></div>
+    <div class="tm-actions">
+      <button type="button" class="tm-btn-light" onclick="closeAddBooking()">Cancel</button>
+      <button type="button" class="tm-btn-main" id="bk-save" onclick="saveBooking()">Add booking</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BOOKING_ICONS = { flight: '✈️', hotel: '🏨', transfer: '🚐', car: '🚗', train: '🚆', ferry: '⛴️', activity: '🎟️', insurance: '🛡️', other: '📄' };
+function tmEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+async function tripShareCall(body) {
+  const { data, error } = await sb.functions.invoke('trip-share', { body: body });
+  if (error) {
+    let msg = '';
+    try { const j = await error.context.json(); msg = j.message || j.error || ''; } catch (e) {}
+    throw new Error(msg || error.message || 'failed');
+  }
+  return data;
+}
+
+// ── Sharing ───────────────────────────────────────────────
+async function renderTripShareBar(itin) {
+  const bar = document.getElementById('ibx-share-bar');
+  const who = document.getElementById('ibx-share-who');
+  if (!bar || !itin) return;
+  const me = getUser();
+  bar.style.display = 'flex';
+  const mine = me && itin.user_id === me.id;
+  who.innerHTML = mine ? 'Travelling with others? Share this trip so everyone has the plan.' : '👥 A friend shared this trip with you.';
+  try {
+    const d = await tripShareCall({ action: 'members', itinerary_id: itin.id });
+    if (!_currentInboxItinerary || _currentInboxItinerary.id !== itin.id) return;
+    const names = (d.members || []).filter(function(m) { return !m.you; }).map(function(m) { return (m.name || 'Guest').split(' ')[0]; });
+    if (d.is_owner) {
+      if (names.length) who.innerHTML = '👥 Shared with <b>' + tmEsc(names.join(', ')) + '</b>';
+    } else {
+      who.innerHTML = '👥 Shared with you by <b>' + tmEsc(((d.owner && d.owner.name) || 'a friend').split(' ')[0]) + '</b>' + (names.length ? ' · also with ' + tmEsc(names.join(', ')) : '');
+    }
+  } catch (e) { /* bar still works with the default text */ }
+}
+async function openShareModal() {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  const me = getUser();
+  const mine = me && itin.user_id === me.id;
+  document.getElementById('share-invite-form').style.display = mine ? 'block' : 'none';
+  document.getElementById('share-member-actions').style.display = mine ? 'none' : 'flex';
+  document.getElementById('share-title').textContent = mine ? 'Share this trip' : "Who's on this trip";
+  document.getElementById('share-sub').style.display = mine ? 'block' : 'none';
+  document.getElementById('share-status').textContent = '';
+  document.getElementById('share-modal').style.display = 'flex';
+  refreshSharePeople();
+}
+function closeShareModal() { document.getElementById('share-modal').style.display = 'none'; }
+async function refreshSharePeople() {
+  const itin = _currentInboxItinerary; const list = document.getElementById('share-people');
+  list.innerHTML = '<li><small>Loading…</small></li>';
+  try {
+    const d = await tripShareCall({ action: 'members', itinerary_id: itin.id });
+    let html = '<li><span>' + tmEsc((d.owner && d.owner.name) || 'Trip owner') + (d.owner && d.owner.you ? ' <small>(you)</small>' : '') + '</span><small>Owner</small></li>';
+    (d.members || []).forEach(function(m) {
+      html += '<li><span>' + tmEsc(m.name || m.email || 'Guest') + (m.you ? ' <small>(you)</small>' : '') + (m.email && d.is_owner ? '<br><small>' + tmEsc(m.email) + '</small>' : '') + '</span>' +
+        (d.is_owner ? '<button type="button" class="tm-link" onclick="removeTripPerson(' + jsStrAttr(m.user_id) + ', null)">Remove</button>' : '<small>Joined</small>') + '</li>';
+    });
+    (d.pending || []).forEach(function(p) {
+      html += '<li><span>' + tmEsc(p.invited_email) + '<br><small>Invite sent, not joined yet</small></span><button type="button" class="tm-link" onclick="removeTripPerson(null, ' + jsStrAttr(p.id) + ')">Cancel</button></li>';
+    });
+    list.innerHTML = html;
+  } catch (e) { list.innerHTML = '<li><small>Couldn\'t load who\'s on this trip. Try again.</small></li>'; }
+}
+async function sendTripInvites() {
+  const st = document.getElementById('share-status'); const btn = document.getElementById('share-send');
+  const raw = document.getElementById('share-emails').value;
+  const emails = raw.split(/[\s,;]+/).map(function(e) { return e.trim(); }).filter(Boolean);
+  if (!emails.length) { st.style.color = '#B3261E'; st.textContent = 'Add at least one email address.'; return; }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const d = await tripShareCall({ action: 'invite', itinerary_id: _currentInboxItinerary.id, emails: emails });
+    st.style.color = '#0F7A4A';
+    st.textContent = (d.sent && d.sent.length ? 'Invite sent to ' + d.sent.join(', ') + '. ' : '') + (d.failed && d.failed.length ? "Couldn't send to " + d.failed.join(', ') + '.' : '');
+    if (!d.sent || !d.sent.length) st.style.color = '#B3261E';
+    document.getElementById('share-emails').value = '';
+    refreshSharePeople();
+  } catch (e) {
+    st.style.color = '#B3261E'; st.textContent = e.message === 'no_valid_emails' ? "That doesn't look like an email address." : (e.message || "Couldn't send invites. Try again.");
+  }
+  btn.disabled = false; btn.textContent = 'Send invites';
+}
+async function removeTripPerson(userId, inviteId) {
+  try {
+    await tripShareCall({ action: 'remove', itinerary_id: _currentInboxItinerary.id, user_id: userId, invite_id: inviteId });
+    refreshSharePeople(); renderTripShareBar(_currentInboxItinerary);
+  } catch (e) { document.getElementById('share-status').textContent = "Couldn't remove them. Try again."; }
+}
+async function leaveSharedTrip() {
+  try {
+    await tripShareCall({ action: 'leave', itinerary_id: _currentInboxItinerary.id });
+    closeShareModal(); backToInboxList();
+  } catch (e) { /* ignore */ }
+}
+async function acceptTripInvite(token) {
+  try { history.replaceState(null, '', window.location.pathname); } catch (e) {}
+  try {
+    const d = await tripShareCall({ action: 'accept', token: token });
+    if (d && d.itinerary_id) openInboxItinerary(d.itinerary_id);
+  } catch (e) {
+    const msg = e.message === 'invite_used' ? 'This invite link has already been used by someone else. Ask the trip owner to send you a new one.'
+      : e.message === 'invalid_invite' ? "This invite link isn't valid any more. Ask the trip owner to send you a new one."
+      : "We couldn't open that invite just now. Try the link again in a minute.";
+    showPage('inbox'); renderInboxPage();
+    setTimeout(function() { window.alert(msg); }, 50);
+  }
+}
+
+// ── My bookings ───────────────────────────────────────────
+let _tripBookings = [];
+async function loadTripBookings(itin) {
+  const list = document.getElementById('ibx-bookings-list');
+  if (!list || !itin) return;
+  const cacheKey = 'tm_bookings_' + itin.id;
+  let rows = null;
+  try {
+    const { data, error } = await sb.from('bookings').select('*').eq('itinerary_id', itin.id);
+    if (error) throw error;
+    rows = data || [];
+    try { localStorage.setItem(cacheKey, JSON.stringify(rows)); } catch (e) {}
+  } catch (e) {
+    // Offline or a blip: show the last copy saved on this device.
+    try { rows = JSON.parse(localStorage.getItem(cacheKey) || 'null'); } catch (e2) { rows = null; }
+  }
+  if (!_currentInboxItinerary || _currentInboxItinerary.id !== itin.id) return;
+  _tripBookings = (rows || []).slice().sort(function(a, b) { return String(a.start_at || '').localeCompare(String(b.start_at || '')); });
+  renderTripBookings();
+}
+function renderTripBookings() {
+  const list = document.getElementById('ibx-bookings-list');
+  const me = getUser();
+  if (!_tripBookings.length) {
+    list.innerHTML = '<div class="bk-empty">No bookings saved yet. As you book flights, stays and transfers, add the confirmations here and you\'ll never have to dig through your emails for a booking number again.</div>';
+    return;
+  }
+  list.innerHTML = _tripBookings.map(function(b) {
+    const when = [fmtBookingWhen(b.start_at), fmtBookingWhen(b.end_at)].filter(Boolean).join(' → ');
+    const meta = [b.provider, when].filter(Boolean).map(tmEsc).join(' · ');
+    const loc = b.location ? '<br>📍 <a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.location) + '" target="_blank" rel="noopener" style="color:inherit;">' + tmEsc(b.location) + '</a>' : '';
+    const extra = [b.travellers ? '👤 ' + tmEsc(b.travellers) : '', b.price ? '💳 ' + tmEsc(b.price) : '', b.notes ? tmEsc(b.notes) : ''].filter(Boolean).join('<br>');
+    const ref = b.confirmation_number ? '<div class="bk-ref">Ref <b>' + tmEsc(b.confirmation_number) + '</b><button type="button" onclick="copyBookingRef(this, ' + jsStrAttr(b.confirmation_number) + ')">Copy</button></div>' : '';
+    const del = me && b.user_id === me.id ? '<button type="button" class="bk-del" title="Remove" aria-label="Remove booking" onclick="deleteBooking(' + jsStrAttr(b.id) + ')">×</button>' : '';
+    return '<div class="bk-card"><div class="bk-ico">' + (BOOKING_ICONS[b.type] || '📄') + '</div><div class="bk-main"><div class="bk-title">' + tmEsc(b.title) + '</div>' +
+      '<div class="bk-meta">' + meta + loc + (extra ? '<br>' + extra : '') + '</div>' + ref + '</div>' + del + '</div>';
+  }).join('');
+}
+// "2026-10-30 10:15" -> "Fri 30 Oct 2026, 10:15" (anything else shown as-is).
+function fmtBookingWhen(v) {
+  const m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}:\d{2}))?/);
+  if (!m) return v || '';
+  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  const day = d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  return day + (m[4] ? ', ' + m[4] : '');
+}
+function copyBookingRef(btn, ref) {
+  try { navigator.clipboard.writeText(ref); btn.textContent = 'Copied'; setTimeout(function() { btn.textContent = 'Copy'; }, 1500); } catch (e) {}
+}
+async function deleteBooking(id) {
+  if (!window.confirm('Remove this booking from TripMade? (It won\'t cancel the actual booking.)')) return;
+  const { error } = await sb.from('bookings').delete().eq('id', id);
+  if (!error) { _tripBookings = _tripBookings.filter(function(b) { return b.id !== id; }); renderTripBookings(); }
+}
+let _bkTab = 'paste';
+document.getElementById('bk-tabs').addEventListener('click', function(e) {
+  const b = e.target.closest('button'); if (!b) return;
+  _bkTab = b.getAttribute('data-tab');
+  this.querySelectorAll('button').forEach(function(x) { x.classList.toggle('on', x === b); });
+  document.querySelectorAll('#booking-modal [data-pane]').forEach(function(p) { p.style.display = p.getAttribute('data-pane') === _bkTab ? 'block' : 'none'; });
+  document.getElementById('bk-save').textContent = _bkTab === 'manual' ? 'Add booking' : 'Read & add booking';
+});
+function openAddBooking() {
+  document.getElementById('bk-status').textContent = '';
+  document.getElementById('booking-modal').style.display = 'flex';
+  document.getElementById('bk-save').textContent = _bkTab === 'manual' ? 'Add booking' : 'Read & add booking';
+}
+function closeAddBooking() { document.getElementById('booking-modal').style.display = 'none'; }
+function fileToBase64(file) {
+  return new Promise(function(resolve, reject) {
+    const r = new FileReader();
+    r.onload = function() { resolve(String(r.result).split(',')[1] || ''); };
+    r.onerror = reject; r.readAsDataURL(file);
+  });
+}
+async function saveBooking() {
+  const itin = _currentInboxItinerary; const me = getUser(); if (!itin || !me) return;
+  const st = document.getElementById('bk-status'); const btn = document.getElementById('bk-save');
+  st.style.color = '#6B6B6B';
+  try {
+    if (_bkTab === 'manual') {
+      const title = document.getElementById('bk-name').value.trim();
+      if (!title) { st.style.color = '#B3261E'; st.textContent = 'Give it a name, e.g. "Qantas QF1 Sydney → London".'; return; }
+      btn.disabled = true;
+      const row = {
+        user_id: me.id, itinerary_id: itin.id, type: document.getElementById('bk-type').value, title: title,
+        confirmation_number: document.getElementById('bk-ref').value.trim() || null,
+        start_at: document.getElementById('bk-start').value.trim() || null, end_at: document.getElementById('bk-end').value.trim() || null,
+        location: document.getElementById('bk-loc').value.trim() || null, notes: document.getElementById('bk-notes').value.trim() || null, source: 'manual'
+      };
+      const { error } = await sb.from('bookings').insert(row);
+      if (error) throw error;
+      ['bk-name', 'bk-ref', 'bk-start', 'bk-end', 'bk-loc', 'bk-notes'].forEach(function(id) { document.getElementById(id).value = ''; });
+      st.style.color = '#0F7A4A'; st.textContent = 'Added ✓';
+    } else {
+      const body = { itinerary_id: itin.id };
+      if (_bkTab === 'paste') {
+        body.text = document.getElementById('bk-paste').value.trim();
+        if (!body.text) { st.style.color = '#B3261E'; st.textContent = 'Paste the confirmation in first.'; return; }
+      } else {
+        const f = document.getElementById('bk-file').files[0];
+        if (!f) { st.style.color = '#B3261E'; st.textContent = 'Choose a PDF or screenshot first.'; return; }
+        if (f.size > 8 * 1024 * 1024) { st.style.color = '#B3261E'; st.textContent = 'That file is over 8 MB. Try a smaller PDF or a screenshot.'; return; }
+        body.file_b64 = await fileToBase64(f); body.file_mime = f.type; body.file_name = f.name;
+      }
+      btn.disabled = true; st.textContent = 'Reading your confirmation… (about 10–20 seconds)';
+      const { data, error } = await sb.functions.invoke('bookings-import', { body: body });
+      if (error) throw error;
+      if (!data || !data.ok) { st.style.color = '#B3261E'; st.textContent = "We couldn't find a booking in that. Check it's the confirmation, or use \"Type it in\"."; btn.disabled = false; return; }
+      st.style.color = '#0F7A4A';
+      st.textContent = 'Added ' + data.saved.length + ' booking' + (data.saved.length === 1 ? '' : 's') + ' ✓';
+      document.getElementById('bk-paste').value = ''; document.getElementById('bk-file').value = '';
+    }
+    loadTripBookings(itin);
+    setTimeout(closeAddBooking, 1200);
+  } catch (e) {
+    console.error('Saving booking failed', e);
+    st.style.color = '#B3261E'; st.textContent = "Couldn't save that just now. Try again in a moment.";
+  }
+  btn.disabled = false;
+}
+</script>
+
 </body>
 </html>
