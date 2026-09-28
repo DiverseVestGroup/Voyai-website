@@ -288,7 +288,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .evt-book { flex-shrink:0; margin-top:-1px; display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--accent); background:#fff; border:1.5px solid var(--accent); border-radius:20px; padding:4px 10px; text-decoration:none; white-space:nowrap; line-height:1.2; transition:background .15s,color .15s; }
 .evt-book:hover { background:var(--accent); color:#fff; }
 .aff-note { font-size:11px; color:var(--text-dim); text-align:center; padding:10px 22px 14px; }
-@media (max-width:480px) { .evt-book { font-size:10.5px; padding:4px 8px; } }
+@media (max-width:480px) { .evt-book { font-size:10.5px; padding:4px 8px; } .evt-book-kind { display:none; } }
 .evt-detail { display:none; font-size:13px; color:var(--text); line-height:1.6; margin-top:6px; }
 .day-block.expanded .evt-detail { display:block; }
 .day-block.expanded .evt { padding-bottom:6px; }
@@ -800,7 +800,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="steps-grid">
       <div class="step"><div class="step-num">01</div><div class="step-icon">🎯</div><h3>Pick your vibe</h3><p>Party trip, romantic escape, adventure, or sightseeing — or mix and match vibes / interests across cities.</p></div>
       <div class="step"><div class="step-num">02</div><div class="step-icon">📅</div><h3>Add your details</h3><p>Dates. Group size / number of people. Budget. And anything you've already got booked. We fill the gaps.</p></div>
-      <div class="step"><div class="step-num">03</div><div class="step-icon">🤖</div><h3>TripMade Builds it:</h3><p>A complete day-by-day itinerary across one or multiple countries — no wasted days, no dead time.</p></div>
+      <div class="step"><div class="step-num">03</div><div class="step-icon">🤖</div><h3>TripMade builds it</h3><p>A complete day-by-day itinerary across one or multiple countries — no wasted days, no dead time.</p></div>
       <div class="step"><div class="step-num">04</div><div class="step-icon">✅</div><h3>Approve &amp; book</h3><p>Review, tweak anything you like, confirm. Every flight, hotel, dinner and event can be booked with TripMade.</p></div>
     </div>
   </div>
@@ -833,7 +833,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
   <!-- ══ POPULAR DESTINATIONS ══════════════════════════════ -->
   <div id="destinations" class="section" style="padding-top:0;max-width:1200px;">
-    <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — TripMade builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based off pre-made itineraries — these can be altered to suit.</p></div>
+    <div class="section-hd"><h2>Popular destinations</h2><p>From iconic cities to hidden escapes — TripMade builds your perfect itinerary for any of them</p><p style="font-size:12px;color:var(--text-dim);margin-top:6px;">Prices are based on pre-made itineraries — these can be altered to suit.</p></div>
     <div class="dest-grid">
       <div class="dest-card wide" style="background-image:url(&#39;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&amp;q=80&#39;);" onclick="openDestinationTrip('Santorini, Greece')">
         <div class="dest-overlay"></div>
@@ -5760,7 +5760,13 @@ function renderAskDining(bodyEl, data) {
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
   const budgetMeta = data.budget_amount ? (dirLabel + data.currency + ' ' + data.budget_amount + '/night') : '';
+  // 2026-09-27: Trip.com only opens the right city's results when given its
+  // cityId — add it from our city table when we know the destination.
+  const askCityId = (typeof tripCityIdFor === 'function') ? tripCityIdFor(data.destination) : null;
   const cardsHtml = (data.suggestions || []).map(function(s) {
+    if (askCityId && s.cta && /trip\.com/.test(s.cta.url || '')) {
+      try { const u = new URL(s.cta.url); u.searchParams.set('cityId', askCityId); u.searchParams.set('trip_sub1', 'ask'); s.cta.url = u.toString(); } catch (e) {}
+    }
     const ctaClass = s.cta && s.cta.isAffiliate ? 'ask-stay-cta' : 'ask-stay-cta fallback';
     const flagHtml = s.cta && s.cta.isAffiliate ? '' : '<div class="ask-stay-flag">no live affiliate yet</div>';
     return '' +
@@ -6197,7 +6203,10 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     a.setAttribute('data-base-url', url);
     a.target = '_blank';
     a.rel = 'noopener noreferrer sponsored';
-    a.textContent = aff.label + ' ↗';
+    // Phones: just "Book ↗" so the item's title gets the width (the icon
+    // already says what kind of booking it is); full "Book transfer ↗" wider up.
+    a.innerHTML = 'Book<span class="evt-book-kind"> ' + aff.label.replace(/^Book /, '') + '</span> ↗';
+    a.setAttribute('aria-label', aff.label);
     a.setAttribute('data-aff-kind', kind);
     a.addEventListener('click', function(e) { e.stopPropagation(); a.href = withTmCurrency(a.getAttribute('data-base-url') || a.href); });
     // Button shares a row with the item's title (right-hand side), so the
@@ -6348,12 +6357,16 @@ function renderInboxDetail(itin, justUnlocked) {
     const currency = itin.currency || 'AUD';
     const symbol = CURRENCY_SYMBOLS[currency] || (currency + ' ');
     const money = function(v) { return v ? symbol + Number(v).toLocaleString() : '—'; };
+    // 2026-09-27: the AI's total_cost covers the whole trip (hotels for the
+    // whole stay etc.), not one person — label it that way.
+    const nTrav = parseInt(summary.travellers_count, 10);
+    const totalSub = nTrav > 1 ? 'trip total · ' + nTrav + ' travellers' : 'trip total';
     sumGrid.innerHTML =
       '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">' + money(summary.flights_cost) + '</div><div class="sum-sub">return</div></div>' +
       '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">' + money(summary.hotels_cost) + '</div><div class="sum-sub">' + (summary.nights || '') + ' nights</div></div>' +
       '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">' + money(summary.activities_cost) + '</div><div class="sum-sub">indicative</div></div>' +
       '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">' + money(summary.food_cost) + '</div><div class="sum-sub">indicative</div></div>' +
-      '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + money(summary.total_cost) + '</div><div class="sum-sub red">per person</div></div>';
+      '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + money(summary.total_cost) + '</div><div class="sum-sub red">' + totalSub + '</div></div>';
   }
   const days = Array.isArray(itin.days) ? itin.days : [];
   // 2026-09-23: every day now renders in full for everyone, free — Lachlan's
@@ -6953,6 +6966,92 @@ window.showPage = function(id, linkEl, opts) {
     if (step1Sub) step1Sub.textContent = "Tell us your dream destination — or a few you're considering. We'll build around it.";
   }
 };
+</script>
+<!-- 2026-09-27: beta Feedback button. Saves to Supabase `site_feedback`
+     (insert-only for visitors); Lachlan & Jai read it on the private admin page. -->
+<style>
+#fb-btn{position:fixed;left:16px;bottom:16px;z-index:900;background:#1A1A1A;color:#fff;border:none;border-radius:22px;padding:10px 16px;font-size:13px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.18);cursor:pointer;font-family:inherit}
+#fb-btn:hover{background:var(--accent)}
+#fb-modal{display:none;position:fixed;inset:0;z-index:1001;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px}
+#fb-modal .fb-box{background:#fff;border-radius:var(--radius-lg,16px);max-width:440px;width:100%;padding:28px;box-shadow:var(--shadow-lg,0 10px 30px rgba(0,0,0,.2))}
+#fb-modal h3{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin:0 0 6px}
+#fb-modal p.fb-sub{font-size:13px;color:var(--text-muted,#6B6B6B);margin:0 0 16px;line-height:1.5}
+#fb-modal textarea,#fb-modal input{width:100%;box-sizing:border-box;border:1.5px solid #E2E2E2;border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;margin-bottom:10px}
+#fb-modal textarea{min-height:110px;resize:vertical}
+.fb-faces{display:flex;gap:8px;margin-bottom:12px}
+.fb-faces button{flex:1;font-size:22px;background:#F4F6F5;border:1.5px solid transparent;border-radius:10px;padding:6px 0;cursor:pointer}
+.fb-faces button.on{border-color:var(--accent);background:#E6F2F1}
+.fb-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
+.fb-actions button{border:none;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+@media (max-width:480px){#fb-btn{left:12px;bottom:12px;padding:9px 13px;font-size:12px}}
+</style>
+<button id="fb-btn" type="button" onclick="openFeedback()" aria-label="Send feedback">💬 Feedback</button>
+<div id="fb-modal" onclick="if(event.target===this)closeFeedback()">
+  <div class="fb-box" role="dialog" aria-labelledby="fb-title">
+    <h3 id="fb-title">Tell us what you think</h3>
+    <p class="fb-sub">We're in early days — anything that's broken, confusing or you'd love to see, we want to hear it. It goes straight to Lachlan &amp; Jai.</p>
+    <div class="fb-faces" id="fb-faces">
+      <button type="button" data-r="1" aria-label="Very unhappy">😞</button><button type="button" data-r="2" aria-label="Unhappy">🙁</button><button type="button" data-r="3" aria-label="Okay">😐</button><button type="button" data-r="4" aria-label="Happy">🙂</button><button type="button" data-r="5" aria-label="Love it">😍</button>
+    </div>
+    <textarea id="fb-msg" maxlength="4000" placeholder="What worked, what didn't, what's missing…"></textarea>
+    <input id="fb-name" type="text" maxlength="120" placeholder="Your name (optional)">
+    <input id="fb-email" type="email" maxlength="200" placeholder="Email, if you'd like a reply (optional)">
+    <div id="fb-status" style="font-size:13px;min-height:18px;margin-bottom:6px;"></div>
+    <div class="fb-actions">
+      <button type="button" onclick="closeFeedback()" style="background:#F1F1F1;color:#1A1A1A;">Cancel</button>
+      <button type="button" id="fb-send" onclick="sendFeedback()" style="background:var(--accent);color:#fff;">Send feedback</button>
+    </div>
+  </div>
+</div>
+<script>
+let _fbRating = null;
+document.getElementById('fb-faces').addEventListener('click', function(e) {
+  const b = e.target.closest('button'); if (!b) return;
+  _fbRating = +b.getAttribute('data-r');
+  this.querySelectorAll('button').forEach(function(x) { x.classList.toggle('on', x === b); });
+});
+function openFeedback() {
+  const u = (typeof getUser === 'function') ? getUser() : null;
+  if (u) {
+    const n = document.getElementById('fb-name'), em = document.getElementById('fb-email');
+    if (!n.value) n.value = u.name || '';
+    if (!em.value) em.value = u.email || '';
+  }
+  document.getElementById('fb-status').textContent = '';
+  document.getElementById('fb-modal').style.display = 'flex';
+  setTimeout(function() { document.getElementById('fb-msg').focus(); }, 50);
+}
+function closeFeedback() { document.getElementById('fb-modal').style.display = 'none'; }
+async function sendFeedback() {
+  const msg = document.getElementById('fb-msg').value.trim();
+  const st = document.getElementById('fb-status'), btn = document.getElementById('fb-send');
+  if (!msg) { st.style.color = '#B3261E'; st.textContent = 'Add a quick note first.'; return; }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  const u = (typeof getUser === 'function') ? getUser() : null;
+  let pageName = location.pathname;
+  try { const vis = document.querySelector('.page.active'); if (vis) pageName += ' (' + vis.id.replace('page-', '') + ')'; } catch (e) {}
+  const row = {
+    user_id: u ? u.id : null,
+    name: document.getElementById('fb-name').value.trim() || null,
+    email: document.getElementById('fb-email').value.trim() || null,
+    page: pageName.slice(0, 200),
+    rating: _fbRating,
+    message: msg.slice(0, 4000),
+    user_agent: navigator.userAgent.slice(0, 300)
+  };
+  try {
+    const { error } = await sb.from('site_feedback').insert(row);
+    if (error) throw error;
+    st.style.color = '#0F7A4A'; st.textContent = 'Thanks — got it! 🙌';
+    document.getElementById('fb-msg').value = ''; _fbRating = null;
+    document.querySelectorAll('#fb-faces button').forEach(function(x) { x.classList.remove('on'); });
+    setTimeout(closeFeedback, 1400);
+  } catch (e) {
+    console.error('Feedback failed:', e);
+    st.style.color = '#B3261E'; st.textContent = "Couldn't send just now — try again, or email hello@tripmade.co.";
+  }
+  btn.disabled = false; btn.textContent = 'Send feedback';
+}
 </script>
 </body>
 </html>
