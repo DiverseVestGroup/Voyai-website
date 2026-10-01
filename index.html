@@ -398,6 +398,8 @@ hr { border:none; border-top:1px solid var(--border); }
 @media (max-width:700px) { .flight-widget-wrap { padding-left:20px; padding-right:20px; } }
 /* ── TRANSPORT (Transfer Services + Ferries side by side) ──── */
 .transport-subgrid { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; max-width:900px; margin:0 auto; padding:16px 48px 28px; }
+.explore-more-subhead { max-width:900px; margin:0 auto; padding:4px 48px 12px; font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.005em; color:var(--text); }
+@media (max-width:700px) { .explore-more-subhead { padding:4px 20px 12px; } }
 .transport-subheading { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.005em; color:var(--text); margin:0 0 8px; }
 .transport-subcol .flight-widget-card, .transport-subcol .ferry-widget-card { height:100%; }
 .transport-subcol .ferry-widget-card { max-width:none; width:100%; }
@@ -805,7 +807,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div class="trust-bar">
     <div class="trust-item"><div class="trust-num">&lt;5<span>min</span></div><div class="trust-label">Average plan time</div></div>
     <div class="trust-item"><div class="trust-num">15<span>+</span></div><div class="trust-label">Booking integrations</div></div>
-    <div class="trust-item"><div class="trust-num">190<span>+</span></div><div class="trust-label">Destinations</div></div>
+    <div class="trust-item"><div class="trust-num">900<span>+</span></div><div class="trust-label">Destinations</div></div>
     <div class="trust-item"><div class="trust-num">$<span>0</span></div><div class="trust-label">Itinerary Fee</div></div>
   </div>
   <!-- HOW IT WORKS -->
@@ -3264,6 +3266,10 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
     </div>
+    <!-- 2026-10-01 per Lachlan: small subheading separating the Trip.com
+         stays search above (hotels & homes only) from the cards below
+         (Trip.com's whole site, plus other providers). -->
+    <div class="explore-more-subhead">Explore more...</div>
     <div class="tour-provider-grid">
       <!-- Real, tracked affiliate link (Allianceid/SID params) — rel includes "sponsored".
            NOTE: the logo below is the image Lachlan supplied for this card, but it's TripMade's
