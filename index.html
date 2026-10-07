@@ -410,6 +410,14 @@ hr { border:none; border-top:1px solid var(--border); }
 @media (max-width:700px) { .flight-widget-wrap { padding-left:20px; padding-right:20px; } }
 /* ── TRANSPORT (Transfer Services + Ferries side by side) ──── */
 .transport-subgrid { display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; max-width:900px; margin:0 auto; padding:16px 48px 28px; }
+.deals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; padding:16px 48px 28px; max-width:900px; margin:0 auto; }
+.deal-card { display:block; background:white; border:1.5px solid var(--border); border-left:5px solid var(--deal, var(--accent)); border-radius:var(--radius); padding:20px 22px; text-decoration:none; color:inherit; box-shadow:var(--shadow-sm); transition:transform .15s, box-shadow .15s; }
+.deal-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+.deal-brand { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--deal, var(--accent)); margin-bottom:6px; }
+.deal-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--text); margin-bottom:6px; }
+.deal-desc { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:12px; }
+.deal-cta { font-size:13px; font-weight:600; color:var(--accent); }
+@media (max-width:700px) { .deals-grid { grid-template-columns:1fr; padding:16px 20px 28px; } }
 .explore-more-subhead { max-width:900px; margin:0 auto; padding:4px 48px 12px; font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.005em; color:var(--text); }
 @media (max-width:700px) { .explore-more-subhead { padding:4px 20px 12px; } }
 .transport-subheading { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.005em; color:var(--text); margin:0 0 8px; }
@@ -1409,6 +1417,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="cat-tabs">
       <button class="cat-tab active" data-cat="all" onclick="setCat(this)">All trips <span class="tc">60</span></button>
       <button class="cat-tab" data-cat="party" onclick="setCat(this)">Partying <span class="tc">15</span></button>
+      <button class="cat-tab" data-cat="festival" onclick="setCat(this)">Festivals <span class="tc">10</span></button>
       <button class="cat-tab" data-cat="honeymoon" onclick="setCat(this)">Honeymoon <span class="tc">10</span></button>
       <button class="cat-tab" data-cat="sightseeing" onclick="setCat(this)">Sightseeing <span class="tc">19</span></button>
       <button class="cat-tab" data-cat="hiking" onclick="setCat(this)">Hiking <span class="tc">7</span></button>
@@ -1837,6 +1846,67 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="card-img" style="background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:#0F6E56;">Relax</span></div>
       <div class="card-body"><div class="card-dest">Hunter Valley, NSW</div><div class="card-sub">3 days · Group of 10 · Wine weekend away</div><div class="card-meta"><span class="ctag" style="background:var(--green-light);color:#0F6E56;">Winery tours</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Long lunches</span></div></div>
       <div class="card-footer"><div class="card-price">$900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- 2026-10-07: Festival trips (new Festivals category tab). Photos verified on Unsplash. -->
+    <!-- Tomorrowland, Belgium (festival) -->
+    <div class="trip-card" data-cat="festival party" data-budget="5800" data-dur="5" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Tomorrowland, Belgium</div><div class="card-sub">5 days · Group of 6 · Late July in Boom</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Festival tickets + DreamVille</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Day trip to Bruges</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,800 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Ultra Europe, Split, Croatia (festival) -->
+    <div class="trip-card" data-cat="festival party" data-budget="4900" data-dur="7" data-region="Europe" data-group="Large group (7+)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1603910234616-3b5f4a6be2b4?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Ultra Europe, Split, Croatia</div><div class="card-sub">7 days · Group of 8 · July festival + islands</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Ultra 3-day pass</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Hvar boat day</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Splendour in the Grass, Byron Bay (festival) -->
+    <div class="trip-card" data-cat="festival party relax" data-budget="1400" data-dur="4" data-region="Pacific" data-group="Large group (7+)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1582711012124-a56cf82307a0?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Splendour in the Grass, Byron Bay</div><div class="card-sub">4 days · Group of 8 · July, NSW</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Festival camping</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Byron beach days</span></div></div>
+      <div class="card-footer"><div class="card-price">$1,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Glastonbury, UK (festival) -->
+    <div class="trip-card" data-cat="festival" data-budget="5400" data-dur="6" data-region="Europe" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Glastonbury, UK</div><div class="card-sub">6 days · Group of 4 · Late June, Somerset</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Tent + festival pass</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">London stopover</span></div></div>
+      <div class="card-footer"><div class="card-price">$5,400 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Coachella, California (festival) -->
+    <div class="trip-card" data-cat="festival party" data-budget="6200" data-dur="6" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Coachella, California</div><div class="card-sub">6 days · Group of 4 · April, Palm Springs</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Weekend passes</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Pool house stay</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Oktoberfest, Munich (festival) -->
+    <div class="trip-card" data-cat="festival party" data-budget="4600" data-dur="5" data-region="Europe" data-group="Large group (7+)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1694171167025-80d174f54b29?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Oktoberfest, Munich</div><div class="card-sub">5 days · Group of 8 · Late Sep to early Oct</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Reserved beer tent table</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Neuschwanstein day trip</span></div></div>
+      <div class="card-footer"><div class="card-price">$4,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Songkran, Bangkok + Chiang Mai (festival) -->
+    <div class="trip-card" data-cat="festival party adventure" data-budget="2600" data-dur="7" data-region="Asia" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1775527798469-2714ade488c0?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Songkran, Bangkok + Chiang Mai</div><div class="card-sub">7 days · Group of 6 · Thai New Year, mid April</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Water fights in the street</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Night train north</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,600 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Full Moon Party, Koh Phangan (festival) -->
+    <div class="trip-card" data-cat="festival party" data-budget="2200" data-dur="6" data-region="Asia" data-group="Large group (7+)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1489366794295-c4a3e3e2a385?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Full Moon Party, Koh Phangan</div><div class="card-sub">6 days · Group of 8 · Every full moon</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Haad Rin beach party</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Island boat trip</span></div></div>
+      <div class="card-footer"><div class="card-price">$2,200 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Holi, Jaipur + Agra, India (festival) -->
+    <div class="trip-card" data-cat="festival sightseeing" data-budget="3300" data-dur="6" data-region="Asia" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1603228254119-e6a4d095dc59?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Holi, Jaipur + Agra, India</div><div class="card-sub">6 days · Group of 4 · March festival of colours</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Holi celebrations</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Taj Mahal sunrise</span></div></div>
+      <div class="card-footer"><div class="card-price">$3,300 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
+    </div>
+    <!-- Rio Carnival, Brazil (festival) -->
+    <div class="trip-card" data-cat="festival party sightseeing" data-budget="6900" data-dur="7" data-region="Americas" data-group="Small group (3–6)">
+      <div class="card-img" style="background:url('https://images.unsplash.com/photo-1742541922679-95cc82ba6c7d?w=600&q=80') center/cover;"><div class="card-img-bg" style="background:rgba(0,0,0,0.2);"></div><button class="card-save">♡</button><span class="card-vibe-pill" style="background:white;color:var(--purple);">Festival</span></div>
+      <div class="card-body"><div class="card-dest">Rio Carnival, Brazil</div><div class="card-sub">7 days · Group of 4 · February or March</div><div class="card-meta"><span class="ctag" style="background:var(--purple-light);color:var(--purple);">Sambadrome parade seats</span><span class="ctag" style="background:var(--bg2);color:var(--text-muted);">Street blocos</span></div></div>
+      <div class="card-footer"><div class="card-price">$6,900 <span>per person from SYD</span></div><button class="card-btn" onclick="bookTrip(this.closest('.trip-card'))">Book this trip →</button></div>
     </div>
     <!-- LOAD MORE BATCH (hidden until Load more is clicked) -->
     <div class="trip-card trip-card-more" data-cat="hiking adventure" data-budget="3600" data-dur="8" data-region="Pacific" data-group="Couple">
@@ -3200,6 +3270,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          category-heading-wrap ids below if a category is ever added,
          renamed or reordered. -->
     <div class="tour-jump-nav">
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-deals')">Deals</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-flights')">Flights</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-accommodation')">Accommodation</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-insurance')">Travel insurance</button>
@@ -3213,6 +3284,31 @@ footer p { font-size:13px; color:var(--text-dim); }
          .tour-provider-card grid (see Tours & experiences below for the
          pattern) or an embedded widget section (see the Klook section for
          that pattern). Don't invent a placeholder link — wait for a real one. -->
+    <!-- 2026-10-07: Deals & offers. Links straight to each partner's own live
+         deals page (with our affiliate tracking), rather than us listing
+         specific prices that would go stale. Only partners with a real,
+         working deals page are here: Trip.com (/sale/deals) and Klook
+         (/en-AU/deals). Klook's destination promo pages were left out: some
+         are for sales that have already ended. Add more cards in
+         the same pattern as partners publish deals pages. -->
+    <div class="category-heading-wrap" id="tours-deals">
+      <h3>Deals &amp; offers</h3>
+      <p>Live sales and promo codes from our travel partners. Offers change often, so check back before you book.</p>
+    </div>
+    <div class="deals-grid">
+      <a class="deal-card" href="https://www.trip.com/sale/deals/?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=deals" target="_blank" rel="noopener noreferrer sponsored" style="--deal:#2547FF;">
+        <div class="deal-brand">Trip.com</div>
+        <div class="deal-title">Hotel &amp; flight sales</div>
+        <div class="deal-desc">Current discounts on hotels and flights worldwide, including new-hotel and seasonal sales.</div>
+        <div class="deal-cta">See Trip.com deals →</div>
+      </a>
+      <a class="deal-card" href="https://www.klook.com/en-AU/deals/?aid=1410090" target="_blank" rel="noopener noreferrer sponsored" style="--deal:#FF5B00;">
+        <div class="deal-brand">Klook</div>
+        <div class="deal-title">Promo codes &amp; activity deals</div>
+        <div class="deal-desc">Klook's latest promo codes and discounts on tours, attractions, passes and transport.</div>
+        <div class="deal-cta">See Klook deals →</div>
+      </a>
+    </div>
     <div class="category-heading-wrap" id="tours-flights">
       <h3>Flights</h3>
       <p>Compare and book flights for your trip.</p>
@@ -3682,6 +3778,16 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="itin-hdr-l"><div><div class="itin-title">Want to change something?</div><div class="itin-sub">Tell us what to tweak — dates, hotels, activities, pace — and we'll send your updated itinerary to your Inbox.</div></div></div>
         <a class="btn-primary" id="ibx-edit-btn" href="#" target="_blank" rel="noopener" style="text-decoration:none;white-space:nowrap;">Edit my itinerary →</a>
       </div>
+    </div>
+    <!-- 2026-10-07: mid-trip help. A real person replies at hello@ (the
+         About page promises this). The email opens pre-filled with the trip
+         so we know which itinerary they mean. Shown to everyone on the trip. -->
+    <div class="itin-block" id="ibx-help-block">
+      <div class="itin-hdr sight">
+        <div class="itin-hdr-l"><div><div class="itin-title">Need help on your trip?</div><div class="itin-sub">Plans changed, something's not right, or you just want a recommendation? Message us and one of the TripMade team will get back to you.</div></div></div>
+        <a class="btn-secondary" id="ibx-help-btn" href="mailto:hello@tripmade.co" style="text-decoration:none;white-space:nowrap;">Message TripMade</a>
+      </div>
+      <div class="ibx-help-note">In an emergency, contact local emergency services first (000 in Australia, 112 in Europe, 911 in the US) and then your travel insurer.</div>
     </div>
     <div style="text-align:center;margin:28px 0 20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <button type="button" id="ibx-pdf-link" onclick="downloadInboxItineraryPdf()" class="btn-secondary" style="display:none;">Download as PDF</button>
@@ -6596,6 +6702,18 @@ function renderInboxEditButton(itin) {
   btn.href = url;
   block.style.display = '';
 }
+function renderInboxHelp(itin) {
+  const btn = document.getElementById('ibx-help-btn');
+  if (!btn || !itin) return;
+  const me = getUser();
+  const dest = itin.destination || 'my trip';
+  const subject = 'Help with my trip: ' + dest + ' (ref ' + String(itin.id || '').slice(0, 8) + ')';
+  const body = 'Hi TripMade team,\n\n[Tell us what you need help with]\n\n---\nTrip: ' + dest +
+    (itin.depart_date ? '\nDates: ' + itin.depart_date + (itin.return_date ? ' to ' + itin.return_date : '') : '') +
+    '\nTrip link: https://tripmade.co/?page=inbox&itinerary=' + (itin.id || '') +
+    (me && me.name ? '\nName: ' + me.name : '');
+  btn.href = 'mailto:hello@tripmade.co?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
 function renderInboxDetail(itin, justUnlocked) {
   const dest = itin.destination || (itin.summary && itin.summary.trip_title) || 'Your trip';
   const summary = itin.summary || {};
@@ -6700,7 +6818,12 @@ function renderInboxDetail(itin, justUnlocked) {
     // back to the old day-part write-up so a paid day never expands to
     // nothing. New itineraries always have per-item detail, so they never
     // show Morning/Afternoon/Evening.
-    const hasItemDetail = highlights.some(function(h) { return h.detail || h.blurb; });
+    // 2026-10-07 fix: only the newer full `detail` text counts here. Older
+    // itineraries (pre 26 Sep) have a one-line `blurb` per item but no
+    // `detail`, so counting blurb meant a paid day on those trips expanded to
+    // just four one-liners instead of the full Morning/Afternoon/Evening
+    // write-up it actually has.
+    const hasItemDetail = highlights.some(function(h) { return h.detail; });
     const legacyHtml = hasItemDetail ? '' :
       (d.morning ? '<div class="day-extend-sec"><h4>Morning</h4><p>' + d.morning + '</p></div>' : '') +
       (d.afternoon ? '<div class="day-extend-sec"><h4>Afternoon</h4><p>' + d.afternoon + '</p></div>' : '') +
@@ -6725,6 +6848,7 @@ function renderInboxDetail(itin, justUnlocked) {
   renderTripShareBar(itin);
   loadTripBookings(itin);
   renderInboxEditButton(itin);
+  renderInboxHelp(itin);
   const pdfLink = document.getElementById('ibx-pdf-link');
   if (pdfLink) {
     pdfLink.style.display = days.length ? 'inline-block' : 'none';
@@ -7366,6 +7490,8 @@ async function sendFeedback() {
 .bk-tip a{color:var(--accent);font-weight:700;}
 #ibx-bookings-block .itin-hdr{flex-wrap:wrap;gap:10px;}
 #ibx-edit-block .itin-hdr{flex-wrap:wrap;gap:12px;border-bottom:none;}
+#ibx-help-block .itin-hdr{flex-wrap:wrap;gap:12px;border-bottom:none;}
+.ibx-help-note{padding:0 22px 14px;font-size:12px;color:var(--text-muted);}
 @media (max-width:480px){.tm-row{flex-direction:column;gap:0;}.bk-list{padding:4px 10px 0;}}
 </style>
 
