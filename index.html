@@ -301,6 +301,9 @@ hr { border:none; border-top:1px solid var(--border); }
 .evt-book:hover { background:var(--accent); color:#fff; }
 .aff-note { font-size:11px; color:var(--text-dim); text-align:center; padding:10px 22px 14px; }
 @media (max-width:480px) { .evt-book { font-size:10.5px; padding:4px 8px; } .evt-book-kind { display:none; } }
+/* 2026-10-11: later legs of a connecting journey (booked together on the first leg) */
+.evt-book.evt-book-included { color:var(--text-muted); border-color:var(--border-mid, #d6d6d6); background:transparent; font-weight:600; cursor:default; white-space:normal; text-align:right; max-width:46%; }
+.evt-home-note { font-size:11.5px; color:var(--text-muted); margin-top:3px; }
 .evt-detail { display:none; font-size:13px; color:var(--text); line-height:1.6; margin-top:6px; }
 .day-block.expanded .evt-detail { display:block; }
 .day-block.expanded .evt { padding-bottom:6px; }
@@ -6359,6 +6362,62 @@ const ITIN_AFFILIATES = {
 // start date + the day number. If either is missing, falls back to the
 // plain tracked Kiwi link above.
 const TP_MARKER = '774757';
+function flightCodesFromLabel(label) {
+  const m = String(label || '').match(/\b[A-Z]{3}(?:\s*(?:→|->|–>|—>)\s*[A-Z]{3})+\b/);
+  return m ? m[0].split(/\s*(?:→|->|–>|—>)\s*/) : null;
+}
+// 2026-10-11: one booking for a whole connecting journey. Itineraries written
+// before the "connecting flights are one booking" rule list each leg as its
+// own flight (Fly SYD → SIN, then Fly SIN → AMS a few hours later). Legs are
+// joined into one journey when the next leg starts where the last one landed,
+// on the same or next day, with no hotel check-in in between (a real
+// stopover keeps its own booking). The first leg's button books the whole
+// journey (SYD → AMS); later legs say they're included. If the trip's last
+// flight doesn't land at home (where the first flight left from), its button
+// books all the way home.
+function planFlightJourneys(root) {
+  const evts = Array.from(root.querySelectorAll('.evt'));
+  const legs = [];
+  let sawHotelSinceLast = false;
+  evts.forEach(function(evt) {
+    const dot = evt.querySelector('.evt-dot');
+    const labelEl = evt.querySelector('.evt-label');
+    if (!dot || !labelEl) return;
+    if (dot.classList.contains('dot-hotel')) { sawHotelSinceLast = true; return; }
+    if (!dot.classList.contains('dot-flight')) return;
+    const codes = flightCodesFromLabel(labelEl.textContent);
+    if (!codes || codes.length < 2) return;
+    legs.push({ evt: evt, codes: codes, day: evtDayNumber(evt) || 0, hotelBefore: sawHotelSinceLast });
+    sawHotelSinceLast = false;
+  });
+  const journeys = [];
+  legs.forEach(function(leg) {
+    const cur = journeys[journeys.length - 1];
+    const prev = cur && cur.legs[cur.legs.length - 1];
+    if (prev && !leg.hotelBefore && prev.codes[prev.codes.length - 1] === leg.codes[0] && leg.day - prev.day <= 1) {
+      cur.legs.push(leg); cur.codes = cur.codes.concat(leg.codes.slice(1));
+    } else {
+      journeys.push({ legs: [leg], codes: leg.codes.slice() });
+    }
+  });
+  const plan = new Map();
+  if (!journeys.length) return plan;
+  const home = journeys[0].codes[0];
+  const maxDay = evts.reduce(function(m, e) { return Math.max(m, evtDayNumber(e) || 0); }, 0);
+  journeys.forEach(function(j, idx) {
+    let to = j.codes[j.codes.length - 1];
+    let addsHome = false;
+    const isLast = idx === journeys.length - 1;
+    if (isLast && journeys.length > 1 && to !== home && j.legs[0].day >= maxDay - 1) { to = home; addsHome = true; }
+    const from = j.codes[0];
+    j.legs.forEach(function(leg, i) {
+      plan.set(leg.evt, i === 0
+        ? { from: from, to: to, day: leg.day, legs: j.legs.length, addsHome: addsHome, via: j.codes.slice(1, -1) }
+        : { includedIn: from + ' → ' + to });
+    });
+  });
+  return plan;
+}
 function kiwiFlightLink(label, dateIso) {
   const m = String(label || '').match(/\b[A-Z]{3}(?:\s*(?:→|->|–>|—>)\s*[A-Z]{3})+\b/);
   if (!m) return null;
@@ -6561,6 +6620,7 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
   ctx = ctx || {};
   if (!root) return;
   let added = 0;
+  const flightPlan = planFlightJourneys(root);
   root.querySelectorAll('.evt').forEach(function(evt) {
     if (evt.querySelector('.evt-book')) { added++; return; }
     const labelEl = evt.querySelector('.evt-label');
@@ -6571,12 +6631,35 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     const kind = itinAffiliateKind(category, labelEl.textContent);
     const aff = kind && ITIN_AFFILIATES[kind];
     if (!aff) return;
+    const fj = kind === 'flight' ? flightPlan.get(evt) : null;
+    if (fj && fj.includedIn) {
+      // Later leg of a connecting journey: no separate booking.
+      const chip = document.createElement('span');
+      chip.className = 'evt-book evt-book-included';
+      chip.textContent = 'Included in ' + fj.includedIn + ' booking';
+      const head = document.createElement('div');
+      head.className = 'evt-head';
+      labelEl.parentNode.insertBefore(head, labelEl);
+      head.appendChild(labelEl);
+      head.appendChild(chip);
+      return;
+    }
     let url = aff.url;
     const dayNum = evtDayNumber(evt);
     const dayIso = tripDayIso(tripStart, dayNum);
     const ds = evt.dataset || {};
     if (kind === 'flight') {
-      url = kiwiFlightLink(labelEl.textContent, dayIso) || url;
+      if (fj && (fj.legs > 1 || fj.addsHome)) {
+        url = kiwiFlightLink(fj.from + ' → ' + fj.to, dayIso) || url;
+        if (fj.addsHome && !evt.querySelector('.evt-home-note')) {
+          const note = document.createElement('div');
+          note.className = 'evt-home-note';
+          note.textContent = 'Booking link covers the full journey home to ' + fj.to + '.';
+          labelEl.insertAdjacentElement('afterend', note);
+        }
+      } else {
+        url = kiwiFlightLink(labelEl.textContent, dayIso) || url;
+      }
     } else if (kind === 'stay') {
       let cityId = ds.city ? tripCityIdFor(ds.city) : tripCityIdFor(ctx.destination);
       if (/australia|new zealand/i.test(ctx.destination || '')) {
@@ -8064,7 +8147,7 @@ async function saveBooking() {
    Each slide's photos are loaded just before it shows, so only the first slide loads up front. */
 // Folder name exactly as it is in GitHub (Lachy named it "hero (Slideshow photos)").
 var HERO_DIR = '/hero (Slideshow photos)/';
-var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Kandersteg & Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-trail", "ar": 0.75, "cap": "Kandersteg, Switzerland"}, {"n": "oeschinensee", "ar": 0.75, "cap": "Oeschinensee, Switzerland"}, {"n": "kandersteg-cliffs", "ar": 0.75, "cap": "Kandersteg, Switzerland"}]}, {"cap": "Zakynthos & the Greek Islands", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75, "cap": "Navagio Beach, Zakynthos"}, {"n": "greek-cove", "ar": 0.75, "cap": "Greek Islands"}]}, {"cap": "Amsterdam · Pamplona · Split", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Split, Croatia"}]}, {"cap": "Ksamil, Albania", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Blue Eye, Albania", "imgs": [{"n": "blue-eye-river", "ar": 0.75}, {"n": "blue-eye-pool", "ar": 0.75}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Kandersteg, day to night", "imgs": [{"n": "kandersteg-day", "ar": 0.563, "cap": "Kandersteg, Switzerland"}, {"n": "kandersteg-night", "ar": 0.75, "cap": "Kandersteg, Switzerland"}]}];
+var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Amsterdam · Pamplona · Split", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Split, Croatia"}]}, {"cap": "Ksamil, Albania", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Blue Eye, Albania", "imgs": [{"n": "blue-eye-pool", "ar": 0.75}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-night", "ar": 0.75}]}];
 (function(){
   var box = document.getElementById('hero-slides'); if (!box) return;
   var cap = document.querySelector('#hero-caption span'), capEl = document.getElementById('hero-caption'), dots = document.getElementById('hero-dots');
