@@ -3780,9 +3780,12 @@ footer p { font-size:13px; color:var(--text-dim); }
      download from the detail view below, unaffected. ═══════════════ -->
 <div id="page-inbox" class="page">
   <div class="section" style="padding-top:48px;">
-    <div class="section-hd" style="text-align:left;margin-bottom:28px;">
-      <h2 style="margin-bottom:6px;">Your inbox</h2>
-      <p>Itineraries TripMade has built for you, ready to view any time.</p>
+    <div class="inbox-hd-row">
+      <div class="section-hd" style="text-align:left;">
+        <h2 style="margin-bottom:6px;">Your inbox</h2>
+        <p>Your trips, itineraries and bookings, all in one place.</p>
+      </div>
+      <button type="button" class="btn-primary" id="inbox-add-trip" onclick="openNewTripModal(null)">+ Add a trip</button>
     </div>
     <div id="inbox-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
       
@@ -3799,6 +3802,36 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div id="inbox-unfiled-list" class="bk-list"></div>
     </div>
     <div id="inbox-list" class="saved-chats-list"></div>
+  </div>
+</div>
+<!-- 2026-10-13: "Add a trip" — plan it with TripMade AI, or create your own
+     trip (manage-trip edge function) and fill it in yourself. Opened from the
+     Inbox header, or from a booking that isn't on a trip yet. -->
+<div id="trip-new-modal" onclick="if(event.target===this)closeNewTripModal()">
+  <div class="tn-card">
+    <div id="tn-step-choose">
+      <h3>Add a trip</h3>
+      <p class="tn-sub" id="tn-sub">How would you like to plan it?</p>
+      <div class="tn-choice">
+        <button type="button" class="tn-opt" onclick="newTripWithAI()"><b>Plan it with TripMade</b><span>Tell us your vibe and budget and we'll build a day-by-day itinerary around your bookings.</span></button>
+        <button type="button" class="tn-opt" onclick="showNewTripForm()"><b>Create my own trip</b><span>Just the destination and dates. Add your own plans day by day, and keep your bookings together.</span></button>
+      </div>
+      <div class="tn-acts"><span></span><button type="button" class="tn-back" onclick="closeNewTripModal()">Cancel</button></div>
+    </div>
+    <div id="tn-step-form" style="display:none;">
+      <h3>Create my own trip</h3>
+      <p class="tn-sub">You can add your plans to each day once it's created.</p>
+      <div class="tn-form">
+        <label>Where are you going?<input id="tn-dest" type="text" placeholder="e.g. Greece, Spain & Switzerland" maxlength="120"></label>
+        <div class="tn-row">
+          <label>First day<input id="tn-start" type="date"></label>
+          <label>Last day<input id="tn-end" type="date"></label>
+        </div>
+        <label>Travellers<input id="tn-trav" type="number" min="1" max="50" value="1"></label>
+      </div>
+      <div class="tn-err" id="tn-err"></div>
+      <div class="tn-acts"><button type="button" class="tn-back" onclick="showNewTripChoice()">← Back</button><button type="button" class="btn-primary" id="tn-create-btn" onclick="createOwnTrip()">Create trip →</button></div>
+    </div>
   </div>
 </div>
 <!-- ══ INBOX ITINERARY DETAIL (single itinerary, populated dynamically) ══
@@ -6784,13 +6817,184 @@ async function renderUnfiledBookings(itins) {
       const name = (t.destination || (t.summary && t.summary.trip_title) || 'Trip') + (t.summary && t.summary.date_range ? ' (' + t.summary.date_range + ')' : '');
       return '<option value="' + tmEsc(t.id) + '"' + (t.id === sugg ? ' selected' : '') + '>' + tmEsc(name) + '</option>';
     }).join('');
+    const newTrip = '<button type="button" class="bk-newtrip" onclick="openNewTripModal(' + jsStrAttr(b.id) + ')">+ New trip for this</button>';
     const mover = _unfiledTrips.length
-      ? '<div class="bk-move"><select id="bk-move-' + tmEsc(b.id) + '">' + opts + '</select><button type="button" class="btn-primary" onclick="fileBookingToTrip(' + jsStrAttr(b.id) + ')">Add to trip</button></div>'
-      : '<div class="bk-meta" style="margin-top:6px;">Once you have a TripMade itinerary for this trip, you can add this booking to it here.</div>';
+      ? '<div class="bk-move"><select id="bk-move-' + tmEsc(b.id) + '">' + opts + '</select><button type="button" class="btn-primary" onclick="fileBookingToTrip(' + jsStrAttr(b.id) + ')">Add to trip</button>' + newTrip + '</div>'
+      : '<div class="bk-move">' + newTrip + '</div>';
     return '<div class="bk-card"><div class="bk-main"><div class="bk-title">' + tmEsc(b.title) + '</div>' +
-      '<div class="bk-meta">' + meta + '</div>' + ref + mover + '</div>' +
+      '<div class="bk-meta">' + meta + '</div>' + ref + bookingFullHtml(b) + mover + '</div>' +
       '<button type="button" class="bk-del" title="Remove" aria-label="Remove booking" onclick="deleteUnfiledBooking(' + jsStrAttr(b.id) + ')">×</button></div>';
   }).join('');
+}
+// 2026-10-13: everything bookings-import read off the confirmation/PDF
+// (details.full) — passengers, legs and every other detail — behind a
+// "See full details" toggle on the booking.
+function bookingFullHtml(b) {
+  const f = b && b.details && b.details.full;
+  if (!f) return '';
+  const pax = Array.isArray(f.passengers) ? f.passengers : [];
+  const segs = Array.isArray(f.segments) ? f.segments : [];
+  const info = Array.isArray(f.info) ? f.info : [];
+  if (!pax.length && !segs.length && !info.length) return '';
+  const table = function(rows, cols) {
+    const used = cols.filter(function(c) { return rows.some(function(r) { return r[c[0]]; }); });
+    if (!used.length) return '';
+    return '<div class="bk-tbl-wrap"><table class="bk-tbl"><thead><tr>' + used.map(function(c) { return '<th>' + c[1] + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      rows.map(function(r) { return '<tr>' + used.map(function(c) { return '<td>' + tmEsc(r[c[0]] || '') + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+  };
+  let html = '';
+  if (segs.length) html += '<div><h5>' + (b.type === 'flight' ? 'Flights' : 'Itinerary') + '</h5>' + table(segs.map(function(s) {
+    return Object.assign({}, s, { dep: [fmtBookingWhen(s.depart), s.from_terminal ? 'T' + String(s.from_terminal).replace(/^T(erminal)?\s*/i, '') : ''].filter(Boolean).join(' · '),
+      arr: [fmtBookingWhen(s.arrive), s.to_terminal ? 'T' + String(s.to_terminal).replace(/^T(erminal)?\s*/i, '') : ''].filter(Boolean).join(' · '),
+      svc: [s.carrier, s.number].filter(Boolean).join(' ') });
+  }), [['svc', 'Flight'], ['from', 'From'], ['dep', 'Departs'], ['to', 'To'], ['arr', 'Arrives'], ['duration', 'Duration'], ['cabin', 'Cabin'], ['airline_ref', 'Airline ref'], ['operated_by', 'Operated by']]) + '</div>';
+  if (pax.length) html += '<div><h5>Passengers (' + pax.length + ')</h5>' + table(pax, [['name', 'Name'], ['type', 'Type'], ['ticket_number', 'Ticket'], ['seat', 'Seat'], ['baggage', 'Baggage'], ['frequent_flyer', 'Frequent flyer'], ['extras', 'Extras']]) + '</div>';
+  if (info.length) html += '<div><h5>Booking details</h5><dl class="bk-info">' + info.map(function(i) { return '<dt>' + tmEsc(i.label) + '</dt><dd>' + tmEsc(i.value) + '</dd>'; }).join('') + '</dl></div>';
+  return '<details class="bk-more"><summary>See full details</summary><div class="bk-more-body">' + html + '</div></details>';
+}
+// ── Add a trip: TripMade AI or build your own (2026-10-13) ──────────
+let _newTripBookingId = null;
+function _newTripBooking() { return (_unfiledBookings || []).find(function(b) { return b.id === _newTripBookingId; }) || null; }
+function openNewTripModal(bookingId) {
+  requireAccount(function() {
+    _newTripBookingId = bookingId || null;
+    const b = _newTripBooking();
+    const sub = document.getElementById('tn-sub');
+    if (sub) sub.textContent = b ? 'Make a trip for "' + b.title + '" and it\'ll be filed there automatically. How would you like to plan it?' : 'How would you like to plan it?';
+    showNewTripChoice();
+    document.getElementById('trip-new-modal').style.display = 'flex';
+  });
+}
+function closeNewTripModal() { document.getElementById('trip-new-modal').style.display = 'none'; }
+function showNewTripChoice() {
+  document.getElementById('tn-step-choose').style.display = '';
+  document.getElementById('tn-step-form').style.display = 'none';
+}
+function _bkIsoDate(v) { const m = String(v || '').match(/^(\d{4}-\d{2}-\d{2})/); return m ? m[1] : ''; }
+function showNewTripForm() {
+  document.getElementById('tn-step-choose').style.display = 'none';
+  document.getElementById('tn-step-form').style.display = '';
+  document.getElementById('tn-err').textContent = '';
+  const b = _newTripBooking();
+  const start = document.getElementById('tn-start'), end = document.getElementById('tn-end');
+  start.value = b ? _bkIsoDate(b.start_at) : ''; end.value = b ? (_bkIsoDate(b.end_at) || _bkIsoDate(b.start_at)) : '';
+  const pax = b && b.details && b.details.full && Array.isArray(b.details.full.passengers) ? b.details.full.passengers.length : 0;
+  document.getElementById('tn-trav').value = pax || 1;
+  document.getElementById('tn-dest').value = '';
+  setTimeout(function() { document.getElementById('tn-dest').focus(); }, 50);
+}
+async function createOwnTrip() {
+  const err = document.getElementById('tn-err'), btn = document.getElementById('tn-create-btn');
+  const dest = document.getElementById('tn-dest').value.trim();
+  const start = document.getElementById('tn-start').value, end = document.getElementById('tn-end').value || start;
+  if (!dest) { err.textContent = 'Add where you\'re going.'; return; }
+  if (!start) { err.textContent = 'Choose the first day of your trip.'; return; }
+  if (end < start) { err.textContent = 'The last day can\'t be before the first day.'; return; }
+  btn.disabled = true; btn.textContent = 'Creating…'; err.textContent = '';
+  try {
+    const out = await callManageTrip({ action: 'create', destination: dest, start: start, end: end, travellers: document.getElementById('tn-trav').value, booking_id: _newTripBookingId });
+    closeNewTripModal();
+    openInboxItinerary(out.itinerary_id, false);
+  } catch (e) {
+    err.textContent = e.message || 'Couldn\'t create the trip just then. Please try again.';
+  } finally { btn.disabled = false; btn.textContent = 'Create trip →'; }
+}
+// AI route: the itinerary form, with the booking's dates already filled in.
+// When the itinerary arrives, record-itinerary files any of the customer's
+// unfiled bookings that fall within the trip's dates onto it.
+function newTripWithAI() {
+  const b = _newTripBooking();
+  closeNewTripModal();
+  requireAccount(function() {
+    showPage('form');
+    const s = b ? _bkIsoDate(b.start_at) : '', e = b ? (_bkIsoDate(b.end_at) || '') : '';
+    if (s && window._departPicker) {
+      try { window._departPicker.setDate(e && e > s ? [s, e] : [s], true, 'Y-m-d'); } catch (x) {}
+    }
+    const fromEl = document.getElementById('f-from');
+    if (fromEl && !fromEl.value) fromEl.value = 'Sydney';
+    const step1Sub = document.getElementById('step1-sub');
+    if (step1Sub && b) step1Sub.textContent = 'We\'ve started with the dates from your "' + b.title + '" booking. Add where you\'re going and adjust the dates to cover the whole trip. Your booking will be added to the itinerary automatically.';
+  });
+}
+async function callManageTrip(payload) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { openLoginModal(); throw new Error('Please log in first.'); }
+  const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/manage-trip', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+    body: JSON.stringify(payload)
+  });
+  let out = {}; try { out = await res.json(); } catch (e) {}
+  if (!res.ok || !out.ok) throw new Error(out.message || 'Something went wrong. Please try again.');
+  return out;
+}
+// ── Customer-built trip days (kind = 'manual') ──────────────────────
+const MT_CATS = [['activity', 'Activity'], ['food', 'Food & drink'], ['flight', 'Flight'], ['hotel', 'Stay'], ['transport', 'Transport'], ['event', 'Event']];
+function _mtDecode(s) { const t = document.createElement('textarea'); t.innerHTML = String(s || ''); return t.value; }
+function renderManualTripDays(itin) {
+  const wrap = document.getElementById('ibx-days');
+  if (!wrap) return;
+  const days = Array.isArray(itin.days) ? itin.days : [];
+  const start = parseTripStart(itin.depart_date) || parseTripStart((itin.summary || {}).checkin_date);
+  wrap.innerHTML = days.map(function(d) {
+    const realDate = formatTripDayDate(start, d.day_number);
+    const label = 'Day ' + d.day_number + (realDate ? ' — ' + realDate : (d.date_label ? ' — ' + d.date_label : '')) + (d.day_title ? ' · ' + d.day_title : '');
+    const hl = Array.isArray(d.highlights) ? d.highlights : [];
+    const items = hl.map(function(h, i) {
+      const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
+      return '<div class="evt" id="mt-stop-' + d.day_number + '-' + i + '">' +
+        '<div class="evt-time">' + (h.time || '') + '</div>' +
+        '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
+        '<div class="evt-body"><div class="evt-label">' + (h.label || '') + '</div>' +
+          (h.detail ? '<div class="mt-detail">' + h.detail + '</div>' : '') +
+          '<div class="mt-stop-acts"><button type="button" onclick="mtOpenForm(' + d.day_number + ',' + i + ')">Edit</button><button type="button" onclick="mtDeleteStop(' + d.day_number + ',' + i + ')">Remove</button></div>' +
+        '</div></div>';
+    }).join('');
+    return '<div class="day-block expanded" data-day="' + d.day_number + '">' +
+      '<div class="day-lbl-row"><div class="day-lbl">' + label + '</div></div>' +
+      '<div class="evt-list">' + (items || '<div class="mt-empty">Nothing planned yet.</div>') +
+        '<div id="mt-form-slot-' + d.day_number + '"></div>' +
+        '<button type="button" class="mt-add-btn" onclick="mtOpenForm(' + d.day_number + ',-1)">+ Add to this day</button>' +
+      '</div></div>';
+  }).join('');
+  decorateItineraryAffiliates(wrap, start, { travellers: parseInt((itin.summary || {}).travellers_count, 10) || 1, totalDays: days.length, destination: itin.destination,
+    tag: 'itin_' + String(itin.id || '').replace(/-/g, '') });
+}
+function mtOpenForm(dayNumber, index) {
+  document.querySelectorAll('[id^="mt-form-slot-"]').forEach(function(s) { s.innerHTML = ''; });
+  const itin = _currentInboxItinerary; if (!itin) return;
+  const day = (itin.days || []).find(function(d) { return Number(d.day_number) === dayNumber; }); if (!day) return;
+  const h = index >= 0 ? (day.highlights || [])[index] || {} : {};
+  const opts = MT_CATS.map(function(c) { return '<option value="' + c[0] + '"' + (h.category === c[0] ? ' selected' : '') + '>' + c[1] + '</option>'; }).join('');
+  const slot = document.getElementById('mt-form-slot-' + dayNumber);
+  slot.innerHTML = '<form class="mt-form" onsubmit="mtSaveStop(event,' + dayNumber + ',' + index + ')">' +
+    '<input name="time" type="time" value="' + tmEsc(h.time || '') + '" aria-label="Time">' +
+    '<select name="category" aria-label="Type">' + opts + '</select>' +
+    '<input name="label" type="text" maxlength="160" placeholder="What\'s happening? e.g. Dinner at Taverna Kritikos" required value="' + tmEsc(_mtDecode(h.label)) + '">' +
+    '<textarea name="detail" maxlength="1500" placeholder="Notes (optional): address, booking time, who\'s coming…">' + tmEsc(_mtDecode(h.detail)) + '</textarea>' +
+    '<div class="mt-form-acts"><button type="button" class="btn-secondary" onclick="this.closest(\'form\').remove()">Cancel</button><button type="submit" class="btn-primary">' + (index >= 0 ? 'Save' : 'Add') + '</button></div>' +
+    '</form>';
+  const lbl = slot.querySelector('input[name=label]'); if (lbl) lbl.focus();
+}
+async function mtSaveStop(ev, dayNumber, index) {
+  ev.preventDefault();
+  const f = ev.target, btn = f.querySelector('button[type=submit]');
+  btn.disabled = true;
+  try {
+    const out = await callManageTrip({ action: index >= 0 ? 'update_stop' : 'add_stop', itinerary_id: _currentInboxItinerary.id, day_number: dayNumber, index: index,
+      time: f.time.value, category: f.category.value, label: f.label.value, detail: f.detail.value });
+    _currentInboxItinerary = Object.assign({}, _currentInboxItinerary, { days: out.days });
+    renderManualTripDays(_currentInboxItinerary);
+  } catch (e) { alert(e.message); btn.disabled = false; }
+}
+async function mtDeleteStop(dayNumber, index) {
+  if (!window.confirm('Remove this from your trip?')) return;
+  try {
+    const out = await callManageTrip({ action: 'delete_stop', itinerary_id: _currentInboxItinerary.id, day_number: dayNumber, index: index });
+    _currentInboxItinerary = Object.assign({}, _currentInboxItinerary, { days: out.days });
+    renderManualTripDays(_currentInboxItinerary);
+  } catch (e) { alert(e.message); }
 }
 async function fileBookingToTrip(id) {
   const sel = document.getElementById('bk-move-' + id);
@@ -6859,7 +7063,8 @@ async function renderInboxPage() {
     const dayCount = Array.isArray(it.days) ? it.days.length : 0;
     const shared = it.user_id !== currentUser.id;
     const badge = (it.status === 'new' && !shared ? '<span style="background:var(--accent);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">NEW</span>' : '') +
-      (shared ? '<span style="background:#EEF2FF;color:#3730A3;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">SHARED WITH YOU</span>' : '');
+      (shared ? '<span style="background:#EEF2FF;color:#3730A3;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">SHARED WITH YOU</span>' : '') +
+      (it.kind === 'manual' ? '<span style="background:#F4F6F5;color:#555;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">YOUR PLAN</span>' : '');
     return '' +
       '<div class="saved-chat-row">' +
         '<div class="saved-chat-main">' +
@@ -6984,7 +7189,7 @@ function renderInboxEditButton(itin) {
   if (!block || !btn) return;
   const me = getUser();
   const mine = !!(me && itin && itin.user_id === me.id);
-  if (!mine) { block.style.display = 'none'; return; }
+  if (!mine || itin.kind === 'manual') { block.style.display = 'none'; return; }
   let url = (itin.edit_url || '').trim();
   if (!/^https:\/\/docs\.google\.com\/forms\//.test(url)) {
     const email = String(itin.email || me.email || '').trim().toLowerCase();
@@ -7137,6 +7342,15 @@ function renderInboxDetail(itin, justUnlocked) {
   decorateItineraryAffiliates(document.getElementById('ibx-days'), parseTripStart(itin.depart_date) || parseTripStart((itin.summary || {}).checkin_date),
     { travellers: parseInt((itin.summary || {}).travellers_count, 10) || 2, totalDays: days.reduce(function(m, d) { return Math.max(m, d.day_number || 0); }, days.length), destination: itin.destination,
       tag: 'itin_' + String(itin.id || '').replace(/-/g, '') });
+  // 2026-10-13: trips the customer built themselves.
+  const isManual = itin.kind === 'manual';
+  const sumGridEl = document.getElementById('ibx-sum-grid');
+  if (sumGridEl) sumGridEl.style.display = isManual ? 'none' : '';
+  const priceNoteEl = document.querySelector('#page-inbox-detail .trip-price-note');
+  if (priceNoteEl) priceNoteEl.style.display = isManual ? 'none' : '';
+  const blockSub = document.getElementById('ibx-block-title') && document.getElementById('ibx-block-title').nextElementSibling;
+  if (blockSub) blockSub.textContent = isManual ? 'Your own plan: add anything you like to each day' : 'Tap a day to expand it once it\'s unlocked';
+  if (isManual) renderManualTripDays(itin);
   renderTripShareBar(itin);
   loadTripBookings(itin);
   renderInboxEditButton(itin);
@@ -7834,6 +8048,58 @@ async function sendFeedback() {
 .bk-move select{flex:1;min-width:180px;padding:8px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-family:inherit;font-size:13px;background:white;}
 .bk-move .btn-primary{padding:8px 16px;font-size:13px;}
 #inbox-unfiled .itin-hdr{border-bottom:none;}
+/* 2026-10-13: full booking details ("See full details") */
+.bk-more{margin-top:10px;}
+@media (max-width:600px){.bk-card:has(.bk-more[open]){flex-wrap:wrap;}.bk-card:has(.bk-more[open]) .bk-main{flex-basis:100%;order:2;}.bk-card:has(.bk-more[open]) .bk-acts{order:1;margin-left:auto;flex-direction:row;}}
+.bk-more summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--accent);list-style:none;display:inline-flex;align-items:center;gap:6px;}
+.bk-more summary::-webkit-details-marker{display:none;}
+.bk-more summary::after{content:'▾';font-size:11px;transition:transform .15s;}
+.bk-more[open] summary::after{transform:rotate(180deg);}
+.bk-more-body{margin-top:10px;display:flex;flex-direction:column;gap:14px;}
+.bk-more h5{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin:0 0 6px;}
+.bk-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #EEE;border-radius:8px;}
+.bk-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:420px;}
+.bk-tbl th{text-align:left;background:#F7F8F8;color:var(--text-muted);font-weight:600;padding:7px 10px;white-space:nowrap;}
+.bk-tbl td{padding:7px 10px;border-top:1px solid #F0F0F0;vertical-align:top;color:var(--text,#1A1A1A);}
+.bk-info{display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:4px 12px;font-size:12.5px;}
+.bk-info dt{color:var(--text-muted);}
+.bk-info dd{margin:0;color:var(--text,#1A1A1A);word-break:break-word;}
+.bk-newtrip{background:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.bk-newtrip:hover{background:var(--accent-light);}
+/* 2026-10-13: Add a trip (AI or build your own) */
+.inbox-hd-row{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:28px;}
+.inbox-hd-row .section-hd{margin-bottom:0!important;}
+#trip-new-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px;}
+#trip-new-modal .tn-card{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:92vh;overflow:auto;}
+#trip-new-modal h3{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin:0 0 6px;}
+#trip-new-modal .tn-sub{font-size:13.5px;color:var(--text-muted);margin:0 0 18px;line-height:1.5;}
+.tn-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tn-opt{border:1.5px solid var(--border-mid);border-radius:12px;padding:16px;text-align:left;background:#fff;cursor:pointer;font-family:inherit;transition:border-color .15s,box-shadow .15s;}
+.tn-opt:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(13,115,119,.12);}
+.tn-opt b{display:block;font-size:15px;margin-bottom:5px;color:var(--text,#1A1A1A);}
+.tn-opt span{font-size:12.5px;color:var(--text-muted);line-height:1.45;display:block;}
+.tn-form{display:flex;flex-direction:column;gap:12px;}
+.tn-form label{font-size:12px;font-weight:700;color:var(--text-muted);display:flex;flex-direction:column;gap:5px;}
+.tn-form input{padding:11px 12px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:inherit;}
+.tn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tn-acts{display:flex;justify-content:space-between;gap:10px;margin-top:18px;align-items:center;}
+.tn-back{background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;font-family:inherit;}
+.tn-err{color:#B3261E;font-size:12.5px;min-height:1em;}
+@media (max-width:520px){.tn-choice,.tn-row{grid-template-columns:1fr;}}
+/* Manual (customer-built) trip days */
+.mt-stop-acts{display:flex;gap:10px;margin-top:4px;}
+.mt-stop-acts button{background:none;border:none;padding:0;font-size:11.5px;color:var(--text-muted);cursor:pointer;font-family:inherit;text-decoration:underline;}
+.mt-stop-acts button:hover{color:var(--accent);}
+.mt-detail{font-size:13px;color:var(--text-muted);margin-top:3px;line-height:1.5;white-space:pre-line;}
+.mt-empty{font-size:13px;color:var(--text-muted);padding:4px 0 2px;}
+.mt-add-btn{background:none;border:1.5px dashed var(--border-mid);border-radius:8px;color:var(--accent);font-weight:700;font-size:12.5px;padding:8px 12px;cursor:pointer;font-family:inherit;margin:8px 0 4px;}
+.mt-add-btn:hover{border-color:var(--accent);}
+.mt-form{display:grid;grid-template-columns:110px 150px 1fr;gap:8px;margin:10px 0 6px;padding:12px;background:#F7F8F8;border-radius:10px;}
+.mt-form input,.mt-form select,.mt-form textarea{padding:9px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;min-width:0;}
+.mt-form textarea{grid-column:1/-1;min-height:60px;resize:vertical;}
+.mt-form .mt-form-acts{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end;}
+.mt-form .mt-form-acts button{padding:8px 14px;font-size:13px;}
+@media (max-width:600px){.mt-form{grid-template-columns:1fr 1fr;}.mt-form input[name=label]{grid-column:1/-1;}}
 .bk-tip{font-size:12.5px;color:var(--text-muted,#6B6B6B);padding:12px 18px 16px;line-height:1.5;border-top:1px solid #EEE;margin-top:6px;}
 .bk-tip a{color:var(--accent);font-weight:700;}
 #ibx-bookings-block .itin-hdr{flex-wrap:wrap;gap:10px;}
@@ -8046,7 +8312,7 @@ function renderTripBookings() {
     const acts = mine ? '<div class="bk-acts"><button type="button" class="bk-del" title="Remove" aria-label="Remove booking" onclick="deleteBooking(' + jsStrAttr(b.id) + ')">×</button>' +
       '<button type="button" class="bk-cancel-btn" onclick="setBookingCancelled(' + jsStrAttr(b.id) + ',' + (cancelled ? 'false' : 'true') + ')">' + (cancelled ? 'Undo cancel' : 'Mark cancelled') + '</button></div>' : '';
     return '<div class="bk-card' + (cancelled ? ' bk-cancelled' : '') + '"><div class="bk-main"><div class="bk-title">' + tmEsc(b.title) + (cancelled ? '<span class="bk-cancel-pill">CANCELLED</span>' : '') + '</div>' +
-      '<div class="bk-meta">' + meta + loc + (extra ? '<br>' + extra : '') + '</div>' + ref + '</div>' + acts + '</div>';
+      '<div class="bk-meta">' + meta + loc + (extra ? '<br>' + extra : '') + '</div>' + ref + bookingFullHtml(b) + '</div>' + acts + '</div>';
   }).join('');
 }
 // "2026-10-30 10:15" -> "Fri 30 Oct 2026, 10:15" (anything else shown as-is).
