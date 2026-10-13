@@ -3871,19 +3871,18 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="itin-block">
       <div class="itin-hdr sight">
         <div class="itin-hdr-l"><div><div class="itin-title" id="ibx-block-title">Your day-by-day itinerary</div><div class="itin-sub">Tap a day to expand it once it&#39;s unlocked</div></div></div>
+        <button type="button" class="ibx-edit-toggle" id="ibx-edit-toggle" onclick="toggleTripEdit()" style="display:none;">Edit trip</button>
       </div>
+      <div id="ibx-editbar" style="display:none;"></div>
       <div id="ibx-days"></div>
     </div>
-    <!-- 2026-10-01 per Lachlan: "Edit my itinerary" back on the itinerary
-         itself (it used to live only in the emailed PDF). Opens the same
-         pre-filled Google Form the edit flow (Make scenario 7034063)
-         watches — URL comes from itineraries.edit_url, written by Make for
-         every itinerary. Only shown to the trip's owner, not to friends
-         it's been shared with (the form edits by the owner's email). -->
+    <!-- 2026-10-13 per Lachlan: editing now happens right here on the trip
+         (no Google Form, no new email). This block just switches the trip
+         into edit mode; see toggleTripEdit / manage-trip. -->
     <div class="itin-block" id="ibx-edit-block" style="display:none;">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div><div class="itin-title">Want to change something?</div><div class="itin-sub">Tell us what to tweak — dates, hotels, activities, pace — and we'll send your updated itinerary to your Inbox.</div></div></div>
-        <a class="btn-primary" id="ibx-edit-btn" href="#" target="_blank" rel="noopener" style="text-decoration:none;white-space:nowrap;">Edit my itinerary →</a>
+        <div class="itin-hdr-l"><div><div class="itin-title">Want to change something?</div><div class="itin-sub">Change a time, swap or add a stop, move your dates, or ask TripMade to rework a day. It all updates right here.</div></div></div>
+        <button type="button" class="btn-primary" id="ibx-edit-btn" onclick="startTripEdit()" style="white-space:nowrap;">Edit this trip →</button>
       </div>
     </div>
     <!-- 2026-10-07: mid-trip help. A real person replies at hello@ (the
@@ -6953,7 +6952,7 @@ function renderManualTripDays(itin) {
     }).join('');
     return '<div class="day-block expanded" data-day="' + d.day_number + '">' +
       '<div class="day-lbl-row"><div class="day-lbl">' + label + '</div></div>' +
-      '<div class="evt-list">' + (items || '<div class="mt-empty">Nothing planned yet.</div>') +
+      '<div class="evt-list">' + (items || '<div class="mt-empty">Nothing planned yet.</div>') + dayUpgradesHtml(d) +
         '<div id="mt-form-slot-' + d.day_number + '"></div>' +
         '<button type="button" class="mt-add-btn" onclick="mtOpenForm(' + d.day_number + ',-1)">+ Add to this day</button>' +
       '</div></div>';
@@ -6966,16 +6965,112 @@ function mtOpenForm(dayNumber, index) {
   const itin = _currentInboxItinerary; if (!itin) return;
   const day = (itin.days || []).find(function(d) { return Number(d.day_number) === dayNumber; }); if (!day) return;
   const h = index >= 0 ? (day.highlights || [])[index] || {} : {};
+  const notesOk = itin.kind === 'manual' || !inboxDayLocked(itin, dayNumber);
   const opts = MT_CATS.map(function(c) { return '<option value="' + c[0] + '"' + (h.category === c[0] ? ' selected' : '') + '>' + c[1] + '</option>'; }).join('');
   const slot = document.getElementById('mt-form-slot-' + dayNumber);
   slot.innerHTML = '<form class="mt-form" onsubmit="mtSaveStop(event,' + dayNumber + ',' + index + ')">' +
     '<input name="time" type="time" value="' + tmEsc(h.time || '') + '" aria-label="Time">' +
     '<select name="category" aria-label="Type">' + opts + '</select>' +
     '<input name="label" type="text" maxlength="160" placeholder="What\'s happening? e.g. Dinner at Taverna Kritikos" required value="' + tmEsc(_mtDecode(h.label)) + '">' +
-    '<textarea name="detail" maxlength="1500" placeholder="Notes (optional): address, booking time, who\'s coming…">' + tmEsc(_mtDecode(h.detail)) + '</textarea>' +
+    (notesOk ? '<textarea name="detail" maxlength="1500" placeholder="Notes (optional): address, booking time, who\'s coming…">' + tmEsc(_mtDecode(h.detail)) + '</textarea>' : '<div class="te-hint" style="grid-column:1/-1;">Unlock this day to see and edit its full notes.</div>') +
     '<div class="mt-form-acts"><button type="button" class="btn-secondary" onclick="this.closest(\'form\').remove()">Cancel</button><button type="submit" class="btn-primary">' + (index >= 0 ? 'Save' : 'Add') + '</button></div>' +
     '</form>';
   const lbl = slot.querySelector('input[name=label]'); if (lbl) lbl.focus();
+}
+// 2026-10-13: TripMade local knowledge (public.local_tips, attached to the
+// day server-side): optional upgrades like the helicopter to the Sanctuary
+// Cove Boat Show. Shown on locked days too, it's an offer, not content.
+function dayUpgradesHtml(d) {
+  const ups = Array.isArray(d.upgrades) ? d.upgrades : [];
+  const list = ups.concat(Array.isArray(d.insider) ? d.insider : []);
+  return list.map(function(u, i) {
+    return '<div class="day-upgrade"><div class="day-upgrade-lbl">' + (i < ups.length ? 'Upgrade idea' : 'Local tip') + (u.title ? ' · ' + tmEsc(u.title) : '') + '</div><div class="day-upgrade-txt">' + tmEsc(u.text || '') + '</div></div>';
+  }).join('');
+}
+// ── On-site trip editing (2026-10-13) ───────────────────────────────
+let _ibxEdit = false, _ibxEditTripId = null, _teMsg = null;
+function startTripEdit() {
+  _ibxEdit = true;
+  rerenderTrip();
+  const blk = document.getElementById('ibx-days');
+  if (blk) blk.closest('.itin-block').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function toggleTripEdit() { _ibxEdit = !_ibxEdit; if (!_ibxEdit) _teMsg = null; rerenderTrip(); }
+// Re-draw the open trip, keeping the expanded day open.
+function rerenderTrip() {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  const openId = _openInboxDayId;
+  _openInboxDayId = null;
+  renderInboxDetail(itin, false);
+  if (openId && document.getElementById('day-extend-panel-' + openId)) toggleInboxDayExtend(openId);
+}
+function applyTripUpdate(out) {
+  const keep = {};
+  ['days', 'summary', 'depart_date', 'return_date', 'destination', 'ai_edits_used'].forEach(function(k) { if (out && out[k] !== undefined) keep[k] = out[k]; });
+  _currentInboxItinerary = Object.assign({}, _currentInboxItinerary, keep);
+  rerenderTrip();
+}
+function _teIso(v) { const d = parseTripStart(v); return d ? d.toISOString().slice(0, 10) : ''; }
+function renderTripEditBar(itin) {
+  const bar = document.getElementById('ibx-editbar');
+  const tog = document.getElementById('ibx-edit-toggle');
+  const manual = itin.kind === 'manual';
+  const on = manual || _ibxEdit;
+  if (tog) { tog.style.display = manual ? 'none' : ''; tog.classList.toggle('on', _ibxEdit); tog.textContent = _ibxEdit ? 'Done editing' : 'Edit trip'; }
+  if (!bar) return;
+  if (!on) { bar.style.display = 'none'; bar.innerHTML = ''; return; }
+  const days = Array.isArray(itin.days) ? itin.days.length : 0;
+  const start = _teIso(itin.depart_date) || _teIso((itin.summary || {}).checkin_date);
+  const left = Math.max(0, 10 - (parseInt(itin.ai_edits_used, 10) || 0));
+  const msg = _teMsg ? '<div class="te-status ' + _teMsg.kind + '">' + tmEsc(_teMsg.text) + '</div>' : '<div class="te-status" id="te-status"></div>';
+  bar.style.display = '';
+  bar.innerHTML =
+    '<div class="te-row"><div class="te-lbl">Trip dates</div><div class="te-dates">Starts <input type="date" id="te-start" value="' + tmEsc(start) + '"> <span>· ' + days + ' day' + (days === 1 ? '' : 's') + '</span>' +
+      '<button type="button" class="btn-secondary te-small" onclick="teMoveDates()">Move trip</button></div></div>' +
+    '<div class="te-row"><div class="te-lbl">Ask TripMade to change it</div>' +
+      '<textarea id="te-req" maxlength="1500" placeholder="e.g. Make it Friday to Sunday · swap Saturday dinner for somewhere on the beach · add a spa morning on day 2"></textarea>' +
+      '<div class="te-acts"><span class="te-left">' + (left ? left + ' of 10 TripMade changes left for this trip' : 'You\'ve used all 10 TripMade changes for this trip') + '</span>' +
+      '<button type="button" class="btn-primary te-small" id="te-ai-btn" onclick="teAskAI()"' + (left ? '' : ' disabled') + '>Make the change</button></div>' + msg + '</div>' +
+    '<div class="te-foot"><div class="te-hint">' + (manual ? 'Add, edit or remove anything on each day below.' : 'Tap <b>Edit</b> on any stop to change its time or name, or <b>Remove</b> it. On unlocked days you can edit the full notes too.') + '</div>' +
+      (manual ? '' : '<button type="button" class="te-done" onclick="toggleTripEdit()">Done editing</button>') + '</div>';
+}
+function _teSetStatus(kind, text) {
+  _teMsg = kind === 'busy' ? null : { kind: kind, text: text };
+  const el = document.querySelector('#ibx-editbar .te-status');
+  if (el) { el.className = 'te-status ' + kind; el.textContent = text; }
+}
+async function teMoveDates() {
+  const v = (document.getElementById('te-start') || {}).value;
+  if (!v) { _teSetStatus('err', 'Choose the new first day of your trip.'); return; }
+  _teSetStatus('busy', 'Moving your trip…');
+  try {
+    const out = await callManageTrip({ action: 'move_dates', itinerary_id: _currentInboxItinerary.id, start: v });
+    _teMsg = { kind: 'ok', text: 'Done. Your trip now runs ' + ((out.summary || {}).date_range || 'on the new dates') + '.' };
+    applyTripUpdate(out);
+    refreshTripHeader();
+  } catch (e) { _teSetStatus('err', e.message); }
+}
+async function teAskAI() {
+  const ta = document.getElementById('te-req'), btn = document.getElementById('te-ai-btn');
+  const req = ta ? ta.value.trim() : '';
+  if (req.length < 3) { _teSetStatus('err', 'Tell us what you\'d like changed.'); return; }
+  btn.disabled = true; btn.textContent = 'Updating your trip…'; ta.disabled = true;
+  _teSetStatus('busy', 'TripMade is updating your trip. This can take up to a minute, so keep this page open.');
+  try {
+    const out = await callManageTrip({ action: 'ai_edit', itinerary_id: _currentInboxItinerary.id, request: req });
+    _teMsg = { kind: 'ok', text: out.message || 'Done, your trip has been updated.' };
+    applyTripUpdate(out);
+    refreshTripHeader();
+  } catch (e) {
+    _teSetStatus('err', e.message);
+    btn.disabled = false; btn.textContent = 'Make the change'; ta.disabled = false;
+  }
+}
+function refreshTripHeader() {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  const s = itin.summary || {};
+  const t = document.getElementById('ibx-title'); if (t) t.textContent = s.trip_title || itin.destination || 'Your trip';
+  const m = document.getElementById('ibx-meta'); if (m) m.textContent = (s.date_range || '') + (s.nights ? ' · ' + s.nights + ' nights' : '');
 }
 async function mtSaveStop(ev, dayNumber, index) {
   ev.preventDefault();
@@ -6983,17 +7078,15 @@ async function mtSaveStop(ev, dayNumber, index) {
   btn.disabled = true;
   try {
     const out = await callManageTrip({ action: index >= 0 ? 'update_stop' : 'add_stop', itinerary_id: _currentInboxItinerary.id, day_number: dayNumber, index: index,
-      time: f.time.value, category: f.category.value, label: f.label.value, detail: f.detail.value });
-    _currentInboxItinerary = Object.assign({}, _currentInboxItinerary, { days: out.days });
-    renderManualTripDays(_currentInboxItinerary);
+      time: f.time.value, category: f.category.value, label: f.label.value, detail: f.detail ? f.detail.value : undefined });
+    applyTripUpdate(out);
   } catch (e) { alert(e.message); btn.disabled = false; }
 }
 async function mtDeleteStop(dayNumber, index) {
   if (!window.confirm('Remove this from your trip?')) return;
   try {
     const out = await callManageTrip({ action: 'delete_stop', itinerary_id: _currentInboxItinerary.id, day_number: dayNumber, index: index });
-    _currentInboxItinerary = Object.assign({}, _currentInboxItinerary, { days: out.days });
-    renderManualTripDays(_currentInboxItinerary);
+    applyTripUpdate(out);
   } catch (e) { alert(e.message); }
 }
 async function fileBookingToTrip(id) {
@@ -7101,6 +7194,8 @@ async function openInboxItinerary(id, justUnlocked) {
     const { data: itin, error } = await sb.from('itineraries').select('*').eq('id', id).maybeSingle();
     if (error || !itin) { console.error('Opening itinerary failed:', error); showPage('inbox'); renderInboxPage(); return; }
     _currentInboxItinerary = itin;
+    if (!_currentInboxItinerary || _ibxEditTripId !== itin.id) { _ibxEdit = false; _teMsg = null; }
+    _ibxEditTripId = itin.id;
     showPage('inbox-detail');
     renderInboxDetail(itin, !!justUnlocked);
     if (itin.status !== 'viewed' && itin.user_id === currentUser.id) {
@@ -7185,19 +7280,8 @@ function inboxUnlockPrice(itin, mode) {
 const EDIT_FORM_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLScQnv1I7BTm3ZcvWf18QXRDyYoMwOj8_7LBR4T2zXdlLDc95g/viewform?usp=pp_url';
 function renderInboxEditButton(itin) {
   const block = document.getElementById('ibx-edit-block');
-  const btn = document.getElementById('ibx-edit-btn');
-  if (!block || !btn) return;
-  const me = getUser();
-  const mine = !!(me && itin && itin.user_id === me.id);
-  if (!mine || itin.kind === 'manual') { block.style.display = 'none'; return; }
-  let url = (itin.edit_url || '').trim();
-  if (!/^https:\/\/docs\.google\.com\/forms\//.test(url)) {
-    const email = String(itin.email || me.email || '').trim().toLowerCase();
-    const name = me.name || '';
-    url = EDIT_FORM_BASE + '&entry.1836826375=' + encodeURIComponent(name) + '&entry.392320769=' + encodeURIComponent(email);
-  }
-  btn.href = url;
-  block.style.display = '';
+  if (!block) return;
+  block.style.display = (itin && itin.kind !== 'manual' && !_ibxEdit) ? '' : 'none';
 }
 function renderInboxHelp(itin) {
   const btn = document.getElementById('ibx-help-btn');
@@ -7277,8 +7361,9 @@ function renderInboxDetail(itin, justUnlocked) {
     // Each unlocked item carries a hidden .evt-detail that shows once its
     // .day-block gets the `expanded` class (see toggleInboxDayExtend).
     // Locked days never get .evt-detail written into the DOM at all.
+    const editing = _ibxEdit && itin.kind !== 'manual';
     const buildEvtHtml = function(withDetail) {
-      return highlights.map(function(h) {
+      return highlights.map(function(h, hi) {
         const dot = INBOX_CATEGORY_DOT[h.category] || 'dot-activity';
         const detailText = withDetail ? (h.detail || h.blurb || '') : '';
         const attr = function(k, v) { return v == null || v === '' ? '' : ' data-' + k + '="' + String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '"'; };
@@ -7291,11 +7376,12 @@ function renderInboxDetail(itin, justUnlocked) {
             '<div class="evt-body">' +
               '<div class="evt-label">' + (h.label || '') + '</div>' +
               (detailText ? '<div class="evt-detail">' + detailText + '</div>' : '') +
+              (editing ? '<div class="mt-stop-acts"><button type="button" onclick="mtOpenForm(' + d.day_number + ',' + hi + ')">Edit</button><button type="button" onclick="mtDeleteStop(' + d.day_number + ',' + hi + ')">Remove</button></div>' : '') +
             '</div>' +
           '</div>';
-      }).join('');
+      }).join('') + (editing ? '<div id="mt-form-slot-' + d.day_number + '"></div><button type="button" class="mt-add-btn" onclick="mtOpenForm(' + d.day_number + ',-1)">+ Add to this day</button>' : '');
     };
-    const evtHtml = buildEvtHtml(!locked);
+    const evtHtml = buildEvtHtml(!locked) + dayUpgradesHtml(d);
     // Locked day: no extend button at all, just a plain unlock CTA. The
     // full morning/afternoon/evening/tip text is never written into the DOM
     // for a locked day — nothing to inspect/reveal client-side even before
@@ -7351,6 +7437,7 @@ function renderInboxDetail(itin, justUnlocked) {
   const blockSub = document.getElementById('ibx-block-title') && document.getElementById('ibx-block-title').nextElementSibling;
   if (blockSub) blockSub.textContent = isManual ? 'Your own plan: add anything you like to each day' : 'Tap a day to expand it once it\'s unlocked';
   if (isManual) renderManualTripDays(itin);
+  renderTripEditBar(itin);
   renderTripShareBar(itin);
   loadTripBookings(itin);
   renderInboxEditButton(itin);
@@ -8088,6 +8175,29 @@ async function sendFeedback() {
 @media (max-width:520px){.tn-choice,.tn-row{grid-template-columns:1fr;}}
 /* Manual (customer-built) trip days */
 .mt-stop-acts{display:flex;gap:10px;margin-top:4px;}
+/* 2026-10-13: local knowledge upgrades on a day */
+.day-upgrade{margin:10px 0 4px;padding:11px 14px;border-radius:10px;background:#FFF8E6;border:1px solid #F3E2B0;}
+.day-upgrade-lbl{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#7A5B00;margin-bottom:4px;}
+.day-upgrade-txt{font-size:13px;line-height:1.55;color:#4A3B10;}
+/* 2026-10-13: on-site trip editing */
+.itin-hdr .ibx-edit-toggle{background:#fff;border:1.5px solid var(--accent);color:var(--accent);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.itin-hdr .ibx-edit-toggle.on{background:var(--accent);color:#fff;}
+#ibx-editbar{padding:16px 22px;border-bottom:1px solid var(--border,#EEE);background:#F7FAF9;}
+.te-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.te-lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);}
+.te-dates{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;}
+.te-dates input{padding:8px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;}
+.te-row textarea{width:100%;min-height:72px;padding:10px 12px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box;background:#fff;}
+.te-acts{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.te-left{font-size:12px;color:var(--text-muted);}
+.te-small{padding:8px 14px!important;font-size:13px!important;}
+.te-status{font-size:13px;line-height:1.5;border-radius:8px;padding:9px 12px;display:none;}
+.te-status.ok{display:block;background:var(--accent-light);color:var(--accent);}
+.te-status.err{display:block;background:#FDECEA;color:#B3261E;}
+.te-status.busy{display:block;background:#FFF8E6;color:#7A5B00;}
+.te-hint{font-size:12.5px;color:var(--text-muted);line-height:1.5;}
+.te-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.te-done{background:none;border:none;color:var(--accent);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;padding:0;}
 .mt-stop-acts button{background:none;border:none;padding:0;font-size:11.5px;color:var(--text-muted);cursor:pointer;font-family:inherit;text-decoration:underline;}
 .mt-stop-acts button:hover{color:var(--accent);}
 .mt-detail{font-size:13px;color:var(--text-muted);margin-top:3px;line-height:1.5;white-space:pre-line;}
