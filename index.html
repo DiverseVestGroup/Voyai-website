@@ -299,6 +299,7 @@ hr { border:none; border-top:1px solid var(--border); }
 .evt-head .evt-label { flex:1; min-width:0; }
 .evt-book { flex-shrink:0; margin-top:-1px; display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--accent); background:#fff; border:1.5px solid var(--accent); border-radius:20px; padding:4px 10px; text-decoration:none; white-space:nowrap; line-height:1.2; transition:background .15s,color .15s; }
 .evt-book:hover { background:var(--accent); color:#fff; }
+.evt-head-2 .evt-esim { margin-left:6px; }
 .aff-note { font-size:11px; color:var(--text-dim); text-align:center; padding:10px 22px 14px; }
 @media (max-width:480px) { .evt-book { font-size:10.5px; padding:4px 8px; } .evt-book-kind { display:none; } }
 /* 2026-10-11: later legs of a connecting journey (booked together on the first leg) */
@@ -6398,6 +6399,7 @@ const ITIN_AFFILIATES = {
 // start date + the day number. If either is missing, falls back to the
 // plain tracked Kiwi link above.
 const TP_MARKER = '774757';
+const HOLAFLY_URL = 'https://holafly.sjv.io/c/7745282/3856277/24764';   // Holafly via Impact (same link as the Book your trip page)
 function flightCodesFromLabel(label) {
   const m = String(label || '').match(/\b[A-Z]{3}(?:\s*(?:→|->|–>|—>)\s*[A-Z]{3})+\b/);
   return m ? m[0].split(/\s*(?:→|->|–>|—>)\s*/) : null;
@@ -6656,6 +6658,7 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
   ctx = ctx || {};
   if (!root) return;
   let added = 0;
+  let firstTravelEvt = null;
   const flightPlan = planFlightJourneys(root);
   root.querySelectorAll('.evt').forEach(function(evt) {
     if (evt.querySelector('.evt-book')) { added++; return; }
@@ -6751,7 +6754,27 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     head.appendChild(labelEl);
     head.appendChild(a);
     added++;
+    if (!firstTravelEvt && (kind === 'flight' || kind === 'stay')) firstTravelEvt = { evt: evt, head: head, kind: kind };
+    if (kind === 'flight' && (!firstTravelEvt || firstTravelEvt.kind !== 'flight')) firstTravelEvt = { evt: evt, head: head, kind: kind };
   });
+  // 2026-10-14 per Lachy & Jai: a Holafly eSIM link on every itinerary, next to
+  // the first flight's booking button (or the first hotel if there's no flight).
+  // Skipped for trips within Australia, where an eSIM isn't needed.
+  const domestic = /australia|sydney|melbourne|brisbane|gold coast|sunshine coast|noosa|byron|perth|adelaide|hobart|tasmania|cairns|port douglas|whitsunday|darwin|canberra|uluru|alice springs|newcastle|hunter valley|blue mountains|margaret river|barossa|great ocean road|jervis bay/i.test(ctx.destination || '');
+  if (firstTravelEvt && !domestic && !root.querySelector('.evt-esim')) {
+    const s = document.createElement('a');
+    s.className = 'evt-book evt-esim';
+    s.href = HOLAFLY_URL;
+    s.target = '_blank';
+    s.rel = 'noopener noreferrer sponsored';
+    s.innerHTML = 'Get<span class="evt-book-kind"> an</span> eSIM ↗';
+    s.setAttribute('aria-label', 'Get a Holafly eSIM for this trip');
+    s.title = 'Holafly eSIM: mobile data from the moment you land';
+    s.addEventListener('click', function(e) { e.stopPropagation(); });
+    firstTravelEvt.head.appendChild(s);
+    firstTravelEvt.head.classList.add('evt-head-2');
+    added++;
+  }
   // One short disclosure line per itinerary (ACCC/FTC), only if links exist.
   if (added && !root.querySelector('.aff-note')) {
     const note = document.createElement('div');
@@ -7027,21 +7050,92 @@ function renderTripEditBar(itin) {
   const start = _teIso(itin.depart_date) || _teIso((itin.summary || {}).checkin_date);
   const es = (_editStatus && _editStatus.id === itin.id) ? _editStatus : null;
   if (!es) loadEditStatus(itin.id);
+  if (!(_editChat && _editChat.id === itin.id)) loadEditChat(itin.id);
   const leftText = !es ? 'Checking your TripMade changes…'
     : es.unlimited ? 'Unlimited TripMade changes on this trip'
     : es.left > 0 ? es.left + ' of ' + es.allowed + ' TripMade change' + (es.allowed === 1 ? '' : 's') + ' left' + (es.allowed > 5 ? '' : ' (free)')
     : 'No changes left. Get 1 more for $1, or unlimited for $9.99';
   const msg = _teMsg ? '<div class="te-status ' + _teMsg.kind + '">' + tmEsc(_teMsg.text) + '</div>' : '<div class="te-status" id="te-status"></div>';
+  const keepReq = document.getElementById('te-req'); const keepVal = keepReq ? keepReq.value : '';
   bar.style.display = '';
   bar.innerHTML =
     '<div class="te-row"><div class="te-lbl">Trip dates</div><div class="te-dates">Starts <input type="date" id="te-start" value="' + tmEsc(start) + '"> <span>· ' + days + ' day' + (days === 1 ? '' : 's') + '</span>' +
       '<button type="button" class="btn-secondary te-small" onclick="teMoveDates()">Move trip</button></div></div>' +
     '<div class="te-row"><div class="te-lbl">Ask TripMade to change it</div>' +
       '<textarea id="te-req" maxlength="1500" placeholder="e.g. Make it Friday to Sunday · swap Saturday dinner for somewhere on the beach · add a spa morning on day 2"></textarea>' +
-      '<div class="te-acts"><span class="te-left">' + leftText + '</span>' +
-      '<button type="button" class="btn-primary te-small" id="te-ai-btn" onclick="teAskAI()">' + (es && !es.unlimited && es.left === 0 ? 'Get more changes' : 'Make the change') + '</button></div>' + msg + '</div>' +
+      '<div class="te-acts"><span class="te-acts-l"><span class="te-left">' + leftText + '</span>' +
+        ((_editChat && _editChat.id === itin.id && _editChat.canUndo) ? '<button type="button" class="te-undo" id="te-undo-btn" onclick="teUndo()" title="Put the trip back to how it was before TripMade\'s last change">↶ Undo edit</button>' : '') + '</span>' +
+      '<button type="button" class="btn-primary te-small" id="te-ai-btn" onclick="teAskAI()">' + (es && !es.unlimited && es.left === 0 ? 'Get more changes' : 'Make the change') + '</button></div>' + msg +
+      '<div id="te-chat">' + teChatHTML(itin.id) + '</div></div>' +
     '<div class="te-foot"><div class="te-hint">' + (manual ? 'Add, edit or remove anything on each day below.' : 'Tap <b>Edit</b> on any stop to change its time or name, or <b>Remove</b> it. On unlocked days you can edit the full notes too.') + '</div>' +
       (manual ? '' : '<button type="button" class="te-done" onclick="toggleTripEdit()">Done editing</button>') + '</div>';
+  if (keepVal) { const r = document.getElementById('te-req'); if (r) r.value = keepVal; }
+}
+// ── TripMade change chat (2026-10-14 per Lachy) ───────────────────
+// Every "Ask TripMade to change it" request and TripMade's reply is saved on
+// the trip (itinerary_ai_chats, via manage-trip) and shown as a chat under
+// the box: newest at the top, the first change at the bottom.
+let _editChat = null;        // { id, list: [{request, reply, created_at, by, mine}] }
+let _teChatPending = null;   // request text while TripMade is working on it
+async function loadEditChat(id) {
+  if (loadEditChat._busy === id) return;
+  loadEditChat._busy = id;
+  try {
+    const out = await callManageTrip({ action: 'edit_chat', itinerary_id: id });
+    _editChat = { id: id, list: Array.isArray(out.chat) ? out.chat : [], canUndo: out.can_undo || null };
+    updateTeChat();
+    if (out.can_undo && _currentInboxItinerary && _currentInboxItinerary.id === id) renderTripEditBar(_currentInboxItinerary);
+  } catch (e) { /* no history shown */ }
+  loadEditChat._busy = null;
+}
+// 2026-10-14 per Lachy: "Undo edit" puts the trip back to how it was before
+// TripMade's last change. It doesn't give the change back. Only offered while
+// nothing else has been changed on the trip since (the server checks too).
+async function teUndo() {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  const btn = document.getElementById('te-undo-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Undoing…'; }
+  try {
+    const out = await callManageTrip({ action: 'undo_ai_edit', itinerary_id: itin.id });
+    if (_editChat && _editChat.id === itin.id) {
+      _editChat.list.forEach(function(c) { if (c.id === out.undone_id) c.undone = true; });
+      _editChat.canUndo = out.can_undo || null;
+    }
+    _teMsg = { kind: 'ok', text: 'Undone. Your trip is back to how it was before that change.' };
+    applyTripUpdate(out);
+    refreshTripHeader();
+  } catch (e) {
+    if (_editChat && _editChat.id === itin.id && e.code === 'cant_undo') _editChat.canUndo = null;
+    _teMsg = { kind: 'err', text: e.message };
+    renderTripEditBar(itin);
+  }
+}
+function updateTeChat() {
+  const el = document.getElementById('te-chat');
+  if (el && _currentInboxItinerary) el.innerHTML = teChatHTML(_currentInboxItinerary.id);
+}
+function _teChatWhen(iso) {
+  const d = new Date(iso); if (isNaN(d.getTime())) return '';
+  const now = new Date();
+  const time = d.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' }).replace(' ', '').toLowerCase();
+  if (d.toDateString() === now.toDateString()) return 'Today, ' + time;
+  return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' }) + ', ' + time;
+}
+function teChatHTML(id) {
+  const list = (_editChat && _editChat.id === id) ? _editChat.list : [];
+  if (!list.length && !_teChatPending) return '';
+  let h = '<div class="te-chat-head">Your changes with TripMade' + (list.length ? ' <span>' + list.length + '</span>' : '') + '</div><div class="te-chat-list">';
+  if (_teChatPending) {
+    h += '<div class="te-turn"><div class="te-when">Now</div>' +
+      '<div class="te-you"><div class="te-bub you">' + tmEsc(_teChatPending) + '</div></div>' +
+      '<div class="te-bot"><div class="te-av">✈️</div><div class="te-bub bot typing"><span></span><span></span><span></span></div></div></div>';
+  }
+  list.forEach(function(c) {
+    h += '<div class="te-turn' + (c.undone ? ' undone' : '') + '"><div class="te-when">' + tmEsc((c.mine ? '' : (c.by || 'A trip mate') + ' · ') + _teChatWhen(c.created_at)) + (c.undone ? ' <span class="te-undone-tag">Undone</span>' : '') + '</div>' +
+      '<div class="te-you"><div class="te-bub you">' + tmEsc(c.request) + '</div></div>' +
+      '<div class="te-bot"><div class="te-av">✈️</div><div class="te-bub bot">' + tmEsc(c.reply || 'Done, your trip has been updated.') + '</div></div></div>';
+  });
+  return h + '</div>';
 }
 // ── Paid TripMade changes (2026-10-14) ────────────────────────────
 let _editStatus = null;
@@ -7127,13 +7221,21 @@ async function teAskAI() {
   if (req.length < 3) { _teSetStatus('err', 'Tell us what you\'d like changed.'); return; }
   btn.disabled = true; btn.textContent = 'Updating your trip…'; ta.disabled = true;
   _teSetStatus('busy', 'TripMade is updating your trip. This can take up to a minute, so keep this page open.');
+  const tripId = _currentInboxItinerary.id;
+  _teChatPending = req; updateTeChat();
   try {
-    const out = await callManageTrip({ action: 'ai_edit', itinerary_id: _currentInboxItinerary.id, request: req });
-    _teMsg = { kind: 'ok', text: out.message || 'Done, your trip has been updated.' };
+    const out = await callManageTrip({ action: 'ai_edit', itinerary_id: tripId, request: req });
+    _teChatPending = null;
+    const turn = out.chat || { request: req, reply: out.message, created_at: new Date().toISOString(), mine: true, by: 'You' };
+    if (_editChat && _editChat.id === tripId) _editChat.list.unshift(turn); else _editChat = { id: tripId, list: [turn] };
+    _editChat.canUndo = out.can_undo || null;
+    ta.value = '';
+    _teMsg = { kind: 'ok', text: 'Done. Your trip has been updated, and TripMade\'s reply is below.' };
     if (out.edit_status) _editStatus = Object.assign({ id: _currentInboxItinerary.id }, out.edit_status);
     applyTripUpdate(out);
     refreshTripHeader();
   } catch (e) {
+    _teChatPending = null; updateTeChat();
     btn.disabled = false; btn.textContent = 'Make the change'; ta.disabled = false;
     if (e.code === 'limit_reached') {
       _editStatus = Object.assign({ id: _currentInboxItinerary.id }, e.data || {}, { left: 0 });
@@ -7407,12 +7509,13 @@ function renderInboxDetail(itin, justUnlocked) {
   // (unlockInboxDay/unlockInboxAll) was never removed, just unused.
   const allBlock = document.getElementById('ibx-unlock-all-block');
   if (allBlock) {
-    allBlock.style.display = itin.unlock_all ? 'none' : 'block';
+    // 2026-10-14 per Lachy: hide this box once every day is open, whether
+    // they bought the bundle or unlocked the days one by one (it used to
+    // stay up offering "Unlock all days — $0").
+    const remaining = days.filter(function(d) { return inboxDayLocked(itin, d.day_number); }).length;
+    allBlock.style.display = (itin.unlock_all || remaining === 0) ? 'none' : 'block';
     const subEl = document.getElementById('ibx-unlock-all-sub');
     const btnEl = document.getElementById('ibx-unlock-all-btn');
-    const totalDays = days.length;
-    const unlockedCount = Array.isArray(itin.unlocked_days) ? itin.unlocked_days.length : 0;
-    const remaining = totalDays - unlockedCount;
     if (subEl) subEl.textContent = 'Unlock the remaining ' + remaining + ' day' + (remaining === 1 ? '' : 's') + ' at once and save 10%, instead of paying per day';
     if (btnEl) btnEl.textContent = 'Unlock all days — ' + inboxUnlockPrice(itin, 'all') + ' →';
   }
@@ -8276,12 +8379,37 @@ async function sendFeedback() {
 .te-dates input{padding:8px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;}
 .te-row textarea{width:100%;min-height:72px;padding:10px 12px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box;background:#fff;}
 .te-acts{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.te-acts-l{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.te-undo{font-family:inherit;font-size:12px;font-weight:700;color:#fff;background:#4B5563;border:none;border-radius:6px;padding:6px 11px;cursor:pointer;white-space:nowrap;}
+.te-undo:hover:not(:disabled){background:#374151;}
+.te-undo:disabled{opacity:.6;cursor:default;}
+.te-turn.undone .te-bub{opacity:.55;}
+.te-turn.undone .te-bub.you{text-decoration:line-through;}
+.te-undone-tag{display:inline-block;margin-left:6px;background:#E5E7EB;color:#4B5563;font-weight:700;border-radius:20px;padding:1px 7px;font-size:10.5px;}
 .te-left{font-size:12px;color:var(--text-muted);}
 .te-small{padding:8px 14px!important;font-size:13px!important;}
 .te-status{font-size:13px;line-height:1.5;border-radius:8px;padding:9px 12px;display:none;}
 .te-status.ok{display:block;background:var(--accent-light);color:var(--accent);}
 .te-status.err{display:block;background:#FDECEA;color:#B3261E;}
 .te-status.busy{display:block;background:#FFF8E6;color:#7A5B00;}
+#te-chat:empty{display:none;}
+#te-chat{margin-top:14px;background:#fff;border:1px solid var(--border,#E5E7EB);border-radius:12px;padding:12px 14px;}
+.te-chat-head{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.te-chat-head span{display:inline-block;background:var(--accent-light);color:var(--accent);border-radius:20px;padding:1px 8px;margin-left:4px;letter-spacing:0;}
+.te-chat-list{max-height:420px;overflow-y:auto;padding-right:4px;}
+.te-turn{padding:10px 0;border-top:1px solid var(--border,#EEE);}
+.te-turn:first-child{border-top:none;padding-top:2px;}
+.te-when{font-size:11px;color:var(--text-dim,#9CA3AF);text-align:center;margin-bottom:8px;}
+.te-you{display:flex;justify-content:flex-end;margin-bottom:8px;}
+.te-bot{display:flex;align-items:flex-end;gap:8px;}
+.te-av{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.te-bub{max-width:82%;font-size:13.5px;line-height:1.5;padding:9px 13px;white-space:pre-wrap;word-wrap:break-word;}
+.te-bub.you{background:var(--accent);color:#fff;font-weight:600;border-radius:14px 14px 3px 14px;}
+.te-bub.bot{background:#F1F5F4;color:var(--text,#1A1A1A);border-radius:14px 14px 14px 3px;}
+.te-bub.typing{display:flex;gap:4px;padding:12px 14px;}
+.te-bub.typing span{width:6px;height:6px;border-radius:50%;background:#9CA3AF;animation:teDot 1.2s infinite ease-in-out;}
+.te-bub.typing span:nth-child(2){animation-delay:.15s;}.te-bub.typing span:nth-child(3){animation-delay:.3s;}
+@keyframes teDot{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
 .te-hint{font-size:12.5px;color:var(--text-muted);line-height:1.5;}
 .te-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
 .te-done{background:none;border:none;color:var(--accent);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;padding:0;}
