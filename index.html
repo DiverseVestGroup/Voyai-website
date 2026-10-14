@@ -8222,7 +8222,7 @@ async function sendFeedback() {
 <div id="share-modal" class="tm-modal" onclick="if(event.target===this)closeShareModal()">
   <div class="tm-box" role="dialog" aria-labelledby="share-title">
     <h3 id="share-title">Share this trip</h3>
-    <p class="tm-sub" id="share-sub">Invite your travel crew. They'll get an email with a link, and once they've signed in to TripMade the trip shows up in their Inbox too, with every booking link and anything you add to My Bookings.</p>
+    <p class="tm-sub" id="share-sub">Invite your travel crew. Anyone who already has a TripMade account gets the trip in their Inbox straight away. Everyone else gets an email with a link to join. They'll see every booking link and anything you add to My Bookings.</p>
     <div id="share-invite-form">
       <input id="share-emails" type="text" placeholder="Their email(s), separated by commas" autocomplete="off">
       <div class="tm-status" id="share-status"></div>
@@ -8347,8 +8347,12 @@ async function sendTripInvites() {
   try {
     const d = await tripShareCall({ action: 'invite', itinerary_id: _currentInboxItinerary.id, emails: emails });
     st.style.color = '#0F7A4A';
-    st.textContent = (d.sent && d.sent.length ? 'Invite sent to ' + d.sent.join(', ') + '. ' : '') + (d.failed && d.failed.length ? "Couldn't send to " + d.failed.join(', ') + '.' : '');
-    if (!d.sent || !d.sent.length) st.style.color = '#B3261E';
+    // 2026-10-14: emails that already have a TripMade account are added to the
+    // trip straight away (it's in their Inbox now); others get an invite link.
+    st.textContent = (d.added && d.added.length ? 'Added to ' + d.added.join(', ') + "'s Inbox (they already have an account). " : '') +
+      (d.sent && d.sent.length ? 'Invite sent to ' + d.sent.join(', ') + '. ' : '') + (d.failed && d.failed.length ? "Couldn't send to " + d.failed.join(', ') + '.' : '');
+    if ((!d.sent || !d.sent.length) && (!d.added || !d.added.length)) st.style.color = '#B3261E';
+    renderTripShareBar(_currentInboxItinerary);
     document.getElementById('share-emails').value = '';
     refreshSharePeople();
   } catch (e) {
