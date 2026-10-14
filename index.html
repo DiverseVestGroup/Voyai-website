@@ -4723,8 +4723,12 @@ async function initAuth() {
         if (justUnlocked) _justPaidDay = Number.isInteger(paidDay) ? paidDay : null;
         // Drop ?unlocked=1 from the address bar so a refresh doesn't show
         // the "unlocked" banner again.
-        if (justUnlocked) { try { history.replaceState(null, '', '/?page=inbox&itinerary=' + encodeURIComponent(itinId)); } catch (e) {} }
-        requireAccount(function() { openInboxItinerary(itinId, justUnlocked); });
+        const editsPaid = new URLSearchParams(window.location.search).get('edits') === '1';
+        if (justUnlocked || editsPaid) { try { history.replaceState(null, '', '/?page=inbox&itinerary=' + encodeURIComponent(itinId)); } catch (e) {} }
+        requireAccount(function() {
+          openInboxItinerary(itinId, justUnlocked);
+          if (editsPaid) afterEditsPurchase(itinId);
+        });
       } else {
         renderInboxPage();
       }
@@ -6925,7 +6929,7 @@ async function callManageTrip(payload) {
     body: JSON.stringify(payload)
   });
   let out = {}; try { out = await res.json(); } catch (e) {}
-  if (!res.ok || !out.ok) throw new Error(out.message || 'Something went wrong. Please try again.');
+  if (!res.ok || !out.ok) { const err = new Error(out.message || 'Something went wrong. Please try again.'); err.code = out.error; err.data = out; throw err; }
   return out;
 }
 // ── Customer-built trip days (kind = 'manual') ──────────────────────
@@ -7021,7 +7025,12 @@ function renderTripEditBar(itin) {
   if (!on) { bar.style.display = 'none'; bar.innerHTML = ''; return; }
   const days = Array.isArray(itin.days) ? itin.days.length : 0;
   const start = _teIso(itin.depart_date) || _teIso((itin.summary || {}).checkin_date);
-  const left = Math.max(0, 10 - (parseInt(itin.ai_edits_used, 10) || 0));
+  const es = (_editStatus && _editStatus.id === itin.id) ? _editStatus : null;
+  if (!es) loadEditStatus(itin.id);
+  const leftText = !es ? 'Checking your TripMade changes…'
+    : es.unlimited ? 'Unlimited TripMade changes on this trip'
+    : es.left > 0 ? es.left + ' of ' + es.allowed + ' TripMade change' + (es.allowed === 1 ? '' : 's') + ' left' + (es.allowed > 5 ? '' : ' (free)')
+    : 'No changes left. Get 1 more for $1, or unlimited for $9.99';
   const msg = _teMsg ? '<div class="te-status ' + _teMsg.kind + '">' + tmEsc(_teMsg.text) + '</div>' : '<div class="te-status" id="te-status"></div>';
   bar.style.display = '';
   bar.innerHTML =
@@ -7029,10 +7038,71 @@ function renderTripEditBar(itin) {
       '<button type="button" class="btn-secondary te-small" onclick="teMoveDates()">Move trip</button></div></div>' +
     '<div class="te-row"><div class="te-lbl">Ask TripMade to change it</div>' +
       '<textarea id="te-req" maxlength="1500" placeholder="e.g. Make it Friday to Sunday · swap Saturday dinner for somewhere on the beach · add a spa morning on day 2"></textarea>' +
-      '<div class="te-acts"><span class="te-left">' + (left ? left + ' of 10 TripMade changes left for this trip' : 'You\'ve used all 10 TripMade changes for this trip') + '</span>' +
-      '<button type="button" class="btn-primary te-small" id="te-ai-btn" onclick="teAskAI()"' + (left ? '' : ' disabled') + '>Make the change</button></div>' + msg + '</div>' +
+      '<div class="te-acts"><span class="te-left">' + leftText + '</span>' +
+      '<button type="button" class="btn-primary te-small" id="te-ai-btn" onclick="teAskAI()">' + (es && !es.unlimited && es.left === 0 ? 'Get more changes' : 'Make the change') + '</button></div>' + msg + '</div>' +
     '<div class="te-foot"><div class="te-hint">' + (manual ? 'Add, edit or remove anything on each day below.' : 'Tap <b>Edit</b> on any stop to change its time or name, or <b>Remove</b> it. On unlocked days you can edit the full notes too.') + '</div>' +
       (manual ? '' : '<button type="button" class="te-done" onclick="toggleTripEdit()">Done editing</button>') + '</div>';
+}
+// ── Paid TripMade changes (2026-10-14) ────────────────────────────
+let _editStatus = null;
+async function loadEditStatus(id) {
+  if (loadEditStatus._busy === id) return;
+  loadEditStatus._busy = id;
+  try {
+    const out = await callManageTrip({ action: 'edit_status', itinerary_id: id });
+    _editStatus = Object.assign({ id: id }, out);
+    if (_currentInboxItinerary && _currentInboxItinerary.id === id) {
+      renderTripEditBar(_currentInboxItinerary);
+    }
+  } catch (e) { /* bar keeps its default text */ }
+  loadEditStatus._busy = null;
+}
+function openEditsModal() {
+  const es = _editStatus || {};
+  document.getElementById('edits-sub').textContent = (es.allowed && es.allowed > 5)
+    ? "You've used the TripMade changes on this trip. Keep going with one of these. You can always edit stops yourself for free."
+    : 'Your trip comes with 5 free TripMade changes. Keep going with one of these. You can always edit stops yourself for free.';
+  ['edits-one', 'edits-unl'].forEach(function(id) { document.getElementById(id).disabled = false; });
+  document.getElementById('edits-modal').style.display = 'flex';
+}
+function closeEditsModal() { document.getElementById('edits-modal').style.display = 'none'; }
+async function buyTripEdits(mode, btn) {
+  if (!_currentInboxItinerary || _checkoutStarting) return;
+  _checkoutStarting = true;
+  ['edits-one', 'edits-unl'].forEach(function(id) { document.getElementById(id).disabled = true; });
+  const what = btn.querySelector('.edits-what'); const was = what.textContent;
+  what.textContent = 'Opening checkout…';
+  const data = await callCreateCheckoutSession({ itinerary_id: _currentInboxItinerary.id, mode: mode });
+  if (data && data.url) { window.location.href = data.url; return; }
+  _checkoutStarting = false;
+  what.textContent = was;
+  ['edits-one', 'edits-unl'].forEach(function(id) { document.getElementById(id).disabled = false; });
+}
+// Back from paying for changes: make sure the purchase is applied (asks
+// Stripe directly in case the webhook is slow), then reopen the editor.
+async function afterEditsPurchase(id) {
+  // Wait for the trip to finish opening (it resets edit mode on first open).
+  for (let w = 0; w < 40 && !(_currentInboxItinerary && _currentInboxItinerary.id === id); w++) await new Promise(function(r) { setTimeout(r, 250); });
+  _ibxEdit = true; _ibxEditTripId = id;
+  _teMsg = { kind: 'busy', text: 'Payment received. Adding your changes…' };
+  if (_currentInboxItinerary && _currentInboxItinerary.id === id) rerenderTrip();
+  for (let i = 0; i < 4; i++) {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/sync-unlocks', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+        body: JSON.stringify({ itinerary_id: id, edits: true }) });
+      const out = await callManageTrip({ action: 'edit_status', itinerary_id: id });
+      _editStatus = Object.assign({ id: id }, out);
+      if (out.unlimited || out.left > 0) {
+        _teMsg = { kind: 'ok', text: out.unlimited ? 'Payment received. You now have unlimited TripMade changes on this trip.' : 'Payment received. You have ' + out.left + ' more TripMade change' + (out.left === 1 ? '' : 's') + '.' };
+        break;
+      }
+    } catch (e) { /* try again */ }
+    await new Promise(function(r) { setTimeout(r, 2000); });
+  }
+  if (_teMsg && _teMsg.kind === 'busy') _teMsg = { kind: 'err', text: 'Your payment is still coming through. Refresh in a minute, or message us if it doesn\'t show.' };
+  if (_currentInboxItinerary && _currentInboxItinerary.id === id) rerenderTrip();
 }
 function _teSetStatus(kind, text) {
   _teMsg = kind === 'busy' ? null : { kind: kind, text: text };
@@ -7052,6 +7122,7 @@ async function teMoveDates() {
 }
 async function teAskAI() {
   const ta = document.getElementById('te-req'), btn = document.getElementById('te-ai-btn');
+  if (_editStatus && _editStatus.id === _currentInboxItinerary.id && !_editStatus.unlimited && _editStatus.left === 0) { openEditsModal(); return; }
   const req = ta ? ta.value.trim() : '';
   if (req.length < 3) { _teSetStatus('err', 'Tell us what you\'d like changed.'); return; }
   btn.disabled = true; btn.textContent = 'Updating your trip…'; ta.disabled = true;
@@ -7059,11 +7130,18 @@ async function teAskAI() {
   try {
     const out = await callManageTrip({ action: 'ai_edit', itinerary_id: _currentInboxItinerary.id, request: req });
     _teMsg = { kind: 'ok', text: out.message || 'Done, your trip has been updated.' };
+    if (out.edit_status) _editStatus = Object.assign({ id: _currentInboxItinerary.id }, out.edit_status);
     applyTripUpdate(out);
     refreshTripHeader();
   } catch (e) {
-    _teSetStatus('err', e.message);
     btn.disabled = false; btn.textContent = 'Make the change'; ta.disabled = false;
+    if (e.code === 'limit_reached') {
+      _editStatus = Object.assign({ id: _currentInboxItinerary.id }, e.data || {}, { left: 0 });
+      _teSetStatus('err', 'You\'ve used your free TripMade changes on this trip.');
+      openEditsModal();
+      return;
+    }
+    _teSetStatus('err', e.message);
   }
 }
 function refreshTripHeader() {
@@ -8091,6 +8169,15 @@ async function sendFeedback() {
 .tm-modal{display:none;position:fixed;inset:0;z-index:1002;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px;}
 .tm-modal .tm-box{background:#fff;border-radius:var(--radius-lg,16px);max-width:480px;width:100%;max-height:90vh;overflow:auto;padding:26px;box-shadow:var(--shadow-lg,0 10px 30px rgba(0,0,0,.2));}
 .tm-modal h3{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;margin:0 0 6px;}
+.edits-opt{position:relative;display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;border:1.5px solid var(--border-mid,#DDD);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;text-align:left;transition:border-color .15s,box-shadow .15s;}
+.edits-opt:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(13,115,119,.12);}
+.edits-opt:disabled{opacity:.6;cursor:default;}
+.edits-opt.best{border:2px solid var(--accent);background:var(--accent-light,#E6F4F4);}
+.edits-price{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent);min-width:74px;}
+.edits-what{font-size:15px;font-weight:700;color:var(--text,#1A1A1A);}
+.edits-best{position:absolute;top:-10px;right:14px;background:var(--accent);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.edits-or{text-align:center;font-size:12px;color:var(--text-muted);margin:8px 0;text-transform:uppercase;letter-spacing:.08em;}
+.edits-fine{font-size:11.5px;color:var(--text-muted);text-align:center;margin:12px 0 6px;}
 .tm-modal .tm-sub{font-size:13px;color:var(--text-muted,#6B6B6B);margin:0 0 16px;line-height:1.5;}
 .tm-modal input,.tm-modal textarea,.tm-modal select{width:100%;box-sizing:border-box;border:1.5px solid #E2E2E2;border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;margin-bottom:10px;background:#fff;}
 .tm-modal textarea{min-height:130px;resize:vertical;}
@@ -8219,6 +8306,19 @@ async function sendFeedback() {
 @media (max-width:480px){.tm-row{flex-direction:column;gap:0;}.bk-list{padding:4px 10px 0;}}
 </style>
 
+<!-- 2026-10-14 per Lachy: after the 5 free TripMade (AI) changes on a trip,
+     buy 1 more for $1 or unlimited changes on that trip for $9.99. -->
+<div id="edits-modal" class="tm-modal" onclick="if(event.target===this)closeEditsModal()">
+  <div class="tm-box" role="dialog" aria-labelledby="edits-title">
+    <h3 id="edits-title">You've used your free changes</h3>
+    <p class="tm-sub" id="edits-sub">Your trip comes with 5 free TripMade changes. Keep going with one of these. You can always edit stops yourself for free.</p>
+    <button type="button" class="edits-opt" id="edits-one" onclick="buyTripEdits('edit_one', this)"><span class="edits-price">$1</span><span class="edits-what">1 more change</span></button>
+    <div class="edits-or">or</div>
+    <button type="button" class="edits-opt best" id="edits-unl" onclick="buyTripEdits('edit_unlimited', this)"><span class="edits-best">Best value</span><span class="edits-price">$9.99</span><span class="edits-what">Unlimited changes on this trip</span></button>
+    <p class="edits-fine">One-off payment for this trip only. Prices in AUD.</p>
+    <div style="text-align:center;"><button type="button" class="tn-back" onclick="closeEditsModal()">Not now</button></div>
+  </div>
+</div>
 <div id="share-modal" class="tm-modal" onclick="if(event.target===this)closeShareModal()">
   <div class="tm-box" role="dialog" aria-labelledby="share-title">
     <h3 id="share-title">Share this trip</h3>
