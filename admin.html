@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>TripMade — Itinerary requests</title>
+<title>TripMade — Admin</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <!-- Private admin page (2026-09-26). Lists every itinerary request saved from
      the site form, flags the ones that never got an itinerary delivered, and
@@ -38,15 +38,36 @@
   .empty { background:#E3F4EC; color:#0F7A4A; padding:12px 14px; border-radius:10px; font-size:14px; }
   .msg { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#1A1A1A; color:#fff; padding:12px 18px; border-radius:10px; font-size:14px; display:none; max-width:90vw; }
   .err { color:var(--red); }
+  /* 2026-10-14: local knowledge tips review */
+  .tabs { display:flex; gap:8px; margin:6px 0 14px; flex-wrap:wrap; }
+  .tabs button { background:#fff; color:var(--teal); border:1.5px solid var(--teal); padding:7px 14px; }
+  .tabs button.on { background:var(--teal); color:#fff; }
+  .tip-card { background:#fff; border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .tip-card h3 { font-size:15px; margin:0 0 4px; }
+  .tip-meta { font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .tip-kind { display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-right:6px; }
+  .tip-kind.upgrade { background:#FFF4D6; color:#8A5A00; } .tip-kind.insider { background:#E3F4EC; color:#0F7A4A; }
+  .tip-card textarea, .tip-card input { width:100%; font:inherit; font-size:14px; border:1.5px solid #DDD; border-radius:8px; padding:8px 10px; margin:4px 0; }
+  .tip-card textarea { min-height:80px; resize:vertical; }
+  .tip-note { font-size:12.5px; background:#FFF8E6; color:#7A5B00; border-radius:8px; padding:7px 10px; margin:6px 0; }
+  .tip-acts { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .tip-acts .reject { background:#fff; color:var(--red); border:1.5px solid var(--red); }
+  .tip-card a { color:var(--teal); font-size:12.5px; word-break:break-all; }
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>✈ Itinerary requests</h1>
-    <button class="ghost" onclick="load()">Refresh</button>
+    <button class="ghost" onclick="load(); loadTips();">Refresh</button>
   </header>
   <p class="sub" id="sub">Loading…</p>
+  <!-- 2026-10-14: TripMade local knowledge. Tips only reach customers once
+       approved here (local-tips-admin edge function, same access key). -->
+  <h2>💡 Local tips &amp; upgrades</h2>
+  <p class="sub" id="tips-sub">Loading…</p>
+  <div class="tabs" id="tip-tabs"></div>
+  <div id="tips"></div>
   <h2>⚠️ Not delivered (older than 15 minutes)</h2>
   <div id="stuck"></div>
   <h2>Latest requests</h2>
@@ -98,6 +119,69 @@ async function rerun(id, alreadyDelivered, btn) {
   } catch (e) { btn.disabled = false; btn.textContent = 'Re-run'; toast('Couldn\'t send — nothing went out. Try again in a minute.'); }
 }
 load();
+// ── Local tips review (2026-10-14) ───────────────────────────────────
+const TIPS_API = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/local-tips-admin';
+let _tips = [], _tipTab = 'draft';
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function tipTab(s) { _tipTab = s; renderTips(); }
+function renderTips() {
+  const n = s => _tips.filter(t => t.status === s).length;
+  document.getElementById('tip-tabs').innerHTML = [['draft','To review'],['approved','Live'],['rejected','Rejected']]
+    .map(([s,l]) => '<button class="' + (_tipTab === s ? 'on' : '') + '" onclick="tipTab(\'' + s + '\')">' + l + ' (' + n(s) + ')</button>').join('');
+  const list = _tips.filter(t => t.status === _tipTab);
+  document.getElementById('tips').innerHTML = list.length ? list.map(t => {
+    const months = (t.months || []).length ? ' · ' + t.months.map(m => MONTHS[m - 1]).join(', ') + ' only' : '';
+    return '<div class="tip-card" id="tip-' + t.id + '">' +
+      '<div class="tip-meta"><span class="tip-kind ' + esc(t.kind) + '">' + (t.kind === 'upgrade' ? 'Upgrade idea' : 'Local tip') + '</span>' + esc(t.destination || '') + esc(months) + ' · added by ' + esc(t.added_by || '?') + '</div>' +
+      '<input data-f="title" value="' + esc(t.title) + '">' +
+      '<textarea data-f="tip">' + esc(t.tip) + '</textarea>' +
+      '<div class="tip-meta">Shows on any day mentioning: <input data-f="keywords" value="' + esc((t.keywords || []).join(', ')) + '"></div>' +
+      (t.notes ? '<div class="tip-note">Check: ' + esc(t.notes) + '</div>' : '') +
+      (t.source_url ? '<a href="' + esc(t.source_url) + '" target="_blank" rel="noopener">Source: ' + esc(t.source_url) + '</a>' : '<div class="tip-meta">No source, general knowledge</div>') +
+      '<div class="tip-acts">' +
+        (t.status !== 'approved' ? '<button onclick="tipAct(\'' + t.id + '\',\'approve\',this)">Approve</button>' : '<button class="ghost" onclick="tipAct(\'' + t.id + '\',\'draft\',this)">Take offline</button>') +
+        '<button class="ghost" onclick="tipSave(\'' + t.id + '\',this)">Save edits</button>' +
+        (t.status !== 'rejected' ? '<button class="reject" onclick="tipAct(\'' + t.id + '\',\'reject\',this)">Reject</button>' : '') +
+      '</div></div>';
+  }).join('') : '<div class="empty">Nothing here.</div>';
+}
+async function loadTips() {
+  const sub = document.getElementById('tips-sub');
+  if (!KEY) { sub.textContent = ''; return; }
+  try {
+    const res = await fetch(TIPS_API + '?key=' + encodeURIComponent(KEY));
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.error);
+    _tips = d.tips || [];
+    sub.textContent = 'Tips and upgrade ideas shown on matching itinerary days. Only approved ones reach customers. Edit the wording first if you like, then Approve.';
+    renderTips();
+  } catch (e) { sub.innerHTML = '<span class="err">Couldn\'t load tips. Hit Refresh.</span>'; }
+}
+async function tipPost(body) {
+  const res = await fetch(TIPS_API + '?key=' + encodeURIComponent(KEY), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const d = await res.json(); if (!res.ok) throw new Error(d.error || 'failed'); return d.tip;
+}
+function tipFields(id) {
+  const c = document.getElementById('tip-' + id);
+  return { title: c.querySelector('[data-f=title]').value, tip: c.querySelector('[data-f=tip]').value,
+    keywords: c.querySelector('[data-f=keywords]').value.split(',').map(s => s.trim()).filter(Boolean) };
+}
+function tipReplace(tip) { _tips = _tips.map(t => t.id === tip.id ? tip : t); renderTips(); }
+async function tipSave(id, btn) {
+  btn.disabled = true;
+  try { tipReplace(await tipPost(Object.assign({ id, action: 'update' }, tipFields(id)))); toast('Saved.'); }
+  catch (e) { btn.disabled = false; toast('Couldn\'t save. Try again.'); }
+}
+async function tipAct(id, action, btn) {
+  btn.disabled = true;
+  try {
+    await tipPost(Object.assign({ id, action: 'update' }, tipFields(id)));
+    tipReplace(await tipPost({ id, action }));
+    toast(action === 'approve' ? 'Approved. It now shows on matching trips.' : action === 'reject' ? 'Rejected.' : 'Taken offline.');
+  } catch (e) { btn.disabled = false; toast('Couldn\'t update. Try again.'); }
+}
+loadTips();
 </script>
 </body>
 </html>
+
