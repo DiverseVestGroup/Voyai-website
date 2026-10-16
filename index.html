@@ -6205,7 +6205,7 @@ function renderAskTurnBody(bodyEl, data) {
       '<div class="ask-redirect-card">' +
         '<p>' + data.message + '</p>' +
         '<button type="button" onclick="goToBookingSection(' + jsStrAttr(meta.anchor) + ')">' + meta.label + '</button>' +
-      '</div>';
+      '</div>' + (data.destination ? askNextSteps(data.category, data) : '');
     return;
   }
   if (data.type === 'dining') {
@@ -6314,33 +6314,67 @@ function renderAskDining(bodyEl, data) {
   }).join('');
   bodyEl.innerHTML =
     '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3></div>' +
-    '<div class="ask-results-grid">' + cardsHtml + '</div>' + askDiningCrossSell(data);
+    '<div class="ask-results-grid">' + cardsHtml + '</div>' + askNextSteps('dining', data);
   enrichPlaceCards(bodyEl, 2);
 }
-// 2026-10-16: restaurant answers earn nothing on their own, so each one now
-// ends with (1) "Planning a trip to X?" into the itinerary form and (2) a
-// "Where to stay in <area>" Trip.com card (affiliate link built server-side).
-function askDiningCrossSell(data) {
-  const trip = String(data.trip_destination || data.destination || '').replace(/<[^>]*>/g, '').trim();
-  const area = String(data.area || '').replace(/<[^>]*>/g, '').trim() || trip.split(',')[0];
-  let html = '';
-  if (trip) {
-    html += '<div class="ask-crosssell">' +
-      '<p><b>Planning a trip to ' + tmEsc(trip.split(',')[0]) + '?</b>Get a free day-by-day itinerary with places like these, plus flights and hotels.</p>' +
-      '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(trip) + ',null)">Get a free itinerary →</button>' +
-    '</div>';
+// 2026-10-16 (Lachy): every Ask answer ends with "next step" cards that fit
+// the question asked — restaurants -> plan the trip + hotels nearby; a hotel
+// question -> plan the trip + flights there + things to do; a flights/tours/
+// ferries question -> hotels at the destination + plan the trip. Each one is
+// an affiliate or paid-product click.
+function _askPlace(s) { return String(s || '').replace(/<[^>]*>/g, '').trim(); }
+function askTripHotelsUrl(place, tag) {
+  const q = encodeURIComponent(place);
+  let url = 'https://www.trip.com/hotels/list?searchWord=' + q + '&cityName=' + q + '&destName=' + q + '&locale=en-XX&Allianceid=10472680&SID=330559720&trip_sub1=&trip_sub3=D19724084';
+  try {
+    const u = new URL(url);
+    const cid = (typeof tripCityIdFor === 'function') ? tripCityIdFor(place) : null;
+    if (cid) u.searchParams.set('cityId', cid);
+    u.searchParams.set('trip_sub1', tag);
+    u.searchParams.set('curr', tmAffCurrency());
+    url = u.toString();
+  } catch (e) {}
+  return url;
+}
+function askCard(extraClass, title, sub, btn) {
+  return '<div class="ask-crosssell ' + extraClass + '"><p><b>' + title + '</b>' + sub + '</p>' + btn + '</div>';
+}
+function askCardLink(url, label) {
+  return '<a class="ask-crosssell-btn" href="' + tmEsc(url) + '" target="_blank" rel="noopener noreferrer sponsored">' + label + '</a>';
+}
+function askNextSteps(kind, data) {
+  const trip = _askPlace(data.trip_destination || data.destination);
+  if (!trip) return '';
+  const short = trip.split(',')[0];
+  const area = _askPlace(data.area) || short;
+  const cards = [];
+  const planCard = function() {
+    return askCard('', 'Planning a trip to ' + tmEsc(short) + '?', 'Get a free day-by-day itinerary with flights, hotels and places to eat.',
+      '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(trip) + ',' + (Number(data.budget_amount) || 'null') + ')">Get a free itinerary →</button>');
+  };
+  const hotelCard = function(where, tag) {
+    let url = askTripHotelsUrl(where !== trip && trip.indexOf(where) !== 0 ? where + ', ' + trip : trip, tag);
+    if (kind === 'dining' && data.stay_cta && /^https:\/\/www\.trip\.com\//.test(data.stay_cta.url || '')) {
+      try { const u = new URL(data.stay_cta.url); const cid = (typeof tripCityIdFor === 'function') ? (tripCityIdFor(data.destination) || tripCityIdFor(trip)) : null; if (cid) u.searchParams.set('cityId', cid); u.searchParams.set('trip_sub1', tag); u.searchParams.set('curr', tmAffCurrency()); url = u.toString(); } catch (e) {}
+    }
+    return askCard('ask-crosssell-stay', '🏨 Where to stay in ' + tmEsc(where), 'Compare hotels on Trip.com, our booking partner.', askCardLink(url, 'See hotels →'));
+  };
+  if (kind === 'dining') {
+    cards.push(planCard());
+    cards.push(hotelCard(area, 'ask_dining'));
+    cards.push(askCard('ask-crosssell-stay', '🍜 Food tours in ' + tmEsc(short), 'Street-food walks, cooking classes and tastings with a local guide.',
+      askCardLink(viatorSearchLink('food tour ' + short, 'ask_dining'), 'See food tours →')));
+  } else if (kind === 'stays') {
+    cards.push(planCard());
+    cards.push(askCard('ask-crosssell-stay', '✈️ Need flights to ' + tmEsc(short) + ' too?', 'Compare prices across hundreds of airlines.',
+      '<button type="button" onclick="goToBookingSection(\'tours-flights\')">Search flights →</button>'));
+    cards.push(askCard('ask-crosssell-stay', '🎟️ Things to do in ' + tmEsc(short), 'Tours, day trips and experiences you can book ahead.',
+      askCardLink(viatorSearchLink(short, 'ask_stays'), 'See experiences →')));
+  } else if (kind === 'flights' || kind === 'tours' || kind === 'ferries') {
+    cards.push(hotelCard(short, 'ask_' + kind));
+    if (kind !== 'ferries') cards.push(planCard());
   }
-  const st = data.stay_cta;
-  if (st && st.url && /^https:\/\/www\.trip\.com\//.test(st.url) && area) {
-    let url = st.url;
-    const cid = (typeof tripCityIdFor === 'function') ? (tripCityIdFor(data.destination) || tripCityIdFor(trip)) : null;
-    try { const u = new URL(url); if (cid) u.searchParams.set('cityId', cid); u.searchParams.set('trip_sub1', 'ask_dining'); url = u.toString(); } catch (e) {}
-    html += '<div class="ask-crosssell ask-crosssell-stay">' +
-      '<p><b>🏨 Where to stay in ' + tmEsc(area) + '</b>See hotels near these spots on Trip.com, our booking partner.</p>' +
-      '<a class="ask-crosssell-btn" href="' + tmEsc(url) + '" target="_blank" rel="noopener noreferrer sponsored">See hotels →</a>' +
-    '</div>';
-  }
-  return html;
+  return cards.join('');
 }
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
@@ -6370,11 +6404,7 @@ function renderAskResults(bodyEl, data) {
   }).join('');
   bodyEl.innerHTML = '' +
     '<div class="ask-results-hd"><h3>Suggestions for ' + data.destination + '</h3>' + (budgetMeta ? ('<div class="ask-results-meta">' + budgetMeta + '</div>') : '') + '</div>' +
-    '<div class="ask-results-grid">' + cardsHtml + '</div>' +
-    '<div class="ask-crosssell">' +
-      '<p><b>Want the full trip planned too?</b>Carry this destination and budget straight into TripMade\'s itinerary form.</p>' +
-      '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
-    '</div>';
+    '<div class="ask-results-grid">' + cardsHtml + '</div>' + askNextSteps('stays', data);
   enrichPlaceCards(bodyEl, 1);
 }
 // Re-renders a full stored chat (from the `ask_chats` table) back into the
