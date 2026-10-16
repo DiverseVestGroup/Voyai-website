@@ -509,7 +509,9 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-crosssell { margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:var(--radius); padding:16px 20px; }
 .ask-crosssell p { margin:0; font-size:14px; color:var(--text); }
 .ask-crosssell p b { display:block; font-size:15px; margin-bottom:2px; }
-.ask-crosssell button { flex-shrink:0; font-family:inherit; font-weight:700; font-size:13.5px; color:var(--accent); background:var(--bg2); border:1.5px solid var(--accent-mid); border-radius:var(--radius-sm); padding:10px 16px; cursor:pointer; }
+.ask-crosssell-stay { margin-top:10px; }
+@media (max-width:560px) { .ask-crosssell { flex-direction:column; align-items:stretch; } .ask-crosssell .ask-crosssell-btn, .ask-crosssell button { text-align:center; } }
+.ask-crosssell .ask-crosssell-btn, .ask-crosssell button { flex-shrink:0; text-decoration:none; font-family:inherit; font-weight:700; font-size:13.5px; color:var(--accent); background:var(--bg2); border:1.5px solid var(--accent-mid); border-radius:var(--radius-sm); padding:10px 16px; cursor:pointer; }
 .ask-error { font-size:14px; color:var(--text-muted); padding:20px 0; }
 .ask-reply-text { font-size:14.5px; line-height:1.65; color:var(--text); padding:4px 0 2px; }
 .ask-redirect-card { margin-top:2px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:var(--radius); padding:16px 20px; flex-wrap:wrap; }
@@ -6253,7 +6255,7 @@ async function enrichPlaceCards(root, photos) {
   if (!cards.length) return;
   cards.forEach(function(c) { c.setAttribute('data-pl-done', '1'); });
   const today = _plTodayIso();
-  const res = await fetchPlaceInfo(cards.map(function(c) { return { q: c.getAttribute('data-pl-q'), name: c.getAttribute('data-pl-name'), date: today }; }), photos);
+  const res = await fetchPlaceInfo(cards.map(function(c) { return { q: c.getAttribute('data-pl-q'), name: c.getAttribute('data-pl-name'), place_id: c.getAttribute('data-pl-id') || undefined, date: today }; }), photos);
   cards.forEach(function(c, i) {
     const r = res[i];
     const ph = c.querySelector('.pl-photos');
@@ -6298,7 +6300,7 @@ function renderAskDining(bodyEl, data) {
   const cardsHtml = (data.suggestions || []).map(function(s) {
     const plName = String(s.name || '').replace(/<[^>]*>/g, '');
     return '' +
-      '<div class="ask-stay-card pl-card" data-pl-name="' + tmEsc(plName) + '" data-pl-q="' + tmEsc(plName + (data.destination ? ', ' + data.destination : '')) + '">' +
+      '<div class="ask-stay-card pl-card" data-pl-name="' + tmEsc(plName) + '" data-pl-q="' + tmEsc(plName + (data.destination ? ', ' + data.destination : '')) + '"' + (s.place_id && /^[A-Za-z0-9_-]{10,300}$/.test(s.place_id) ? ' data-pl-id="' + tmEsc(s.place_id) + '"' : '') + '>' +
         '<div class="pl-photos pl-loading"></div>' +
         '<div class="ask-stay-name">' + s.name + '</div>' +
         '<div class="pl-meta"></div>' +
@@ -6312,8 +6314,33 @@ function renderAskDining(bodyEl, data) {
   }).join('');
   bodyEl.innerHTML =
     '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3></div>' +
-    '<div class="ask-results-grid">' + cardsHtml + '</div>';
+    '<div class="ask-results-grid">' + cardsHtml + '</div>' + askDiningCrossSell(data);
   enrichPlaceCards(bodyEl, 2);
+}
+// 2026-10-16: restaurant answers earn nothing on their own, so each one now
+// ends with (1) "Planning a trip to X?" into the itinerary form and (2) a
+// "Where to stay in <area>" Trip.com card (affiliate link built server-side).
+function askDiningCrossSell(data) {
+  const trip = String(data.trip_destination || data.destination || '').replace(/<[^>]*>/g, '').trim();
+  const area = String(data.area || '').replace(/<[^>]*>/g, '').trim() || trip.split(',')[0];
+  let html = '';
+  if (trip) {
+    html += '<div class="ask-crosssell">' +
+      '<p><b>Planning a trip to ' + tmEsc(trip.split(',')[0]) + '?</b>Get a free day-by-day itinerary with places like these, plus flights and hotels.</p>' +
+      '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(trip) + ',null)">Get a free itinerary →</button>' +
+    '</div>';
+  }
+  const st = data.stay_cta;
+  if (st && st.url && /^https:\/\/www\.trip\.com\//.test(st.url) && area) {
+    let url = st.url;
+    const cid = (typeof tripCityIdFor === 'function') ? (tripCityIdFor(data.destination) || tripCityIdFor(trip)) : null;
+    try { const u = new URL(url); if (cid) u.searchParams.set('cityId', cid); u.searchParams.set('trip_sub1', 'ask_dining'); url = u.toString(); } catch (e) {}
+    html += '<div class="ask-crosssell ask-crosssell-stay">' +
+      '<p><b>🏨 Where to stay in ' + tmEsc(area) + '</b>See hotels near these spots on Trip.com, our booking partner.</p>' +
+      '<a class="ask-crosssell-btn" href="' + tmEsc(url) + '" target="_blank" rel="noopener noreferrer sponsored">See hotels →</a>' +
+    '</div>';
+  }
+  return html;
 }
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
