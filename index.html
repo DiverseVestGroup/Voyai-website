@@ -193,6 +193,7 @@ nav {
 .trust-bar { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); display:flex; justify-content:center; }
 .trust-item { flex:1; max-width:200px; padding:20px 16px; text-align:center; border-right:1px solid var(--border); }
 .trust-item:last-child { border-right:none; }
+@media (max-width:400px) { .trust-item { min-width:0; padding:16px 6px; } .trust-label { font-size:11px; } }
 .trust-num { font-family:'Syne',sans-serif; font-size:24px; font-weight:700; margin-bottom:3px; }
 .trust-num span { color:var(--accent); }
 .trust-label { font-size:12px; color:var(--text-muted); }
@@ -299,9 +300,21 @@ hr { border:none; border-top:1px solid var(--border); }
 .evt-head .evt-label { flex:1; min-width:0; }
 .evt-book { flex-shrink:0; margin-top:-1px; display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--accent); background:#fff; border:1.5px solid var(--accent); border-radius:20px; padding:4px 10px; text-decoration:none; white-space:nowrap; line-height:1.2; transition:background .15s,color .15s; }
 .evt-book:hover { background:var(--accent); color:#fff; }
+.evt-rating { display:inline-block; margin-left:4px; font-size:12px; font-weight:800; color:#B7791F; text-decoration:none; white-space:nowrap; }
+.evt-rating span { font-weight:500; color:var(--text-dim); font-size:11px; }
+.evt-checked { font-size:11.5px; color:#15803D; margin:2px 0 2px; line-height:1.4; }
+.evt-pl-warn { font-size:12px; color:#B3261E; background:#FDECEA; border-radius:6px; padding:5px 9px; margin:4px 0 2px; line-height:1.4; }
+.evt-list .pl-attr { font-size:10px; color:var(--text-dim); text-align:right; padding:4px 4px 0; }
 .evt-head-2 .evt-esim { margin-left:6px; }
 .aff-note { font-size:11px; color:var(--text-dim); text-align:center; padding:10px 22px 14px; }
 @media (max-width:480px) { .evt-book { font-size:10.5px; padding:4px 8px; } .evt-book-kind { display:none; } }
+/* 2026-10-16 phone review: bigger tap areas on phones (Apple/Google suggest ~44px; these were 12-23px tall) */
+@media (max-width:600px) {
+  .day-extend-btn { padding:10px 0; margin:-6px 0; font-size:12px; }
+  .evt-book { padding:7px 11px; font-size:11px; }
+  .mt-stop-acts button { padding:8px 12px !important; min-height:34px; }
+  footer a, .site-footer a { display:inline-block; padding:8px 2px; }
+}
 /* 2026-10-11: later legs of a connecting journey (booked together on the first leg) */
 .evt-book.evt-book-included { color:var(--text-muted); border-color:var(--border-mid, #d6d6d6); background:transparent; font-weight:600; cursor:default; white-space:normal; text-align:right; max-width:46%; }
 .evt-home-note { font-size:11.5px; color:var(--text-muted); margin-top:3px; }
@@ -472,6 +485,27 @@ hr { border:none; border-top:1px solid var(--border); }
 .ask-stay-cta { font-size:12.5px; font-weight:700; color:var(--accent); border:1.5px solid var(--accent-mid); border-radius:999px; padding:6px 12px; background:var(--accent-light); white-space:nowrap; }
 .ask-stay-cta.fallback { color:var(--text-muted); border-color:var(--border-mid); background:transparent; }
 .ask-stay-flag { font-size:10.5px; color:var(--text-dim); }
+/* Google Places details on Ask TripMade cards (2026-10-16) */
+.pl-card { overflow:hidden; position:relative; }
+.pl-photos { margin:-18px -18px 2px; height:170px; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; position:relative; background:var(--bg3,#EEF2F1); scrollbar-width:none; }
+.pl-photos::-webkit-scrollbar { display:none; }
+.pl-photos.pl-loading { background:linear-gradient(90deg,#eef2f1 0%,#f7f9f8 50%,#eef2f1 100%); background-size:200% 100%; animation:plShimmer 1.2s infinite linear; }
+@keyframes plShimmer { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
+.pl-ph { position:relative; flex:0 0 100%; height:100%; scroll-snap-align:start; }
+.pl-ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.pl-credit { position:absolute; left:8px; bottom:6px; font-size:10px; color:#fff; background:rgba(0,0,0,.45); padding:2px 7px; border-radius:20px; text-decoration:none; max-width:70%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pl-count { position:sticky; right:8px; top:8px; align-self:flex-start; margin-left:-80px; margin-top:8px; font-size:10.5px; font-weight:700; color:#fff; background:rgba(0,0,0,.45); padding:2px 8px; border-radius:20px; white-space:nowrap; height:fit-content; }
+.pl-meta { font-size:12.5px; margin-top:-6px; }
+.pl-meta:empty, .pl-hours:empty { display:none; }
+.pl-stars { font-weight:800; color:#B7791F; text-decoration:none; }
+.pl-sub { color:var(--text-dim); }
+.pl-hours { font-size:12px; color:var(--text-muted); }
+.pl-open { color:#15803D; font-weight:700; }
+.pl-warn { color:#B3261E; font-weight:700; }
+.pl-maplink { font-size:12.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+.pl-foot { flex-wrap:wrap; }
+.ask-stay-cta.pl-map { background:transparent; }
+.pl-attr { font-size:10px; color:var(--text-dim); text-align:right; margin-top:-4px; }
 .ask-crosssell { margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:var(--radius); padding:16px 20px; }
 .ask-crosssell p { margin:0; font-size:14px; color:var(--text); }
 .ask-crosssell p b { display:block; font-size:15px; margin-bottom:2px; }
@@ -6178,14 +6212,100 @@ function renderAskTurnBody(bodyEl, data) {
   }
   renderAskResults(bodyEl, data);
 }
+// ── Google Places details (2026-10-16 per Lachy) ─────────────────────
+// Ratings, photos, opening hours, menu/website and map links for restaurants,
+// cafes, bars and experiences, from the place-info edge function (Google
+// Places API; the key never reaches the browser). Google's rules: we don't
+// store any of it (fetched fresh each time it's shown, only kept in memory
+// for this page visit), ratings/photos say they're from Google Maps, and
+// every photo credits its author.
+const _placeCache = {};
+async function fetchPlaceInfo(items, photos) {
+  const out = new Array(items.length).fill(null);
+  const need = [], keys = [];
+  items.forEach(function(it, i) {
+    const k = JSON.stringify([it.q, it.place_id || '', it.date || '', it.time || '', photos || 0]);
+    if (_placeCache[k]) out[i] = _placeCache[k]; else { need.push(it); keys.push([i, k]); }
+  });
+  for (let s = 0; s < need.length; s += 12) {
+    try {
+      const { data, error } = await sb.functions.invoke('place-info', { body: { items: need.slice(s, s + 12), photos: photos || 0 } });
+      if (error) throw error;
+      (data && data.results || []).forEach(function(r, j) { const ik = keys[s + j]; if (!ik || !r) return; out[ik[0]] = r; if (!r.error) _placeCache[ik[1]] = r; });
+    } catch (e) { console.warn('place-info failed', e); }
+  }
+  return out;
+}
+function _plCount(n) { return n == null ? '' : Number(n).toLocaleString('en-AU'); }
+function _plTodayIso() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function _plStatusHtml(r, when) {
+  if (r.status === 'CLOSED_PERMANENTLY') return '<span class="pl-warn">Permanently closed</span>';
+  if (r.status === 'CLOSED_TEMPORARILY') return '<span class="pl-warn">Temporarily closed</span>';
+  if (r.open_then === false) return '<span class="pl-warn">Closed ' + when + (r.hours_today && !/closed/i.test(r.hours_today) ? ' (hours ' + tmEsc(r.hours_today) + ')' : '') + '</span>';
+  if (r.open_then === true && r.hours_today) return '<span class="pl-open">Open ' + when + '</span> · ' + tmEsc(r.hours_today);
+  return '';
+}
+// Ask TripMade cards marked .pl-card: photo strip, Google rating, price,
+// today's hours, and Menu / Map buttons. Unverified places keep their card
+// but get no Google details.
+async function enrichPlaceCards(root, photos) {
+  const cards = Array.from(root.querySelectorAll('.pl-card:not([data-pl-done])'));
+  if (!cards.length) return;
+  cards.forEach(function(c) { c.setAttribute('data-pl-done', '1'); });
+  const today = _plTodayIso();
+  const res = await fetchPlaceInfo(cards.map(function(c) { return { q: c.getAttribute('data-pl-q'), name: c.getAttribute('data-pl-name'), date: today }; }), photos);
+  cards.forEach(function(c, i) {
+    const r = res[i];
+    const ph = c.querySelector('.pl-photos');
+    if (!r || !r.found) { if (ph) ph.remove(); return; }
+    if (ph) {
+      if (r.photos && r.photos.length) {
+        ph.classList.remove('pl-loading');
+        ph.innerHTML = r.photos.map(function(p) {
+          return '<div class="pl-ph"><img src="' + tmEsc(p.url) + '" alt="' + tmEsc(r.name) + '" loading="lazy" referrerpolicy="no-referrer">' +
+            (p.author ? '<a class="pl-credit" href="' + tmEsc(p.author_url || r.maps_url || '#') + '" target="_blank" rel="noopener noreferrer">Photo: ' + tmEsc(p.author) + '</a>' : '') + '</div>';
+        }).join('') + (r.photos.length > 1 ? '<span class="pl-count">' + r.photos.length + ' photos ›</span>' : '');
+      } else ph.remove();
+    }
+    const meta = c.querySelector('.pl-meta');
+    if (meta) {
+      const bits = [];
+      if (r.rating) bits.push('<a class="pl-stars" href="' + tmEsc(r.maps_url || '#') + '" target="_blank" rel="noopener noreferrer">★ ' + r.rating.toFixed(1) + '</a> <span class="pl-sub">' + _plCount(r.reviews) + ' Google reviews</span>');
+      if (r.price && !c.querySelector('.ask-dine-meta')) bits.push('<span class="pl-sub">' + tmEsc(r.price) + '</span>');
+      meta.innerHTML = c.getAttribute('data-pl-kind') === 'area'
+        ? (r.maps_url ? '<a class="pl-maplink" href="' + tmEsc(r.maps_url) + '" target="_blank" rel="noopener noreferrer">📍 See this area on the map ↗</a>' : '')
+        : bits.join(' <span class="pl-sub">·</span> ');
+    }
+    const hrs = c.querySelector('.pl-hours');
+    if (hrs) hrs.innerHTML = _plStatusHtml(r, 'today');
+    const foot = c.querySelector('.pl-foot');
+    if (foot) {
+      foot.innerHTML =
+        (r.website && c.getAttribute('data-pl-kind') !== 'area' ? '<a class="ask-stay-cta" href="' + tmEsc(r.website) + '" target="_blank" rel="noopener noreferrer">Menu &amp; website ↗</a>' : '') +
+        (r.maps_url ? '<a class="ask-stay-cta pl-map" href="' + tmEsc(r.maps_url) + '" target="_blank" rel="noopener noreferrer">Map ↗</a>' : '') +
+        (foot.getAttribute('data-keep') || '');
+      foot.style.justifyContent = 'flex-end';
+    }
+    if (!c.querySelector('.pl-attr')) {
+      const a = document.createElement('div');
+      a.className = 'pl-attr';
+      a.textContent = 'Photos, ratings & hours: Google Maps';
+      c.appendChild(a);
+    }
+  });
+}
 function renderAskDining(bodyEl, data) {
   const cardsHtml = (data.suggestions || []).map(function(s) {
+    const plName = String(s.name || '').replace(/<[^>]*>/g, '');
     return '' +
-      '<div class="ask-stay-card">' +
+      '<div class="ask-stay-card pl-card" data-pl-name="' + tmEsc(plName) + '" data-pl-q="' + tmEsc(plName + (data.destination ? ', ' + data.destination : '')) + '">' +
+        '<div class="pl-photos pl-loading"></div>' +
         '<div class="ask-stay-name">' + s.name + '</div>' +
+        '<div class="pl-meta"></div>' +
         '<div class="ask-dine-meta">' + s.venue_type + ' · ' + s.price_tier + '</div>' +
         '<div class="ask-stay-desc">' + s.reason + '</div>' +
-        '<div class="ask-stay-foot" style="justify-content:flex-end;">' +
+        '<div class="pl-hours"></div>' +
+        '<div class="ask-stay-foot pl-foot" style="justify-content:flex-end;">' +
           '<a class="ask-stay-cta" href="' + s.cta.url + '" target="_blank" rel="noopener noreferrer">' + s.cta.label + '</a>' +
         '</div>' +
       '</div>';
@@ -6193,6 +6313,7 @@ function renderAskDining(bodyEl, data) {
   bodyEl.innerHTML =
     '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3></div>' +
     '<div class="ask-results-grid">' + cardsHtml + '</div>';
+  enrichPlaceCards(bodyEl, 2);
 }
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
@@ -6206,9 +6327,12 @@ function renderAskResults(bodyEl, data) {
     }
     const ctaClass = s.cta && s.cta.isAffiliate ? 'ask-stay-cta' : 'ask-stay-cta fallback';
     const flagHtml = s.cta && s.cta.isAffiliate ? '' : '<div class="ask-stay-flag">no live affiliate yet</div>';
+    const plArea = String(s.area || '').replace(/<[^>]*>/g, '');
     return '' +
-      '<div class="ask-stay-card">' +
+      '<div class="ask-stay-card pl-card" data-pl-kind="area" data-pl-name="' + tmEsc(plArea.split(/[,(]/)[0]) + '" data-pl-q="' + tmEsc(plArea + (data.destination ? ', ' + data.destination : '')) + '">' +
+        '<div class="pl-photos pl-loading"></div>' +
         '<div class="ask-stay-name">' + s.area + '</div>' +
+        '<div class="pl-meta"></div>' +
         '<div class="ask-stay-desc">' + s.reason + '</div>' +
         '<div class="ask-stay-foot">' +
           '<div class="ask-stay-price">~' + data.currency + ' ' + s.price_estimate + '<span> / night</span></div>' +
@@ -6224,6 +6348,7 @@ function renderAskResults(bodyEl, data) {
       '<p><b>Want the full trip planned too?</b>Carry this destination and budget straight into TripMade\'s itinerary form.</p>' +
       '<button type="button" onclick="prefillItineraryFromAsk(' + jsStrAttr(data.destination) + ',' + (data.budget_amount || 'null') + ')">Get a full itinerary →</button>' +
     '</div>';
+  enrichPlaceCards(bodyEl, 1);
 }
 // Re-renders a full stored chat (from the `ask_chats` table) back into the
 // page — used by openSavedChat(). Each turn is rebuilt exactly the way a
@@ -6399,6 +6524,24 @@ const ITIN_AFFILIATES = {
 // start date + the day number. If either is missing, falls back to the
 // plain tracked Kiwi link above.
 const TP_MARKER = '774757';
+// Viator search for one experience, tracked to our partner ID (campaign =
+// the trip, so Viator's reports show which itinerary a booking came from).
+function viatorSearchLink(text, tag) {
+  return 'https://www.viator.com/searchResults/all?text=' + encodeURIComponent(String(text || '').slice(0, 120)) +
+    '&pid=P00317698&mcid=42383&medium=link&medium_version=selector' + (tag ? '&campaign=' + encodeURIComponent(tag) : '');
+}
+// The place's own name from an itinerary line: "Dinner — Il Sorpasso,
+// aperitivo + dinner" -> "Il Sorpasso"; "Colosseum + Roman Forum — priority
+// access" -> "Colosseum + Roman Forum".
+function placeStopName(label) {
+  let s = String(label || '').replace(/\s+/g, ' ').trim();
+  const parts = s.split(/\s+[—–-]\s+|:\s+/);
+  const meal = /^(dinner|lunch|brunch|breakfast|coffee|drinks|aperitivo|cocktails?|sunset drinks|snack|dessert|gelato|late[- ]night (food|drinks)|supper|bite|tapas|food)\b/i;
+  if (parts.length > 1 && meal.test(parts[0])) s = parts[1]; else s = parts[0];
+  s = s.replace(/^(dinner|lunch|brunch|breakfast|coffee|drinks|cocktails?|sunset drinks|supper|tapas) (at|in|on) /i, '');
+  s = s.split(/,|\(| · /)[0].replace(/\s+(\+|&)\s*$/, '').trim();
+  return s.length >= 3 && s.length <= 80 ? s : '';
+}
 const HOLAFLY_URL = 'https://holafly.sjv.io/c/7745282/3856277/24764';   // Holafly via Impact (same link as the Book your trip page)
 function flightCodesFromLabel(label) {
   const m = String(label || '').match(/\b[A-Z]{3}(?:\s*(?:→|->|–>|—>)\s*[A-Z]{3})+\b/);
@@ -6669,7 +6812,44 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     for (const cls in EVT_DOT_TO_CATEGORY) if (dotEl.classList.contains(cls)) category = EVT_DOT_TO_CATEGORY[cls];
     const kind = itinAffiliateKind(category, labelEl.textContent);
     const aff = kind && ITIN_AFFILIATES[kind];
-    if (!aff) return;
+    if (!aff) {
+      // 2026-10-16 per Lachy: restaurants/cafes/bars get a Map link (upgraded
+      // to Menu + Google rating when the day is expanded); experiences get a
+      // Viator search for that exact experience (8% commission, 30-day cookie).
+      if ((category === 'food' || category === 'activity' || category === 'event') && !evt.querySelector('.evt-pl-btn')) {
+        const nm = placeStopName(labelEl.textContent);
+        if (!nm) return;
+        const city = String(evt.dataset.city || ctx.destination || '').split(',')[0].trim();
+        const dn = evtDayNumber(evt);
+        evt.setAttribute('data-pl-cat', category);
+        evt.setAttribute('data-pl-name', nm);
+        evt.setAttribute('data-pl-q', nm + (city ? ', ' + city : ''));
+        const pd = tripDayIso(tripStart, dn); if (pd) evt.setAttribute('data-pl-date', pd);
+        const tm = ((evt.querySelector('.evt-time') || {}).textContent || '').trim(); if (/^\d{1,2}:\d{2}/.test(tm)) evt.setAttribute('data-pl-time', tm.slice(0, 5));
+        const b = document.createElement('a');
+        b.className = 'evt-book evt-pl-btn';
+        b.target = '_blank';
+        if (category === 'activity') {
+          b.href = viatorSearchLink(nm + (city ? ' ' + city : ''), ctx.tag);
+          b.rel = 'noopener noreferrer sponsored';
+          b.innerHTML = 'Book<span class="evt-book-kind"> tour</span> ↗';
+          b.setAttribute('aria-label', 'Find ' + nm + ' on Viator');
+          added++;
+        } else {
+          b.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(nm + (city ? ', ' + city : ''));
+          b.rel = 'noopener noreferrer';
+          b.textContent = 'Map ↗';
+          b.setAttribute('aria-label', 'See ' + nm + ' on Google Maps');
+        }
+        b.addEventListener('click', function(e) { e.stopPropagation(); });
+        const head = document.createElement('div');
+        head.className = 'evt-head';
+        labelEl.parentNode.insertBefore(head, labelEl);
+        head.appendChild(labelEl);
+        head.appendChild(b);
+      }
+      return;
+    }
     const fj = kind === 'flight' ? flightPlan.get(evt) : null;
     if (fj && fj.includedIn) {
       // Later leg of a connecting journey: no separate booking.
@@ -7551,11 +7731,12 @@ function renderInboxDetail(itin, justUnlocked) {
         return '' +
           '<div class="evt"' + attr('city', h.city) + attr('from-name', h.from_name) + attr('from-type', h.from_type) +
             attr('from-lat', h.from_lat) + attr('from-lng', h.from_lng) + attr('to-name', h.to_name) + attr('to-type', h.to_type) +
-            attr('to-lat', h.to_lat) + attr('to-lng', h.to_lng) + '>' +
+            attr('to-lat', h.to_lat) + attr('to-lng', h.to_lng) + attr('place-id', h.place_id) + '>' +
             '<div class="evt-time">' + (h.time || '') + '</div>' +
             '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
             '<div class="evt-body">' +
               '<div class="evt-label">' + (h.label || '') + '</div>' +
+              (h.checked_note ? '<div class="evt-checked">✓ Checked on Google Maps: ' + tmEsc(h.checked_note) + '</div>' : '') +
               (detailText ? '<div class="evt-detail">' + detailText + '</div>' : '') +
               (editing ? '<div class="mt-stop-acts"><button type="button" onclick="mtOpenForm(' + d.day_number + ',' + hi + ')">Edit</button><button type="button" onclick="mtDeleteStop(' + d.day_number + ',' + hi + ')">Remove</button></div>' : '') +
             '</div>' +
@@ -7701,6 +7882,61 @@ function toggleInboxDayExtend(dayId) {
   btn.classList.toggle('open', nowOpen);
   btn.innerHTML = nowOpen ? 'Collapse this day <span class="chev">&rarr;</span>' : 'Expand this day <span class="chev">&rarr;</span>';
   _openInboxDayId = nowOpen ? dayId : null;
+  if (nowOpen && block) enrichItinDay(block);
+}
+// 2026-10-16: an expanded day's restaurants and experiences get their Google
+// rating next to the name (links to the place on Google Maps), the Menu link
+// on the right for food, and a warning if the place is closed at that time.
+async function enrichItinDay(block) {
+  const evts = Array.from(block.querySelectorAll('.evt[data-pl-q]:not([data-pl-done])'));
+  if (!evts.length) return;
+  evts.forEach(function(e) { e.setAttribute('data-pl-done', '1'); });
+  const res = await fetchPlaceInfo(evts.map(function(e) {
+    return { q: e.getAttribute('data-pl-q'), name: e.getAttribute('data-pl-name'), place_id: e.getAttribute('data-place-id') || undefined,
+      date: e.getAttribute('data-pl-date') || undefined, time: e.getAttribute('data-pl-time') || undefined };
+  }), 0);
+  let any = false;
+  evts.forEach(function(e, i) {
+    const r = res[i];
+    if (!r || !r.found) return;
+    any = true;
+    const label = e.querySelector('.evt-label');
+    if (label && r.rating && !label.querySelector('.evt-rating')) {
+      const a = document.createElement('a');
+      a.className = 'evt-rating';
+      a.href = r.maps_url || '#';
+      a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.title = r.name + ' on Google Maps';
+      a.innerHTML = '★ ' + r.rating.toFixed(1) + (r.reviews ? '<span> (' + _plCount(r.reviews) + ')</span>' : '');
+      a.addEventListener('click', function(ev) { ev.stopPropagation(); });
+      label.appendChild(document.createTextNode(' '));
+      label.appendChild(a);
+    }
+    const btn = e.querySelector('.evt-pl-btn');
+    if (btn && e.getAttribute('data-pl-cat') !== 'activity') {
+      if (r.website && e.getAttribute('data-pl-cat') === 'food') { btn.href = r.website; btn.textContent = 'Menu ↗'; btn.setAttribute('aria-label', 'Menu and website for ' + r.name); }
+      else if (r.maps_url) btn.href = r.maps_url;
+    }
+    const day = (e.getAttribute('data-pl-date') ? new Date(e.getAttribute('data-pl-date') + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long' }) : 'that day');
+    const warn = r.status === 'CLOSED_PERMANENTLY' ? 'Google lists this place as permanently closed.'
+      : r.status === 'CLOSED_TEMPORARILY' ? 'Google lists this place as temporarily closed.'
+      : r.open_then === false ? (r.hours_today && /closed/i.test(r.hours_today) ? 'Google shows it closed on ' + day + 's.'
+          : 'Google shows it closed at ' + (e.getAttribute('data-pl-time') || 'this time') + ' on ' + day + (r.hours_today ? ' (open ' + r.hours_today + ')' : '') + '.') : '';
+    if (warn && !e.querySelector('.evt-pl-warn')) {
+      const w = document.createElement('div');
+      w.className = 'evt-pl-warn';
+      w.textContent = '⚠ ' + warn + ' Ask TripMade to swap it, or check before you go.';
+      const head = e.querySelector('.evt-head') || label;
+      head.insertAdjacentElement('afterend', w);
+    }
+  });
+  const list = block.querySelector('.evt-list');
+  if (any && list && !list.querySelector('.pl-attr')) {
+    const a = document.createElement('div');
+    a.className = 'pl-attr';
+    a.textContent = 'Ratings & opening hours: Google Maps';
+    list.appendChild(a);
+  }
 }
 // Calls the create-checkout-session edge function with the signed-in
 // visitor's own Supabase access token (it re-validates ownership of the
