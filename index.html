@@ -3952,7 +3952,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="itin-block">
       <div class="itin-hdr sight">
         <div class="itin-hdr-l"><div><div class="itin-title" id="ibx-block-title">Your day-by-day itinerary</div><div class="itin-sub">Tap a day to expand it once it&#39;s unlocked</div></div></div>
-        <button type="button" class="ibx-edit-toggle" id="ibx-edit-toggle" onclick="toggleTripEdit()" style="display:none;">Edit trip</button>
+        <button type="button" class="ibx-edit-toggle" id="ibx-edit-toggle" onclick="teDone()" style="display:none;">Edit trip</button>
       </div>
       <div id="ibx-editbar" style="display:none;"></div>
       <div id="ibx-days"></div>
@@ -7395,10 +7395,12 @@ function renderTripEditBar(itin) {
     : 'No changes left. Get 1 more for $1, or unlimited for $9.99';
   const msg = _teMsg ? '<div class="te-status ' + _teMsg.kind + '">' + tmEsc(_teMsg.text) + '</div>' : '<div class="te-status" id="te-status"></div>';
   const keepReq = document.getElementById('te-req'); const keepVal = keepReq ? keepReq.value : '';
+  // 2026-10-17: keep a date the person has picked but not saved yet (the panel re-renders when its data loads).
+  const keepStartEl = document.getElementById('te-start'); const keepStart = keepStartEl && keepStartEl.dataset.trip === itin.id ? keepStartEl.value : '';
   bar.style.display = '';
   bar.innerHTML =
-    '<div class="te-row"><div class="te-lbl">Trip dates</div><div class="te-dates">Starts <input type="date" id="te-start" value="' + tmEsc(start) + '"> <span>· ' + days + ' day' + (days === 1 ? '' : 's') + '</span>' +
-      '<button type="button" class="btn-secondary te-small" onclick="teMoveDates()">Move trip</button></div></div>' +
+    '<div class="te-row"><div class="te-lbl">Trip dates</div><div class="te-dates">Starts <input type="date" id="te-start" data-trip="' + tmEsc(itin.id) + '" data-orig="' + tmEsc(start) + '" value="' + tmEsc(start) + '" onchange="teDateChanged()" oninput="teDateChanged()"> <span>· ' + days + ' day' + (days === 1 ? '' : 's') + '</span>' +
+      '<button type="button" class="btn-secondary te-small" id="te-move-btn" onclick="teMoveDates()">Move trip</button></div><div class="te-date-hint" id="te-date-hint" style="display:none;">New date picked. Tap Move trip (or Done editing) to save it.</div></div>' +
     '<div class="te-row"><div class="te-lbl">Ask TripMade to change it</div>' +
       '<textarea id="te-req" maxlength="1500" placeholder="e.g. Make it Friday to Sunday · swap Saturday dinner for somewhere on the beach · add a spa morning on day 2"></textarea>' +
       '<div class="te-acts"><span class="te-acts-l"><span class="te-left">' + leftText + '</span>' +
@@ -7406,8 +7408,9 @@ function renderTripEditBar(itin) {
       '<button type="button" class="btn-primary te-small" id="te-ai-btn" onclick="teAskAI()">' + (es && !es.unlimited && es.left === 0 ? 'Get more changes' : 'Make the change') + '</button></div>' + msg +
       '<div id="te-chat">' + teChatHTML(itin.id) + '</div></div>' +
     '<div class="te-foot"><div class="te-hint">' + (manual ? 'Add, edit or remove anything on each day below.' : 'Tap <b>Edit</b> on any stop to change its time or name, or <b>Remove</b> it. On unlocked days you can edit the full notes too.') + '</div>' +
-      (manual ? '' : '<button type="button" class="te-done" onclick="toggleTripEdit()">Done editing</button>') + '</div>';
+      (manual ? '' : '<button type="button" class="te-done" onclick="teDone()">Done editing</button>') + '</div>';
   if (keepVal) { const r = document.getElementById('te-req'); if (r) r.value = keepVal; }
+  if (keepStart && keepStart !== start) { const d = document.getElementById('te-start'); if (d) { d.value = keepStart; teDateChanged(); } }
 }
 // ── TripMade change chat (2026-10-14 per Lachy) ───────────────────
 // Every "Ask TripMade to change it" request and TripMade's reply is saved on
@@ -7541,6 +7544,23 @@ function _teSetStatus(kind, text) {
   const el = document.querySelector('#ibx-editbar .te-status');
   if (el) { el.className = 'te-status ' + kind; el.textContent = text; }
 }
+// A picked-but-unsaved date: highlight Move trip and show a hint.
+function teDateChanged() {
+  const d = document.getElementById('te-start'), b = document.getElementById('te-move-btn'), h = document.getElementById('te-date-hint');
+  const changed = !!(d && d.value && d.value !== d.dataset.orig);
+  if (b) b.className = (changed ? 'btn-primary' : 'btn-secondary') + ' te-small';
+  if (h) h.style.display = changed ? 'block' : 'none';
+}
+// "Done editing" saves a new start date that wasn't saved with Move trip yet,
+// then closes the panel (before 17 Oct it just closed and the date was lost).
+async function teDone() {
+  const d = document.getElementById('te-start');
+  if (d && d.value && d.value !== d.dataset.orig) {
+    const ok = await teMoveDates();
+    if (!ok) return;  // keep the panel open so the error shows
+  }
+  toggleTripEdit();
+}
 async function teMoveDates() {
   const v = (document.getElementById('te-start') || {}).value;
   if (!v) { _teSetStatus('err', 'Choose the new first day of your trip.'); return; }
@@ -7550,7 +7570,8 @@ async function teMoveDates() {
     _teMsg = { kind: 'ok', text: 'Done. Your trip now runs ' + ((out.summary || {}).date_range || 'on the new dates') + '.' };
     applyTripUpdate(out);
     refreshTripHeader();
-  } catch (e) { _teSetStatus('err', e.message); }
+    return true;
+  } catch (e) { _teSetStatus('err', e.message); return false; }
 }
 async function teAskAI() {
   const ta = document.getElementById('te-req'), btn = document.getElementById('te-ai-btn');
@@ -8902,6 +8923,7 @@ async function sendFeedback() {
 .te-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
 .te-lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);}
 .te-dates{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;}
+.te-date-hint{font-size:12.5px;color:var(--accent);margin-top:6px;font-weight:600;}
 .te-dates input{padding:8px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;}
 .te-row textarea{width:100%;min-height:72px;padding:10px 12px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box;background:#fff;}
 .te-acts{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
