@@ -571,7 +571,8 @@ hr { border:none; border-top:1px solid var(--border); }
 .partners-note { font-size:12px; color:var(--text-dim); margin:18px 0 0; }
 @media (max-width:700px) { .partners-strip { padding:40px 20px 48px; } .partner-tile { width:calc(50% - 6px); } }
 /* 2026-10-17: slim homepage partners strip */
-.partners-slim { background:white; border-top:1px solid var(--border); padding:18px 48px; }
+.partners-slim { background:white; border-top:1px solid var(--border); padding:18px 48px; margin-top:auto; }
+.partners-slim + footer { margin-top:0; }
 .partners-slim-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:18px; }
 .partners-slim-lbl { flex-shrink:0; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); }
 .partners-slim-row { display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto; scrollbar-width:none; flex:1; justify-content:space-between; }
@@ -1531,14 +1532,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div id="waitlist-loggedin-wrap" style="display:none;">
         <button class="btn-primary" id="waitlist-loggedin-btn" onclick="joinWaitlist()" style="margin-top:14px;">Join the waitlist →</button>
       </div>
-    </div>
-  </div>
-  <!-- 2026-10-17: slim, one-row version of the Our partners footer on the
-       homepage. Filled by buildPartnersStrip() from the same PARTNER_GROUPS. -->
-  <div class="partners-slim" id="home-partners">
-    <div class="partners-slim-inner">
-      <span class="partners-slim-lbl">Our partners</span>
-      <div class="partners-slim-row" id="home-partners-row"></div>
     </div>
   </div>
 </div><!-- end landing -->
@@ -3753,25 +3746,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       </a>
     </div>
   </div>
-  <!-- ══ OUR PARTNERS (2026-10-01) ══════════════════════════
-       Footer strip at the bottom of Book your trip, advertising the
-       affiliate partners we actually have a live partnership with, grouped
-       by category. Logos aren't duplicated here: buildPartnersStrip() copies
-       each logo tile from its card further up this page at load (matched by
-       the img alt text), so swapping a logo above updates it here too.
-       Partners without a logo file yet (Ferryhopper) show as
-       clean text tiles until we have their logo. Booking.com, Agoda,
-       Cover-More and SafetyWing are deliberately NOT listed — those are
-       plain links, not partnerships, so we can't call them partners. Add
-       one to PARTNER_GROUPS below once its affiliate program approves us. -->
-  <div class="partners-strip" id="our-partners">
-    <div class="partners-inner">
-      <div class="partners-kicker">Our partners</div>
-      <h3 class="partners-title">Trusted travel brands we work with</h3>
-      <div id="partners-groups"></div>
-      <p class="partners-note">TripMade may earn a commission when you book through partner links, at no extra cost to you.</p>
-    </div>
-  </div>
 </div>
 <!-- ══ ASK TRIPMADE PAGE ═════════════════════════════════
      Quick-answer accommodation search, separate from the full itinerary
@@ -4203,6 +4177,15 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div style="text-align:center;margin-top:32px;padding-bottom:20px;">
       <button class="btn-primary" onclick="requireAccount(function(){ const c = window._currentTripCard; showPage(&#39;form&#39;); prefillItineraryFromTrip(c); })">Get my personalised itinerary for this trip →</button>
     </div>
+  </div>
+</div>
+<!-- 2026-10-17: slim one-row "Our partners" strip, shown on every page just
+     above the footer (replaces the big grouped strip that was only on Book
+     your trip). Filled by buildPartnersStrip() from PARTNER_GROUPS. -->
+<div class="partners-slim" id="home-partners">
+  <div class="partners-slim-inner">
+    <span class="partners-slim-lbl">Our partners</span>
+    <div class="partners-slim-row" id="home-partners-row"></div>
   </div>
 </div>
 <!-- ══ FOOTER ════════════════════════════════════════════ -->
