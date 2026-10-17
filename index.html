@@ -845,6 +845,15 @@ footer p { font-size:13px; color:var(--text-dim); }
         defaults: '2026-05-30',
         person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
     })
+    // 2026-10-17: custom events. Every capture goes through tmTrack() so a
+    // blocked/missing PostHog (ad-blocker) can never throw and break the site.
+    window.tmTrack = function(event, props) {
+        try {
+            if (window.posthog && typeof window.posthog.capture === 'function') {
+                window.posthog.capture(event, props || {}, { transport: 'sendBeacon' });
+            }
+        } catch (e) {}
+    };
 </script>
 </head>
 <body>
@@ -4893,6 +4902,7 @@ async function joinWaitlist() {
   }, { onConflict: 'user_id' });
   if (error) { console.error('Join waitlist failed:', error); return; }
   _currentUser.joinedWaitlist = true;
+  tmTrack('waitlist_joined', { method: 'account' });
   renderWaitlistCTA();
   // Backup feed into the existing Make.com pipeline, tagged distinctly from
   // a plain account signup so it can be routed/filtered separately. Triggers
@@ -5476,6 +5486,7 @@ function submitWaitlist(btn) {
     input.focus();
     return;
   }
+  tmTrack('waitlist_joined', { method: 'email_only' });
   btn.textContent = '✓ You\'re on the list!';
   btn.style.background = 'var(--green)';
   btn.disabled = true;
@@ -5710,6 +5721,10 @@ function prevStep(from) {
   goToStep(from - 1);
 }
 function goToStep(n) {
+  if (n === 2 && currentStep === 1 && !window._tmItineraryStarted) {
+    window._tmItineraryStarted = true;
+    tmTrack('itinerary_started', { destination: (document.getElementById('f-dest') || {}).value || '' });
+  }
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step' + n).classList.add('active');
   currentStep = n;
@@ -8268,6 +8283,21 @@ async function submitForm() {
     marketing_opt_in: !!formData.marketingOptIn,
     marketing_opt_in_at: formData.marketingOptIn ? new Date().toISOString() : null
   }).then(({ error }) => { if (error) console.error('Saving itinerary request failed:', error); });
+  tmTrack('itinerary_submitted', {
+    request_id: formData.request_id,
+    destination: formData.destination,
+    destination_count: selectedDestinations.length,
+    depart_date: formData.departDate,
+    return_date: formData.returnDate,
+    flying_from: formData.flyingFrom,
+    travellers: formData.travellers,
+    occasion: formData.occasion,
+    budget: formData.budget,
+    currency: formData.currency,
+    vibes: formData.vibes,
+    had_existing_bookings: !!(formData.existing || formData.existingFile),
+    logged_in: !!loggedInUser
+  });
   // Show success
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-success').classList.add('active');
@@ -9092,6 +9122,64 @@ var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg
   function tick(k){ if (document.hidden) { timer = setTimeout(function(){ tick(k); }, 1000); return; } show(k); }
   (mq.addEventListener ? mq.addEventListener('change', build) : mq.addListener(build));
   build();
+})();
+</script>
+<script>
+// ── PostHog custom events (2026-10-17) ─────────────────────────────
+// itinerary_form_viewed: someone opens the itinerary form page.
+(function() {
+  var _origShowPage = window.showPage;
+  if (typeof _origShowPage === 'function') {
+    window.showPage = function(id) {
+      var r = _origShowPage.apply(this, arguments);
+      if (id === 'form') { window._tmItineraryStarted = false; tmTrack('itinerary_form_viewed'); }
+      return r;
+    };
+  }
+})();
+// affiliate_click: any click through to a booking partner, tagged with the
+// partner name and where on the site it happened.
+(function() {
+  var PARTNERS = [
+    ['kiwi.tpk.mx','Kiwi'], ['kiwi.com','Kiwi'], ['trip.com','Trip.com'],
+    ['welcomepickups.com','Welcome Pickups'], ['ferryhopper.com','Ferryhopper'],
+    ['omio','Omio'], ['viator.com','Viator'], ['getyourguide.com','GetYourGuide'],
+    ['klook.com','Klook'], ['holafly','Holafly'], ['booking.com','Booking.com'],
+    ['agoda.com','Agoda'], ['safetywing.com','SafetyWing'], ['covermore.com','Cover-More'],
+    ['airbnb.','Airbnb'], ['rentalcars.com','Rentalcars'], ['worldnomads.com','World Nomads'],
+    ['skyscanner.','Skyscanner'], ['tpk.mx','Travelpayouts'], ['travelpayouts.com','Travelpayouts']
+  ];
+  function partnerFor(url) {
+    try {
+      var host = new URL(url, location.href).hostname.toLowerCase();
+      if (host.indexOf('tripmade') !== -1) return null;
+      for (var i = 0; i < PARTNERS.length; i++) if (host.indexOf(PARTNERS[i][0]) !== -1) return PARTNERS[i][1];
+    } catch (e) {}
+    return null;
+  }
+  function areaFor(el) {
+    var page = el && el.closest ? el.closest('.page') : null;
+    return page && page.id ? page.id.replace(/^page-/, '') : (location.pathname || '/');
+  }
+  function track(url, el) {
+    var partner = partnerFor(url);
+    if (!partner) return;
+    tmTrack('affiliate_click', {
+      partner: partner,
+      url: String(url).slice(0, 500),
+      page: areaFor(el),
+      label: el && el.textContent ? el.textContent.trim().slice(0, 80) : ''
+    });
+  }
+  document.addEventListener('click', function(e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (a) track(a.href, a);
+  }, true);
+  var _open = window.open;
+  window.open = function(url) {
+    if (url) track(url, document.activeElement);
+    return _open.apply(window, arguments);
+  };
 })();
 </script>
 </body>
