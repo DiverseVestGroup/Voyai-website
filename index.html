@@ -3574,7 +3574,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="flight-widget-card">
           <div class="flight-widget-name">Search transfers</div>
           <div class="flight-widget-desc">Compare and book airport transfers and private rides — search right here, no need to leave this page.</div>
-          <script async src="https://tpwdgt.com/content?trs=571230&amp;shmarker=774757&amp;locale=en&amp;show_header=true&amp;powered_by=true&amp;campaign_id=627&amp;promo_id=8951" charset="utf-8"></script>
+          <div id="tmTransferWidget"><script async src="https://tpwdgt.com/content?trs=571230&amp;shmarker=774757&amp;locale=en&amp;show_header=true&amp;powered_by=true&amp;campaign_id=627&amp;promo_id=8951" charset="utf-8"></script></div>
         </div>
       </div>
       <!-- Ferryhopper is a real, live affiliate link (aff_uid=tpmdco). The
@@ -4415,7 +4415,7 @@ function loadFlightWidget(currency) {
   script.async = true;
   script.charset = 'utf-8';
   script.src = 'https://tpwdgt.com/content?currency=' + encodeURIComponent((currency || 'AUD').toLowerCase()) +
-    '&trs=571230&shmarker=774757&locale=en&stops=any&show_hotels=true&powered_by=true&border_radius=0&plain=true&color_button=%2300A991&color_button_text=%23ffffff&promo_id=3414&campaign_id=111';
+    '&trs=571230&shmarker=' + (window.tmTpMarker ? window.tmTpMarker() : '774757') + '&locale=en&stops=any&show_hotels=true&powered_by=true&border_radius=0&plain=true&color_button=%2300A991&color_button_text=%23ffffff&promo_id=3414&campaign_id=111';
   container.appendChild(script);
 }
 function applyCurrency(currency) {
@@ -9405,6 +9405,101 @@ var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg
     if (url) track(url, document.activeElement);
     return _open.apply(window, arguments);
   };
+})();
+</script>
+<script>
+// 2026-10-17: tag affiliate clicks with the signed-in customer's account, so
+// sales made from the general pages (Book your trip, flight + transfer search
+// widgets, Kiwi / Welcome Pickups short links) can be filed on that customer's
+// My Bookings by the daily Travelpayouts sync (Supabase travelpayouts-sync).
+//   - Trip buttons keep their own trip tag (itin_<trip id>); this only fills in
+//     links that would otherwise go out untagged.
+//   - Tag = user_<account id without dashes>. Signed-out visitors: untagged, as before.
+//   - Travelpayouts short links (tpk.mx / tp.st) take the tag as ?sub_id=…,
+//     widgets and travelpayouts.com click links as shmarker=774757.<tag>.
+(function () {
+  function tmUserTag() {
+    try {
+      var u = (typeof getUser === 'function') ? getUser() : null;
+      var id = u && u.id ? String(u.id).replace(/-/g, '') : '';
+      return /^[A-Za-z0-9]{8,64}$/.test(id) ? 'user_' + id : '';
+    } catch (e) { return ''; }
+  }
+  window.tmUserTag = tmUserTag;
+  // Used by loadFlightWidget() when it builds the flight search widget.
+  window.tmTpMarker = function () {
+    var tag = tmUserTag();
+    return tag ? '774757.' + tag : '774757';
+  };
+
+  function isShortTp(host) { return /(^|\.)(tpk\.mx|tp\.st)$/.test(host); }
+
+  // Wrap the existing helper: same behaviour, plus a fallback tag and sub_id
+  // support for short links.
+  if (typeof withTmCurrency === 'function' && !withTmCurrency.__tmUserTagged) {
+    var _orig = withTmCurrency;
+    var wrapped = function (url, tag) {
+      var okTag = /^[A-Za-z0-9_]{1,80}$/.test(tag || '') ? tag : '';
+      var eff = okTag || tmUserTag();
+      var out = _orig(url, eff);
+      if (!eff || !out) return out;
+      try {
+        var U = new URL(out);
+        if (isShortTp(U.hostname)) {
+          // A trip tag always wins; never replace one with the account tag.
+          var cur = U.searchParams.get('sub_id') || '';
+          if (okTag || !/^itin_/.test(cur)) U.searchParams.set('sub_id', eff);
+          return U.toString();
+        }
+      } catch (e) {}
+      return out;
+    };
+    wrapped.__tmUserTagged = true;
+    withTmCurrency = wrapped;
+  }
+
+  // Plain Travelpayouts links anywhere on the site (e.g. "Search Kiwi Flights"):
+  // tag at the moment they're clicked. Trip buttons (.evt-book) are already tagged.
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href*="tpk.mx"],a[href*="tp.st"],a[href*="travelpayouts.com"]') : null;
+    if (!a || a.classList.contains('evt-book')) return;
+    try { a.href = withTmCurrency(a.href); } catch (err) {}
+  }, true);
+
+  // Search widgets bake the marker into their script URL, so they're reloaded
+  // (once) whenever the signed-in account changes.
+  var lastTag = null;
+  var transferBox = document.getElementById('tmTransferWidget');
+  var transferSrc = null;
+  if (transferBox) {
+    var s0 = transferBox.querySelector('script[src]');
+    transferSrc = s0 ? s0.getAttribute('src') : null;
+  }
+  function reloadTransferWidget() {
+    if (!transferBox || !transferSrc) return;
+    var src = transferSrc.replace(/([?&]shmarker=)774757(\.[A-Za-z0-9_]+)?(?=&|$)/, '$1' + window.tmTpMarker());
+    transferBox.innerHTML = '';
+    var s = document.createElement('script');
+    s.async = true; s.charset = 'utf-8'; s.src = src;
+    transferBox.appendChild(s);
+  }
+  function retag() {
+    var tag = tmUserTag();
+    if (tag === lastTag) return;
+    var first = lastTag === null;
+    lastTag = tag;
+    if (first && !tag) return; // signed out on load: widgets already untagged
+    try { if (typeof loadFlightWidget === 'function') loadFlightWidget(typeof _currentCurrency !== 'undefined' ? _currentCurrency : 'AUD'); } catch (e) {}
+    try { reloadTransferWidget(); } catch (e) {}
+  }
+  window.tmRetagAffiliates = retag;
+  if (typeof renderAuthNav === 'function' && !renderAuthNav.__tmUserTagged) {
+    var _ran = renderAuthNav;
+    var rw = function () { var r = _ran.apply(this, arguments); try { retag(); } catch (e) {} return r; };
+    rw.__tmUserTagged = true;
+    renderAuthNav = rw;
+  }
+  retag();
 })();
 </script>
 </body>
