@@ -250,6 +250,22 @@ hr { border:none; border-top:1px solid var(--border); }
 .sum-val.red { color:var(--accent); }
 .sum-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
 .sum-sub.red { color:var(--accent); }
+/* 2026-10-17: inbox notifications */
+.nav-notif-badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; margin-left:6px; border-radius:9px; background:#E5484D; color:#fff; font-size:11px; font-weight:700; line-height:1; vertical-align:1px; }
+.notif-block { background:white; border:1.5px solid var(--accent-mid); border-radius:var(--radius); margin-bottom:24px; overflow:hidden; }
+.notif-hd { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 18px; border-bottom:1px solid var(--border); background:var(--accent-light); }
+.notif-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
+.notif-count { font-family:'DM Sans',sans-serif; font-size:11.5px; font-weight:700; color:#fff; background:var(--accent); border-radius:10px; padding:2px 8px; margin-left:6px; vertical-align:1px; }
+.notif-link { background:none; border:none; color:var(--accent); font:inherit; font-size:13px; font-weight:600; cursor:pointer; padding:6px 0; }
+.notif-row { display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:white; border:none; border-bottom:1px solid var(--border); padding:12px 18px; font:inherit; font-size:14px; color:var(--text-muted); cursor:pointer; }
+.notif-row:hover { background:var(--bg); }
+.notif-row.unread { color:var(--text); font-weight:600; }
+.notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; background:transparent; }
+.notif-row.unread .notif-dot { background:var(--accent); }
+.notif-msg { flex:1; min-width:0; }
+.notif-time { flex-shrink:0; font-size:12px; font-weight:400; color:var(--text-dim); }
+.notif-more { display:block; width:100%; text-align:center; padding:10px; }
+@media (max-width:560px) { .notif-row { flex-wrap:wrap; padding:12px 14px; } .notif-time { width:100%; padding-left:18px; } }
 .itin-block { background:white; border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:14px; }
 .itin-hdr { padding:14px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
 .itin-hdr.sight { background:#FFFDF7; }
@@ -554,6 +570,16 @@ hr { border:none; border-top:1px solid var(--border); }
 .partner-tile-text { font-family:'Syne',sans-serif; font-weight:800; font-size:16px; color:var(--text); }
 .partners-note { font-size:12px; color:var(--text-dim); margin:18px 0 0; }
 @media (max-width:700px) { .partners-strip { padding:40px 20px 48px; } .partner-tile { width:calc(50% - 6px); } }
+/* 2026-10-17: slim homepage partners strip */
+.partners-slim { background:white; border-top:1px solid var(--border); padding:18px 48px; }
+.partners-slim-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:18px; }
+.partners-slim-lbl { flex-shrink:0; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); }
+.partners-slim-row { display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto; scrollbar-width:none; flex:1; justify-content:space-between; }
+.partners-slim-row::-webkit-scrollbar { display:none; }
+.partners-slim .partner-tile { width:auto; min-width:96px; flex:1 1 0; max-width:150px; height:42px; border-radius:8px; border-width:1px; padding:0 10px; }
+.partners-slim .partner-tile .tour-provider-logo-wrap img { max-width:84%; max-height:60%; }
+.partners-slim .partner-tile-text { font-size:13px; }
+@media (max-width:700px) { .partners-slim { padding:14px 16px; } .partners-slim-inner { flex-direction:column; align-items:stretch; gap:10px; } .partners-slim-lbl { text-align:center; } .partners-slim-row { justify-content:flex-start; } .partners-slim .partner-tile { flex:0 0 auto; min-width:104px; } }
 .category-heading-wrap { max-width:900px; margin:0 auto; padding:20px 48px 0; scroll-margin-top:80px; }
 .category-heading-wrap h3 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--text); margin:0 0 8px; letter-spacing:-0.01em; display:inline-block; padding-bottom:8px; border-bottom:3px solid var(--accent); }
 .category-heading-wrap p { font-size:13px; color:var(--text-muted); margin:0; }
@@ -855,6 +881,27 @@ footer p { font-size:13px; color:var(--text-dim); }
         } catch (e) {}
     };
 </script>
+<style>
+/* 2026-10-17: typeable budget */
+.budget-type{display:inline-flex;align-items:baseline;gap:1px;font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent);cursor:text;border-bottom:2px dashed var(--accent-mid,#BFE3E0);padding-bottom:1px;}
+.budget-type input{font:inherit;color:inherit;border:none;background:transparent;outline:none;padding:0;width:6ch;min-width:3ch;}
+.budget-type:focus-within{border-bottom-style:solid;border-bottom-color:var(--accent);}
+.budget-type .budget-edit{font-size:14px;margin-left:6px;opacity:.55;font-family:'DM Sans',sans-serif;}
+.budget-hint{font-size:11px;color:var(--text-dim);}
+@media (max-width:420px){.budget-hint{display:none;}}
+/* 2026-10-17: free itinerary allowance */
+#form-allowance{margin:0 auto 18px;}
+.fa-pill{display:inline-block;background:var(--accent-light);border:1px solid var(--accent-mid);color:var(--accent);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;}
+.fa-block{background:var(--bg2,#fff);border:1px solid var(--border,#E8E8E8);border-radius:var(--radius-lg,16px);padding:32px 28px;text-align:center;box-shadow:var(--shadow,0 4px 20px rgba(0,0,0,.06));}
+.fa-block h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin:0 0 10px;}
+.fa-block p{font-size:15px;color:var(--text-muted);line-height:1.6;max-width:460px;margin:0 auto 22px;}
+.fa-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.fa-btns button,.fa-btns a{font-family:inherit;font-weight:700;font-size:14px;border-radius:var(--radius-sm,10px);padding:12px 20px;cursor:pointer;text-decoration:none;}
+.fa-btns button{background:var(--accent);color:#fff;border:none;}
+.fa-btns a{background:transparent;color:var(--accent);border:1.5px solid var(--accent-mid);}
+.form-page.form-locked .form-step,.form-page.form-locked .form-progress{display:none !important;}
+.f-prefill-note{font-size:12.5px;color:var(--text-muted);margin:-6px 0 14px;}
+</style>
 </head>
 <body>
 <!-- ══ NAV ══════════════════════════════════════════════ -->
@@ -879,7 +926,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </ul>
     <div class="nav-right">
       <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a>
-      <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;inbox&#39;,this);renderInboxPage()">Inbox</a>
+      <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;inbox&#39;,this);renderInboxPage()">Inbox<span class="nav-notif-badge" id="nav-notif-badge" style="display:none;"></span></a>
       <span id="nav-account" style="font-size:13px;color:var(--text-muted);"></span>
       <button class="nav-cta" id="nav-waitlist-btn" onclick="showPage(&#39;landing&#39;,this);scrollToSection(&#39;waitlist&#39;);joinWaitlist();">Join waitlist</button>
     </div>
@@ -1486,6 +1533,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
     </div>
   </div>
+  <!-- 2026-10-17: slim, one-row version of the Our partners footer on the
+       homepage. Filled by buildPartnersStrip() from the same PARTNER_GROUPS. -->
+  <div class="partners-slim" id="home-partners">
+    <div class="partners-slim-inner">
+      <span class="partners-slim-lbl">Our partners</span>
+      <div class="partners-slim-row" id="home-partners-row"></div>
+    </div>
+  </div>
 </div><!-- end landing -->
 <!-- ══ INSPIRATION PAGE ══════════════════════════════════ -->
 <div id="page-inspo" class="page">
@@ -2047,6 +2102,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 <!-- ══ ITINERARY FORM PAGE ══════════════════════════════════ -->
 <div id="page-form" class="page">
   <div class="form-page">
+    <div id="form-allowance" style="display:none;"></div>
     <!-- Progress bar -->
     <div class="form-progress">
       <div class="form-progress-step"><div class="fp-dot done" id="fp1">1</div><div class="fp-line done" id="fl1"></div></div>
@@ -3197,7 +3253,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <label class="form-label">Total budget per person <span>— all in including flights</span></label>
         <div style="background:white;border:1.5px solid var(--border-mid);border-radius:var(--radius);padding:24px 22px 20px;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;gap:12px;">
-            <span id="budget-display" style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;color:var(--accent);">$8,000</span>
+            <label class="budget-type" title="Tap to type your own amount"><span id="budget-sym">$</span><input id="budget-input" type="text" inputmode="numeric" autocomplete="off" value="8,000" aria-label="Budget amount" oninput="onBudgetTyped(this)" onblur="onBudgetBlur(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"><span class="budget-edit">✎</span></label><span id="budget-display" style="display:none;"></span>
             <select id="f-currency" class="currency-picker" onchange="onFormCurrencyChange(this.value)" style="padding:8px 10px;border:1.5px solid var(--border-mid);border-radius:8px;font-size:13px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;background:white;flex-shrink:0;">
               <option value="AUD">AUD (A$)</option>
               <option value="USD">USD (US$)</option>
@@ -3211,7 +3267,7 @@ footer p { font-size:13px; color:var(--text-dim); }
           </div>
           <input type="range" id="f-budget-slider" min="500" max="50000" step="500" value="8000" oninput="updateBudgetDisplay(this.value)" style="width:100%;accent-color:var(--accent);height:6px;margin:16px 0 6px;cursor:pointer;">
           <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);">
-            <span id="budget-min-label">$500</span><span id="budget-max-label">$50,000+</span>
+            <span id="budget-min-label">$500</span><span class="budget-hint">Drag, or tap the amount to type it</span><span id="budget-max-label">$50,000+</span>
           </div>
         </div>
       </div>
@@ -3262,6 +3318,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-eyebrow">Step 6 of 6 — Almost done!</div>
       <h2>Where do we send it?</h2>
       <p class="form-sub">Your free personalised itinerary will be ready in your TripMade Inbox within minutes — we'll also email you the moment it's there. No spam, ever.</p>
+      <p class="f-prefill-note" id="f-prefill-note" style="display:none;">We've filled these in from your account. Change anything you like.</p>
       <div class="form-group">
         <label class="form-label">Your name</label>
         <input class="form-input" id="f-name" type="text" placeholder="First name">
@@ -3838,6 +3895,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p id="inbox-empty-text" style="font-size:15px;margin-bottom:18px;">You don&#39;t have any itineraries yet.</p>
       <button id="inbox-empty-btn" class="btn-primary" onclick="requireAccount(function(){showPage(&#39;form&#39;);})">Get my free itinerary →</button>
     </div>
+    <!-- 2026-10-17: notifications — changes other people make on a shared
+         trip (and bookings they add) show here instead of being emailed.
+         Filled by renderTripNotifications() from public.trip_notifications. -->
+    <div class="notif-block" id="inbox-notifs" style="display:none;"></div>
     <!-- 2026-10-07: bookings forwarded to bookings@ (or added elsewhere) that
          couldn't be matched to a trip by date land here, so they're never
          invisible. Each one can be moved onto any of the customer's trips. -->
@@ -4423,6 +4484,12 @@ const PARTNER_GROUPS = [
   ]}
 ];
 function buildPartnersStrip() {
+  // Slim one-row copy on the homepage (2026-10-17).
+  const homeRow = document.getElementById('home-partners-row');
+  if (homeRow) {
+    homeRow.innerHTML = '';
+    PARTNER_GROUPS.forEach(function(g) { g.partners.forEach(function(p) { homeRow.appendChild(makePartnerTile(p)); }); });
+  }
   const wrap = document.getElementById('partners-groups');
   if (!wrap) return;
   wrap.innerHTML = '';
@@ -4435,6 +4502,14 @@ function buildPartnersStrip() {
     const row = document.createElement('div');
     row.className = 'partners-row';
     g.partners.forEach(function(p) {
+      row.appendChild(makePartnerTile(p));
+    });
+    group.appendChild(lbl);
+    group.appendChild(row);
+    wrap.appendChild(group);
+  });
+}
+function makePartnerTile(p) {
       const a = document.createElement('a');
       a.className = 'partner-tile';
       a.href = p.href;
@@ -4451,12 +4526,7 @@ function buildPartnersStrip() {
         t.textContent = p.name;
         a.appendChild(t);
       }
-      row.appendChild(a);
-    });
-    group.appendChild(lbl);
-    group.appendChild(row);
-    wrap.appendChild(group);
-  });
+      return a;
 }
 document.addEventListener('DOMContentLoaded', buildPartnersStrip);
 // Category tab badges are counted from the real trip cards on load, so
@@ -4804,6 +4874,11 @@ function handleAuthLinkError() {
 }
 document.addEventListener('DOMContentLoaded', initAuth);
 function renderAuthNav() {
+  // 2026-10-17: signing in/out while on the form refreshes the free-itinerary count + prefill.
+  const fp = document.getElementById('page-form');
+  if (fp && fp.classList.contains('active') && typeof onFormPageShown === 'function') setTimeout(onFormPageShown, 0);
+  if (_currentUser) setTimeout(function() { loadTripNotifications().then(updateNotifBadge); }, 0);
+  else { _notifs = []; updateNotifBadge(); }
   const el = document.getElementById('nav-account');
   if (!el) return;
   if (_currentUser) {
@@ -5754,18 +5829,46 @@ function formCurrencySymbol() {
   const code = el ? el.value : (_currentCurrency || 'AUD');
   return CURRENCY_SYMBOLS[code] || '$';
 }
-function updateBudgetDisplay(val) {
+// 2026-10-17: the budget can be typed as well as dragged. A typed amount is
+// kept exactly (_budgetExact) — the slider only moves to the nearest step to
+// show roughly where it sits.
+var _budgetExact = null;
+function updateBudgetDisplay(val, keepExact) {
   val = parseInt(val);
-  const display = document.getElementById('budget-display');
+  if (!keepExact) _budgetExact = null;
   const symbol = formCurrencySymbol();
-  const isMax = val >= 50000;
-  display.textContent = symbol + (isMax ? '50,000+' : val.toLocaleString());
+  const shown = _budgetExact != null ? _budgetExact : val;
+  const text = (_budgetExact == null && shown >= 50000) ? '50,000+' : Number(shown).toLocaleString('en-AU');
+  const display = document.getElementById('budget-display');
+  if (display) display.textContent = symbol + text;
+  const sym = document.getElementById('budget-sym');
+  if (sym) sym.textContent = symbol;
+  const inp = document.getElementById('budget-input');
+  if (inp && document.activeElement !== inp) { inp.value = text; sizeBudgetInput(inp); }
+}
+function sizeBudgetInput(inp) { inp.style.width = Math.max(3, String(inp.value || '').length + 0.5) + 'ch'; }
+function onBudgetTyped(inp) {
+  const digits = String(inp.value || '').replace(/[^\d]/g, '').slice(0, 7);
+  if (inp.value !== digits) inp.value = digits;
+  sizeBudgetInput(inp);
+  const n = parseInt(digits, 10);
+  if (!n) return;
+  _budgetExact = n;
+  const slider = document.getElementById('f-budget-slider');
+  if (slider) slider.value = Math.min(Math.max(Math.round(n / 500) * 500, 500), 50000);
+}
+function onBudgetBlur(inp) {
+  const n = parseInt(String(inp.value || '').replace(/[^\d]/g, ''), 10);
+  if (n && n >= 50) _budgetExact = n;
+  const slider = document.getElementById('f-budget-slider');
+  updateBudgetDisplay(slider ? slider.value : 8000, true);
 }
 function getBudgetValue() {
   const el = document.getElementById('f-budget-slider');
   if (!el) return '';
-  const val = parseInt(el.value);
   const symbol = formCurrencySymbol();
+  if (_budgetExact != null) return symbol + Number(_budgetExact).toLocaleString('en-AU');
+  const val = parseInt(el.value);
   return symbol + (val >= 50000 ? '50,000+' : val.toLocaleString());
 }
 function getFormCurrencyCode() {
@@ -7534,6 +7637,70 @@ async function deleteUnfiledBooking(id) {
   const { error } = await sb.from('bookings').delete().eq('id', id);
   if (!error) renderUnfiledBookings(_unfiledTrips);
 }
+// ── INBOX NOTIFICATIONS (2026-10-17) ─────────────────────
+// Changes someone else makes on a shared trip (stops, dates, TripMade edits,
+// bookings) are recorded in trip_notifications by the database and shown
+// here, instead of sending an email for every change. Several changes by the
+// same person within 30 minutes arrive as one ("Jai made 3 changes to Bali").
+var _notifs = [], _notifsOpen = false;
+function notifAgo(iso) {
+  const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + ' min ago';
+  const h = Math.round(m / 60);
+  if (h < 24) return h + (h === 1 ? ' hour ago' : ' hours ago');
+  const d = Math.round(h / 24);
+  return d < 7 ? d + (d === 1 ? ' day ago' : ' days ago') : new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+}
+async function loadTripNotifications() {
+  if (!getUser()) { _notifs = []; return _notifs; }
+  try {
+    const { data, error } = await sb.from('trip_notifications').select('id,itinerary_id,actor_name,kind,message,change_count,created_at,read_at')
+      .order('created_at', { ascending: false }).limit(30);
+    if (error) throw error;
+    _notifs = data || [];
+  } catch (e) { _notifs = []; }  // table not there yet / offline: just hide the section
+  return _notifs;
+}
+function updateNotifBadge() {
+  const b = document.getElementById('nav-notif-badge');
+  if (!b) return;
+  const n = _notifs.filter(function(x) { return !x.read_at; }).length;
+  b.textContent = n > 9 ? '9+' : String(n);
+  b.style.display = n ? 'inline-flex' : 'none';
+}
+async function renderTripNotifications() {
+  const box = document.getElementById('inbox-notifs');
+  await loadTripNotifications();
+  updateNotifBadge();
+  if (!box) return;
+  if (!_notifs.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const unread = _notifs.filter(function(x) { return !x.read_at; });
+  const shown = _notifsOpen ? _notifs : (unread.length ? unread.slice(0, 5) : _notifs.slice(0, 3));
+  box.style.display = 'block';
+  box.innerHTML =
+    '<div class="notif-hd"><div class="notif-title">🔔 Notifications' + (unread.length ? ' <span class="notif-count">' + unread.length + ' new</span>' : '') + '</div>' +
+    (unread.length ? '<button type="button" class="notif-link" onclick="markNotifsRead()">Mark all as read</button>' : '') + '</div>' +
+    shown.map(function(n) {
+      return '<button type="button" class="notif-row' + (n.read_at ? '' : ' unread') + '" onclick="openNotif(' + jsStrAttr(n.id) + ',' + jsStrAttr(n.itinerary_id) + ')">' +
+        '<span class="notif-dot"></span><span class="notif-msg">' + tmEsc(n.message) + '</span><span class="notif-time">' + notifAgo(n.created_at) + '</span></button>';
+    }).join('') +
+    (_notifs.length > shown.length ? '<button type="button" class="notif-link notif-more" onclick="_notifsOpen=true;renderTripNotifications()">See all ' + _notifs.length + '</button>' : '');
+}
+async function markNotifsRead(ids) {
+  const now = new Date().toISOString();
+  const target = (ids || _notifs.filter(function(x) { return !x.read_at; }).map(function(x) { return x.id; }));
+  if (!target.length) return;
+  _notifs.forEach(function(x) { if (target.indexOf(x.id) !== -1) x.read_at = now; });
+  updateNotifBadge();
+  if (!ids) renderTripNotifications();
+  try { await sb.from('trip_notifications').update({ read_at: now }).in('id', target); } catch (e) {}
+  if (!ids) renderTripNotifications();
+}
+function openNotif(id, itineraryId) {
+  markNotifsRead([id]);
+  openInboxItinerary(itineraryId);
+}
 async function renderInboxPage() {
   const list = document.getElementById('inbox-list');
   const empty = document.getElementById('inbox-empty');
@@ -7549,6 +7716,7 @@ async function renderInboxPage() {
     if (emptyBtn) { emptyBtn.textContent = 'Log in →'; emptyBtn.setAttribute('onclick', 'openLoginModal()'); }
     return;
   }
+  renderTripNotifications();
   if (emptyText) emptyText.textContent = "You don't have any itineraries yet.";
   if (emptyBtn) { emptyBtn.textContent = 'Get my free itinerary →'; emptyBtn.setAttribute('onclick', "requireAccount(function(){showPage('form');})"); }
   // RLS returns the visitor's own trips plus any shared with them (2026-09-28).
@@ -8188,7 +8356,55 @@ function clearImageSelect() {
   document.getElementById('image-upload-selected').style.display = 'none';
   document.getElementById('image-upload-box').classList.remove('has-file');
 }
+// ── FREE ITINERARY ALLOWANCE (2026-10-17) ────────────────
+// 3 free itineraries per customer (team meeting decision). Counted in the
+// database by my_itinerary_allowance() — every request made from the account
+// or its email. Team accounts are listed as unlimited in app_settings.
+async function fetchItineraryAllowance() {
+  if (!getUser()) return null;
+  try {
+    const { data, error } = await sb.rpc('my_itinerary_allowance');
+    if (error) throw error;
+    return data || null;
+  } catch (e) { console.warn('allowance check failed', e); return null; }
+}
+function renderItineraryAllowance(a) {
+  const box = document.getElementById('form-allowance');
+  const pageEl = document.querySelector('#page-form .form-page');
+  if (!box || !pageEl) return;
+  const blocked = !!(a && !a.unlimited && a.left <= 0);
+  pageEl.classList.toggle('form-locked', blocked && !document.getElementById('step-success').classList.contains('active'));
+  if (!a || a.unlimited) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  box.style.display = 'block';
+  if (blocked) {
+    box.innerHTML = '<div class="fa-block"><h2>You\'ve used your ' + a.limit + ' free itineraries</h2>' +
+      '<p>Every TripMade account gets ' + a.limit + ' free personalised itineraries. You can still change any of your trips with TripMade edits, or get in touch if you\'d like us to build another one.</p>' +
+      '<div class="fa-btns"><button type="button" onclick="showPage(\'inbox\')">Go to my trips →</button>' +
+      '<a href="mailto:hello@tripmade.co?subject=' + encodeURIComponent('Another itinerary please') + '">Email us</a></div></div>';
+  } else {
+    box.innerHTML = '<span class="fa-pill">🎁 ' + a.left + ' of ' + a.limit + ' free itineraries left</span>';
+  }
+}
+function prefillContactStep() {
+  const u = getUser();
+  if (!u) return;
+  let filled = false;
+  const set = function(id, v) { const el = document.getElementById(id); if (el && !el.value.trim() && v) { el.value = v; filled = true; } };
+  set('f-name', String(u.name || '').trim().split(/\s+/)[0]);
+  set('f-email', u.email);
+  set('f-phone', u.phone);
+  const note = document.getElementById('f-prefill-note');
+  if (note && filled) note.style.display = 'block';
+}
+async function onFormPageShown() {
+  prefillContactStep();
+  renderItineraryAllowance(await fetchItineraryAllowance());
+}
 async function submitForm() {
+  // Sign-in is needed to count free itineraries per customer.
+  if (!getUser()) { requireAccount(function() { prefillContactStep(); submitForm(); }); return; }
+  const allowance = await fetchItineraryAllowance();
+  if (allowance && !allowance.unlimited && allowance.left <= 0) { renderItineraryAllowance(allowance); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
   const name = document.getElementById('f-name').value.trim();
   if (!name) {
     document.getElementById('f-name').style.borderColor = 'var(--accent)';
@@ -8490,6 +8706,10 @@ window.showPage = function(id, linkEl, opts) {
     if (submitBtn) { submitBtn.textContent = 'Send my itinerary'; submitBtn.disabled = false; }
     const step1Sub = document.getElementById('step1-sub');
     if (step1Sub) step1Sub.textContent = "Tell us your dream destination — or a few you're considering. We'll build around it.";
+    const pn = document.getElementById('f-prefill-note');
+    if (pn) pn.style.display = 'none';
+    _budgetExact = null;
+    onFormPageShown();
   }
 };
 </script>
