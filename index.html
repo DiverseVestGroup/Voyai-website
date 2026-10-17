@@ -573,6 +573,16 @@ hr { border:none; border-top:1px solid var(--border); }
 /* 2026-10-17: slim homepage partners strip */
 .partners-slim { background:white; border-top:1px solid var(--border); padding:18px 48px; margin-top:auto; }
 .partners-slim + footer { margin-top:0; }
+/* 2026-10-17: Trip.com widget fallback */
+.trip-fb { background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius); padding:16px; }
+.trip-fb-row { display:flex; gap:10px; flex-wrap:wrap; }
+.trip-fb-f { display:flex; flex-direction:column; gap:4px; flex:1 1 140px; font-size:12px; font-weight:600; color:var(--text-muted); }
+.trip-fb-dest { flex:2 1 220px; }
+.trip-fb-guests { flex:0 1 90px; }
+.trip-fb-f input, .trip-fb-f select { padding:11px 12px; border:1.5px solid var(--border-mid); border-radius:10px; font:inherit; font-size:14px; font-weight:400; color:var(--text); background:#fff; width:100%; box-sizing:border-box; }
+.trip-fb-btn { margin-top:12px; width:100%; }
+.trip-fb-err { color:var(--error, #C0392B); font-size:12.5px; margin:8px 0 0; }
+.trip-fb-link { display:inline-block; margin-top:10px; font-size:12.5px; color:var(--text-muted); text-decoration:underline; }
 .partners-slim-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:18px; }
 .partners-slim-lbl { flex-shrink:0; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); }
 .partners-slim-row { display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto; scrollbar-width:none; flex:1; justify-content:space-between; }
@@ -3473,9 +3483,23 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="flight-widget-card">
         <div class="flight-widget-name">Search stays on Trip.com</div>
         <div class="flight-widget-desc">Hotels, apartments and more for your dates — search right here, no need to leave this page.</div>
-        <div style="max-width:900px;overflow-x:auto;">
+        <div style="max-width:900px;overflow-x:auto;" id="trip-widget-box">
           <iframe src="https://www.trip.com/partners/ad/S19788582?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=" style="width:900px;max-width:100%;height:200px;border:none;" scrolling="no" id="S19788582" title="Trip.com search"></iframe>
         </div>
+        <!-- 2026-10-17: our own hotel search, shown when the Trip.com widget is
+             blocked (Brave Shields and ad blockers block its /partners/ad/
+             address). Opens Trip.com hotel results with our affiliate tags. -->
+        <div class="trip-fb" id="trip-fallback" style="display:none;">
+          <div class="trip-fb-row">
+            <label class="trip-fb-f trip-fb-dest"><span>Where to?</span><input id="tfb-dest" type="text" placeholder="City or area, e.g. Bali" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();tripFallbackSearch();}"></label>
+            <label class="trip-fb-f"><span>Check-in</span><input id="tfb-in" type="date"></label>
+            <label class="trip-fb-f"><span>Check-out</span><input id="tfb-out" type="date"></label>
+            <label class="trip-fb-f trip-fb-guests"><span>Guests</span><select id="tfb-adults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></label>
+          </div>
+          <button type="button" class="btn-primary trip-fb-btn" onclick="tripFallbackSearch()">Search hotels on Trip.com →</button>
+          <p class="trip-fb-err" id="tfb-err" style="display:none;">Type where you're going first.</p>
+        </div>
+        <a class="trip-fb-link" id="trip-direct-link" href="https://www.trip.com/hotels/?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=book_direct&amp;trip_sub3=D19724084" target="_blank" rel="noopener noreferrer sponsored">Search box not showing? Search hotels on Trip.com directly ↗</a>
       </div>
     </div>
     <!-- 2026-10-01 per Lachlan: small subheading separating the Trip.com
@@ -5312,6 +5336,21 @@ async function submitLogin() {
 // STEP 2 — verify the code. Success hands back a session synchronously;
 // the existing onAuthStateChange listener closes the modal and resumes
 // whatever was pending.
+// 2026-10-17: Enter submits the login, sign-up and waitlist boxes (email step
+// and the 6-digit code step) — same as pressing their button. These boxes
+// aren't real <form>s, so the browser never did this on its own.
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' || e.isComposing) return;
+  const el = e.target;
+  if (!el || el.tagName !== 'INPUT' || el.type === 'checkbox') return;
+  const id = el.id || '';
+  const btnId = /^li-/.test(id) ? 'li-submit-btn' : /^su-/.test(id) ? 'su-submit-btn' : /^wl-/.test(id) ? 'wl-submit-btn' : '';
+  if (!btnId) return;
+  const btn = document.getElementById(btnId);
+  if (!btn || btn.disabled || btn.offsetParent === null) return;
+  e.preventDefault();
+  btn.click();
+});
 async function verifyLoginCode(email) {
   const code    = document.getElementById('li-code').value.trim();
   const errorEl = document.getElementById('li-error');
@@ -6436,6 +6475,58 @@ function askTripHotelsUrl(place, tag) {
     url = u.toString();
   } catch (e) {}
   return url;
+}
+// ── Trip.com widget fallback (2026-10-17) ─────────────────
+// Trip.com's search widget is an iframe from trip.com/partners/ad/…, which
+// Brave Shields and ad blockers (uBlock, AdBlock, AdGuard…) block. When it's
+// blocked we show our own search box instead (same affiliate tags).
+// Checks: (1) the browser refuses to fetch the widget address (network block),
+// (2) the iframe has been hidden (cosmetic block), (3) Brave with Shields
+// usually blocks it, so Brave always gets our box.
+let _tripWidgetChecked = false;
+async function checkTripWidget() {
+  if (_tripWidgetChecked) return;
+  const fr = document.getElementById('S19788582');
+  if (!fr) return;
+  _tripWidgetChecked = true;
+  let blocked = false;
+  try { await fetch(fr.src, { mode: 'no-cors', cache: 'no-store', credentials: 'omit' }); } catch (e) { blocked = true; }
+  try { if (!blocked && navigator.brave && await navigator.brave.isBrave()) blocked = true; } catch (e) {}
+  if (!blocked) {
+    await new Promise(function(r) { setTimeout(r, 1500); });
+    const cs = getComputedStyle(fr);
+    if (document.getElementById('page-tours').classList.contains('active') &&
+        (cs.display === 'none' || cs.visibility === 'hidden' || fr.offsetHeight < 40)) blocked = true;
+  }
+  if (blocked) showTripFallback();
+}
+function showTripFallback() {
+  const box = document.getElementById('trip-widget-box'), fb = document.getElementById('trip-fallback'), link = document.getElementById('trip-direct-link');
+  if (box) box.style.display = 'none';
+  if (link) link.style.display = 'none';
+  if (fb) fb.style.display = 'block';
+  const today = new Date(), a = new Date(today.getTime() + 14 * 86400000), b = new Date(today.getTime() + 17 * 86400000);
+  const iso = function(d) { return d.toISOString().slice(0, 10); };
+  const i = document.getElementById('tfb-in'), o = document.getElementById('tfb-out');
+  if (i && !i.value) { i.value = iso(a); i.min = iso(today); }
+  if (o && !o.value) { o.value = iso(b); o.min = iso(today); }
+  if (typeof tmTrack === 'function') tmTrack('trip_widget_fallback_shown');
+}
+function tripFallbackSearch() {
+  const dest = (document.getElementById('tfb-dest').value || '').trim();
+  const err = document.getElementById('tfb-err');
+  if (!dest) { if (err) err.style.display = 'block'; document.getElementById('tfb-dest').focus(); return; }
+  if (err) err.style.display = 'none';
+  let url = askTripHotelsUrl(dest, 'book_fallback');
+  try {
+    const u = new URL(url);
+    const ci = document.getElementById('tfb-in').value, co = document.getElementById('tfb-out').value;
+    if (ci && co && co > ci) { u.searchParams.set('checkin', ci); u.searchParams.set('checkout', co); }
+    u.searchParams.set('adult', document.getElementById('tfb-adults').value || '2');
+    u.searchParams.set('crn', '1');
+    url = u.toString();
+  } catch (e) {}
+  window.open(url, '_blank', 'noopener');
 }
 function askCard(extraClass, title, sub, btn) {
   return '<div class="ask-crosssell ' + extraClass + '"><p><b>' + title + '</b>' + sub + '</p>' + btn + '</div>';
@@ -8683,6 +8774,7 @@ window.showPage = function(id, linkEl, opts) {
   if (id === 'tours') {
     loadViatorWidgets();
     loadOmioWidget();
+    setTimeout(checkTripWidget, 300);
   }
   if (id === 'form') {
     goToStep(1);
