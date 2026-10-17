@@ -1512,6 +1512,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <h2>Be first to travel smarter</h2>
       <p>Get your free personalised itinerary today. Join 2,400+ early members and be first when full booking handling launches.</p>
       <div id="waitlist-form-wrap">
+        <form id="wl-form" onsubmit="return false;" novalidate style="display:contents;">
         <div id="wl-step-details" class="wl-form-full">
           <input type="text" id="wl-name" placeholder="Full name">
           <input type="email" id="wl-email" placeholder="Email address">
@@ -1537,7 +1538,8 @@ footer p { font-size:13px; color:var(--text-dim); }
           <input id="wl-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
         </div>
         <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email and phone.</p>
-        <button class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
+        <button type="submit" class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
+        </form>
       </div>
       <div id="waitlist-loggedin-wrap" style="display:none;">
         <button class="btn-primary" id="waitlist-loggedin-btn" onclick="joinWaitlist()" style="margin-top:14px;">Join the waitlist →</button>
@@ -4014,6 +4016,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Quick sign up</h3>
     <p id="su-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Just a few details so we can save this for you and send your itinerary.</p>
+    <form id="su-form" onsubmit="return false;" novalidate style="display:contents;">
     <div id="su-step-details" style="display:flex;flex-direction:column;gap:12px;">
       <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
@@ -4039,7 +4042,8 @@ footer p { font-size:13px; color:var(--text-dim); }
       <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
     <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
-    <button class="btn-primary" id="su-submit-btn" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a code →</button>
+    <button type="submit" class="btn-primary" id="su-submit-btn" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a code →</button>
+    </form>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">Already have an account? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeSignupModal();openLoginModal()">Log in</a></p>
   </div>
@@ -4075,6 +4079,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <h3 style="font-family:&#39;Syne&#39;,sans-serif;font-size:22px;font-weight:800;margin:16px 0 6px;">Log in</h3>
     <p id="li-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your email and we&#39;ll send you a login code — pick up right where you left off, on any device.</p>
+    <form id="li-form" onsubmit="return false;" novalidate style="display:contents;">
     <div id="li-step-email" style="display:flex;flex-direction:column;gap:12px;">
       <input id="li-email" type="email" placeholder="Email address" autocomplete="username" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
@@ -4082,7 +4087,8 @@ footer p { font-size:13px; color:var(--text-dim); }
       <input id="li-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
     <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter a valid email address.</p>
-    <button class="btn-primary" id="li-submit-btn" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a code →</button>
+    <button type="submit" class="btn-primary" id="li-submit-btn" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a code →</button>
+    </form>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeLoginModal()">Cancel</button>
     <p style="text-align:center;font-size:12.5px;color:var(--text-muted);margin-top:10px;">New here? <a href="javascript:void(0)" style="color:var(--accent);font-weight:500;" onclick="closeLoginModal();openSignupModal()">Sign up</a></p>
   </div>
@@ -5350,6 +5356,20 @@ document.addEventListener('keydown', function(e) {
   if (!btn || btn.disabled || btn.offsetParent === null) return;
   e.preventDefault();
   btn.click();
+});
+// Phones: the 6-digit code box shows a number pad, which on iPhone has no
+// Enter key, so the code is sent as soon as all 6 digits are in.
+document.addEventListener('input', function(e) {
+  const el = e.target;
+  const map = { 'li-code': 'li-submit-btn', 'su-code': 'su-submit-btn', 'wl-code': 'wl-submit-btn' };
+  if (!el || !map[el.id]) return;
+  const v = String(el.value || '').replace(/\D/g, '');
+  if (v.length !== 6 || el.dataset.autoSent === v) return;
+  el.dataset.autoSent = v;
+  setTimeout(function() {
+    const btn = document.getElementById(map[el.id]);
+    if (btn && !btn.disabled && btn.offsetParent !== null && String(el.value || '').replace(/\D/g, '') === v) btn.click();
+  }, 150);
 });
 async function verifyLoginCode(email) {
   const code    = document.getElementById('li-code').value.trim();
@@ -9596,3 +9616,5 @@ var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg
 </script>
 </body>
 </html>
+
+                                                                      
