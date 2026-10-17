@@ -52,6 +52,8 @@
   .tip-note { font-size:12.5px; background:#FFF8E6; color:#7A5B00; border-radius:8px; padding:7px 10px; margin:6px 0; }
   .tip-acts { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
   .tip-acts .reject { background:#fff; color:var(--red); border:1.5px solid var(--red); }
+  .tip-bulk { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 12px; }
+  .tip-bulk span { font-size:12.5px; color:var(--muted); }
   .tip-card a { color:var(--teal); font-size:12.5px; word-break:break-all; }
 </style>
 </head>
@@ -129,7 +131,10 @@ function renderTips() {
   document.getElementById('tip-tabs').innerHTML = [['draft','To review'],['approved','Live'],['rejected','Rejected']]
     .map(([s,l]) => '<button class="' + (_tipTab === s ? 'on' : '') + '" onclick="tipTab(\'' + s + '\')">' + l + ' (' + n(s) + ')</button>').join('');
   const list = _tips.filter(t => t.status === _tipTab);
-  document.getElementById('tips').innerHTML = list.length ? list.map(t => {
+  // 2026-10-17: "Approve all" on the To review tab (keeps any wording edits typed into the cards).
+  const bulk = _tipTab === 'draft' && list.length > 1
+    ? '<div class="tip-bulk"><button id="tip-approve-all" onclick="tipApproveAll(this)">Approve all ' + list.length + '</button><span>Approves every tip in this list, including any edits you\'ve typed.</span></div>' : '';
+  document.getElementById('tips').innerHTML = bulk + (list.length ? list.map(t => {
     const months = (t.months || []).length ? ' · ' + t.months.map(m => MONTHS[m - 1]).join(', ') + ' only' : '';
     return '<div class="tip-card" id="tip-' + t.id + '">' +
       '<div class="tip-meta"><span class="tip-kind ' + esc(t.kind) + '">' + (t.kind === 'upgrade' ? 'Upgrade idea' : 'Local tip') + '</span>' + esc(t.destination || '') + esc(months) + ' · added by ' + esc(t.added_by || '?') + '</div>' +
@@ -143,7 +148,27 @@ function renderTips() {
         '<button class="ghost" onclick="tipSave(\'' + t.id + '\',this)">Save edits</button>' +
         (t.status !== 'rejected' ? '<button class="reject" onclick="tipAct(\'' + t.id + '\',\'reject\',this)">Reject</button>' : '') +
       '</div></div>';
-  }).join('') : '<div class="empty">Nothing here.</div>';
+  }).join('') : '<div class="empty">Nothing here.</div>');
+}
+async function tipApproveAll(btn) {
+  const ids = _tips.filter(t => t.status === 'draft').map(t => t.id);
+  if (!ids.length) return;
+  if (!confirm('Approve all ' + ids.length + ' tips? They\'ll start showing on matching trips straight away.')) return;
+  const fields = {};
+  ids.forEach(id => { if (document.getElementById('tip-' + id)) fields[id] = tipFields(id); });
+  btn.disabled = true;
+  let done = 0, failed = 0;
+  for (const id of ids) {
+    btn.textContent = 'Approving ' + (done + failed + 1) + ' of ' + ids.length + '…';
+    try {
+      if (fields[id]) await tipPost(Object.assign({ id, action: 'update' }, fields[id]));
+      const tip = await tipPost({ id, action: 'approve' });
+      _tips = _tips.map(t => t.id === tip.id ? tip : t);
+      done++;
+    } catch (e) { failed++; }
+  }
+  renderTips();
+  toast(failed ? 'Approved ' + done + ', ' + failed + ' failed. Try those again.' : 'Approved all ' + done + '. They now show on matching trips.');
 }
 async function loadTips() {
   const sub = document.getElementById('tips-sub');
