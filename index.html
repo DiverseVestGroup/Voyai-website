@@ -289,6 +289,32 @@ hr { border:none; border-top:1px solid var(--border); }
 .sum-val.red { color:var(--accent); }
 .sum-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
 .sum-sub.red { color:var(--accent); }
+/* 2026-10-18: tap a cost box to see what makes up that total */
+button.sum-card { border:1.5px solid transparent; font-family:inherit; cursor:pointer; color:inherit; transition:border-color .15s, background .15s; width:100%; }
+button.sum-card:hover { border-color:var(--accent-mid); }
+button.sum-card.open { border-color:var(--accent); background:#fff; box-shadow:var(--shadow-sm); }
+.sum-more { display:inline-flex; align-items:center; gap:3px; margin-top:6px; font-size:10.5px; font-weight:700; color:var(--accent); letter-spacing:.02em; }
+.sum-more svg { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:2.5; transition:transform .2s; }
+button.sum-card.open .sum-more svg { transform:rotate(180deg); }
+.cost-panel { background:#fff; border:1.5px solid var(--accent); border-radius:var(--radius); padding:16px 20px; margin:-12px 0 24px; animation:costIn .18s ease; }
+@keyframes costIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
+.cost-hd { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+.cost-hd b { font-family:'Syne',sans-serif; font-size:15px; }
+.cost-x { background:none; border:none; font-size:20px; line-height:1; color:var(--text-muted); cursor:pointer; padding:0 2px; }
+.cost-row { display:flex; justify-content:space-between; gap:14px; padding:9px 0; border-bottom:1px solid var(--border); font-size:13.5px; }
+.cost-row:last-of-type { border-bottom:none; }
+.cost-row small { display:block; font-size:12px; color:var(--text-muted); margin-top:1px; }
+.cost-amt { font-weight:700; white-space:nowrap; }
+.cost-tot { display:flex; justify-content:space-between; padding-top:10px; margin-top:4px; border-top:1.5px solid var(--text); font-weight:800; font-size:14px; }
+.cost-avg { background:#FFF7E6; border:1px solid #F3D9A4; color:#6B4A00; border-radius:10px; padding:9px 12px; font-size:12.5px; line-height:1.5; margin:0 0 6px; }
+.cost-right { text-align:right; flex:none; }
+.cost-check { display:inline-block; margin-top:3px; font-size:12px; font-weight:700; color:var(--accent); text-decoration:none; white-space:nowrap; }
+.cost-check:hover { text-decoration:underline; }
+.cost-cta { display:inline-flex; align-items:center; gap:6px; margin-top:14px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; font-size:13.5px; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; font-family:inherit; }
+.cost-cta:hover { opacity:.92; }
+.cost-note { font-size:11.5px; color:var(--text-dim); margin-top:10px; line-height:1.5; }
+.cost-loading { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); }
+.cost-loading i { width:15px; height:15px; border:2px solid var(--accent-mid); border-top-color:var(--accent); border-radius:50%; animation:entrySpin .8s linear infinite; flex:none; }
 /* 2026-10-17: inbox notifications */
 .nav-notif-badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; margin-left:6px; border-radius:9px; background:#E5484D; color:#fff; font-size:11px; font-weight:700; line-height:1; vertical-align:1px; }
 .notif-block { background:white; border:1.5px solid var(--accent-mid); border-radius:var(--radius); margin-bottom:24px; overflow:hidden; }
@@ -313,6 +339,15 @@ hr { border:none; border-top:1px solid var(--border); }
 .dest-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
 .dest-icon.sight { background:var(--amber-light); }
 .dest-icon.party { background:var(--accent-mid); }
+/* 2026-10-18: trip page section headers easier to spot when skimming */
+#page-inbox-detail .itin-block { border-radius:14px; margin-bottom:18px; box-shadow:var(--shadow-sm); }
+#page-inbox-detail .itin-hdr { padding:16px 22px; background:linear-gradient(90deg, var(--accent-light) 0%, #fff 75%); border-bottom:1.5px solid var(--accent-mid); border-left:5px solid var(--accent); gap:12px; flex-wrap:wrap; }
+#page-inbox-detail .itin-hdr-l { gap:14px; }
+#page-inbox-detail .itin-title { font-family:'Syne',sans-serif; font-size:19px; font-weight:800; letter-spacing:-.01em; color:var(--text); line-height:1.2; }
+#page-inbox-detail .itin-sub { font-size:12.5px; margin-top:3px; }
+.ibx-ic { width:38px; height:38px; flex:none; border-radius:10px; background:var(--accent); display:inline-flex; align-items:center; justify-content:center; box-shadow:0 3px 8px rgba(13,115,119,.25); }
+.ibx-ic svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+@media (max-width:600px) { #page-inbox-detail .itin-hdr { padding:14px 16px; } #page-inbox-detail .itin-title { font-size:17px; } .ibx-ic { width:32px; height:32px; } .ibx-ic svg { width:17px; height:17px; } }
 .entry-body { padding:16px 22px 18px; }
 .entry-loading { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); }
 .entry-loading i { width:16px; height:16px; border:2px solid var(--accent-mid); border-top-color:var(--accent); border-radius:50%; animation:entrySpin .8s linear infinite; flex:none; }
@@ -3645,7 +3680,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </a>
       <a class="tour-provider-card" href="https://www.agoda.com/" target="_blank" rel="noopener noreferrer">
-        <div class="tour-provider-logo-wrap brand-tile" style="--tile:#1E3A5F;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg><span>Agoda</span></div>
+        <div class="tour-provider-logo-wrap" style="background:#ffffff;border-bottom:1.5px solid var(--border);"><img src="data:image/webp;base64,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" alt="Agoda"></div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">Agoda</div>
           <div class="tour-provider-desc">Strong hotel deals and availability across Asia-Pacific and beyond.</div>
@@ -4075,10 +4110,11 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
     <div id="ibx-unlock-banner" style="display:none;background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;font-size:13px;color:var(--accent);font-weight:600;">✓ Unlocked — enjoy the rest of your trip!</div>
     <div class="sum-grid" id="ibx-sum-grid"></div>
+    <div class="cost-panel" id="ibx-cost-panel" style="display:none;"></div>
     <p class="trip-price-note">Prices shown are indicative — see each day for exactly what&#39;s planned.</p>
     <div class="itin-block" id="ibx-bookings-block">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div><div class="itin-title">My bookings</div><div class="itin-sub">Every booking number for this trip, in one place</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg></span><div><div class="itin-title">My Bookings</div><div class="itin-sub">Every booking number for this trip, in one place</div></div></div>
         <button type="button" class="btn-primary" onclick="openAddBooking()">+ Add booking</button>
       </div>
       <div id="ibx-bookings-list" class="bk-list"></div>
@@ -4087,19 +4123,19 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- 2026-10-18: visa / entry requirements for the viewer's passport (entry-info function). -->
     <div class="itin-block" id="ibx-entry-block" style="display:none;">
       <div class="itin-hdr">
-        <div class="itin-hdr-l"><div><div class="itin-title">Entry Requirements</div><div class="itin-sub" id="ibx-entry-sub">Visas and entry rules for your passport</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 17h8"/></svg></span><div><div class="itin-title" id="ibx-entry-title">Country Entry Requirements</div><div class="itin-sub" id="ibx-entry-sub">Visas and entry rules for your passport</div></div></div>
       </div>
       <div id="ibx-entry-body" class="entry-body"></div>
     </div>
     <div class="itin-block" id="ibx-unlock-all-block">
       <div class="itin-hdr party">
-        <div class="itin-hdr-l"><div><div class="itin-title">Unlock every day</div><div class="itin-sub" id="ibx-unlock-all-sub">Unlock the whole itinerary at once and save 10%</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><div class="itin-title">Unlock Every Day</div><div class="itin-sub" id="ibx-unlock-all-sub">Unlock the whole itinerary at once and save 10%</div></div></div>
         <button type="button" class="btn-primary" id="ibx-unlock-all-btn" onclick="unlockInboxAll()">Unlock all days →</button>
       </div>
     </div>
     <div class="itin-block">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div><div class="itin-title" id="ibx-block-title">Your day-by-day itinerary</div><div class="itin-sub">Tap a day to expand it once it&#39;s unlocked</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span><div><div class="itin-title" id="ibx-block-title">Your day-by-day itinerary</div><div class="itin-sub">Tap a day to expand it once it&#39;s unlocked</div></div></div>
         <button type="button" class="ibx-edit-toggle" id="ibx-edit-toggle" onclick="teDone()" style="display:none;">Edit trip</button>
       </div>
       <div id="ibx-editbar" style="display:none;"></div>
@@ -4110,7 +4146,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          into edit mode; see toggleTripEdit / manage-trip. -->
     <div class="itin-block" id="ibx-edit-block" style="display:none;">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div><div class="itin-title">Want to change something?</div><div class="itin-sub">Change a time, swap or add a stop, move your dates, or ask TripMade to rework a day. It all updates right here.</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><div><div class="itin-title">Want To Change Something?</div><div class="itin-sub">Change a time, swap or add a stop, move your dates, or ask TripMade to rework a day. It all updates right here.</div></div></div>
         <button type="button" class="btn-primary" id="ibx-edit-btn" onclick="startTripEdit()" style="white-space:nowrap;">Edit this trip →</button>
       </div>
     </div>
@@ -4119,7 +4155,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          so we know which itinerary they mean. Shown to everyone on the trip. -->
     <div class="itin-block" id="ibx-help-block">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div><div class="itin-title">Need help on your trip?</div><div class="itin-sub">Plans changed, something's not right, or you just want a recommendation? Message us and one of the TripMade team will get back to you.</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><div class="itin-title">Need Help On Your Trip?</div><div class="itin-sub">Plans changed, something's not right, or you just want a recommendation? Message us and one of the TripMade team will get back to you.</div></div></div>
         <a class="btn-secondary" id="ibx-help-btn" href="mailto:hello@tripmade.co" style="text-decoration:none;white-space:nowrap;">Message TripMade</a>
       </div>
       <div class="ibx-help-note">In an emergency, contact local emergency services first (000 in Australia, 112 in Europe, 911 in the US) and then your travel insurer.</div>
@@ -5147,6 +5183,103 @@ document.addEventListener('click', function(e) {
   if (!menu || menu.style.display !== 'block') return;
   if (!e.target.closest('#nav-account')) menu.style.display = 'none';
 });
+// ── Cost breakdown dropdowns (2026-10-18) ───────────────────────
+// Tap Flights / Hotels / Activities / Food & dining to see what makes up the
+// total. Line items come from the cost-breakdown function (worked out once
+// per trip from its real stops, always adding up to the total shown).
+var _costOpen = null, _costCache = {};
+var COST_NAMES = { flights: 'Flights', hotels: 'Hotels', activities: 'Activities', food: 'Food & dining' };
+function costCard(cat, label, val, sub, raw) {
+  const has = Number(String(raw || '').replace(/[^0-9.]/g, '')) > 0;
+  if (!has) return '<div class="sum-card"><div class="sum-lbl">' + label + '</div><div class="sum-val">' + val + '</div><div class="sum-sub">' + sub + '</div></div>';
+  return '<button type="button" class="sum-card' + (_costOpen === cat ? ' open' : '') + '" data-cost="' + cat + '" aria-expanded="' + (_costOpen === cat) + '" onclick="toggleCostBreakdown(\'' + cat + '\')">' +
+    '<div class="sum-lbl">' + label + '</div><div class="sum-val">' + val + '</div><div class="sum-sub">' + sub + '</div>' +
+    '<div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>';
+}
+function toggleCostBreakdown(cat) {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  const panel = document.getElementById('ibx-cost-panel');
+  _costOpen = _costOpen === cat ? null : cat;
+  document.querySelectorAll('#ibx-sum-grid button.sum-card').forEach(function(b) {
+    const on = b.dataset.cost === _costOpen; b.classList.toggle('open', on); b.setAttribute('aria-expanded', on);
+  });
+  if (!_costOpen) { panel.style.display = 'none'; return; }
+  panel.style.display = '';
+  try { if (window.tmTrack) tmTrack('cost_breakdown_opened', { category: cat }); } catch (e) {}
+  paintCostPanel(itin);
+}
+function paintCostPanel(itin) {
+  const panel = document.getElementById('ibx-cost-panel'); const cat = _costOpen;
+  if (!panel || !cat) return;
+  const summary = itin.summary || {};
+  const field = { flights: 'flights_cost', hotels: 'hotels_cost', activities: 'activities_cost', food: 'food_cost' }[cat];
+  const currency = itin.currency || 'AUD'; const symbol = CURRENCY_SYMBOLS[currency] || (currency + ' ');
+  const money = function(v) { return symbol + Math.round(Number(v) || 0).toLocaleString(); };
+  const head = '<div class="cost-hd"><b>' + COST_NAMES[cat] + ' breakdown</b><button type="button" class="cost-x" aria-label="Close" onclick="toggleCostBreakdown(\'' + cat + '\')">×</button></div>';
+  const ck = itin.id + '|' + (itin.updated_at || '');
+  const c = _costCache[ck];
+  if (c && c.data) {
+    const items = c.data[cat] || [];
+    const links = costLinks(itin, cat, items);
+    const notice = '<div class="cost-avg"><b>These prices are averages, not live prices.</b> Tap <i>Check price</i> to confirm today\'s price with our booking partners.</div>';
+    panel.innerHTML = head + notice + items.map(function(i, n) {
+      const href = links.rows[n];
+      return '<div class="cost-row"><div>' + tmEsc(i.label) + (i.detail ? '<small>' + tmEsc(i.detail) + '</small>' : '') + '</div><div class="cost-right"><div class="cost-amt">~' + money(i.amount) + '</div>' +
+        (href ? '<a class="cost-check" href="' + tmEsc(href) + '" target="_blank" rel="noopener noreferrer sponsored">Check price →</a>' : '') + '</div></div>';
+    }).join('') + '<div class="cost-tot"><span>Estimated total</span><span>~' + money(String(summary[field]).replace(/[^0-9.]/g, '')) + '</span></div>' +
+      (links.cta ? links.cta : '') +
+      '<div class="cost-note">Average prices for your whole group for these dates. Final prices are set by the airline, hotel or tour company when you book.</div>';
+    return;
+  }
+  if (c && c.failed) { panel.innerHTML = head + '<p class="cost-note" style="margin:0;">We couldn\'t load the breakdown just now. Please try again in a moment.</p>'; delete _costCache[ck]; return; }
+  panel.innerHTML = head + '<div class="cost-loading"><i></i>Working out the breakdown for your trip…</div>';
+  if (c && c.loading) return;
+  _costCache[ck] = { loading: true };
+  (async function() {
+    let data = null;
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/cost-breakdown', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+          body: JSON.stringify({ itinerary_id: itin.id })
+        });
+        const j = await res.json().catch(function() { return null; });
+        if (res.ok && j && Array.isArray(j.flights)) data = j;
+      }
+    } catch (e) { console.warn('cost-breakdown failed', e); }
+    _costCache[ck] = data ? { data: data } : { failed: true };
+    if (_currentInboxItinerary && _currentInboxItinerary.id === itin.id && _costOpen) paintCostPanel(_currentInboxItinerary);
+  })();
+}
+// Affiliate "Check price" links for the cost breakdown (2026-10-18, per
+// Lachy): flights -> Kiwi (via Travelpayouts), hotels -> Trip.com, activities
+// -> Viator, food -> Ask TripMade. Tagged with the trip id like the rest of
+// the itinerary's booking links.
+function costLinks(itin, cat, items) {
+  const tag = 'itin_' + String(itin.id || '').replace(/-/g, '');
+  const dest = String((itin.summary || {}).destination || itin.destination || '').split(/[,+·]/)[0].trim();
+  const days = Array.isArray(itin.days) ? itin.days : [];
+  const start = _teIso(itin.depart_date) || _teIso((itin.summary || {}).checkin_date);
+  const dayIso = function(n) { if (!start) return ''; const d = new Date(start + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + (Number(n) || 1) - 1); return d.toISOString().slice(0, 10); };
+  const rows = []; let cta = '';
+  const btn = function(href, text) { return '<a class="cost-cta" href="' + tmEsc(href) + '" target="_blank" rel="noopener noreferrer sponsored">' + text + '</a>'; };
+  if (cat === 'flights') {
+    const legs = [];
+    days.forEach(function(d) { (d.highlights || []).forEach(function(h) { if (String(h.category || '').toLowerCase() === 'flight') { const k = kiwiFlightLink(h.label, dayIso(d.day_number)); if (k) legs.push(k); } }); });
+    if (legs.length === items.length) legs.forEach(function(k, n) { rows[n] = withTmCurrency(k, tag); });
+    cta = btn(withTmCurrency(legs[0] || ('https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/')), tag), 'Check flight prices on Kiwi.com →');
+  } else if (cat === 'hotels') {
+    items.forEach(function(i, n) { const name = String(i.label || '').split('·')[0].trim(); if (name) rows[n] = askTripHotelsUrl(name + (dest && name.indexOf(dest) < 0 ? ' ' + dest : ''), tag); });
+    if (dest) cta = btn(askTripHotelsUrl(dest, tag), 'Check hotel prices on Trip.com →');
+  } else if (cat === 'activities') {
+    items.forEach(function(i, n) { const name = String(i.label || '').replace(/\s+(tickets?|entry|admission)$/i, '').trim(); if (name) rows[n] = viatorSearchLink(name + (dest && name.indexOf(dest) < 0 ? ' ' + dest : ''), tag); });
+    if (dest) cta = btn(viatorSearchLink(dest, tag), 'Check tours & activities on Viator →');
+  } else if (cat === 'food') {
+    cta = '<button type="button" class="cost-cta" onclick="showPage(\'ask\')">Find places to eat with Ask TripMade →</button>';
+  }
+  return { rows: rows, cta: cta };
+}
 // ── Entry requirements (2026-10-18) ─────────────────────────────
 // Asks the entry-info function (live web search by Claude, cached 7 days per
 // destination + passport) and shows visa / entry rules on the trip page.
@@ -5162,6 +5295,7 @@ function renderEntryInfo(itin) {
   block.dataset.trip = itin.id;
   sub.textContent = 'Visas and entry rules for ' + passport + ' passport holders';
   const have = _entryCache[ck];
+  setEntryTitle(have && have.data ? have.data.countries : null);
   if (have && have.data) { paintEntry(body, have.data, passport); return; }
   if (have && have.failed) { body.innerHTML = '<p class="entry-head">We couldn\'t check the entry rules just now. Please check your government\'s travel advice (for Australians, <a href="https://www.smartraveller.gov.au/destinations" target="_blank" rel="noopener">Smartraveller</a>) before you go.</p>'; return; }
   body.innerHTML = '<div class="entry-loading"><i></i>Checking the latest entry rules for your trip. The first check can take up to a minute.</div>';
@@ -5183,6 +5317,13 @@ function renderEntryInfo(itin) {
     _entryCache[ck] = data ? { data: data } : { failed: true };
     if (block.dataset.trip === itin.id && _currentInboxItinerary && _currentInboxItinerary.id === itin.id) renderEntryInfo(_currentInboxItinerary);
   })();
+}
+function setEntryTitle(countries) {
+  const t = document.getElementById('ibx-entry-title'); if (!t) return;
+  const names = (countries || []).map(function(c) { return c.country; }).filter(Boolean);
+  if (!names.length) { t.textContent = 'Country Entry Requirements'; return; }
+  const list = names.length === 1 ? names[0] : names.length <= 3 ? names.slice(0, -1).join(', ') + ' & ' + names[names.length - 1] : names.length + ' Countries';
+  t.textContent = list + ' Entry Requirements';
 }
 function paintEntry(body, d, passport) {
   const rows = d.countries.map(function(c) {
@@ -8339,6 +8480,8 @@ function renderInboxDetail(itin, justUnlocked) {
   const banner = document.getElementById('ibx-unlock-banner');
   if (banner) banner.style.display = justUnlocked ? 'block' : 'none';
   const sumGrid = document.getElementById('ibx-sum-grid');
+  const costPanel = document.getElementById('ibx-cost-panel');
+  if (costPanel && costPanel.dataset.trip !== itin.id) { costPanel.style.display = 'none'; costPanel.dataset.trip = itin.id; _costOpen = null; }
   if (sumGrid) {
     const currency = itin.currency || 'AUD';
     const symbol = CURRENCY_SYMBOLS[currency] || (currency + ' ');
@@ -8348,10 +8491,10 @@ function renderInboxDetail(itin, justUnlocked) {
     const nTrav = parseInt(summary.travellers_count, 10);
     const totalSub = nTrav > 1 ? 'trip total · ' + nTrav + ' travellers' : 'trip total';
     sumGrid.innerHTML =
-      '<div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">' + money(summary.flights_cost) + '</div><div class="sum-sub">return</div></div>' +
-      '<div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">' + money(summary.hotels_cost) + '</div><div class="sum-sub">' + (summary.nights || '') + ' nights</div></div>' +
-      '<div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">' + money(summary.activities_cost) + '</div><div class="sum-sub">indicative</div></div>' +
-      '<div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">' + money(summary.food_cost) + '</div><div class="sum-sub">indicative</div></div>' +
+      costCard('flights', 'Flights', money(summary.flights_cost), 'return', summary.flights_cost) +
+      costCard('hotels', 'Hotels', money(summary.hotels_cost), (summary.nights || '') + ' nights', summary.hotels_cost) +
+      costCard('activities', 'Activities', money(summary.activities_cost), 'indicative', summary.activities_cost) +
+      costCard('food', 'Food &amp; dining', money(summary.food_cost), 'indicative', summary.food_cost) +
       '<div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">' + money(summary.total_cost) + '</div><div class="sum-sub red">' + totalSub + '</div></div>';
   }
   const days = Array.isArray(itin.days) ? itin.days : [];
@@ -9811,7 +9954,7 @@ async function saveBooking() {
    Each slide's photos are loaded just before it shows, so only the first slide loads up front. */
 // Folder name exactly as it is in GitHub (Lachy named it "hero (Slideshow photos)").
 var HERO_DIR = '/hero (Slideshow photos)/';
-var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}];
+var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Göreme, Cappadocia", "imgs": [{"n": "cappadocia-balloons", "ar": 1.33}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Bay of Kotor, Montenegro", "imgs": [{"n": "bay-of-kotor", "ar": 1.33}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Albanian Riviera", "imgs": [{"n": "albanian-riviera", "ar": 1.33}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Mandrakia, Milos", "imgs": [{"n": "mandrakia-milos", "ar": 1.33}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Albanian Alps", "imgs": [{"n": "albanian-alps", "ar": 1.33}]}];
 (function(){
   var box = document.getElementById('hero-slides'); if (!box) return;
   var cap = document.querySelector('#hero-caption span'), capEl = document.getElementById('hero-caption'), dots = document.getElementById('hero-dots');
