@@ -4524,6 +4524,40 @@ function formatPrice(audAmount) {
   converted = _currentCurrency === 'JPY' ? Math.round(converted / 10) * 10 : Math.round(converted);
   return symbol + converted.toLocaleString();
 }
+// 2026-10-18 per Lachy: every TripMade price is set in AUD and shown and
+// charged in the customer's chosen currency at today's rate. Rates come from
+// the fx-rates function (European Central Bank daily rates, cached in
+// app_settings), the same rates create-checkout-session charges with, so the
+// price on a button is exactly what Stripe asks for. The numbers in
+// CURRENCY_RATES above are only a fallback until the live ones load.
+const TM_PRICES_AUD = { day: 1.00, edit_one: 1.00, edit_unlimited: 9.99 }; // keep in sync with create-checkout-session
+const TM_BUNDLE_DISCOUNT = 0.10;
+const TM_STRIPE_MIN = { AUD: 0.5, USD: 0.5, EUR: 0.5, GBP: 0.3, NZD: 0.5, CAD: 0.5, SGD: 0.5, JPY: 50 };
+function tmLocalAmount(aud, cur) {
+  cur = cur || _currentCurrency || 'AUD';
+  if (!(cur === 'AUD' || CURRENCY_RATES[cur] > 0)) cur = 'AUD';
+  let v = aud * (cur === 'AUD' ? 1 : CURRENCY_RATES[cur]);
+  v = cur === 'JPY' ? Math.round(v / 10) * 10 : Math.round(v * 100) / 100;
+  return { currency: cur, amount: Math.max(v, TM_STRIPE_MIN[cur] || 0) };
+}
+function tmPrice(aud, cur) {
+  const p = tmLocalAmount(aud, cur);
+  const sym = CURRENCY_SYMBOLS[p.currency] || (p.currency + ' ');
+  const txt = Number.isInteger(p.amount) ? p.amount.toLocaleString('en-AU') : p.amount.toFixed(2);
+  return sym + txt;
+}
+var _fxLoaded = false;
+async function loadFxRates() {
+  try {
+    const r = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/fx-rates');
+    const j = await r.json();
+    if (!j || !j.rates) return;
+    Object.keys(CURRENCY_RATES).forEach(function(c) { if (j.rates[c] > 0) CURRENCY_RATES[c] = j.rates[c]; });
+    _fxLoaded = true;
+    applyCurrency(_currentCurrency);
+  } catch (e) { console.warn('fx rates not loaded, using fallback', e); }
+}
+document.addEventListener('DOMContentLoaded', function() { setTimeout(loadFxRates, 400); });
 // Single source of truth for "what currency is active right now" — called
 // from the Inspiration page's currency picker, the itinerary form's, and on
 // login (seeded from the account's saved currency). Keeps every picker on
@@ -4557,6 +4591,8 @@ function applyCurrency(currency) {
   });
   // If a trip detail page is currently open, re-render its cost breakdown too
   if (window._currentTripCard) renderTripDetail(window._currentTripCard);
+  // Paid unlock / change prices on an open trip follow the currency too.
+  try { const det = document.getElementById('page-inbox-detail'); if (_currentInboxItinerary && det && det.classList.contains('active')) rerenderTrip(); } catch (e) {}
   // Itinerary form: no conversion (it's the traveller's own stated budget,
   // not an advertised price), just relabel the slider with the new symbol.
   const minEl = document.getElementById('budget-min-label');
@@ -7599,7 +7635,7 @@ function renderTripEditBar(itin) {
   const leftText = !es ? 'Checking your TripMade changes…'
     : es.unlimited ? 'Unlimited TripMade changes on this trip'
     : es.left > 0 ? es.left + ' of ' + es.allowed + ' TripMade change' + (es.allowed === 1 ? '' : 's') + ' left' + (es.allowed > 5 ? '' : ' (free)')
-    : 'No changes left. Get 1 more for $1, or unlimited for $9.99';
+    : 'No changes left. Get 1 more for ' + tmPrice(TM_PRICES_AUD.edit_one) + ', or unlimited for ' + tmPrice(TM_PRICES_AUD.edit_unlimited);
   const msg = _teMsg ? '<div class="te-status ' + _teMsg.kind + '">' + tmEsc(_teMsg.text) + '</div>' : '<div class="te-status" id="te-status"></div>';
   const keepReq = document.getElementById('te-req'); const keepVal = keepReq ? keepReq.value : '';
   // 2026-10-17: keep a date the person has picked but not saved yet (the panel re-renders when its data loads).
@@ -7705,6 +7741,8 @@ function openEditsModal() {
     ? "You've used the TripMade changes on this trip. Keep going with one of these. You can always edit stops yourself for free."
     : 'Your trip comes with 5 free TripMade changes. Keep going with one of these. You can always edit stops yourself for free.';
   ['edits-one', 'edits-unl'].forEach(function(id) { document.getElementById(id).disabled = false; });
+  document.querySelector('#edits-one .edits-price').textContent = tmPrice(TM_PRICES_AUD.edit_one);
+  document.querySelector('#edits-unl .edits-price').textContent = tmPrice(TM_PRICES_AUD.edit_unlimited);
   document.getElementById('edits-modal').style.display = 'flex';
 }
 function closeEditsModal() { document.getElementById('edits-modal').style.display = 'none'; }
@@ -8076,14 +8114,11 @@ function inboxDayLocked(itin, dayNumber) {
 // stored `currency`, not whatever display currency happens to be picked
 // elsewhere on the site.
 function inboxUnlockPrice(itin, mode) {
-  const currency = itin.currency || 'AUD';
-  const symbol = CURRENCY_SYMBOLS[currency] || (currency + ' ');
-  if (mode === 'day') return symbol + '1';
+  if (mode === 'day') return tmPrice(TM_PRICES_AUD.day);
   const totalDays = Array.isArray(itin.days) ? itin.days.length : 0;
   const unlockedCount = Array.isArray(itin.unlocked_days) ? itin.unlocked_days.length : 0;
   const remaining = totalDays - unlockedCount;
-  const amount = remaining * 1 * 0.9;
-  return symbol + (Number.isInteger(amount) ? amount : amount.toFixed(2));
+  return tmPrice(Math.round(remaining * TM_PRICES_AUD.day * (1 - TM_BUNDLE_DISCOUNT) * 100) / 100);
 }
 // "Edit my itinerary" block on the Inbox detail page. Uses the edit link
 // Make stored on the itinerary; if it's ever missing, builds the same
@@ -8402,7 +8437,7 @@ async function callCreateCheckoutSession(payload) {
     res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(Object.assign({ currency: _currentCurrency || 'AUD' }, payload))
     });
     data = await res.json();
   } catch (err) {
