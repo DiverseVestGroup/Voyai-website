@@ -5371,6 +5371,53 @@ function paintEntry(body, d, passport) {
   const orig = renderInboxDetail;
   renderInboxDetail = function(itin) { const r = orig.apply(this, arguments); try { renderEntryInfo(itin); } catch (e) { console.warn(e); } return r; };
 })();
+// ── One-click unsubscribe (2026-10-18) ──────────────────────────
+// Marketing emails link to tripmade.co/?unsubscribe=<user id>.<token>. Works
+// without signing in; the email-prefs function checks the token.
+var _unsub = null;
+function closeUnsub() { const m = document.getElementById('unsub-modal'); if (m) m.style.display = 'none'; }
+function paintUnsub(state, email) {
+  const b = document.getElementById('unsub-body'); if (!b) return;
+  const mail = '<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>';
+  const tick = '<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
+  if (state === 'working') b.innerHTML = '<div class="unsub-ic">' + mail + '</div><h3>Updating your email settings…</h3>';
+  else if (state === 'off') b.innerHTML = '<div class="unsub-ic">' + tick + '</div><h3>You\'re unsubscribed</h3><p class="tm-sub">We won\'t send ' + (email ? tmEsc(email) : 'you') + ' any more travel deals or inspiration emails. You\'ll still get emails about your own trips and bookings.</p>' +
+    '<div class="unsub-actions"><button type="button" class="btn-secondary" onclick="resubscribeUnsub()">Undo, keep me subscribed</button><button type="button" class="btn-primary" onclick="closeUnsub()">Done</button></div>';
+  else if (state === 'on') b.innerHTML = '<div class="unsub-ic">' + tick + '</div><h3>You\'re subscribed again</h3><p class="tm-sub">Thanks for sticking around. You can change this any time under Edit account.</p><div class="unsub-actions"><button type="button" class="btn-primary" onclick="closeUnsub()">Done</button></div>';
+  else b.innerHTML = '<div class="unsub-ic">' + mail + '</div><h3>That link didn\'t work</h3><p class="tm-sub">It may be incomplete or out of date. Sign in and use <b>Edit account</b> to change your email settings, or email <a href="mailto:hello@tripmade.co">hello@tripmade.co</a> and we\'ll do it for you.</p><div class="unsub-actions"><button type="button" class="btn-primary" onclick="closeUnsub()">Close</button></div>';
+}
+async function callEmailPrefs(action) {
+  try {
+    const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/email-prefs', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: action, u: _unsub.u, t: _unsub.t })
+    });
+    const j = await res.json().catch(function() { return {}; });
+    return res.ok && j.ok ? j : null;
+  } catch (e) { console.warn('email-prefs failed', e); return null; }
+}
+async function resubscribeUnsub() {
+  if (!_unsub) return;
+  paintUnsub('working');
+  const j = await callEmailPrefs('resubscribe');
+  paintUnsub(j ? 'on' : 'bad');
+  if (j && _currentUser && _currentUser.id === _unsub.u) _currentUser.marketingOptIn = true;
+}
+document.addEventListener('DOMContentLoaded', function() {
+  let raw = '';
+  try { raw = new URLSearchParams(location.search).get('unsubscribe') || ''; } catch (e) {}
+  if (!raw) return;
+  try { const u = new URL(location.href); u.searchParams.delete('unsubscribe'); history.replaceState(null, '', u.pathname + (u.search || '') + u.hash); } catch (e) {}
+  const m = raw.match(/^([0-9a-f-]{36})\.([0-9a-f]{32})$/i);
+  document.getElementById('unsub-modal').style.display = 'flex';
+  if (!m) { paintUnsub('bad'); return; }
+  _unsub = { u: m[1].toLowerCase(), t: m[2].toLowerCase() };
+  paintUnsub('working');
+  callEmailPrefs('unsubscribe').then(function(j) {
+    paintUnsub(j ? 'off' : 'bad', j && j.email);
+    if (j && _currentUser && _currentUser.id === _unsub.u) _currentUser.marketingOptIn = false;
+    try { if (j && window.tmTrack) tmTrack('email_unsubscribed', { via: 'link' }); } catch (e) {}
+  });
+});
 // ── ACCOUNT: edit details, email preferences, delete (2026-10-18) ──
 function openAccountModal() {
   const u = getUser(); if (!u) { openLoginModal(); return; }
@@ -9430,6 +9477,10 @@ async function sendFeedback() {
 .edits-best{position:absolute;top:-10px;right:14px;background:var(--accent);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
 .edits-or{text-align:center;font-size:12px;color:var(--text-muted);margin:8px 0;text-transform:uppercase;letter-spacing:.08em;}
 .edits-fine{font-size:11.5px;color:var(--text-muted);text-align:center;margin:12px 0 6px;}
+.unsub-ic{width:52px;height:52px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.unsub-ic svg{width:26px;height:26px;fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.unsub-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
+.unsub-actions button{padding:10px 18px;font-size:14px;}
 .acct-f{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;flex:1;min-width:0;}
 .acct-f span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);}
 .acct-f input,.acct-f select,#acct-reason-more{padding:11px 12px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:inherit;background:#fff;outline:none;width:100%;box-sizing:border-box;}
@@ -9612,6 +9663,12 @@ async function sendFeedback() {
 
 <!-- 2026-10-14 per Lachy: after the 5 free TripMade (AI) changes on a trip,
      buy 1 more for $1 or unlimited changes on that trip for $9.99. -->
+<!-- 2026-10-18: one-click unsubscribe from marketing emails (?unsubscribe=<id>.<token>). -->
+<div id="unsub-modal" class="tm-modal" onclick="if(event.target===this)closeUnsub()">
+  <div class="tm-box" style="text-align:center;max-width:420px;">
+    <div id="unsub-body"></div>
+  </div>
+</div>
 <!-- 2026-10-18: account details, email preferences and account deletion. -->
 <div id="account-modal" class="tm-modal" onclick="if(event.target===this)closeAccountModal()">
   <div class="tm-box acct-box">
@@ -9626,7 +9683,8 @@ async function sendFeedback() {
         <label class="acct-f"><span>Country</span><select id="acct-country"></select></label>
         <label class="acct-f"><span>Currency</span><select id="acct-currency"><option value="AUD">AUD (A$)</option><option value="USD">USD (US$)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option><option value="NZD">NZD (NZ$)</option><option value="CAD">CAD (C$)</option><option value="SGD">SGD (S$)</option><option value="JPY">JPY (¥)</option></select></label>
       </div>
-      <label class="acct-check"><input id="acct-marketing" type="checkbox"><span>Send me travel deals and inspiration by email</span></label>
+      <div class="acct-f" style="margin-bottom:4px;"><span>Email preferences</span></div>
+      <label class="acct-check"><input id="acct-marketing" type="checkbox"><span>Send me travel deals and inspiration by email<br><small style="color:var(--text-muted);font-size:12px;">You'll always get emails about your own trips and bookings.</small></span></label>
       <p class="acct-msg" id="acct-msg"></p>
       <div class="acct-actions">
         <button type="button" class="btn-secondary" onclick="closeAccountModal()">Cancel</button>
