@@ -758,6 +758,17 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--accent); }
 .form-textarea { min-height:120px; resize:vertical; line-height:1.6; }
 /* ── DESTINATION MULTI-SELECT ─────────────────────────────── */
+.choose-box { margin:-4px 0 18px; border:1.5px dashed var(--accent-mid); border-radius:12px; padding:12px 14px; background:#FBFEFD; }
+.choose-toggle { display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:14px; color:var(--text); }
+.choose-toggle input { width:18px !important; height:18px; flex:0 0 18px; margin:1px 0 0; accent-color:var(--accent); }
+.choose-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin:14px 0 8px; }
+.choose-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.choose-chip { border:1.5px solid var(--border-mid); background:#fff; border-radius:20px; padding:8px 14px; font-size:13px; font-family:inherit; cursor:pointer; color:var(--text); }
+.choose-chip.on { border-color:var(--accent); background:var(--accent); color:#fff; }
+.choose-days { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.choose-days input { width:110px !important; }
+.choose-days span { font-size:12px; color:var(--text-muted); flex:1; min-width:180px; }
+.choose-hint { font-size:12.5px; color:var(--text-muted); line-height:1.5; margin:12px 0 0; }
 .dest-multiselect {
   position:relative; width:100%; min-height:52px;
   border:1.5px solid var(--border-mid); border-radius:10px;
@@ -2295,6 +2306,26 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
         <input type="hidden" id="f-dest">
       </div>
+      <!-- 2026-10-18 per Lachy: "Not sure where to go?" -> TripMade picks the places. -->
+      <div class="choose-box" id="choose-box">
+        <label class="choose-toggle"><input type="checkbox" id="f-choose" onchange="toggleChoose()"><span><b>Not sure where to go?</b> Let TripMade choose the places for you</span></label>
+        <div id="choose-opts" style="display:none;">
+          <div class="choose-lbl">Which part of the world?</div>
+          <div class="choose-chips" id="choose-regions">
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">Europe</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">South-East Asia</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">Japan &amp; East Asia</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">North America</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">South America &amp; Caribbean</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">Australia, NZ &amp; Pacific</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">Middle East &amp; Africa</button>
+            <button type="button" class="choose-chip" onclick="pickRegion(this)">Anywhere</button>
+          </div>
+          <div class="choose-lbl">How many days should we plan for you?</div>
+          <div class="choose-days"><input class="form-input" type="number" id="f-choose-days" min="1" max="60" inputmode="numeric" placeholder="e.g. 28" oninput="composeDest()"><span>Leave blank to fill every day you haven't already booked.</span></div>
+          <p class="choose-hint">Already booked part of the trip? Add those places above and list the bookings in step 3. We'll choose places that fit your vibe (next step), the season and your budget, and link them sensibly with what you've booked.</p>
+        </div>
+      </div>
       <div class="form-row">
         <div class="form-group" style="display:none;">
         <datalist id="dest-list-data">
@@ -3710,7 +3741,7 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Visit Cover-More →</div>
         </div>
       </a>
-      <a class="tour-provider-card" href="https://safetywing.com/" target="_blank" rel="noopener noreferrer">
+      <a class="tour-provider-card" href="https://safetywing.com/?referenceID=26619927" target="_blank" rel="sponsored noopener noreferrer">
         <div class="tour-provider-logo-wrap brand-tile" style="--tile:#4B3FD6;"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>SafetyWing</span></div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">SafetyWing</div>
@@ -3718,6 +3749,15 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Visit SafetyWing →</div>
         </div>
       </a>
+    </div>
+    <!-- SafetyWing price widget (18 Oct 2026): embed code from Lachy's
+         SafetyWing affiliate dashboard, affiliate ID 26619927. -->
+    <div class="ferry-widget-wrap">
+      <div class="ferry-widget-card">
+        <div class="ferry-widget-name">Get a SafetyWing price</div>
+        <div class="ferry-widget-desc">Enter your trip dates to see a quote for SafetyWing travel medical cover.</div>
+        <div class="safetywing-price-widget" data-safetywingaffiliateid="26619927"></div><script src="https://storage.googleapis.com/safetywing-static/widget/safetywing-price-widget-v2.js"></script>
+      </div>
     </div>
     <!-- Ferryhopper is a real, live affiliate link (aff_uid=tpmdco), unlike
          the placeholder homepage links above — hence rel="sponsored" here.
@@ -6341,6 +6381,7 @@ function clearInvalid(ids) {
 function validateStep(from) {
   if (from === 1) {
     clearInvalid(['f-dest', 'f-depart', 'f-return', 'f-from']);
+    if (chooseOn() && !_chooseRegion) { const b = document.getElementById('choose-box'); if (b) { b.style.borderColor = '#B3261E'; setTimeout(function() { b.style.borderColor = ''; }, 2500); } return false; }
     if (!document.getElementById('f-dest').value.trim())   { markInvalid('f-dest');   return false; }
     if (!document.getElementById('f-depart').value.trim()) { markInvalid('f-depart'); return false; }
     if (!document.getElementById('f-return').value.trim()) { markInvalid('f-return'); return false; }
@@ -6458,6 +6499,47 @@ function getFormCurrencyCode() {
 // (handled by flatpickr's rangePlugin — see init in DOMContentLoaded below)
 // ── DESTINATION MULTI-SELECT ──────────────────────────────
 let selectedDestinations = [];
+// ── "Let TripMade choose" (2026-10-18) ─────────────────────────
+// The destination sent to the planner becomes e.g.
+// "Paris, Amsterdam + TripMade to choose (Europe, 28 days)" and the Make
+// prompt picks the places (vibe, season, budget, around what's booked).
+var _chooseRegion = '';
+function chooseOn() { const c = document.getElementById('f-choose'); return !!(c && c.checked); }
+function composeDest() {
+  const hiddenEl = document.getElementById('f-dest'); if (!hiddenEl) return;
+  let v = selectedDestinations.join(', ');
+  if (chooseOn() && _chooseRegion) {
+    const days = parseInt((document.getElementById('f-choose-days') || {}).value, 10);
+    const extra = 'TripMade to choose (' + _chooseRegion + (days > 0 ? ', ' + days + ' days' : '') + ')';
+    v = v ? v + ' + ' + extra.replace('TripMade to choose', 'TripMade to choose the rest') : extra;
+  }
+  hiddenEl.value = v;
+}
+function toggleChoose() {
+  const on = chooseOn();
+  document.getElementById('choose-opts').style.display = on ? '' : 'none';
+  const search = document.getElementById('dest-search');
+  if (search) search.placeholder = on ? 'Already booked somewhere? Add it here (optional)' : 'Type to search or add a destination...';
+  composeDest();
+  try { if (on && window.tmTrack) tmTrack('choose_for_me_opened'); } catch (e) {}
+}
+function pickRegion(btn) {
+  document.querySelectorAll('#choose-regions .choose-chip').forEach(function(b) { b.classList.toggle('on', b === btn); });
+  _chooseRegion = btn.textContent.trim();
+  composeDest();
+}
+function resetChoose() {
+  const c = document.getElementById('f-choose'); if (c) c.checked = false;
+  _chooseRegion = '';
+  document.querySelectorAll('#choose-regions .choose-chip').forEach(function(b) { b.classList.remove('on'); });
+  toggleChoose();
+}
+// Accommodation step: the places TripMade picks get one style choice between them.
+function accomDestList() {
+  const list = selectedDestinations.slice();
+  if (chooseOn() && _chooseRegion) list.push('Places TripMade chooses');
+  return list;
+}
 function getDestList() {
   return Array.from(document.querySelectorAll('#dest-list-data option')).map(o => o.value);
 }
@@ -6468,7 +6550,7 @@ function renderDestTags() {
   tagsEl.innerHTML = selectedDestinations.map(d =>
     '<span class="dest-tag">' + d.replace(/</g, '&lt;') + '<button type="button" onclick="removeDestination(\'' + d.replace(/'/g, "\\'") + '\')">×</button></span>'
   ).join('');
-  hiddenEl.value = selectedDestinations.join(', ');
+  composeDest();
 }
 function addDestination(name) {
   name = name.trim();
@@ -6603,7 +6685,8 @@ function updateAccomNotes(el, dest) {
 function renderAccomStyleGroups() {
   const wrap = document.getElementById('accom-style-groups');
   if (!wrap) return;
-  const dests = selectedDestinations.length ? selectedDestinations : [''];
+  const dl = accomDestList();
+  const dests = dl.length ? dl : [''];
   const multi = dests.length > 1;
   wrap.innerHTML = dests.map((dest, i) => {
     if (!accomStyleByDest[dest]) accomStyleByDest[dest] = 'Boutique';
@@ -9088,15 +9171,24 @@ async function submitForm() {
     // accomNotes: a single combined string kept for backward compatibility
     // (older Supabase column / any existing Make.com mapping) — per-destination
     // notes are joined with " | " when there's more than one stop.
-    accomNotes:   selectedDestinations.length > 1
-      ? selectedDestinations.map(d => (accomNotesByDest[d] || '').trim()).filter(Boolean).join(' | ')
-      : (accomNotesByDest[selectedDestinations[0] || ''] || '').trim(),
+    // 2026-10-18: the chosen style (Hotel / Boutique / Resort…) is now included
+    // too; before this only the notes box reached the planner.
+    accomNotes:   (function() {
+      const dl = accomDestList(); const keys = dl.length ? dl : [''];
+      return keys.map(function(d) {
+        const st = accomStyleByDest[d] || 'Boutique', n = (accomNotesByDest[d] || '').trim();
+        return (keys.length > 1 ? d + ': ' : '') + st + (n ? ' (' + n + ')' : '');
+      }).join(' | ');
+    })(),
     // One entry per destination — e.g. [{destination:'Rome',style:'Airbnb / Villa',notes:'must have a pool'},
     // {destination:'Amsterdam',style:'Hotel',notes:''}] for a multi-stop trip, or a
     // single entry for a one-destination trip. NOTE for whoever wires this into
     // the Claude prompt: accommodation style/notes weren't sent to Make per-destination
     // before this — accomNotes (one combined free-text field) was the only accommodation signal.
-    accomStyles:  selectedDestinations.map(d => ({ destination: d, style: accomStyleByDest[d] || 'Boutique', notes: (accomNotesByDest[d] || '').trim() })),
+    accomStyles:  accomDestList().map(d => ({ destination: d, style: accomStyleByDest[d] || 'Boutique', notes: (accomNotesByDest[d] || '').trim() })),
+    destinationMode: chooseOn() && _chooseRegion ? (selectedDestinations.length ? 'partly_choose' : 'choose') : 'fixed',
+    chooseRegion: chooseOn() ? _chooseRegion : '',
+    chooseDays: chooseOn() ? (parseInt((document.getElementById('f-choose-days') || {}).value, 10) || null) : null,
     vibes:        [...document.querySelectorAll('.form-opt.multi.selected')].map(el => el.querySelector('.opt-label').textContent),
     mustHave:     document.getElementById('f-musthave').value,
     avoid:        document.getElementById('f-avoid').value,
@@ -9349,6 +9441,7 @@ window.showPage = function(id, linkEl, opts) {
     const tripLenEl = document.getElementById('trip-length');
     if (tripLenEl) tripLenEl.textContent = '';
     selectedDestinations = [];
+    resetChoose();
     renderDestTags();
     hideDestSuggestions();
     const pax = document.getElementById('f-pax');
