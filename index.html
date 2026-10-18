@@ -313,6 +313,23 @@ hr { border:none; border-top:1px solid var(--border); }
 .dest-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
 .dest-icon.sight { background:var(--amber-light); }
 .dest-icon.party { background:var(--accent-mid); }
+.entry-body { padding:16px 22px 18px; }
+.entry-loading { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); }
+.entry-loading i { width:16px; height:16px; border:2px solid var(--accent-mid); border-top-color:var(--accent); border-radius:50%; animation:entrySpin .8s linear infinite; flex:none; }
+@keyframes entrySpin { to { transform:rotate(360deg); } }
+.entry-c { padding:12px 0; border-bottom:1px solid var(--border); }
+.entry-c:first-child { padding-top:0; }
+.entry-c:last-of-type { border-bottom:none; }
+.entry-c-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+.entry-c-name { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; }
+.entry-badge { font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; letter-spacing:.02em; }
+.entry-badge.ok { background:#E3F5EC; color:#0F6E56; } .entry-badge.warn { background:#FFF3DC; color:#8A5A00; } .entry-badge.bad { background:#FDE8E6; color:#B3261E; } .entry-badge.unk { background:var(--bg3,#f1f1f1); color:var(--text-muted); }
+.entry-head { font-size:13.5px; color:var(--text); margin-bottom:4px; line-height:1.45; }
+.entry-c ul { margin:4px 0 6px 18px; padding:0; font-size:13px; color:var(--text-muted); line-height:1.5; }
+.entry-src { font-size:12.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+.entry-gen { margin:8px 0 0; padding:10px 12px; background:var(--accent-light); border-radius:10px; font-size:13px; line-height:1.5; }
+.entry-foot { margin-top:12px; font-size:11.5px; color:var(--text-dim); line-height:1.5; }
+.entry-foot a { color:var(--accent); }
 .itin-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
 .itin-sub   { font-size:12px; color:var(--text-muted); margin-top:1px; }
 .all-booked { background:var(--green-light); color:#0F6E56; border:1px solid var(--green-mid); font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
@@ -631,6 +648,21 @@ hr { border:none; border-top:1px solid var(--border); }
 .partners-slim .partner-tile-text { font-size:13px; }
 @media (max-width:700px) { .partners-slim { padding:14px 16px; } .partners-slim-inner { flex-direction:column; align-items:stretch; gap:10px; } .partners-slim-lbl { text-align:center; } .partners-slim-row { justify-content:flex-start; } .partners-slim .partner-tile { flex:0 0 auto; min-width:104px; } }
 .category-heading-wrap { max-width:900px; margin:0 auto; padding:20px 48px 0; scroll-margin-top:80px; }
+/* 2026-10-18: Book your trip spacing evened out. Every section = heading block, 20px gap, content, 48px to the next heading. */
+#page-tours .category-heading-wrap { padding:48px 48px 20px; }
+#page-tours .category-heading-wrap h3 { margin-bottom:10px; }
+#page-tours .category-heading-wrap p { line-height:1.5; }
+#page-tours .tour-jump-nav + .category-heading-wrap { padding-top:32px; }
+#page-tours .flight-widget-wrap, #page-tours .tour-provider-grid, #page-tours .transport-subgrid, #page-tours .deals-grid { padding-top:0; padding-bottom:0; }
+#page-tours .flight-widget-wrap + .explore-more-subhead { padding-top:28px; }
+#page-tours .explore-more-subhead { padding-bottom:14px; }
+#page-tours .tour-search-bar { margin:0 auto 20px; }
+#page-tours .flight-widget-name { margin-bottom:4px; }
+#page-tours .flight-widget-desc { margin-bottom:14px; }
+#page-tours > .section { padding-bottom:72px; }
+.tour-provider-logo-wrap.brand-tile { background:var(--tile); color:#fff; gap:12px; font-family:'Syne',sans-serif; font-weight:800; font-size:22px; letter-spacing:-.01em; }
+.tour-provider-logo-wrap.brand-tile svg { width:34px; height:34px; fill:none; stroke:#fff; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; opacity:.95; }
+@media (max-width:700px) { #page-tours .category-heading-wrap { padding:36px 20px 16px; } }
 .category-heading-wrap h3 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--text); margin:0 0 8px; letter-spacing:-0.01em; display:inline-block; padding-bottom:8px; border-bottom:3px solid var(--accent); }
 .category-heading-wrap p { font-size:13px; color:var(--text-muted); margin:0; }
 .category-body-wrap { max-width:900px; margin:0 auto; padding:12px 48px 8px; }
@@ -882,6 +914,17 @@ footer p { font-size:13px; color:var(--text-dim); }
 .hero-dots { position:absolute; left:50%; transform:translateX(-50%); bottom:24px; z-index:2; display:flex; gap:6px; }
 .hero-dots span { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.4); transition:background .4s, transform .4s; }
 .hero-dots span.on { background:#fff; transform:scale(1.3); }
+/* 2026-10-18: photos can be picked: tap a dot, use the arrows, or swipe. */
+.hero-dots { z-index:3; gap:2px; }
+.hero-dots button { background:none; border:none; padding:7px 4px; cursor:pointer; line-height:0; }
+.hero-dots button span { display:block; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.45); transition:background .3s, transform .3s; }
+.hero-dots button:hover span { background:rgba(255,255,255,.8); }
+.hero-dots button.on span { background:#fff; transform:scale(1.35); }
+.hero-arrow { position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.35); background:rgba(8,50,52,.35); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:.75; transition:opacity .2s, background .2s; }
+.hero-arrow:hover { opacity:1; background:rgba(8,50,52,.6); }
+.hero-arrow svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.hero-prev { left:18px; } .hero-next { right:18px; }
+@media (max-width:760px) { .hero-arrow { width:34px; height:34px; top:auto; bottom:46px; transform:none; } .hero-prev { left:auto; right:56px; } .hero-next { right:16px; } .hero-arrow svg { width:16px; height:16px; } }
 @media (max-width:760px) { .hero-caption { right:16px; bottom:16px; font-size:11px; max-width:calc(100% - 140px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .hero-dots { display:none; } }
 @media (prefers-reduced-motion: reduce) { .hero-panel img, .hero-slide.on .hero-panel img { transform:none; transition:none; } }
 .hero-photo-tint { position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,50,52,.55) 0%, rgba(8,50,52,.35) 45%, rgba(8,50,52,.60) 100%); }
@@ -987,7 +1030,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <!-- HERO (photo slideshow of our own trips, see HERO_SLIDES) -->
   <div class="hero-photo-wrap">
   <div class="hero-slides" id="hero-slides" aria-hidden="true"></div><div class="hero-photo-tint"></div>
-  <div class="hero-caption" id="hero-caption"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span></span></div><div class="hero-dots" id="hero-dots"></div>
+  <div class="hero-caption" id="hero-caption"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span></span></div><div class="hero-dots" id="hero-dots" role="tablist" aria-label="Choose a photo"></div><button type="button" class="hero-arrow hero-prev" id="hero-prev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="hero-arrow hero-next" id="hero-next" aria-label="Next photo"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
   <div class="hero">
     <div class="hero-pill fu"><div class="dot"></div>Bookings Handled by TripMade Coming Soon</div>
     <h1 class="fu1">Your Trip...<br><span class="red">Made.</span></h1>
@@ -3489,10 +3532,10 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="tour-jump-nav">
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-flights')">Flights</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-accommodation')">Accommodation</button>
-      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-insurance')">Travel insurance</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-insurance')">Travel Insurance</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-ferries')">Transport</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-esim')">eSIM</button>
-      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-experiences')">Tours &amp; experiences</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-experiences')">Tours &amp; Experiences</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-deals')">Deals</button>
     </div>
     <!-- Each category below (Flights, Accommodation, Travel insurance) is a
@@ -3522,7 +3565,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          the DOM — nothing else needed to wire it up. -->
     <div class="flight-widget-wrap">
       <div class="flight-widget-card">
-        <div class="flight-widget-name">Search flights</div>
+        <div class="flight-widget-name">Search Flights</div>
         <div class="flight-widget-desc">Compare prices across airlines and travel sites — search right here, no need to leave this page.</div>
         <!-- 2026-09-26: this used to be a static <script src="...&currency=usd&...">
              tag, so the widget always searched in USD no matter what currency
@@ -3560,7 +3603,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          needing to re-issue the embed at a different size. -->
     <div class="flight-widget-wrap">
       <div class="flight-widget-card">
-        <div class="flight-widget-name">Search stays on Trip.com</div>
+        <div class="flight-widget-name">Search Stays On Trip.com</div>
         <div class="flight-widget-desc">Hotels, apartments and more for your dates — search right here, no need to leave this page.</div>
         <div style="max-width:900px;overflow-x:auto;" id="trip-widget-box">
           <iframe src="https://www.trip.com/partners/ad/S19788582?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=" style="width:900px;max-width:100%;height:200px;border:none;" scrolling="no" id="S19788582" title="Trip.com search"></iframe>
@@ -3584,7 +3627,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- 2026-10-01 per Lachlan: small subheading separating the Trip.com
          stays search above (hotels & homes only) from the cards below
          (Trip.com's whole site, plus other providers). -->
-    <div class="explore-more-subhead">Explore more...</div>
+    <div class="explore-more-subhead">Explore More...</div>
     <div class="tour-provider-grid">
       <!-- Real, tracked affiliate link (Allianceid/SID params) — rel includes "sponsored".
            NOTE: the logo below is the image Lachlan supplied for this card, but it's TripMade's
@@ -3601,14 +3644,8 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Visit Trip.com →</div>
         </div>
       </a>
-      <a class="tour-provider-card" href="https://www.booking.com/" target="_blank" rel="noopener noreferrer">
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">Booking.com</div>
-          <div class="tour-provider-desc">Hotels, apartments and homes worldwide, with free cancellation on most stays.</div>
-          <div class="tour-provider-cta">Visit Booking.com →</div>
-        </div>
-      </a>
       <a class="tour-provider-card" href="https://www.agoda.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-logo-wrap brand-tile" style="--tile:#1E3A5F;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg><span>Agoda</span></div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">Agoda</div>
           <div class="tour-provider-desc">Strong hotel deals and availability across Asia-Pacific and beyond.</div>
@@ -3617,11 +3654,12 @@ footer p { font-size:13px; color:var(--text-dim); }
       </a>
     </div>
     <div class="category-heading-wrap" id="tours-insurance">
-      <h3>Travel insurance</h3>
+      <h3>Travel Insurance</h3>
       <p>Cover for your trip, sorted before you go.</p>
     </div>
     <div class="tour-provider-grid">
       <a class="tour-provider-card" href="https://www.covermore.com.au/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-logo-wrap brand-tile" style="--tile:#0B3B60;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><span>Cover-More</span></div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">Cover-More</div>
           <div class="tour-provider-desc">Australian travel insurer, covering medical, cancellation and belongings.</div>
@@ -3629,6 +3667,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </a>
       <a class="tour-provider-card" href="https://safetywing.com/" target="_blank" rel="noopener noreferrer">
+        <div class="tour-provider-logo-wrap brand-tile" style="--tile:#4B3FD6;"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>SafetyWing</span></div>
         <div class="tour-provider-body">
           <div class="tour-provider-name">SafetyWing</div>
           <div class="tour-provider-desc">Flexible travel medical cover, popular with long-term and digital nomad travellers.</div>
@@ -3675,7 +3714,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="transport-subcol">
         <div class="transport-subheading">Transfer Services</div>
         <div class="flight-widget-card">
-          <div class="flight-widget-name">Search transfers</div>
+          <div class="flight-widget-name">Search Transfers</div>
           <div class="flight-widget-desc">Compare and book airport transfers and private rides — search right here, no need to leave this page.</div>
           <div id="tmTransferWidget"><script async src="https://tpwdgt.com/content?trs=571230&amp;shmarker=774757&amp;locale=en&amp;show_header=true&amp;powered_by=true&amp;campaign_id=627&amp;promo_id=8951" charset="utf-8"></script></div>
         </div>
@@ -3703,7 +3742,7 @@ footer p { font-size:13px; color:var(--text-dim); }
              data-redirect link. Omio's bundle.js/.css are loaded by
              loadOmioWidget() the first time Book your trip is opened, for the
              same display:none sizing reason as loadViatorWidgets(). -->
-        <div class="transport-subheading omio-subheading">Trains &amp; buses</div>
+        <div class="transport-subheading omio-subheading">Trains &amp; Buses</div>
         <div class="ferry-widget-card omio-widget-card">
           <div class="ferry-widget-name">Search Omio</div>
           <div class="ferry-widget-desc">Compare trains, buses and ferries across Europe and beyond, right here.</div>
@@ -3716,7 +3755,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- eSIM (2026-10-08): Holafly via Impact (partner 7745282). Plain link card
          with the logo Lachlan sent until a proper Holafly widget is set up. -->
     <div class="category-heading-wrap" id="tours-esim">
-      <h3>eSIM &amp; mobile data</h3>
+      <h3>eSIM &amp; Mobile Data</h3>
       <p>Stay connected the moment you land, without hunting for a local SIM or paying roaming fees.</p>
     </div>
     <div class="tour-provider-grid">
@@ -3732,7 +3771,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </a>
     </div>
     <div class="category-heading-wrap" id="tours-experiences">
-      <h3>Tours &amp; experiences</h3>
+      <h3>Tours &amp; Experiences</h3>
       <p>Browse and book activities anywhere in the world — pick a platform below to see what's on offer.</p>
     </div>
     <!-- Search bar below hands the same query off to each provider's own
@@ -3749,7 +3788,6 @@ footer p { font-size:13px; color:var(--text-dim); }
       <input type="text" id="tour-search-query" placeholder="Search once — e.g. Paris, snorkeling, food tour..." onkeydown="if(event.key==='Enter'){searchAllTours();}">
       <button type="button" onclick="searchAllTours()">Search</button>
     </div>
-    <p class="tour-search-note" id="tour-search-note">Searches Viator and Klook directly — GetYourGuide doesn't support a pre-filled search link, so its card always opens their homepage.</p>
     <!-- Provider logos below are embedded as base64 data URIs (the files
          Lachlan sent directly), so this page has no dependency on an
          external image host. To swap a logo later, replace the base64
@@ -3831,7 +3869,7 @@ footer p { font-size:13px; color:var(--text-dim); }
          are for sales that have already ended. Add more cards in
          the same pattern as partners publish deals pages. -->
     <div class="category-heading-wrap" id="tours-deals">
-      <h3>Deals &amp; offers</h3>
+      <h3>Deals &amp; Offers</h3>
       <p>Live sales and promo codes from our travel partners. Offers change often, so check back before you book.</p>
     </div>
     <div class="deals-grid">
@@ -4045,6 +4083,13 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div id="ibx-bookings-list" class="bk-list"></div>
       <div class="bk-tip">Tip: forward any booking confirmation email to <a id="bk-fwd-addr" href="mailto:bookings@tripmade.co">bookings@tripmade.co</a> from the email you use for TripMade, and we'll file it here automatically.</div>
+    </div>
+    <!-- 2026-10-18: visa / entry requirements for the viewer's passport (entry-info function). -->
+    <div class="itin-block" id="ibx-entry-block" style="display:none;">
+      <div class="itin-hdr">
+        <div class="itin-hdr-l"><div><div class="itin-title">Entry Requirements</div><div class="itin-sub" id="ibx-entry-sub">Visas and entry rules for your passport</div></div></div>
+      </div>
+      <div id="ibx-entry-body" class="entry-body"></div>
     </div>
     <div class="itin-block" id="ibx-unlock-all-block">
       <div class="itin-hdr party">
@@ -4885,6 +4930,7 @@ async function hydrateCurrentUser(authUser) {
     phone: (profile && profile.phone) || '',
     country: (profile && profile.country) || '',
     currency: (profile && profile.currency) || defaultCurrencyForCountry((profile && profile.country) || ''),
+    marketingOptIn: !!(profile && profile.marketing_opt_in),
     joinedWaitlist: false
   };
   // Tie this browser's PostHog activity to the real signed-in person
@@ -5059,6 +5105,7 @@ function renderAuthNav() {
               '<option value="SGD">SGD (S$)</option><option value="JPY">JPY (¥)</option>' +
             '</select>' +
           '</div>' +
+          '<button type="button" onclick="openAccountModal()" style="width:100%;margin-top:2px;margin-bottom:6px;padding:9px;border:1.5px solid var(--accent);border-radius:8px;background:var(--accent-light);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--accent);">Edit account</button>' +
           '<button onclick="logoutUser()" style="width:100%;margin-top:2px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
         '</div>' +
       '</div>';
@@ -5100,6 +5147,148 @@ document.addEventListener('click', function(e) {
   if (!menu || menu.style.display !== 'block') return;
   if (!e.target.closest('#nav-account')) menu.style.display = 'none';
 });
+// ── Entry requirements (2026-10-18) ─────────────────────────────
+// Asks the entry-info function (live web search by Claude, cached 7 days per
+// destination + passport) and shows visa / entry rules on the trip page.
+var _entryCache = {};
+var ENTRY_BADGE = { visa_free: ['ok', 'No visa needed'], eta: ['warn', 'Travel authorisation needed'], evisa: ['warn', 'eVisa needed'], visa_on_arrival: ['warn', 'Visa on arrival'], visa_required: ['bad', 'Visa required'], unknown: ['unk', 'Check before you go'] };
+function renderEntryInfo(itin) {
+  const block = document.getElementById('ibx-entry-block'), body = document.getElementById('ibx-entry-body'), sub = document.getElementById('ibx-entry-sub');
+  if (!block || !body || !itin || !itin.id) return;
+  const u = getUser(); if (!u) { block.style.display = 'none'; return; }
+  const passport = u.country || 'Australia';
+  const ck = itin.id + '|' + passport + '|' + (itin.destination || '') + '|' + (itin.depart_date || '');
+  block.style.display = '';
+  block.dataset.trip = itin.id;
+  sub.textContent = 'Visas and entry rules for ' + passport + ' passport holders';
+  const have = _entryCache[ck];
+  if (have && have.data) { paintEntry(body, have.data, passport); return; }
+  if (have && have.failed) { body.innerHTML = '<p class="entry-head">We couldn\'t check the entry rules just now. Please check your government\'s travel advice (for Australians, <a href="https://www.smartraveller.gov.au/destinations" target="_blank" rel="noopener">Smartraveller</a>) before you go.</p>'; return; }
+  body.innerHTML = '<div class="entry-loading"><i></i>Checking the latest entry rules for your trip. The first check can take up to a minute.</div>';
+  if (have && have.loading) return;
+  _entryCache[ck] = { loading: true };
+  (async function() {
+    let data = null;
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/entry-info', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+          body: JSON.stringify({ itinerary_id: itin.id })
+        });
+        const j = await res.json().catch(function() { return null; });
+        if (res.ok && j && Array.isArray(j.countries) && j.countries.length) data = j;
+      }
+    } catch (e) { console.warn('entry-info failed', e); }
+    _entryCache[ck] = data ? { data: data } : { failed: true };
+    if (block.dataset.trip === itin.id && _currentInboxItinerary && _currentInboxItinerary.id === itin.id) renderEntryInfo(_currentInboxItinerary);
+  })();
+}
+function paintEntry(body, d, passport) {
+  const rows = d.countries.map(function(c) {
+    const b = ENTRY_BADGE[c.status] || ENTRY_BADGE.unknown;
+    return '<div class="entry-c"><div class="entry-c-top"><span class="entry-c-name">' + tmEsc(c.country) + '</span><span class="entry-badge ' + b[0] + '">' + b[1] + '</span></div>' +
+      '<div class="entry-head">' + tmEsc(c.headline) + '</div>' +
+      (c.details && c.details.length ? '<ul>' + c.details.map(function(x) { return '<li>' + tmEsc(x) + '</li>'; }).join('') + '</ul>' : '') +
+      (c.official_url ? '<a class="entry-src" href="' + tmEsc(c.official_url) + '" target="_blank" rel="noopener noreferrer">Official info' + (c.source_name ? ' (' + tmEsc(c.source_name) + ')' : '') + ' →</a>' : '') + '</div>';
+  }).join('');
+  const gen = d.general && d.general.length ? '<div class="entry-gen">' + d.general.map(tmEsc).join('<br>') + '</div>' : '';
+  const when = d.checked_at ? new Date(d.checked_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+  const advice = /australia/i.test(passport) ? ' Also see <a href="https://www.smartraveller.gov.au/destinations" target="_blank" rel="noopener">Smartraveller</a>.' : '';
+  body.innerHTML = rows + gen + '<div class="entry-foot">' + (when ? 'Checked ' + when + '. ' : '') + 'Entry rules can change, so always confirm on the official site before you book or fly.' + advice +
+    ' Travelling on a different passport? <a href="javascript:void(0)" onclick="openAccountModal()">Update your country</a>.</div>';
+}
+(function() {
+  const orig = renderInboxDetail;
+  renderInboxDetail = function(itin) { const r = orig.apply(this, arguments); try { renderEntryInfo(itin); } catch (e) { console.warn(e); } return r; };
+})();
+// ── ACCOUNT: edit details, email preferences, delete (2026-10-18) ──
+function openAccountModal() {
+  const u = getUser(); if (!u) { openLoginModal(); return; }
+  const menu = document.getElementById('profile-menu'); if (menu) menu.style.display = 'none';
+  const cSel = document.getElementById('acct-country'), src = document.getElementById('su-country');
+  if (cSel && src && !cSel.options.length) cSel.innerHTML = src.innerHTML;
+  document.getElementById('acct-name').value = u.name || '';
+  document.getElementById('acct-email').value = u.email || '';
+  document.getElementById('acct-phone').value = u.phone || '';
+  if (cSel) { cSel.value = u.country || ''; if (u.country && cSel.value !== u.country) { const o = document.createElement('option'); o.value = o.textContent = u.country; cSel.appendChild(o); cSel.value = u.country; } }
+  document.getElementById('acct-currency').value = u.currency || 'AUD';
+  document.getElementById('acct-marketing').checked = !!u.marketingOptIn;
+  const m = document.getElementById('acct-msg'); m.textContent = ''; m.className = 'acct-msg';
+  document.getElementById('acct-edit').style.display = '';
+  document.getElementById('acct-delete').style.display = 'none';
+  document.getElementById('acct-gone').style.display = 'none';
+  document.getElementById('account-modal').style.display = 'flex';
+}
+function closeAccountModal() { document.getElementById('account-modal').style.display = 'none'; }
+async function saveAccount() {
+  const u = getUser(); if (!u) return;
+  const btn = document.getElementById('acct-save'), msg = document.getElementById('acct-msg');
+  const name = document.getElementById('acct-name').value.trim();
+  if (!name) { msg.textContent = 'Please add your name.'; msg.className = 'acct-msg err'; return; }
+  const upd = {
+    name: name,
+    phone: document.getElementById('acct-phone').value.trim(),
+    country: document.getElementById('acct-country').value,
+    currency: document.getElementById('acct-currency').value,
+    marketing_opt_in: document.getElementById('acct-marketing').checked
+  };
+  if (upd.marketing_opt_in !== !!u.marketingOptIn) upd.marketing_opt_in_at = upd.marketing_opt_in ? new Date().toISOString() : null;
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const { error } = await sb.from('profiles').update(upd).eq('id', u.id);
+  btn.disabled = false; btn.textContent = 'Save changes';
+  if (error) { console.error('save account failed', error); msg.textContent = "Couldn't save just then. Please try again."; msg.className = 'acct-msg err'; return; }
+  u.name = upd.name; u.phone = upd.phone; u.country = upd.country; u.marketingOptIn = upd.marketing_opt_in;
+  if (upd.currency !== u.currency) { u.currency = upd.currency; applyCurrency(upd.currency); }
+  renderAuthNav();
+  msg.textContent = 'Saved ✓'; msg.className = 'acct-msg ok';
+  try { if (window.tmTrack) tmTrack('account_updated'); } catch (e) {}
+  setTimeout(closeAccountModal, 900);
+}
+function showAccountDelete() {
+  window.scrollTo && document.querySelector('#account-modal .tm-box').scrollTo(0, 0);
+  document.getElementById('acct-edit').style.display = 'none';
+  document.getElementById('acct-delete').style.display = '';
+  document.querySelectorAll('input[name="acct-reason"]').forEach(function(r) { r.checked = false; });
+  document.getElementById('acct-reason-more').value = '';
+  const m = document.getElementById('acct-del-msg'); m.textContent = ''; m.className = 'acct-msg';
+}
+function hideAccountDelete() {
+  document.getElementById('acct-delete').style.display = 'none';
+  document.getElementById('acct-edit').style.display = '';
+}
+async function deleteAccount() {
+  const msg = document.getElementById('acct-del-msg'), btn = document.getElementById('acct-del-btn');
+  const picked = document.querySelector('input[name="acct-reason"]:checked');
+  if (!picked) { msg.textContent = 'Please pick a reason first.'; msg.className = 'acct-msg err'; return; }
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { closeAccountModal(); openLoginModal(); return; }
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try { if (window.tmTrack) tmTrack('account_deleted', { reason: picked.value }); } catch (e) {}
+  let ok = false;
+  try {
+    const res = await fetch('https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/delete-account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify({ reason: picked.value, details: document.getElementById('acct-reason-more').value.trim().slice(0, 1000) })
+    });
+    const data = await res.json().catch(function() { return {}; });
+    ok = res.ok && data.ok;
+  } catch (e) { console.error('delete account failed', e); }
+  if (!ok) {
+    btn.disabled = false; btn.textContent = 'Delete my account';
+    msg.innerHTML = 'Something went wrong. Please try again, or email <a href="mailto:hello@tripmade.co">hello@tripmade.co</a> and we\'ll do it for you.'; msg.className = 'acct-msg err';
+    return;
+  }
+  try { if (typeof posthog !== 'undefined' && posthog.reset) posthog.reset(); } catch (e) {}
+  try { await sb.auth.signOut(); } catch (e) {}
+  _currentUser = null;
+  renderAuthNav();
+  showPage('landing', document.querySelector('.nav-links a'));
+  document.getElementById('acct-delete').style.display = 'none';
+  document.getElementById('acct-gone').style.display = '';
+  document.getElementById('account-modal').style.display = 'flex';
+}
 async function logoutUser() {
   await sb.auth.signOut();
   _currentUser = null;
@@ -8908,16 +9097,15 @@ function searchAllTours() {
   const viatorCta = document.getElementById('tour-card-viator-cta');
   if (viatorCard) viatorCard.href = viatorUrl;
   if (viatorCta) viatorCta.textContent = 'See "' + q + '" on Viator →';
-  if (note) {
-    note.textContent = 'Opened "' + q + '" on Viator and Klook in new tabs — GetYourGuide doesn\'t support a pre-filled search link, so its card still opens their homepage.';
-  }
   // Clicking "Search" should visibly do something right away, not just quietly
   // update link targets for someone to notice and click through later — so
   // open both results directly. Both calls are synchronous inside this click
   // handler (no await/setTimeout before them), which is what keeps browsers'
   // popup blockers from treating them as unrequested popups.
+  // 2026-10-18: browsers only allow one new tab per click, so only Viator
+  // ever opened. Klook's search link is kept for reference but not opened.
+  void klookUrl;
   window.open(viatorUrl, '_blank', 'noopener,noreferrer');
-  window.open(klookUrl, '_blank', 'noopener,noreferrer');
 }
 const _origShowPage = showPage;
 window.showPage = function(id, linkEl, opts) {
@@ -9071,6 +9259,32 @@ async function sendFeedback() {
 .edits-best{position:absolute;top:-10px;right:14px;background:var(--accent);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
 .edits-or{text-align:center;font-size:12px;color:var(--text-muted);margin:8px 0;text-transform:uppercase;letter-spacing:.08em;}
 .edits-fine{font-size:11.5px;color:var(--text-muted);text-align:center;margin:12px 0 6px;}
+.acct-f{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;flex:1;min-width:0;}
+.acct-f span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);}
+.acct-f input,.acct-f select,#acct-reason-more{padding:11px 12px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:inherit;background:#fff;outline:none;width:100%;box-sizing:border-box;}
+.acct-f input:focus,.acct-f select:focus,#acct-reason-more:focus{border-color:var(--accent);}
+.acct-f input:disabled{background:var(--bg3,#f3f3f3);color:var(--text-muted);}
+.acct-hint{font-size:12px;color:var(--text-dim);margin:-6px 0 12px;}
+.acct-row{display:flex;gap:12px;}
+.acct-check{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text);margin:4px 0 6px;cursor:pointer;}
+.acct-check input{margin-top:2px;accent-color:var(--accent);width:16px;height:16px;}
+.acct-msg{font-size:13px;min-height:18px;margin:8px 0 0;}
+.acct-msg.ok{color:#0F6E56;} .acct-msg.err{color:#B3261E;}
+.acct-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px;flex-wrap:wrap;}
+.acct-actions .btn-primary,.acct-actions .btn-secondary{padding:11px 20px;font-size:14px;}
+.acct-danger{border-top:1px solid var(--border);margin-top:20px;padding-top:14px;text-align:center;}
+.acct-del-link{background:none;border:1.5px solid #E8B4B0;color:#B3261E;font-weight:600;font-size:13px;padding:9px 18px;border-radius:8px;cursor:pointer;font-family:inherit;}
+.acct-del-link:hover{background:#FDF0EF;}
+.acct-reasons{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.acct-reasons label{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;cursor:pointer;}
+.acct-reasons label:has(input:checked){border-color:#B3261E;background:#FDF0EF;}
+.acct-reasons input{accent-color:#B3261E;}
+#account-modal input[type=radio],#account-modal input[type=checkbox]{width:16px !important;height:16px;flex:0 0 16px;margin:0;padding:0;}
+#account-modal .acct-reasons span,#account-modal .acct-check span{flex:1;text-align:left;}
+.acct-warn{margin-top:12px;font-size:12.5px;line-height:1.5;color:#7A2620;background:#FDF0EF;border:1px solid #F1C9C5;border-radius:10px;padding:10px 12px;}
+.acct-del-btn{background:#B3261E;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;}
+.acct-del-btn:disabled{opacity:.6;cursor:default;}
+@media (max-width:480px){.acct-row{flex-direction:column;gap:0;}.acct-actions{flex-direction:column-reverse;}.acct-actions button{width:100%;}}
 .tm-modal .tm-sub{font-size:13px;color:var(--text-muted,#6B6B6B);margin:0 0 16px;line-height:1.5;}
 .tm-modal input,.tm-modal textarea,.tm-modal select{width:100%;box-sizing:border-box;border:1.5px solid #E2E2E2;border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;margin-bottom:10px;background:#fff;}
 .tm-modal textarea{min-height:130px;resize:vertical;}
@@ -9227,6 +9441,57 @@ async function sendFeedback() {
 
 <!-- 2026-10-14 per Lachy: after the 5 free TripMade (AI) changes on a trip,
      buy 1 more for $1 or unlimited changes on that trip for $9.99. -->
+<!-- 2026-10-18: account details, email preferences and account deletion. -->
+<div id="account-modal" class="tm-modal" onclick="if(event.target===this)closeAccountModal()">
+  <div class="tm-box acct-box">
+    <div id="acct-edit">
+      <h3>Your account</h3>
+      <p class="tm-sub">Update your details. Changes save straight away.</p>
+      <label class="acct-f"><span>Name</span><input id="acct-name" type="text" autocomplete="name" maxlength="80"></label>
+      <label class="acct-f"><span>Email</span><input id="acct-email" type="email" disabled></label>
+      <p class="acct-hint">To change the email you sign in with, email <a href="mailto:hello@tripmade.co">hello@tripmade.co</a>.</p>
+      <label class="acct-f"><span>Phone</span><input id="acct-phone" type="tel" autocomplete="tel" maxlength="30"></label>
+      <div class="acct-row">
+        <label class="acct-f"><span>Country</span><select id="acct-country"></select></label>
+        <label class="acct-f"><span>Currency</span><select id="acct-currency"><option value="AUD">AUD (A$)</option><option value="USD">USD (US$)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option><option value="NZD">NZD (NZ$)</option><option value="CAD">CAD (C$)</option><option value="SGD">SGD (S$)</option><option value="JPY">JPY (¥)</option></select></label>
+      </div>
+      <label class="acct-check"><input id="acct-marketing" type="checkbox"><span>Send me travel deals and inspiration by email</span></label>
+      <p class="acct-msg" id="acct-msg"></p>
+      <div class="acct-actions">
+        <button type="button" class="btn-secondary" onclick="closeAccountModal()">Cancel</button>
+        <button type="button" class="btn-primary" id="acct-save" onclick="saveAccount()">Save changes</button>
+      </div>
+      <div class="acct-danger">
+        <button type="button" class="acct-del-link" onclick="showAccountDelete()">Delete account</button>
+      </div>
+    </div>
+    <div id="acct-delete" style="display:none;">
+      <h3>Delete your account?</h3>
+      <p class="tm-sub">Sorry to see you go. Before you do, could you tell us why? It really helps us improve TripMade.</p>
+      <div class="acct-reasons" id="acct-reasons">
+        <label><input type="radio" name="acct-reason" value="Not planning a trip right now"><span>Not planning a trip right now</span></label>
+        <label><input type="radio" name="acct-reason" value="Itineraries weren't what I wanted"><span>The itineraries weren't what I wanted</span></label>
+        <label><input type="radio" name="acct-reason" value="Too expensive"><span>Too expensive</span></label>
+        <label><input type="radio" name="acct-reason" value="Something wasn't working"><span>Something wasn't working</span></label>
+        <label><input type="radio" name="acct-reason" value="Privacy concerns"><span>Privacy concerns</span></label>
+        <label><input type="radio" name="acct-reason" value="Using another app"><span>I'm using another app</span></label>
+        <label><input type="radio" name="acct-reason" value="Other"><span>Other</span></label>
+      </div>
+      <textarea id="acct-reason-more" rows="3" maxlength="1000" placeholder="Anything else you'd like to tell us? (optional)"></textarea>
+      <div class="acct-warn">This permanently deletes your account, your trips, bookings, saved trips and chats. Trips you've shared will be removed for everyone on them. This can't be undone.</div>
+      <p class="acct-msg" id="acct-del-msg"></p>
+      <div class="acct-actions">
+        <button type="button" class="btn-secondary" onclick="hideAccountDelete()">Keep my account</button>
+        <button type="button" class="acct-del-btn" id="acct-del-btn" onclick="deleteAccount()">Delete my account</button>
+      </div>
+    </div>
+    <div id="acct-gone" style="display:none;text-align:center;">
+      <h3>Your account has been deleted</h3>
+      <p class="tm-sub">Thanks for giving TripMade a go. You're welcome back any time.</p>
+      <button type="button" class="btn-primary" onclick="closeAccountModal()">Close</button>
+    </div>
+  </div>
+</div>
 <div id="edits-modal" class="tm-modal" onclick="if(event.target===this)closeEditsModal()">
   <div class="tm-box" role="dialog" aria-labelledby="edits-title">
     <h3 id="edits-title">You've used your free changes</h3>
@@ -9546,12 +9811,12 @@ async function saveBooking() {
    Each slide's photos are loaded just before it shows, so only the first slide loads up front. */
 // Folder name exactly as it is in GitHub (Lachy named it "hero (Slideshow photos)").
 var HERO_DIR = '/hero (Slideshow photos)/';
-var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Amsterdam · Pamplona · Split", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Split, Croatia"}]}, {"cap": "Ksamil, Albania", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Blue Eye, Albania", "imgs": [{"n": "blue-eye-pool", "ar": 0.75}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-night", "ar": 0.75}]}];
+var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}];
 (function(){
   var box = document.getElementById('hero-slides'); if (!box) return;
   var cap = document.querySelector('#hero-caption span'), capEl = document.getElementById('hero-caption'), dots = document.getElementById('hero-dots');
   var mq = window.matchMedia('(max-width:760px), (orientation:portrait)');
-  var slides = [], cur = -1, timer = null, HOLD = 6500;
+  var slides = [], cur = -1, timer = null, HOLD = 6500, PICK_HOLD = 15000, picked = false;
   function build(){
     clearTimeout(timer); box.innerHTML = ''; dots.innerHTML = ''; cur = -1;
     var list = mq.matches
@@ -9565,7 +9830,9 @@ var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg
         p.appendChild(im); el.appendChild(p);
       });
       box.appendChild(el);
-      var d = document.createElement('span'); dots.appendChild(d);
+      var d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', 'Photo ' + box.children.length + ': ' + s.cap); d.appendChild(document.createElement('span'));
+      (function(n){ d.addEventListener('click', function(){ pick(n); }); })(box.children.length - 1);
+      dots.appendChild(d);
       return {el:el, cap:s.cap, dot:d};
     });
     show(0);
@@ -9584,10 +9851,19 @@ var HERO_SLIDES = [{"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg
       capEl.style.opacity = 0;
       setTimeout(function(){ cap.textContent = slides[k].cap; capEl.style.opacity = 1; }, 300);
       var next = (k + 1) % slides.length; load(next);
-      clearTimeout(timer); timer = setTimeout(function(){ tick(next); }, HOLD);
+      clearTimeout(timer); timer = setTimeout(function(){ tick(next); }, picked ? PICK_HOLD : HOLD); picked = false;
     });
   }
   function tick(k){ if (document.hidden) { timer = setTimeout(function(){ tick(k); }, 1000); return; } show(k); }
+  // A visitor chose a photo: show it straight away and stay on it longer.
+  function pick(k){ if (!slides.length) return; k = (k + slides.length) % slides.length; if (k === cur) return; clearTimeout(timer); picked = true; show(k); }
+  var prev = document.getElementById('hero-prev'), nextBtn = document.getElementById('hero-next');
+  if (prev) prev.addEventListener('click', function(){ pick(cur - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function(){ pick(cur + 1); });
+  var wrap = box.parentNode, sx = null, sy = null;
+  wrap.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, {passive:true});
+  wrap.addEventListener('touchend', function(e){ if (sx === null) return; var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy; sx = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && !(e.target.closest && e.target.closest('button, a, input'))) pick(cur + (dx < 0 ? 1 : -1)); }, {passive:true});
   (mq.addEventListener ? mq.addEventListener('change', build) : mq.addListener(build));
   build();
 })();
