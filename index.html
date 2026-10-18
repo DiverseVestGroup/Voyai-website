@@ -525,6 +525,8 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .ferry-widget-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text); }
 .ferry-widget-desc { font-size:13px; color:var(--text-muted); line-height:1.4; margin-bottom:6px; }
 @media (max-width:700px) { .ferry-widget-wrap { padding-left:20px; padding-right:20px; } }
+.tour-provider-grid:has(.sw-widget-card) { align-items:start; }
+.ferry-widget-card.sw-widget-card { width:100%; max-width:none; margin:0; box-sizing:border-box; }
 .ferry-widget-card iframe { max-width:100%; border-radius:8px; }
 /* ── FLIGHT SEARCH WIDGET (Travelpayouts) ─────────────────── */
 .flight-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
@@ -3741,22 +3743,14 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-cta">Visit Cover-More →</div>
         </div>
       </a>
-      <a class="tour-provider-card" href="https://safetywing.com/?referenceID=26619927" target="_blank" rel="sponsored noopener noreferrer">
-        <div class="tour-provider-logo-wrap brand-tile" style="--tile:#4B3FD6;"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>SafetyWing</span></div>
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">SafetyWing</div>
-          <div class="tour-provider-desc">Flexible travel medical cover, popular with long-term and digital nomad travellers.</div>
-          <div class="tour-provider-cta">Visit SafetyWing →</div>
-        </div>
-      </a>
-    </div>
-    <!-- SafetyWing price widget (18 Oct 2026): embed code from Lachy's
-         SafetyWing affiliate dashboard, affiliate ID 26619927. -->
-    <div class="ferry-widget-wrap">
-      <div class="ferry-widget-card">
+      <!-- SafetyWing price widget (18 Oct 2026): embed code from Lachy's
+           SafetyWing affiliate dashboard, affiliate ID 26619927. Replaces the
+           old plain SafetyWing link tile. The widget div needs width:100% —
+           inside the centred flex card it otherwise collapses to 0px wide. -->
+      <div class="ferry-widget-card sw-widget-card">
         <div class="ferry-widget-name">Get a SafetyWing price</div>
         <div class="ferry-widget-desc">Enter your trip dates to see a quote for SafetyWing travel medical cover.</div>
-        <div class="safetywing-price-widget" data-safetywingaffiliateid="26619927"></div><script src="https://storage.googleapis.com/safetywing-static/widget/safetywing-price-widget-v2.js"></script>
+        <div class="safetywing-price-widget" data-safetywingaffiliateid="26619927" style="width:100%;"></div><script src="https://storage.googleapis.com/safetywing-static/widget/safetywing-price-widget-v2.js"></script>
       </div>
     </div>
     <!-- Ferryhopper is a real, live affiliate link (aff_uid=tpmdco), unlike
