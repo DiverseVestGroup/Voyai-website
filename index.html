@@ -340,14 +340,14 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .dest-icon.sight { background:var(--amber-light); }
 .dest-icon.party { background:var(--accent-mid); }
 /* 2026-10-18: trip page section headers easier to spot when skimming */
-#page-inbox-detail .itin-block { border-radius:14px; margin-bottom:18px; box-shadow:var(--shadow-sm); }
-#page-inbox-detail .itin-hdr { padding:16px 22px; background:linear-gradient(90deg, var(--accent-light) 0%, #fff 75%); border-bottom:1.5px solid var(--accent-mid); border-left:5px solid var(--accent); gap:12px; flex-wrap:wrap; }
-#page-inbox-detail .itin-hdr-l { gap:14px; }
-#page-inbox-detail .itin-title { font-family:'Syne',sans-serif; font-size:19px; font-weight:800; letter-spacing:-.01em; color:var(--text); line-height:1.2; }
+#page-inbox-detail .itin-block { border-radius:12px; margin-bottom:16px; }
+#page-inbox-detail .itin-hdr { padding:14px 22px; background:#FAFBFB; border-bottom:1px solid var(--border); border-left:3px solid var(--accent); gap:12px; flex-wrap:wrap; }
+#page-inbox-detail .itin-hdr-l { gap:12px; }
+#page-inbox-detail .itin-title { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; letter-spacing:-.005em; color:var(--text); line-height:1.25; }
 #page-inbox-detail .itin-sub { font-size:12.5px; margin-top:3px; }
-.ibx-ic { width:38px; height:38px; flex:none; border-radius:10px; background:var(--accent); display:inline-flex; align-items:center; justify-content:center; box-shadow:0 3px 8px rgba(13,115,119,.25); }
-.ibx-ic svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-@media (max-width:600px) { #page-inbox-detail .itin-hdr { padding:14px 16px; } #page-inbox-detail .itin-title { font-size:17px; } .ibx-ic { width:32px; height:32px; } .ibx-ic svg { width:17px; height:17px; } }
+.ibx-ic { width:32px; height:32px; flex:none; border-radius:8px; background:var(--accent-light); display:inline-flex; align-items:center; justify-content:center; }
+.ibx-ic svg { width:17px; height:17px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+@media (max-width:600px) { #page-inbox-detail .itin-hdr { padding:12px 16px; } #page-inbox-detail .itin-title { font-size:16px; } .ibx-ic { width:28px; height:28px; } .ibx-ic svg { width:15px; height:15px; } }
 .entry-body { padding:16px 22px 18px; }
 .entry-loading { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); }
 .entry-loading i { width:16px; height:16px; border:2px solid var(--accent-mid); border-top-color:var(--accent); border-radius:50%; animation:entrySpin .8s linear infinite; flex:none; }
@@ -356,7 +356,7 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .entry-c:first-child { padding-top:0; }
 .entry-c:last-of-type { border-bottom:none; }
 .entry-c-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
-.entry-c-name { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; }
+.entry-c-name { font-family:'Syne',sans-serif; font-weight:700; font-size:18px; }
 .entry-badge { font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; letter-spacing:.02em; }
 .entry-badge.ok { background:#E3F5EC; color:#0F6E56; } .entry-badge.warn { background:#FFF3DC; color:#8A5A00; } .entry-badge.bad { background:#FDE8E6; color:#B3261E; } .entry-badge.unk { background:var(--bg3,#f1f1f1); color:var(--text-muted); }
 .entry-head { font-size:13.5px; color:var(--text); margin-bottom:4px; line-height:1.45; }
@@ -944,6 +944,15 @@ footer p { font-size:13px; color:var(--text-dim); }
 .hero-panel { position:relative; overflow:hidden; flex-basis:0; min-width:0; }
 .hero-panel img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform 9s ease-out; }
 .hero-slide.on .hero-panel img { transform:scale(1.09); }
+/* 2026-10-18: "fit":"contain" slides show the whole photo on wide screens, with a blurred copy filling the edges */
+@media (min-width:761px) and (orientation:landscape) {
+  .hero-panel.fit img.hp-main { object-fit:contain; transform:none !important; transition:none; }
+  .hero-panel.fit img.hp-bg { filter:blur(28px) brightness(.75) saturate(1.1); transform:scale(1.2) !important; }
+  /* keep the location label clear of the chat bubble (bottom right) */
+  .hero-photo-wrap .hero-caption { right:104px; }
+}
+.hero-panel img.hp-bg { display:none; }
+@media (min-width:761px) and (orientation:landscape) { .hero-panel.fit img.hp-bg { display:block; } }
 .hero-caption { position:absolute; right:24px; bottom:20px; z-index:2; display:flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.88); text-shadow:0 1px 8px rgba(0,0,0,.35); transition:opacity .6s ease; pointer-events:none; }
 .hero-caption svg { width:12px; height:12px; flex:none; opacity:.9; }
 .hero-dots { position:absolute; left:50%; transform:translateX(-50%); bottom:24px; z-index:2; display:flex; gap:6px; }
@@ -959,7 +968,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 .hero-arrow:hover { opacity:1; background:rgba(8,50,52,.6); }
 .hero-arrow svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 .hero-prev { left:18px; } .hero-next { right:18px; }
-@media (max-width:760px) { .hero-arrow { width:34px; height:34px; top:auto; bottom:46px; transform:none; } .hero-prev { left:auto; right:56px; } .hero-next { right:16px; } .hero-arrow svg { width:16px; height:16px; } }
+@media (max-width:760px) { .hero-arrow { width:34px; height:34px; top:auto; bottom:20px; transform:none; } .hero-prev { left:calc(50% - 40px); right:auto; } .hero-next { left:calc(50% + 6px); right:auto; } .hero-arrow svg { width:16px; height:16px; } .hero-photo-wrap .hero-caption { top:14px; bottom:auto; right:16px; max-width:calc(100% - 32px); } }
 @media (max-width:760px) { .hero-caption { right:16px; bottom:16px; font-size:11px; max-width:calc(100% - 140px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .hero-dots { display:none; } }
 @media (prefers-reduced-motion: reduce) { .hero-panel img, .hero-slide.on .hero-panel img { transform:none; transition:none; } }
 .hero-photo-tint { position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,50,52,.55) 0%, rgba(8,50,52,.35) 45%, rgba(8,50,52,.60) 100%); }
@@ -4123,7 +4132,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- 2026-10-18: visa / entry requirements for the viewer's passport (entry-info function). -->
     <div class="itin-block" id="ibx-entry-block" style="display:none;">
       <div class="itin-hdr">
-        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 17h8"/></svg></span><div><div class="itin-title" id="ibx-entry-title">Country Entry Requirements</div><div class="itin-sub" id="ibx-entry-sub">Visas and entry rules for your passport</div></div></div>
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 17h8"/></svg></span><div><div class="itin-title" id="ibx-entry-title">Specific Country Entry Requirements</div><div class="itin-sub" id="ibx-entry-sub">Visas and entry rules for your passport</div></div></div>
       </div>
       <div id="ibx-entry-body" class="entry-body"></div>
     </div>
@@ -5265,10 +5274,31 @@ function costLinks(itin, cat, items) {
   const rows = []; let cta = '';
   const btn = function(href, text) { return '<a class="cost-cta" href="' + tmEsc(href) + '" target="_blank" rel="noopener noreferrer sponsored">' + text + '</a>'; };
   if (cat === 'flights') {
+    // 2026-10-18: match each breakdown line to a flight by its route (first and
+    // last airport code), so stopovers / duplicated legs on the trip don't stop
+    // the lines getting their own link. Lines without codes fall back to order.
+    const route = function(label) {
+      const m = String(label || '').match(/\b[A-Z]{3}(?:\s*(?:→|->|–>|—>)\s*[A-Z]{3})+\b/);
+      if (!m) return null; const c = m[0].split(/\s*(?:→|->|–>|—>)\s*/); return { from: c[0], to: c[c.length - 1] };
+    };
     const legs = [];
-    days.forEach(function(d) { (d.highlights || []).forEach(function(h) { if (String(h.category || '').toLowerCase() === 'flight') { const k = kiwiFlightLink(h.label, dayIso(d.day_number)); if (k) legs.push(k); } }); });
-    if (legs.length === items.length) legs.forEach(function(k, n) { rows[n] = withTmCurrency(k, tag); });
-    cta = btn(withTmCurrency(legs[0] || ('https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/')), tag), 'Check flight prices on Kiwi.com →');
+    days.forEach(function(d) { (d.highlights || []).forEach(function(h) {
+      if (String(h.category || '').toLowerCase() !== 'flight') return;
+      const r = route(h.label); const k = kiwiFlightLink(h.label, dayIso(d.day_number));
+      if (r && k) legs.push({ from: r.from, to: r.to, date: dayIso(d.day_number), link: k, used: false });
+    }); });
+    items.forEach(function(i, n) {
+      const r = route(i.label);
+      let leg = null;
+      if (r) leg = legs.find(function(l) { return !l.used && l.from === r.from && l.to === r.to; }) || legs.find(function(l) { return !l.used && l.from === r.from; });
+      if (leg) { leg.used = true; rows[n] = withTmCurrency(leg.link, tag); return; }
+      if (r) { const k = kiwiFlightLink(r.from + ' → ' + r.to, ''); if (k) { rows[n] = withTmCurrency(k, tag); return; } }
+      const next = legs.find(function(l) { return !l.used; });
+      if (next && legs.length === items.length) { next.used = true; rows[n] = withTmCurrency(next.link, tag); }
+    });
+    if (!rows.some(Boolean) && legs.length === items.length) legs.forEach(function(l, n) { rows[n] = withTmCurrency(l.link, tag); });
+    legs.forEach(function(l) { l.used = false; });
+    cta = btn(withTmCurrency((legs[0] && legs[0].link) || ('https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/')), tag), 'Check flight prices on Kiwi.com →');
   } else if (cat === 'hotels') {
     items.forEach(function(i, n) { const name = String(i.label || '').split('·')[0].trim(); if (name) rows[n] = askTripHotelsUrl(name + (dest && name.indexOf(dest) < 0 ? ' ' + dest : ''), tag); });
     if (dest) cta = btn(askTripHotelsUrl(dest, tag), 'Check hotel prices on Trip.com →');
@@ -5320,10 +5350,8 @@ function renderEntryInfo(itin) {
 }
 function setEntryTitle(countries) {
   const t = document.getElementById('ibx-entry-title'); if (!t) return;
-  const names = (countries || []).map(function(c) { return c.country; }).filter(Boolean);
-  if (!names.length) { t.textContent = 'Country Entry Requirements'; return; }
-  const list = names.length === 1 ? names[0] : names.length <= 3 ? names.slice(0, -1).join(', ') + ' & ' + names[names.length - 1] : names.length + ' Countries';
-  t.textContent = list + ' Entry Requirements';
+  // 2026-10-18 per Lachy: fixed heading; the country names show (bigger) in the box itself.
+  t.textContent = 'Specific Country Entry Requirements';
 }
 function paintEntry(body, d, passport) {
   const rows = d.countries.map(function(c) {
@@ -9954,7 +9982,7 @@ async function saveBooking() {
    Each slide's photos are loaded just before it shows, so only the first slide loads up front. */
 // Folder name exactly as it is in GitHub (Lachy named it "hero (Slideshow photos)").
 var HERO_DIR = '/hero (Slideshow photos)/';
-var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Göreme, Cappadocia", "imgs": [{"n": "cappadocia-balloons", "ar": 1.33}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Bay of Kotor, Montenegro", "imgs": [{"n": "bay-of-kotor", "ar": 1.33}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Albanian Riviera", "imgs": [{"n": "albanian-riviera", "ar": 1.33}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Mandrakia, Milos", "imgs": [{"n": "mandrakia-milos", "ar": 1.33}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Albanian Alps", "imgs": [{"n": "albanian-alps", "ar": 1.33}]}];
+var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Göreme, Cappadocia", "imgs": [{"n": "cappadocia-balloons", "ar": 1.33}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Bay of Kotor, Montenegro", "imgs": [{"n": "bay-of-kotor", "ar": 1.33}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Albanian Riviera", "imgs": [{"n": "albanian-riviera", "ar": 1.33, "fit": "contain"}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Mandrakia, Milos", "imgs": [{"n": "mandrakia-milos", "ar": 1.33}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Albanian Alps", "imgs": [{"n": "albanian-alps", "ar": 1.33}]}];
 (function(){
   var box = document.getElementById('hero-slides'); if (!box) return;
   var cap = document.querySelector('#hero-caption span'), capEl = document.getElementById('hero-caption'), dots = document.getElementById('hero-dots');
@@ -9969,7 +9997,11 @@ var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kan
       var el = document.createElement('div'); el.className = 'hero-slide';
       s.imgs.forEach(function(i){
         var p = document.createElement('div'); p.className = 'hero-panel'; p.style.flexGrow = s.imgs.length > 1 ? i.ar : 1;
-        var im = document.createElement('img'); im.alt = ''; im.decoding = 'async'; im.dataset.src = encodeURI(HERO_DIR + i.n + '.webp');
+        if (i.fit === 'contain') {
+          p.classList.add('fit');
+          var bg = document.createElement('img'); bg.alt = ''; bg.className = 'hp-bg'; bg.decoding = 'async'; bg.dataset.src = encodeURI(HERO_DIR + i.n + '.webp'); p.appendChild(bg);
+        }
+        var im = document.createElement('img'); im.alt = ''; im.className = 'hp-main'; im.decoding = 'async'; im.dataset.src = encodeURI(HERO_DIR + i.n + '.webp');
         p.appendChild(im); el.appendChild(p);
       });
       box.appendChild(el);
