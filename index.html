@@ -527,6 +527,9 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 @media (max-width:700px) { .ferry-widget-wrap { padding-left:20px; padding-right:20px; } }
 .tour-provider-grid:has(.sw-widget-card) { align-items:start; }
 .ferry-widget-card.sw-widget-card { width:100%; max-width:none; margin:0; box-sizing:border-box; }
+/* 2026-10-20: shorter, squarer SafetyWing card (Lachy) — widget scaled to 82%, tighter padding, no description line */
+.ferry-widget-card.sw-widget-card { padding:14px 14px 10px; gap:4px; }
+.sw-widget-card .safetywing-price-widget { zoom:0.82; }
 .ferry-widget-card iframe { max-width:100%; border-radius:8px; }
 /* ── FLIGHT SEARCH WIDGET (Travelpayouts) ─────────────────── */
 .flight-widget-wrap { max-width:900px; margin:0 auto; padding:0 48px 28px; }
@@ -3735,21 +3738,13 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p>Cover for your trip, sorted before you go.</p>
     </div>
     <div class="tour-provider-grid">
-      <a class="tour-provider-card" href="https://www.covermore.com.au/" target="_blank" rel="noopener noreferrer">
-        <div class="tour-provider-logo-wrap brand-tile" style="--tile:#0B3B60;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><span>Cover-More</span></div>
-        <div class="tour-provider-body">
-          <div class="tour-provider-name">Cover-More</div>
-          <div class="tour-provider-desc">Australian travel insurer, covering medical, cancellation and belongings.</div>
-          <div class="tour-provider-cta">Visit Cover-More →</div>
-        </div>
-      </a>
+      <!-- Cover-More tile removed 20 Oct 2026 (affiliate application not approved). -->
       <!-- SafetyWing price widget (18 Oct 2026): embed code from Lachy's
            SafetyWing affiliate dashboard, affiliate ID 26619927. Replaces the
            old plain SafetyWing link tile. The widget div needs width:100% —
            inside the centred flex card it otherwise collapses to 0px wide. -->
       <div class="ferry-widget-card sw-widget-card">
         <div class="ferry-widget-name">Get a SafetyWing price</div>
-        <div class="ferry-widget-desc">Enter your trip dates to see a quote for SafetyWing travel medical cover.</div>
         <div class="safetywing-price-widget" data-safetywingaffiliateid="26619927" style="width:100%;"></div><script src="https://storage.googleapis.com/safetywing-static/widget/safetywing-price-widget-v2.js"></script>
       </div>
     </div>
@@ -10127,7 +10122,7 @@ async function saveBooking() {
    Each slide's photos are loaded just before it shows, so only the first slide loads up front. */
 // Folder name exactly as it is in GitHub (Lachy named it "hero (Slideshow photos)").
 var HERO_DIR = '/hero (Slideshow photos)/';
-var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Göreme, Cappadocia", "imgs": [{"n": "cappadocia-balloons", "ar": 1.33}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Bay of Kotor, Montenegro", "imgs": [{"n": "bay-of-kotor", "ar": 1.33}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Albanian Riviera", "imgs": [{"n": "albanian-riviera", "ar": 1.33, "fit": "contain"}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Mandrakia, Milos", "imgs": [{"n": "mandrakia-milos", "ar": 1.33}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Albanian Alps", "imgs": [{"n": "albanian-alps", "ar": 1.33}]}];
+var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kandersteg-valley", "ar": 1.85}]}, {"cap": "Navagio Beach, Zakynthos", "imgs": [{"n": "navagio-zakynthos", "ar": 0.75}]}, {"cap": "Göreme, Cappadocia", "imgs": [{"n": "cappadocia-balloons", "ar": 1.33}]}, {"cap": "Amsterdam · Pamplona · Nice", "imgs": [{"n": "amsterdam", "ar": 0.563, "cap": "Amsterdam, Netherlands"}, {"n": "pamplona", "ar": 0.75, "cap": "San Fermín, Pamplona"}, {"n": "split", "ar": 0.75, "cap": "Nice, France"}]}, {"cap": "Ios, Greece", "imgs": [{"n": "ksamil-sunset", "ar": 1.333}]}, {"cap": "Bay of Kotor, Montenegro", "imgs": [{"n": "bay-of-kotor", "ar": 1.33}]}, {"cap": "Kandersteg, Switzerland", "imgs": [{"n": "kandersteg-river", "ar": 0.563}, {"n": "kandersteg-sunset", "ar": 0.75}, {"n": "kandersteg-dusk", "ar": 0.563}]}, {"cap": "Albanian Riviera", "imgs": [{"n": "albanian-riviera", "ar": 1.33}]}, {"cap": "Mykonos, Greece", "imgs": [{"n": "mykonos", "ar": 1.333}]}, {"cap": "Mandrakia, Milos", "imgs": [{"n": "mandrakia-milos", "ar": 1.33}]}, {"cap": "Dubrovnik, Croatia", "imgs": [{"n": "dubrovnik-stairs", "ar": 0.75}, {"n": "dubrovnik-beach", "ar": 1.333}]}, {"cap": "Albanian Alps", "imgs": [{"n": "albanian-alps", "ar": 1.33}]}];
 (function(){
   var box = document.getElementById('hero-slides'); if (!box) return;
   var cap = document.querySelector('#hero-caption span'), capEl = document.getElementById('hero-caption'), dots = document.getElementById('hero-dots');
