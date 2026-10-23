@@ -527,8 +527,10 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 @media (max-width:700px) { .ferry-widget-wrap { padding-left:20px; padding-right:20px; } }
 .tour-provider-grid:has(.sw-widget-card) { align-items:start; }
 .ferry-widget-card.sw-widget-card { width:100%; max-width:none; margin:0; box-sizing:border-box; }
+.ask-results-note { margin:-4px 0 14px; padding:10px 14px; background:var(--accent-light); border-left:3px solid var(--accent); border-radius:8px; font-size:13.5px; color:var(--text); line-height:1.5; }
 /* 2026-10-20: shorter, squarer SafetyWing card (Lachy) — widget scaled to 82%, tighter padding, no description line */
-.ferry-widget-card.sw-widget-card { padding:14px 14px 10px; gap:4px; }
+.ferry-widget-card.sw-widget-card { padding:14px 14px 10px; gap:4px; grid-column:1 / -1; max-width:calc(50% - 10px); margin:0 auto; }
+@media (max-width:700px) { .ferry-widget-card.sw-widget-card { max-width:none; } }
 .sw-widget-card .safetywing-price-widget { zoom:0.82; }
 .ferry-widget-card iframe { max-width:100%; border-radius:8px; }
 /* ── FLIGHT SEARCH WIDGET (Travelpayouts) ─────────────────── */
@@ -7083,6 +7085,9 @@ function renderAskDining(bodyEl, data) {
   }).join('');
   bodyEl.innerHTML =
     '<div class="ask-results-hd"><h3>' + (data.destination ? ('Where to eat &amp; drink in ' + data.destination) : 'Suggestions for you') + '</h3></div>' +
+    // 2026-10-23: the backend's "only a couple of places fit" note (sent when
+    // fewer than 3 places pass the Google quality check).
+    (data.note ? '<div class="ask-results-note">' + tmEsc(data.note) + '</div>' : '') +
     '<div class="ask-results-grid">' + cardsHtml + '</div>' + askNextSteps('dining', data);
   enrichPlaceCards(bodyEl, 2);
 }
