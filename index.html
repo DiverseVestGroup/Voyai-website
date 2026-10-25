@@ -8026,6 +8026,10 @@ function welcomeTransferLink(t, citySlug, dateIso, time, pax) {
   if (time && /^\d{1,2}:\d{2}$/.test(time)) q.set('time', time.padStart(5, '0'));
   q.set('passengers', String(pax || 2));
   q.set('luggage', String(pax || 2));
+  // 2026-10-25 (Lachy): open with the Comfort Minivan (Welcome's type_2) chosen
+  // instead of the Standard Sedan — more room for luggage. The customer can still
+  // switch on Welcome's page. Groups over 6 are left to Welcome (they need a minibus).
+  if ((pax || 2) <= 6) { q.set('fixed_car_type', 'type_2'); q.set('car_type', 'type_2'); }
   const types = ['airport', 'hotel', 'port', 'train_station', 'address'];
   const fromKnown = welcomeEndKnown(t.from_name, nums[0], nums[1]);
   const toKnown = welcomeEndKnown(t.to_name, nums[2], nums[3]);
@@ -9108,7 +9112,7 @@ function renderInboxDetail(itin, justUnlocked) {
             '<div class="evt-dot-col"><div class="evt-dot ' + dot + '"></div></div>' +
             '<div class="evt-body">' +
               '<div class="evt-label">' + (h.label || '') + '</div>' +
-              (h.checked_note ? '<div class="evt-checked">✓ Checked on Google Maps: ' + tmEsc(h.checked_note) + '</div>' : '') +
+              // 2026-10-25 (Lachy): the place-check note ("Swapped X for Y") stays in the data for us but isn't shown to customers.
               (detailText ? '<div class="evt-detail">' + detailText + '</div>' : '') +
               (editing ? '<div class="mt-stop-acts"><button type="button" onclick="mtOpenForm(' + d.day_number + ',' + hi + ')">Edit</button><button type="button" onclick="mtDeleteStop(' + d.day_number + ',' + hi + ')">Remove</button></div>' : '') +
             '</div>' +
