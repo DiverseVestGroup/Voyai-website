@@ -528,6 +528,58 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .tour-provider-grid:has(.sw-widget-card) { align-items:start; }
 .ferry-widget-card.sw-widget-card { width:100%; max-width:none; margin:0; box-sizing:border-box; }
 .ask-results-note { margin:-4px 0 14px; padding:10px 14px; background:var(--accent-light); border-left:3px solid var(--accent); border-radius:8px; font-size:13.5px; color:var(--text); line-height:1.5; }
+/* 2026-10-25: TripMade Points */
+.pts-menu { width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px; margin:2px 0 8px; padding:9px 10px; border:1.5px solid #F2D27A; background:#FFF8E5; border-radius:8px; font-family:inherit; font-size:13px; color:var(--text); cursor:pointer; }
+.pts-menu b { font-weight:800; }
+.pts-menu-sub { font-size:11.5px; color:#8A6200; font-weight:600; }
+.pts-overlay { position:fixed; inset:0; background:rgba(15,23,22,.45); display:none; align-items:center; justify-content:center; z-index:300; padding:16px; }
+.pts-box { position:relative; background:#fff; border-radius:16px; width:100%; max-width:620px; max-height:88vh; overflow:auto; padding:26px 26px 20px; box-shadow:0 20px 50px rgba(0,0,0,.25); }
+.pts-choice { max-width:400px; text-align:center; }
+.pts-x { position:absolute; top:10px; right:12px; border:none; background:none; font-size:24px; line-height:1; color:var(--text-muted); cursor:pointer; padding:4px 8px; }
+.pts-h { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin:0 0 10px; }
+.pts-muted { font-size:13px; color:var(--text-muted); margin:0; }
+.pts-bal-card { display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; background:linear-gradient(135deg,#FFF8E5,#FFEFC2); border:1.5px solid #F2D27A; border-radius:12px; padding:16px 18px; margin-bottom:18px; }
+.pts-big { font-size:26px; font-weight:800; color:var(--text); }
+.pts-ask { font-size:12.5px; font-weight:600; color:#8A6200; max-width:240px; }
+.pts-cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.pts-cols h4, .pts-ref h4, .pts-hist-h { font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin:0 0 8px; }
+.pts-cols ul { margin:0; padding:0; list-style:none; }
+.pts-cols li { display:flex; gap:10px; font-size:13px; padding:5px 0; border-bottom:1px solid var(--border); }
+.pts-cols li b { flex:0 0 44px; color:var(--accent); }
+.pts-ref { margin-top:20px; padding:14px 16px; background:var(--accent-light); border-radius:12px; }
+.pts-ref-row { display:flex; gap:8px; margin-top:10px; }
+.pts-ref-row input { flex:1; min-width:0; padding:9px 10px; border:1.5px solid var(--border-mid); border-radius:8px; font-size:13px; font-family:inherit; background:#fff; }
+.pts-btn { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:10px 16px; font-family:inherit; font-weight:700; font-size:13.5px; cursor:pointer; white-space:nowrap; }
+.pts-btn-alt { background:#fff; color:var(--accent); border:1.5px solid var(--accent-mid); border-radius:8px; padding:10px 16px; font-family:inherit; font-weight:700; font-size:13.5px; cursor:pointer; }
+.pts-btn-wide { display:block; width:100%; margin-top:10px; }
+.pts-hist-h { margin-top:20px !important; }
+.pts-row { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.pts-row small { display:block; color:var(--text-muted); font-size:11.5px; }
+.pts-row .pos { color:#0F7A4F; font-weight:800; white-space:nowrap; }
+.pts-row .neg { color:var(--text); font-weight:700; white-space:nowrap; }
+.pts-pend, .pts-rev { font-size:10.5px; font-weight:700; padding:1px 6px; border-radius:6px; background:#FFF3CD; color:#8A6200; }
+.pts-rev { background:#F3F3F3; color:#777; }
+.pts-fine { font-size:11.5px; color:var(--text-muted); margin:14px 0 0; line-height:1.5; }
+@media (max-width:560px) { .pts-cols { grid-template-columns:1fr; } .pts-box { padding:22px 18px 16px; } .pts-ref-row { flex-direction:column; } }
+#tm-toasts { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:400; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:calc(100% - 32px); max-width:420px; }
+.tm-toast { display:flex; gap:10px; align-items:center; background:#1A1A1A; color:#fff; border-radius:12px; padding:11px 16px; box-shadow:0 10px 30px rgba(0,0,0,.25); font-size:13.5px; animation:tmToastIn .25s ease; transition:opacity .35s, transform .35s; }
+.tm-toast small { display:block; color:#BDBDBD; font-size:12px; }
+.tm-toast.out { opacity:0; transform:translateY(8px); }
+.tm-toast-ic { font-size:18px; }
+@keyframes tmToastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+/* Ask TripMade for guests: answer blurred until they sign up */
+.ask-turn.ask-locked { position:relative; }
+.ask-turn.ask-locked .ask-turn-body { filter:blur(7px); pointer-events:none; user-select:none; max-height:420px; overflow:hidden; }
+.ask-gate { position:absolute; left:0; right:0; top:56px; display:flex; justify-content:center; padding:20px 12px; z-index:2; }
+.ask-gate-box { background:#fff; border:1.5px solid var(--accent-mid); border-radius:14px; box-shadow:0 14px 40px rgba(0,0,0,.14); padding:22px 24px; max-width:380px; text-align:center; }
+.ask-gate-box b { display:block; font-size:17px; margin-bottom:6px; }
+.ask-gate-box p { font-size:13px; color:var(--text-muted); margin:0 0 14px; line-height:1.5; }
+.ask-gate-ic { font-size:26px; margin-bottom:4px; }
+.ask-gate-btn { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:11px 22px; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; margin-top:10px; }
+.ask-gate-link { display:block; margin:10px auto 0; background:none; border:none; color:var(--accent); font-family:inherit; font-size:13px; cursor:pointer; text-decoration:underline; }
+.ask-quota { margin-top:12px; font-size:12.5px; color:var(--text-muted); }
+.ask-quota a { color:var(--accent); font-weight:600; }
+.ask-quota-msg { background:#FFF8E5; border:1.5px solid #F2D27A; border-radius:12px; padding:16px 18px; font-size:14px; line-height:1.55; }
 /* 2026-10-20: shorter, squarer SafetyWing card (Lachy) — widget scaled to 82%, tighter padding, no description line */
 .ferry-widget-card.sw-widget-card { padding:14px 14px 10px; gap:4px; grid-column:1 / -1; max-width:calc(50% - 10px); margin:0 auto; }
 @media (max-width:700px) { .ferry-widget-card.sw-widget-card { max-width:none; } }
@@ -1270,13 +1322,15 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
     </div>
     <!-- Summary -->
-    <div class="sum-grid">
-      <div class="sum-card"><div class="sum-lbl">Flights</div><div class="sum-val">$2,120</div><div class="sum-sub">return + connection</div></div>
-      <div class="sum-card"><div class="sum-lbl">Hotels</div><div class="sum-val">$2,800</div><div class="sum-sub">8 nights</div></div>
-      <div class="sum-card"><div class="sum-lbl">Activities</div><div class="sum-val">$760</div><div class="sum-sub">all booked</div></div>
-      <div class="sum-card"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$950</div><div class="sum-sub">all reserved</div></div>
+    <!-- 2026-10-25: tappable cost breakdowns, same as real trips (sampleCost data in the script). -->
+    <div class="sum-grid" id="sample-sum-grid">
+      <button type="button" class="sum-card" data-cost="flights" aria-expanded="false" onclick="toggleSampleCost('flights')"><div class="sum-lbl">Flights</div><div class="sum-val">$2,120</div><div class="sum-sub">return + connection</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
+      <button type="button" class="sum-card" data-cost="hotels" aria-expanded="false" onclick="toggleSampleCost('hotels')"><div class="sum-lbl">Hotels</div><div class="sum-val">$2,800</div><div class="sum-sub">8 nights</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
+      <button type="button" class="sum-card" data-cost="activities" aria-expanded="false" onclick="toggleSampleCost('activities')"><div class="sum-lbl">Activities</div><div class="sum-val">$760</div><div class="sum-sub">all booked</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
+      <button type="button" class="sum-card" data-cost="food" aria-expanded="false" onclick="toggleSampleCost('food')"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$950</div><div class="sum-sub">all reserved</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
       <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$6,630</div><div class="sum-sub red">$370 under budget</div></div>
     </div>
+    <div class="cost-panel" id="sample-cost-panel" style="display:none;"></div>
     <div class="legend">
       <div class="leg"><div class="leg-dot" style="background:#2F6FED;"></div><span>Flights &amp; transfers</span></div>
       <div class="leg"><div class="leg-dot" style="background:#D9A404;"></div><span>Activities</span></div>
@@ -3991,6 +4045,7 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="ask-chip" onclick="askChip(this)" data-q="Where to stay in Paris, budget $200, want to be right in the city centre.">Paris · $200, city centre</div>
           <div class="ask-chip" onclick="askChip(this)" data-q="Tokyo on a budget, around $90 a night, somewhere with good nightlife nearby.">Tokyo · $90, nightlife</div>
         </div>
+        <div class="ask-quota" id="ask-quota">Free for members: 5 questions a month. <a href="javascript:void(0)" onclick="openSignupModal()">Sign up free</a></div>
       </div>
       <div id="ask-results" style="display:none;"></div>
       <div id="ask-chat-toolbar" class="ask-chat-toolbar" style="display:none;">
@@ -4347,7 +4402,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 <div id="page-terms" class="page">
   <div class="section" style="max-width:760px;">
     <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
-      This is a working draft written to reflect what TripMade actually does today. It has not been reviewed by a lawyer and should get that review before launch — in particular sections 5 and 9 below (payment terms and liability).
+      This is a working draft written to reflect what TripMade actually does today. It has not been reviewed by a lawyer and should get that review before launch — in particular sections 5, 9 and 10 below (payment terms and liability).
     </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Terms &amp; Conditions</h2>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
@@ -4360,10 +4415,25 @@ footer p { font-size:13px; color:var(--text-dim); }
       <p style="margin-bottom:18px;"><b>6. Affiliate commissions.</b> TripMade may earn a commission when you book through links in your itinerary. This does not affect the price you pay, and any booking you make through a partner link is a contract between you and that partner, not with TripMade.</p>
       <p style="margin-bottom:18px;"><b>7. No liability for bookings.</b> TripMade is not a travel agent and is not responsible for bookings made directly with third-party providers, including cancellations, delays, changes, or disputes — those are between you and the provider.</p>
       <p style="margin-bottom:18px;"><b>8. Acceptable use.</b> Please don't use TripMade to submit false information, attempt to scrape or resell our itineraries at scale, or interfere with the service. We may suspend or close an account that does.</p>
-      <p style="margin-bottom:18px;"><b>9. Limitation of liability.</b> To the extent permitted by law, TripMade's liability to you for any claim relating to the service is limited to the amount you paid us (if any) for the specific feature the claim relates to. Nothing in these terms excludes any guarantee or right you have under the Australian Consumer Law that can't lawfully be excluded.</p>
-      <p style="margin-bottom:18px;"><b>10. Changes.</b> We may update these terms from time to time as our service evolves. Continuing to use TripMade after an update means you accept the new terms.</p>
-      <p style="margin-bottom:18px;"><b>11. Governing law.</b> These terms are governed by the laws of New South Wales, Australia.</p>
-      <p style="margin-bottom:0;"><b>12. Contact.</b> Questions about these terms can be sent to hello@tripmade.co.</p>
+      <div id="terms-points" style="margin-bottom:18px;">
+        <p style="margin-bottom:10px;"><b>9. TripMade Points.</b> TripMade Points is our free loyalty program for account holders. 100 points are worth A$1 to spend on TripMade. By earning or using points you agree to these rules:</p>
+        <ul style="margin:0 0 0 20px;padding:0;">
+          <li style="margin-bottom:6px;"><b>Earning.</b> You earn points for: signing up (100), booking through a tracked TripMade link (1 point for every A$5 spent), inviting a friend who signs up and makes a trip (500, up to 10 friends a year), leaving a review that we approve (100, once per trip), forwarding a booking confirmation to bookings@tripmade.co (25, up to 10 a month) and sharing a trip with a friend (25, once per trip). We may change these amounts as set out below.</li>
+          <li style="margin-bottom:6px;"><b>Bookings.</b> Only bookings made through a tagged TripMade link while you're signed in, and reported to us by our booking partner, earn booking points. They show as pending until your trip has finished, then become available to spend. If the partner tells us the booking was cancelled or refunded, the points are removed.</li>
+          <li style="margin-bottom:6px;"><b>Spending.</b> You can use points instead of paying by card for TripMade features, at 100 points per A$1: unlocking a day (100), unlocking all remaining days (90 per day), one more AI trip change (100), unlimited AI changes on a trip (1,000) and extra Ask TripMade questions (20 each, once your free questions for the month are used). Features bought with points can't be refunded as points or cash.</li>
+          <li style="margin-bottom:6px;"><b>Ask TripMade.</b> Ask TripMade answers are for account holders. Each account gets 5 free questions a month; after that, each question uses 20 points.</li>
+          <li style="margin-bottom:6px;"><b>No cash value.</b> Points have no cash value. They can't be bought, sold, transferred to another person or account, combined between accounts, or exchanged for money. Buying a feature with a card doesn't earn points.</li>
+          <li style="margin-bottom:6px;"><b>Expiry.</b> Points expire if your account has no points activity (earning or spending) for 18 months. We'll email you a reminder about 30 days before they expire.</li>
+          <li style="margin-bottom:6px;"><b>Referrals.</b> Referral points are only for genuine new customers. One account per person; you can't refer yourself or create extra accounts. A friend gets their own sign-up bonus when they join.</li>
+          <li style="margin-bottom:6px;"><b>Fair use.</b> We may withhold or remove points, or close an account, if points are earned through fraud, fake bookings or reviews, duplicate accounts, or any other abuse of the program. Points earned in error may be corrected.</li>
+          <li style="margin-bottom:6px;"><b>Changes and ending the program.</b> We may change or end the program with at least 30 days' notice by email or on this page. Points you've already earned keep their value until the change takes effect, and if we end the program you'll have at least 30 days to use them.</li>
+          <li style="margin-bottom:6px;"><b>Closing your account.</b> If you delete your account, any unused points are cancelled.</li>
+        </ul>
+      </div>
+      <p style="margin-bottom:18px;"><b>10. Limitation of liability.</b> To the extent permitted by law, TripMade's liability to you for any claim relating to the service is limited to the amount you paid us (if any) for the specific feature the claim relates to. Nothing in these terms excludes any guarantee or right you have under the Australian Consumer Law that can't lawfully be excluded.</p>
+      <p style="margin-bottom:18px;"><b>11. Changes.</b> We may update these terms from time to time as our service evolves. Continuing to use TripMade after an update means you accept the new terms.</p>
+      <p style="margin-bottom:18px;"><b>12. Governing law.</b> These terms are governed by the laws of New South Wales, Australia.</p>
+      <p style="margin-bottom:0;"><b>13. Contact.</b> Questions about these terms can be sent to hello@tripmade.co.</p>
     </div>
   </div>
 </div>
@@ -5181,6 +5251,7 @@ function renderAuthNav() {
               '<option value="SGD">SGD (S$)</option><option value="JPY">JPY (¥)</option>' +
             '</select>' +
           '</div>' +
+          '<button type="button" class="pts-menu" style="display:none;" onclick="openPointsModal()"><span>⭐ <b class="pts-bal">0</b> points</span><span class="pts-menu-sub">View &amp; earn →</span></button>' +
           '<button type="button" onclick="openAccountModal()" style="width:100%;margin-top:2px;margin-bottom:6px;padding:9px;border:1.5px solid var(--accent);border-radius:8px;background:var(--accent-light);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--accent);">Edit account</button>' +
           '<button onclick="logoutUser()" style="width:100%;margin-top:2px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
         '</div>' +
@@ -5190,7 +5261,13 @@ function renderAuthNav() {
     // covers this select on every future currency change).
     const menuCurrencySelect = el.querySelector('#profile-menu .currency-picker');
     if (menuCurrencySelect) menuCurrencySelect.value = _currentUser.currency || 'AUD';
+    // TripMade Points: show the balance once it's loaded (hidden if points aren't available).
+    if (_tmPoints) applyPoints(_tmPoints); else refreshPoints();
+    unlockAskTurns();
   } else {
+    _tmPoints = null; _tmPointsOff = false;
+    const aq = document.getElementById('ask-quota');
+    if (aq) aq.innerHTML = 'Free for members: 5 questions a month. <a href="javascript:void(0)" onclick="openSignupModal()">Sign up free</a>';
     el.innerHTML =
       '<span style="display:inline-flex;align-items:center;gap:14px;">' +
         '<a href="javascript:void(0)" style="color:var(--text-muted);font-size:14px;" onclick="openLoginModal()">Log in</a>' +
@@ -5204,6 +5281,171 @@ function toggleProfileMenu(e) {
   const menu = document.getElementById('profile-menu');
   if (!menu) return;
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+// ── TripMade Points (25 Oct 2026) ─────────────────────────────────
+// 100 points = A$1. The `points` edge function keeps the ledger; this file
+// only shows the balance and asks it to spend points. If the function isn't
+// reachable (e.g. before launch), every points option quietly stays hidden
+// and everything works exactly as before.
+var _tmPoints = null, _tmPointsOff = false, _tmPointsLoading = null;
+const POINTS_FN = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/points';
+async function callPoints(body) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) throw new Error('signed_out');
+  const res = await fetch(POINTS_FN, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token }, body: JSON.stringify(body || {}) });
+  const j = await res.json().catch(function() { return {}; });
+  if (!res.ok && !j.need_points) { const e = new Error(j.error || ('points_' + res.status)); e.status = res.status; throw e; }
+  return j;
+}
+function tmPts(n) { return Number(n || 0).toLocaleString('en-AU'); }
+function applyPoints(j) {
+  if (!j || typeof j.balance !== 'number') return;
+  _tmPoints = Object.assign({}, _tmPoints || {}, j);
+  document.querySelectorAll('.pts-bal').forEach(function(el) { el.textContent = tmPts(_tmPoints.balance); });
+  document.querySelectorAll('.pts-menu').forEach(function(el) { el.style.display = ''; });
+  const q = document.getElementById('ask-quota');
+  if (q) q.innerHTML = _tmPoints.ask_free_left > 0
+    ? tmEsc(_tmPoints.ask_free_left + ' of ' + _tmPoints.ask_free_per_month + ' free questions left this month')
+    : tmEsc('Free questions used this month · ' + _tmPoints.ask_cost + ' points per question · you have ' + tmPts(_tmPoints.balance)) + ' · <a href="javascript:void(0)" onclick="openPointsModal()">Earn points</a>';
+  (j.new_awards || []).forEach(function(a, i) { setTimeout(function() { tmToast('+' + tmPts(a.points) + ' points · ' + (a.note || 'TripMade Points'), a.status === 'pending' ? 'Pending until your trip ends' : ''); }, 400 + i * 1600); });
+  const m = document.getElementById('pts-modal');
+  if (m && m.style.display === 'flex') paintPointsModal();
+}
+async function refreshPoints(force) {
+  if (!getUser()) { _tmPoints = null; return null; }
+  if (_tmPointsOff && !force) return null;
+  if (_tmPointsLoading && !force) return _tmPointsLoading;
+  _tmPointsLoading = (async function() {
+    try { await claimStoredReferral(); const j = await callPoints({ action: 'status' }); _tmPointsOff = false; applyPoints(j); return _tmPoints; }
+    catch (e) { if (e.message !== 'signed_out') { _tmPointsOff = true; console.warn('Points unavailable:', e.message); const aq = document.getElementById('ask-quota'); if (aq) aq.textContent = 'Ask anything about where to stay, eat or go.'; } return null; }
+    finally { _tmPointsLoading = null; }
+  })();
+  return _tmPointsLoading;
+}
+// Small notification at the bottom of the screen.
+function tmToast(text, sub) {
+  let wrap = document.getElementById('tm-toasts');
+  if (!wrap) { wrap = document.createElement('div'); wrap.id = 'tm-toasts'; document.body.appendChild(wrap); }
+  const t = document.createElement('div'); t.className = 'tm-toast';
+  t.innerHTML = '<span class="tm-toast-ic">⭐</span><div><b></b>' + (sub ? '<small></small>' : '') + '</div>';
+  t.querySelector('b').textContent = text; if (sub) t.querySelector('small').textContent = sub;
+  wrap.appendChild(t);
+  setTimeout(function() { t.classList.add('out'); setTimeout(function() { t.remove(); }, 400); }, 4200);
+}
+// Referral links: tripmade.co/?ref=CODE. Kept until the visitor creates an
+// account, then claimed once (the backend only accepts it for new accounts).
+(function() {
+  try { const r = new URLSearchParams(window.location.search).get('ref'); if (r && /^[0-9a-f]{12,32}$/i.test(r)) localStorage.setItem('tm_ref', r.toLowerCase()); } catch (e) {}
+})();
+async function claimStoredReferral() {
+  let code = null; try { code = localStorage.getItem('tm_ref'); } catch (e) {}
+  if (!code) return;
+  try { const out = await callPoints({ action: 'claim_referral', code: code }); if (out && (out.ok || out.reason)) { try { localStorage.removeItem('tm_ref'); } catch (e) {} } } catch (e) { /* try again next time */ }
+}
+function pointsReferralLink() { return _tmPoints && _tmPoints.referral_code ? 'https://tripmade.co/?ref=' + _tmPoints.referral_code : ''; }
+// "My points" window: balance, how to earn and spend, history, referral link.
+function openPointsModal() {
+  const menu = document.getElementById('profile-menu'); if (menu) menu.style.display = 'none';
+  let m = document.getElementById('pts-modal');
+  if (!m) {
+    m = document.createElement('div'); m.id = 'pts-modal'; m.className = 'pts-overlay';
+    m.addEventListener('click', function(e) { if (e.target === m) closePointsModal(); });
+    m.innerHTML = '<div class="pts-box" role="dialog" aria-modal="true" aria-labelledby="pts-title"><button type="button" class="pts-x" aria-label="Close" onclick="closePointsModal()">×</button><div id="pts-body"></div></div>';
+    document.body.appendChild(m);
+  }
+  m.style.display = 'flex';
+  paintPointsModal();
+  refreshPoints(true);
+}
+function closePointsModal() { const m = document.getElementById('pts-modal'); if (m) m.style.display = 'none'; }
+function paintPointsModal() {
+  const body = document.getElementById('pts-body'); if (!body) return;
+  const p = _tmPoints;
+  if (!p) { body.innerHTML = '<h3 id="pts-title" class="pts-h">TripMade Points</h3><p class="pts-muted">' + (_tmPointsOff ? 'Points aren\'t available just now. Please try again soon.' : 'Loading your points…') + '</p>'; return; }
+  const e = p.earn || {}, pr = p.prices || {};
+  const per5 = e.booking_per_aud ? Math.round(1 / e.booking_per_aud) : 5;
+  const link = pointsReferralLink();
+  const hist = (p.history || []).slice(0, 25).map(function(h) {
+    const d = new Date(h.date); const when = isNaN(d) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+    const tag = h.status === 'pending' ? ' <span class="pts-pend">pending</span>' : h.status === 'reversed' ? ' <span class="pts-rev">removed</span>' : '';
+    return '<div class="pts-row"><div>' + tmEsc(h.note || '') + tag + '<small>' + when + '</small></div><div class="' + (h.points < 0 ? 'neg' : 'pos') + '">' + (h.points > 0 ? '+' : '') + tmPts(h.points) + '</div></div>';
+  }).join('') || '<p class="pts-muted">No points yet. Start with the ideas above.</p>';
+  body.innerHTML =
+    '<h3 id="pts-title" class="pts-h">TripMade Points</h3>' +
+    '<div class="pts-bal-card"><div><div class="pts-big"><span class="pts-bal">' + tmPts(p.balance) + '</span> points</div><div class="pts-muted">Worth A$' + (p.balance / 100).toFixed(2) + ' on TripMade' + (p.pending > 0 ? ' · ' + tmPts(p.pending) + ' pending' : '') + '</div></div>' +
+      '<div class="pts-ask">' + (p.ask_free_left > 0 ? p.ask_free_left + ' of ' + p.ask_free_per_month + ' free Ask TripMade questions left this month' : 'Free Ask TripMade questions used this month · ' + p.ask_cost + ' points each') + '</div></div>' +
+    '<div class="pts-cols"><div><h4>Earn points</h4><ul>' +
+      '<li><b>' + tmPts(e.referral) + '</b> for each friend who joins and makes a trip</li>' +
+      '<li><b>1</b> for every A$' + per5 + ' you book through TripMade links</li>' +
+      '<li><b>' + tmPts(e.review) + '</b> for an approved review after your trip</li>' +
+      '<li><b>' + tmPts(e.forward) + '</b> for each booking you forward to bookings@tripmade.co</li>' +
+      '<li><b>' + tmPts(e.share) + '</b> for sharing a trip with a friend</li></ul></div>' +
+    '<div><h4>Spend points</h4><ul>' +
+      '<li><b>' + tmPts(pr.unlock_day) + '</b> unlock a day of your trip</li>' +
+      '<li><b>' + tmPts(pr.unlock_all_per_day) + '</b> per day to unlock all remaining days</li>' +
+      '<li><b>' + tmPts(pr.edit_one) + '</b> one more AI trip change</li>' +
+      '<li><b>' + tmPts(pr.edit_unlimited) + '</b> unlimited AI changes on a trip</li>' +
+      '<li><b>' + tmPts(p.ask_cost) + '</b> extra Ask TripMade question</li></ul></div></div>' +
+    (link ? '<div class="pts-ref"><h4>Invite friends, get ' + tmPts(e.referral) + ' points each</h4><p class="pts-muted">Share your link. When a friend signs up and makes their first trip, you get ' + tmPts(e.referral) + ' points and they get ' + tmPts(e.signup) + ' to start.</p><div class="pts-ref-row"><input type="text" readonly value="' + tmEsc(link) + '" aria-label="Your invite link" onclick="this.select()"><button type="button" class="pts-btn" onclick="copyReferralLink(this)">Copy link</button></div></div>' : '') +
+    '<h4 class="pts-hist-h">History</h4><div class="pts-hist">' + hist + '</div>' +
+    '<p class="pts-fine">100 points = A$1 to spend on TripMade. Points have no cash value and expire after 18 months with no activity. Booking points become available once your trip has finished. <a href="/terms#terms-points" onclick="closePointsModal();showPage(\'terms\');setTimeout(function(){var t=document.getElementById(\'terms-points\');if(t)t.scrollIntoView({behavior:\'smooth\'});},60);return false;">Full rules</a></p>';
+}
+function copyReferralLink(btn) {
+  const link = pointsReferralLink(); if (!link) return;
+  const done = function() { btn.textContent = 'Copied ✓'; setTimeout(function() { btn.textContent = 'Copy link'; }, 2000); };
+  try { navigator.clipboard.writeText(link).then(done, function() { const i = btn.previousElementSibling; i.select(); document.execCommand('copy'); done(); }); }
+  catch (e) { const i = btn.previousElementSibling; i.select(); try { document.execCommand('copy'); } catch (x) {} done(); }
+}
+// "Use points or pay by card?" choice. Resolves 'points', 'card' or null (cancelled).
+function tmPayChoice(o) {
+  return new Promise(function(resolve) {
+    let m = document.getElementById('pay-choice');
+    if (!m) { m = document.createElement('div'); m.id = 'pay-choice'; m.className = 'pts-overlay'; document.body.appendChild(m); }
+    m.innerHTML = '<div class="pts-box pts-choice" role="dialog" aria-modal="true"><button type="button" class="pts-x" aria-label="Close" data-a="">×</button>' +
+      '<h3 class="pts-h"></h3><p class="pts-muted pc-text"></p>' +
+      '<button type="button" class="pts-btn pts-btn-wide" data-a="points"></button>' +
+      (o.cardLabel ? '<button type="button" class="pts-btn-alt pts-btn-wide" data-a="card"></button>' : '') +
+      '<p class="pts-fine pc-bal"></p></div>';
+    m.querySelector('.pts-h').textContent = o.title;
+    m.querySelector('.pc-text').textContent = o.text || '';
+    m.querySelector('[data-a="points"]').textContent = 'Use ' + tmPts(o.points) + ' points';
+    if (o.cardLabel) m.querySelector('[data-a="card"]').textContent = o.cardLabel;
+    m.querySelector('.pc-bal').textContent = 'You have ' + tmPts(_tmPoints ? _tmPoints.balance : 0) + ' points.';
+    const finish = function(v) { m.style.display = 'none'; resolve(v); };
+    m.onclick = function(e) { const b = e.target.closest('[data-a]'); if (b) finish(b.getAttribute('data-a') || null); else if (e.target === m) finish(null); };
+    m.style.display = 'flex';
+  });
+}
+// For an Unlock / AI-change button: 'card' when points can't cover it (or
+// aren't available), otherwise asks the customer which they'd like.
+async function pointsOrCard(kind, itin, dayNumber, cardLabel) {
+  if (!getUser() || _tmPointsOff) return 'card';
+  const p = _tmPoints || await refreshPoints();
+  if (!p || !p.prices) return 'card';
+  let cost = 0, title = '';
+  if (kind === 'unlock_day') { cost = p.prices.unlock_day; title = 'Unlock Day ' + dayNumber; }
+  else if (kind === 'unlock_all') {
+    const remaining = (itin.days || []).filter(function(d) { return inboxDayLocked(itin, d.day_number); }).length;
+    cost = remaining * p.prices.unlock_all_per_day; title = 'Unlock all ' + remaining + ' remaining days';
+  }
+  else if (kind === 'edit_one') { cost = p.prices.edit_one; title = '1 more TripMade change'; }
+  else if (kind === 'edit_unlimited') { cost = p.prices.edit_unlimited; title = 'Unlimited TripMade changes'; }
+  if (!cost || p.balance < cost) return 'card';
+  return await tmPayChoice({ title: title, text: 'Use your TripMade Points, or pay by card.', points: cost, cardLabel: cardLabel });
+}
+async function redeemPoints(kind, itinId, dayNumber) {
+  try {
+    const out = await callPoints({ action: 'redeem', kind: kind, itinerary_id: itinId, day_number: dayNumber });
+    if (out.need_points) { tmToast('Not enough points', 'You need ' + tmPts(out.cost) + ' points for this.'); return false; }
+    if (!out.ok) throw new Error(out.error || 'failed');
+    applyPoints(out);
+    tmToast('Paid with ' + tmPts(out.spent) + ' points', 'You have ' + tmPts(out.balance) + ' left.');
+    return true;
+  } catch (e) {
+    console.error('Redeeming points failed', e);
+    tmToast('Couldn\'t use points just then', e.message === 'already_unlocked' ? 'That\'s already unlocked.' : 'Nothing was taken. Please try again.');
+    return false;
+  }
 }
 // Changing currency from the profile menu updates the saved default for
 // this account (not just this visit), and immediately re-prices everything
@@ -5291,6 +5533,71 @@ function paintCostPanel(itin) {
     _costCache[ck] = data ? { data: data } : { failed: true };
     if (_currentInboxItinerary && _currentInboxItinerary.id === itin.id && _costOpen) paintCostPanel(_currentInboxItinerary);
   })();
+}
+// Homepage sample trip (Rome + Ibiza, 2 adults): the same cost dropdowns as a
+// real trip, from fixed line items that add up to each card's total.
+var _sampleCostOpen = null;
+var SAMPLE_COSTS = {
+  flights: [
+    { label: 'SYD → DXB → FCO · Emirates', detail: 'Sydney to Rome via Dubai · 2 adults', amount: 1180, route: 'SYD → FCO' },
+    { label: 'FCO → IBZ · Vueling', detail: 'Rome to Ibiza · 2 adults', amount: 160, route: 'FCO → IBZ' },
+    { label: 'IBZ → DXB → SYD · Emirates', detail: 'Ibiza home to Sydney via Dubai · 2 adults', amount: 780, route: 'IBZ → SYD' }
+  ],
+  hotels: [
+    { label: "Boutique Hotel Campo de' Fiori · Rome", detail: '4 nights · about $280 a night', amount: 1120, q: "Boutique Hotel Campo de' Fiori Rome" },
+    { label: 'Ushuaïa Beach Hotel · Ibiza', detail: '4 nights · about $420 a night', amount: 1680, q: 'Ushuaia Beach Hotel Ibiza' }
+  ],
+  activities: [
+    { label: 'Vatican Museums + Sistine Chapel', detail: 'Skip-the-line entry · 2 adults', amount: 140, q: 'Vatican Museums Sistine Chapel skip the line' },
+    { label: "St Peter's Basilica dome climb", detail: '2 adults', amount: 30, q: "St Peter's Basilica dome climb" },
+    { label: "Castel Sant'Angelo guided tour", detail: '2 adults', amount: 90, q: "Castel Sant'Angelo guided tour" },
+    { label: 'Colosseum + Roman Forum', detail: 'Priority access, guided · 2 adults', amount: 150, q: 'Colosseum Roman Forum guided tour' },
+    { label: 'Borghese Gallery', detail: 'Timed entry · 2 adults', amount: 70, q: 'Borghese Gallery tickets' },
+    { label: 'Ibiza sunset catamaran', detail: '3 hours, open bar · 2 adults', amount: 280, q: 'Ibiza sunset catamaran' }
+  ],
+  food: [
+    { label: 'Rome dinners', detail: 'Osteria del Pegno, Da Enzo al 29, Il Sorpasso', amount: 325 },
+    { label: 'Rome lunches and brunch', detail: 'Pizzarium Bonci, Supplì Roma, Antico Caffè Greco', amount: 95 },
+    { label: 'Ibiza dinners', detail: 'Jockey Club, El Chiringuito, Can Pilot', amount: 400 },
+    { label: 'Ibiza brunch and sunset drinks', detail: 'La Paloma, Café del Mar', amount: 130 }
+  ]
+};
+function toggleSampleCost(cat) {
+  _sampleCostOpen = _sampleCostOpen === cat ? null : cat;
+  document.querySelectorAll('#sample-sum-grid button.sum-card').forEach(function(b) {
+    const on = b.dataset.cost === _sampleCostOpen; b.classList.toggle('open', on); b.setAttribute('aria-expanded', on);
+  });
+  const panel = document.getElementById('sample-cost-panel');
+  if (!panel) return;
+  if (!_sampleCostOpen) { panel.style.display = 'none'; return; }
+  try { if (window.tmTrack) tmTrack('sample_cost_breakdown_opened', { category: cat }); } catch (e) {}
+  const items = SAMPLE_COSTS[cat] || [];
+  const tag = 'sample_home';
+  const money = function(v) { return '$' + Math.round(v).toLocaleString(); };
+  const link = function(i) {
+    try {
+      if (cat === 'flights') { const k = kiwiFlightLink(i.route, ''); return k ? withTmCurrency(k, tag) : ''; }
+      if (cat === 'hotels') return askTripHotelsUrl(i.q, tag);
+      if (cat === 'activities') return viatorSearchLink(i.q, tag);
+    } catch (e) {}
+    return '';
+  };
+  const total = items.reduce(function(a, i) { return a + i.amount; }, 0);
+  const cta = cat === 'food'
+    ? '<button type="button" class="cost-cta" onclick="showPage(\'ask\')">Find places to eat with Ask TripMade →</button>'
+    : cat === 'flights' ? '<a class="cost-cta" href="' + tmEsc(link(items[0]) || '#') + '" target="_blank" rel="noopener noreferrer sponsored">Check flight prices on Kiwi.com →</a>'
+    : cat === 'hotels' ? '<a class="cost-cta" href="' + tmEsc(askTripHotelsUrl('Rome', tag)) + '" target="_blank" rel="noopener noreferrer sponsored">Check hotel prices on Trip.com →</a>'
+    : '<a class="cost-cta" href="' + tmEsc(viatorSearchLink('Rome', tag)) + '" target="_blank" rel="noopener noreferrer sponsored">Check tours &amp; activities on Viator →</a>';
+  panel.innerHTML = '<div class="cost-hd"><b>' + COST_NAMES[cat] + ' breakdown</b><button type="button" class="cost-x" aria-label="Close" onclick="toggleSampleCost(\'' + cat + '\')">×</button></div>' +
+    '<div class="cost-avg"><b>This is a sample trip, so these are average prices.</b> Your own itinerary gets a breakdown like this for your dates, with <i>Check price</i> links to confirm today\'s price.</div>' +
+    items.map(function(i) {
+      const href = link(i);
+      return '<div class="cost-row"><div>' + tmEsc(i.label) + (i.detail ? '<small>' + tmEsc(i.detail) + '</small>' : '') + '</div><div class="cost-right"><div class="cost-amt">~' + money(i.amount) + '</div>' +
+        (href ? '<a class="cost-check" href="' + tmEsc(href) + '" target="_blank" rel="noopener noreferrer sponsored">Check price →</a>' : '') + '</div></div>';
+    }).join('') +
+    '<div class="cost-tot"><span>Estimated total</span><span>~' + money(total) + '</span></div>' + cta +
+    '<div class="cost-note">Average prices for 2 adults in September. Final prices are set by the airline, hotel or tour company when you book.</div>';
+  panel.style.display = '';
 }
 // Affiliate "Check price" links for the cost breakdown (2026-10-18, per
 // Lachy): flights -> Kiwi (via Travelpayouts), hotels -> Trip.com, activities
@@ -6878,6 +7185,22 @@ async function runAskTripMade() {
   const resultsEl = document.getElementById('ask-results');
   const query = input.value.trim();
   if (!query) { input.focus(); return; }
+  // 2026-10-25: Ask TripMade is for members. Guests still get the answer,
+  // but blurred behind "Sign up to view". Members get a few free questions a
+  // month, then each one uses TripMade Points (they confirm first).
+  const member = !!getUser();
+  let payWithPoints = false;
+  if (member && !_tmPointsOff) {
+    btn.disabled = true;
+    const p = _tmPoints || await refreshPoints();
+    btn.disabled = false;
+    if (p && p.ask_free_left <= 0) {
+      if (p.balance < p.ask_cost) { showAskOutOfQuestions(p); return; }
+      const how = await tmPayChoice({ title: 'Use ' + p.ask_cost + ' points for this question?', text: 'You\'ve used your ' + p.ask_free_per_month + ' free Ask TripMade questions this month. Each extra question is ' + p.ask_cost + ' points (' + p.ask_cost + 'c).', points: p.ask_cost, cardLabel: null });
+      if (how !== 'points') return;
+      payWithPoints = true;
+    }
+  }
   btn.disabled = true;
   btn.textContent = 'Thinking…';
   const example = document.getElementById('ask-example');
@@ -6921,6 +7244,10 @@ async function runAskTripMade() {
     // anything else means the question's been fully answered.
     _pendingClarification = data.type === 'clarify' ? apiQuery : null;
     renderAskTurnBody(bodyEl, data);
+    if (data.type !== 'clarify') {
+      if (!member) lockAskTurn(turnEl);
+      else if (!_tmPointsOff) callPoints({ action: 'ask', pay: payWithPoints }).then(function(out) { if (out && out.ok) { applyPoints(out); if (out.charged) tmToast('Used ' + out.charged + ' points for that question', 'You have ' + tmPts(out.balance) + ' left.'); } }).catch(function() {});
+    }
   } catch (e) {
     console.error('ask-tripmade failed', e);
     turn.error = 'Couldn\'t get suggestions just then — please try again in a moment.';
@@ -6935,6 +7262,32 @@ async function runAskTripMade() {
       document.getElementById('ask-chat-toolbar').style.display = 'flex';
     }
   }
+}
+// Ask TripMade for guests: blur the answer and offer sign-up. Unblurred
+// automatically once they sign up or log in (see renderAuthNav).
+function lockAskTurn(turnEl) {
+  const body = turnEl.querySelector('.ask-turn-body'); if (!body || turnEl.classList.contains('ask-locked')) return;
+  turnEl.classList.add('ask-locked');
+  const gate = document.createElement('div'); gate.className = 'ask-gate';
+  gate.innerHTML = '<div class="ask-gate-box"><div class="ask-gate-ic">🔒</div><b>Sign up free to see your answer</b>' +
+    '<p>Ask TripMade is for members. It\'s free: you get ' + ((_tmPoints && _tmPoints.ask_free_per_month) || 5) + ' questions a month and 100 TripMade Points to start.</p>' +
+    '<button type="button" class="ask-gate-btn" onclick="openSignupModal()">Sign up to view</button>' +
+    '<button type="button" class="ask-gate-link" onclick="openLoginModal()">Already a member? Log in</button></div>';
+  body.parentNode.insertBefore(gate, body.nextSibling);
+  try { if (window.tmTrack) tmTrack('ask_answer_gated', {}); } catch (e) {}
+}
+function unlockAskTurns() {
+  document.querySelectorAll('.ask-turn.ask-locked').forEach(function(t) {
+    t.classList.remove('ask-locked'); const g = t.querySelector('.ask-gate'); if (g) g.remove();
+  });
+}
+function showAskOutOfQuestions(p) {
+  const resultsEl = document.getElementById('ask-results'); resultsEl.style.display = 'block';
+  const ex = document.getElementById('ask-example'); if (ex) ex.style.display = 'none';
+  const el = document.createElement('div'); el.className = 'ask-turn';
+  el.innerHTML = '<div class="ask-turn-body"><div class="ask-quota-msg"><b>You\'ve used your ' + p.ask_free_per_month + ' free questions this month.</b> Each extra question is ' + p.ask_cost + ' TripMade Points, and you have ' + tmPts(p.balance) + '. Earn points by inviting friends, booking through TripMade or leaving a review, or come back next month for ' + p.ask_free_per_month + ' more free questions.' +
+    '<div><button type="button" class="ask-gate-btn" onclick="openPointsModal()">See ways to earn points</button></div></div></div>';
+  resultsEl.prepend(el);
 }
 // Safely embeds a JS string as a single-quoted literal inside an
 // onclick="..." HTML attribute (which is itself double-quoted). Plain
@@ -8230,6 +8583,23 @@ function openEditsModal() {
 function closeEditsModal() { document.getElementById('edits-modal').style.display = 'none'; }
 async function buyTripEdits(mode, btn) {
   if (!_currentInboxItinerary || _checkoutStarting) return;
+  const itinP = _currentInboxItinerary;
+  const kindP = mode === 'edit_unlimited' ? 'edit_unlimited' : 'edit_one';
+  const how = await pointsOrCard(kindP, itinP, null, 'Pay ' + tmPrice(mode === 'edit_unlimited' ? TM_PRICES_AUD.edit_unlimited : TM_PRICES_AUD.edit_one) + ' by card');
+  if (!how) return;
+  if (how === 'points') {
+    _checkoutStarting = true;
+    const ok = await redeemPoints(kindP, itinP.id);
+    _checkoutStarting = false;
+    if (ok) {
+      closeEditsModal();
+      _ibxEdit = true; _ibxEditTripId = itinP.id;
+      try { const out = await callManageTrip({ action: 'edit_status', itinerary_id: itinP.id }); _editStatus = Object.assign({ id: itinP.id }, out); } catch (e) {}
+      _teMsg = { kind: 'ok', text: mode === 'edit_unlimited' ? 'Done. You now have unlimited TripMade changes on this trip.' : 'Done. You have 1 more TripMade change.' };
+      rerenderTrip();
+    }
+    return;
+  }
   _checkoutStarting = true;
   ['edits-one', 'edits-unl'].forEach(function(id) { document.getElementById(id).disabled = true; });
   const what = btn.querySelector('.edits-what'); const was = what.textContent;
@@ -8948,6 +9318,17 @@ async function callCreateCheckoutSession(payload) {
 let _checkoutStarting = false;
 async function unlockInboxDay(dayNumber) {
   if (!_currentInboxItinerary || _checkoutStarting) return;
+  // 2026-10-25: TripMade Points can pay instead of card.
+  const itinP = _currentInboxItinerary;
+  const how = await pointsOrCard('unlock_day', itinP, dayNumber, 'Pay ' + inboxUnlockPrice(itinP, 'day') + ' by card');
+  if (!how) return;
+  if (how === 'points') {
+    _checkoutStarting = true;
+    const ok = await redeemPoints('unlock_day', itinP.id, dayNumber);
+    _checkoutStarting = false;
+    if (ok) { _justPaidDay = dayNumber; openInboxItinerary(itinP.id, true); }
+    return;
+  }
   _checkoutStarting = true;
   // Show on the tapped button exactly which day is being opened, and lock
   // every other Unlock button, so a stray second tap can't start a checkout
@@ -8966,6 +9347,16 @@ async function unlockInboxDay(dayNumber) {
 }
 async function unlockInboxAll() {
   if (!_currentInboxItinerary || _checkoutStarting) return;
+  const itinP = _currentInboxItinerary;
+  const how = await pointsOrCard('unlock_all', itinP, null, 'Pay ' + inboxUnlockPrice(itinP, 'all') + ' by card');
+  if (!how) return;
+  if (how === 'points') {
+    _checkoutStarting = true;
+    const ok = await redeemPoints('unlock_all', itinP.id);
+    _checkoutStarting = false;
+    if (ok) openInboxItinerary(itinP.id, true);
+    return;
+  }
   _checkoutStarting = true;
   const data = await callCreateCheckoutSession({ itinerary_id: _currentInboxItinerary.id, mode: 'all' });
   if (data && data.url) window.location.href = data.url; else _checkoutStarting = false;
