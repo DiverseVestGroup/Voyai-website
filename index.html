@@ -569,6 +569,7 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 @keyframes tmToastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 /* Ask TripMade for guests: answer blurred until they sign up */
 .ask-turn.ask-locked { position:relative; }
+.ask-ph-photo { height:120px; border-radius:10px; background:linear-gradient(135deg,#CFE7E1,#F3E3C3); margin-bottom:10px; }
 .ask-turn.ask-locked .ask-turn-body { filter:blur(7px); pointer-events:none; user-select:none; max-height:420px; overflow:hidden; }
 .ask-gate { position:absolute; left:0; right:0; top:56px; display:flex; justify-content:center; padding:20px 12px; z-index:2; }
 .ask-gate-box { background:#fff; border:1.5px solid var(--accent-mid); border-radius:14px; box-shadow:0 14px 40px rgba(0,0,0,.14); padding:22px 24px; max-width:380px; text-align:center; }
@@ -898,7 +899,7 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 /* ── FOOTER ─────────────────────────────────────────────── */
 footer { padding:36px 48px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); background:var(--bg2); }
 footer p { font-size:13px; color:var(--text-dim); }
-.footer-links { display:flex; gap:24px; }
+.footer-links { display:flex; gap:24px; margin-right:110px; } /* 2026-10-25: clear the Tawk chat bubble (bottom right) so TikTok can be seen and clicked */
 .footer-links a { font-size:13px; color:var(--text-dim); transition:color .2s; }
 .footer-links a:hover { color:var(--text); }
 /* ── SOCIAL STRIP ──────────────────────────────────────── */
@@ -952,7 +953,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   .wl-form{flex-direction:column}
   .wl-form-full{grid-template-columns:1fr}
   footer{flex-direction:column;gap:16px;text-align:center;padding:24px 20px}
-  .footer-links{justify-content:center;flex-wrap:wrap;row-gap:8px}
+  .footer-links{justify-content:center;flex-wrap:wrap;row-gap:8px;margin-right:0;padding:0 64px}
   .dest-grid{grid-template-columns:1fr 1fr}
   .testimonial-grid{grid-template-columns:1fr}
   #destinations{padding:48px 20px}
@@ -4377,11 +4378,8 @@ footer p { font-size:13px; color:var(--text-dim); }
 </div>
 <div id="page-privacy" class="page">
   <div class="section" style="max-width:760px;">
-    <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
-      This is a working draft written to reflect what TripMade actually does today. It has not been reviewed by a lawyer and should get that review before launch — in particular the Australian Privacy Act / APP references below.
-    </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Privacy Policy</h2>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated 25 October 2026</p>
     <div style="font-size:14px;line-height:1.8;color:var(--text);">
       <p style="margin-bottom:18px;"><b>1. Who we are.</b> TripMade Pty Ltd ("TripMade", "we", "us") is an Australian company that builds personalised travel itineraries for customers. This policy explains what personal information we collect, how we use it, who we share it with, and the choices you have.</p>
       <p style="margin-bottom:18px;"><b>2. Information we collect.</b> Depending on how you use TripMade, we may collect: your name, email address, phone number and country; the travel preferences you give us (destination, dates, budget, group size, vibe, must-haves, things to avoid, and similar trip details); messages you send our Ask TripMade assistant; account sign-in activity; and, if you leave one, a review or testimonial. We collect this when you request an itinerary, join the waitlist, create an account, save a trip, use Ask TripMade, or leave a review.</p>
@@ -4401,11 +4399,8 @@ footer p { font-size:13px; color:var(--text-dim); }
 <!-- ══ TERMS OF SERVICE (DRAFT) ═══════════════════════════ -->
 <div id="page-terms" class="page">
   <div class="section" style="max-width:760px;">
-    <div style="background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:14px 20px;margin-bottom:32px;font-size:13px;color:var(--accent);">
-      This is a working draft written to reflect what TripMade actually does today. It has not been reviewed by a lawyer and should get that review before launch — in particular sections 5, 9 and 10 below (payment terms and liability).
-    </div>
     <h2 style="font-family:&#39;Syne&#39;,sans-serif;font-size:30px;font-weight:800;margin-bottom:6px;">Terms &amp; Conditions</h2>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated — draft version, not yet finalised</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:28px;">Last updated 25 October 2026</p>
     <div style="font-size:14px;line-height:1.8;color:var(--text);">
       <p style="margin-bottom:18px;"><b>1. Acceptance.</b> By using TripMade, you agree to these terms. If you don't agree, please don't use our service.</p>
       <p style="margin-bottom:18px;"><b>2. Our service.</b> TripMade generates personalised travel itineraries based on the information you provide, using a combination of AI assistance and human review. Itineraries are suggestions only — we don't currently book or confirm flights, hotels, or activities on your behalf unless you separately arrange that with us.</p>
@@ -7229,10 +7224,27 @@ async function runAskTripMade() {
   input.value = '';
   input.focus();
   const bodyEl = turnEl.querySelector('.ask-turn-body');
+  // 2026-10-25: guests never trigger a real (paid) answer. They see the same
+  // fixed placeholder behind the blur, and their question is kept so it runs
+  // for real (as their first free question) the moment they sign up.
+  if (!member) {
+    _pendingClarification = null;
+    _askGuestQuery = query;
+    bodyEl.innerHTML = askPlaceholderHtml();
+    lockAskTurn(turnEl);
+    turnEl.dataset.guestPlaceholder = '1';
+    btn.disabled = false;
+    btn.textContent = 'Ask';
+    return;
+  }
   try {
     const askCurrency = (_currentUser && _currentUser.currency) || _currentCurrency || 'AUD';
     const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery, currency: askCurrency } });
     if (error) throw error;
+    if (data && (data.code === 'members_only' || data.error === 'members_only')) {
+      _askGuestQuery = query; bodyEl.innerHTML = askPlaceholderHtml(); lockAskTurn(turnEl); turnEl.dataset.guestPlaceholder = '1'; _pendingClarification = null;
+      return;
+    }
     if (data && data.error) {
       turn.error = data.error;
       bodyEl.innerHTML = '<div class="ask-error">' + data.error + '</div>';
@@ -7245,8 +7257,7 @@ async function runAskTripMade() {
     _pendingClarification = data.type === 'clarify' ? apiQuery : null;
     renderAskTurnBody(bodyEl, data);
     if (data.type !== 'clarify') {
-      if (!member) lockAskTurn(turnEl);
-      else if (!_tmPointsOff) callPoints({ action: 'ask', pay: payWithPoints }).then(function(out) { if (out && out.ok) { applyPoints(out); if (out.charged) tmToast('Used ' + out.charged + ' points for that question', 'You have ' + tmPts(out.balance) + ' left.'); } }).catch(function() {});
+      if (!_tmPointsOff) callPoints({ action: 'ask', pay: payWithPoints }).then(function(out) { if (out && out.ok) { applyPoints(out); if (out.charged) tmToast('Used ' + out.charged + ' points for that question', 'You have ' + tmPts(out.balance) + ' left.'); } }).catch(function() {});
     }
   } catch (e) {
     console.error('ask-tripmade failed', e);
@@ -7270,16 +7281,37 @@ function lockAskTurn(turnEl) {
   turnEl.classList.add('ask-locked');
   const gate = document.createElement('div'); gate.className = 'ask-gate';
   gate.innerHTML = '<div class="ask-gate-box"><div class="ask-gate-ic">🔒</div><b>Sign up free to see your answer</b>' +
-    '<p>Ask TripMade is for members. It\'s free: you get ' + ((_tmPoints && _tmPoints.ask_free_per_month) || 5) + ' questions a month and 100 TripMade Points to start.</p>' +
+    '<p>Your question is saved. Sign up free and we\'ll answer it straight away. Members get ' + ((_tmPoints && _tmPoints.ask_free_per_month) || 5) + ' free questions a month and 100 TripMade Points to start.</p>' +
     '<button type="button" class="ask-gate-btn" onclick="openSignupModal()">Sign up to view</button>' +
     '<button type="button" class="ask-gate-link" onclick="openLoginModal()">Already a member? Log in</button></div>';
   body.parentNode.insertBefore(gate, body.nextSibling);
   try { if (window.tmTrack) tmTrack('ask_answer_gated', {}); } catch (e) {}
 }
+var _askGuestQuery = null;
+// Same placeholder every time: shapes only, no real places, costs nothing.
+function askPlaceholderHtml() {
+  const card = function(n) {
+    return '<div class="ask-stay-card"><div class="ask-ph-photo"></div><div class="ask-stay-name">Recommended spot ' + n + '</div>' +
+      '<div class="ask-dine-meta">Hand-picked · ★ 4.7</div><div class="ask-stay-desc">A great match for what you asked, with opening hours, prices and how to book.</div>' +
+      '<div class="ask-stay-foot" style="justify-content:flex-end;"><span class="ask-stay-cta">View details →</span></div></div>';
+  };
+  return '<div class="ask-results-hd"><h3>Your TripMade answer</h3></div><div class="ask-results-grid">' + card(1) + card(2) + card(3) + '</div>';
+}
 function unlockAskTurns() {
+  const placeholders = document.querySelectorAll('.ask-turn[data-guest-placeholder="1"]');
   document.querySelectorAll('.ask-turn.ask-locked').forEach(function(t) {
     t.classList.remove('ask-locked'); const g = t.querySelector('.ask-gate'); if (g) g.remove();
   });
+  // Signed up / logged in: swap the placeholder for the real answer to the
+  // question they asked (counts as one of their free questions).
+  if (placeholders.length && _askGuestQuery) {
+    placeholders.forEach(function(t) { t.remove(); });
+    const input = document.getElementById('ask-input');
+    if (input && typeof ASK_TRIPMADE_ENABLED !== 'undefined' && ASK_TRIPMADE_ENABLED) {
+      input.value = _askGuestQuery; _askGuestQuery = null;
+      setTimeout(runAskTripMade, 300);
+    }
+  }
 }
 function showAskOutOfQuestions(p) {
   const resultsEl = document.getElementById('ask-results'); resultsEl.style.display = 'block';
