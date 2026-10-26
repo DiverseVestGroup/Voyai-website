@@ -370,6 +370,18 @@ details.entry-gen-d > summary .entry-c-name { font-size:15px; }
 .chk-act { flex:none; font-size:12.5px; font-weight:700; color:var(--accent); text-decoration:none; border:1.5px solid var(--accent-mid); border-radius:20px; padding:5px 12px; white-space:nowrap; background:white; cursor:pointer; font-family:inherit; }
 .chk-act:hover { background:var(--accent-light); }
 .chk-row.done .chk-act { opacity:.55; }
+details.chk-grp { border-bottom:1px solid var(--border); }
+details.chk-grp > summary { list-style:none; cursor:pointer; border-bottom:none; }
+details.chk-grp > summary::-webkit-details-marker { display:none; }
+details.chk-grp > summary .chk-txt { display:flex; flex-direction:column; }
+.chk-chev { flex:none; color:var(--accent); font-size:13px; transition:transform .15s; padding:0 4px; }
+details.chk-grp[open] .chk-chev { transform:rotate(180deg); }
+.chk-kids { padding:0 0 8px 32px; }
+.chk-kid { padding:8px 0; border-bottom:1px dashed var(--border); }
+.chk-kid:last-child { border-bottom:none; }
+.chk-kid input { width:17px; height:17px; }
+.chk-kid .chk-lbl { font-size:13px; font-weight:600; }
+.chk-kid .chk-act { font-size:11.5px; padding:4px 10px; }
 .chk-prog { font-size:12.5px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:4px 11px; border-radius:20px; white-space:nowrap; }
 @media (max-width:600px) { .chk-body { padding:4px 16px 12px; } .chk-act { padding:5px 10px; font-size:12px; } }
 .entry-loading { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); }
@@ -998,6 +1010,32 @@ footer p { font-size:13px; color:var(--text-dim); }
 .about-quote { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; line-height:1.45; letter-spacing:-.01em; margin:0 0 32px; }
 .about-sign { font-size:15px; font-weight:600; }
 .about-sign span { display:block; font-size:13px; font-weight:400; opacity:.8; margin-top:4px; }
+/* 2026-10-26: For venues page (restaurants, bars, hotels, tour operators). Footer link only. */
+.ven-hero { background:linear-gradient(135deg,var(--accent) 0%,#0B4F4C 100%); color:#fff; padding:72px 24px 64px; text-align:center; }
+.ven-hero .ven-kicker { font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.8; margin-bottom:12px; }
+.ven-hero h1 { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(30px,5vw,46px); letter-spacing:-.02em; line-height:1.1; max-width:760px; margin:0 auto 16px; }
+.ven-hero p { max-width:620px; margin:0 auto; font-size:16.5px; line-height:1.65; opacity:.92; }
+.ven-wrap { max-width:1000px; margin:0 auto; padding:56px 24px 72px; }
+.ven-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:52px; }
+.ven-card { background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:22px 20px; }
+.ven-card .ven-ic { font-size:24px; margin-bottom:10px; }
+.ven-card h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-bottom:6px; }
+.ven-card p { font-size:14px; color:var(--text-muted); line-height:1.55; margin:0; }
+.ven-form-box { background:#fff; border:1.5px solid var(--border); border-radius:16px; padding:32px; max-width:720px; margin:0 auto; }
+.ven-form-box h2 { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; letter-spacing:-.01em; margin-bottom:6px; }
+.ven-form-box > p { font-size:14.5px; color:var(--text-muted); margin-bottom:22px; }
+.ven-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.ven-form-box input[type=text], .ven-form-box input[type=email], .ven-form-box input[type=tel], .ven-form-box select, .ven-form-box textarea { width:100%; padding:12px 14px; border:1.5px solid var(--border-mid); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; outline:none; background:#fff; box-sizing:border-box; }
+.ven-form-box textarea { min-height:90px; resize:vertical; margin-bottom:12px; }
+.ven-form-box input:focus, .ven-form-box select:focus, .ven-form-box textarea:focus { border-color:var(--accent); }
+.ven-int-lbl { font-size:13px; font-weight:700; margin:6px 0 8px; }
+.ven-ints { display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; margin-bottom:16px; }
+.ven-ints label { display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; }
+.ven-ints input { width:18px; height:18px; accent-color:var(--accent); margin:0; }
+.ven-msg { font-size:13.5px; margin-top:10px; min-height:18px; }
+.ven-msg.err { color:#B3261E; } .ven-msg.ok { color:#0F6E56; font-weight:600; }
+.ven-fine { font-size:12px; color:var(--text-dim); margin-top:12px; line-height:1.5; }
+@media (max-width:640px) { .ven-row, .ven-ints { grid-template-columns:1fr; } .ven-form-box { padding:22px 18px; } .ven-hero { padding:56px 20px 48px; } }
 .about-story { max-width:720px; margin:0 auto; padding:72px 24px 24px; font-size:16px; line-height:1.85; color:var(--text); }
 .about-story h2 { font-family:'Syne',sans-serif; font-size:30px; font-weight:800; letter-spacing:-.02em; margin-bottom:20px; }
 .about-story p { margin-bottom:18px; }
@@ -4381,6 +4419,45 @@ footer p { font-size:13px; color:var(--text-dim); }
 <!-- ══ PRIVACY POLICY (DRAFT) ═════════════════════════════ -->
 <!-- ══ ABOUT / OUR STORY ═══════════════════════════════════
      Story copy written by Lachy & Jai (2026-09-25). -->
+<!-- 2026-10-26 (Lachy): For venues page (tripmade.co/venues), linked from the
+     footer only. Enquiries go to public.venue_enquiries. -->
+<div id="page-venues" class="page">
+  <div class="ven-hero">
+    <div class="ven-kicker">For restaurants, bars, hotels &amp; tour operators</div>
+    <h1>Travellers are already finding you through TripMade</h1>
+    <p>TripMade builds day-by-day itineraries for travellers around the world, and we recommend real places: restaurants, bars, stays and experiences. If your venue is one of them, we'd love to help more of those travellers book with you.</p>
+  </div>
+  <div class="ven-wrap">
+    <div class="ven-grid">
+      <div class="ven-card"><div class="ven-ic">🌐</div><h3>A website for your venue</h3><p>No website, or one that's out of date? We'll build you a simple, mobile-friendly site with your menu, hours and photos, for a small one-off fee.</p></div>
+      <div class="ven-card"><div class="ven-ic">⭐</div><h3>A featured spot</h3><p>Be recommended more often to travellers whose trip matches what you do best, in the itineraries we build every day.</p></div>
+      <div class="ven-card"><div class="ven-ic">📅</div><h3>Direct bookings</h3><p>Add a booking or reservation link so travellers can lock in a table, room or tour straight from their itinerary.</p></div>
+      <div class="ven-card"><div class="ven-ic">✏️</div><h3>Keep your details right</h3><p>Moved, renamed or changed your hours? Tell us and we'll make sure travellers get the right information. Free.</p></div>
+    </div>
+    <div class="ven-form-box" id="ven-form-box">
+      <h2>Tell us about your venue</h2>
+      <p>Pick what you're interested in and we'll be in touch to talk it through. There's no obligation.</p>
+      <div class="ven-row"><input type="text" id="ven-name" placeholder="Venue name *" maxlength="160"><input type="text" id="ven-city" placeholder="City / town" maxlength="120"></div>
+      <div class="ven-row">
+        <select id="ven-type"><option value="">Type of venue</option><option>Restaurant</option><option>Café</option><option>Bar</option><option>Hotel / stay</option><option>Tour / experience</option><option>Other</option></select>
+        <input type="text" id="ven-contact" placeholder="Your name" maxlength="120">
+      </div>
+      <div class="ven-row"><input type="email" id="ven-email" placeholder="Email *" maxlength="200"><input type="tel" id="ven-phone" placeholder="Phone (optional)" maxlength="40"></div>
+      <div class="ven-row" style="grid-template-columns:1fr;"><input type="text" id="ven-online" placeholder="Website, Instagram or Facebook page (if you have one)" maxlength="300"></div>
+      <div class="ven-int-lbl">I'm interested in</div>
+      <div class="ven-ints">
+        <label><input type="checkbox" value="website"> A website for my venue</label>
+        <label><input type="checkbox" value="featured"> A featured spot</label>
+        <label><input type="checkbox" value="booking_link"> Direct bookings</label>
+        <label><input type="checkbox" value="update_details"> Updating my details</label>
+      </div>
+      <textarea id="ven-message" placeholder="Anything else we should know? (optional)" maxlength="2000"></textarea>
+      <button type="button" class="btn-primary" id="ven-submit" onclick="submitVenueEnquiry()">Send enquiry →</button>
+      <div class="ven-msg" id="ven-msg"></div>
+      <div class="ven-fine">We'll only use your details to reply to this enquiry. See our <a href="javascript:void(0)" onclick="showPage('privacy');return false;" style="color:var(--accent);">Privacy policy</a>.</div>
+    </div>
+  </div>
+</div>
 <div id="page-about" class="page">
   <div class="about-hero">
     <div class="about-hero-bg"></div><div class="about-hero-tint"></div>
@@ -4526,6 +4603,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <a href="javascript:void(0)" onclick="showPage(&#39;about&#39;, navLinkFor(&#39;about&#39;));return false;">About</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;privacy&#39;);return false;">Privacy</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;terms&#39;);return false;">Terms</a>
+    <a href="javascript:void(0)" onclick="showPage(&#39;venues&#39;);return false;">For venues</a>
     <a href="mailto:hello@tripmade.co">hello@tripmade.co</a>
     <a href="https://www.instagram.com/tripmade.co" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.tiktok.com/@tripmade8" target="_blank" rel="noopener">TikTok</a>
@@ -4551,7 +4629,7 @@ const sb = supabase.createClient(
 const PAGE_PATHS = {
   landing: '/', about: '/about', inspo: '/inspiration', tours: '/book',
   ask: '/ask', form: '/plan', saved: '/saved', inbox: '/inbox',
-  privacy: '/privacy', terms: '/terms'
+  privacy: '/privacy', terms: '/terms', venues: '/venues'
 };
 // Extra spellings that open the same page. '/review' is special: it opens
 // the homepage reviews section and the "Leave a review" form.
@@ -4559,7 +4637,8 @@ const PATH_ALIASES = {
   '/about-us': 'about', '/our-story': 'about', '/story': 'about',
   '/inspo': 'inspo', '/trips': 'inspo', '/tours': 'tours', '/booking': 'tours',
   '/book-your-trip': 'tours', '/itinerary': 'form', '/get-started': 'form',
-  '/review': 'review', '/reviews': 'review', '/leave-a-review': 'review'
+  '/review': 'review', '/reviews': 'review', '/leave-a-review': 'review',
+  '/for-venues': 'venues', '/partners': 'venues', '/restaurants': 'venues', '/business': 'venues'
 };
 function pageIdFromPath(pathname) {
   const path = (pathname || '/').toLowerCase().replace(/\/+$/, '') || '/';
@@ -5759,59 +5838,127 @@ const TM_DOMESTIC_RE = /australia|sydney|melbourne|brisbane|gold coast|sunshine 
 function _chkLoad(id) { try { return JSON.parse(localStorage.getItem('tm_check_' + id) || '{}') || {}; } catch (e) { return {}; } }
 function _chkSave(id, v) { try { localStorage.setItem('tm_check_' + id, JSON.stringify(v)); } catch (e) {} }
 function renderTripChecklist(itin) {
+  // 2026-10-26 (later, Lachy): Flights, Accommodation and Airport transfers are
+  // groups. Collapsed they show just the main tick box; tap to drop down one
+  // smaller tick box per flight / stay / transfer, each with its own booking
+  // button. The main box ticks itself once every item under it is ticked.
   const block = document.getElementById('ibx-check-block'), body = document.getElementById('ibx-check-body');
   if (!block || !body || !itin || !itin.id) return;
   const days = document.getElementById('ibx-days');
   const intl = !TM_DOMESTIC_RE.test(itin.destination || '');
   const evts = days ? Array.from(days.querySelectorAll('.evt')) : [];
   const has = function(e, cls) { const d = e.querySelector('.evt-dot'); return d && d.classList.contains(cls); };
-  const bookHref = function(e) { const a = e && e.querySelector('a.evt-book:not(.evt-pl-btn)'); return a ? a.href : ''; };
-  const items = [];
+  const bookHref = function(e) { const a = e && e.querySelector('a.evt-book:not(.evt-pl-btn):not(.evt-menu-btn)'); return a ? a.href : ''; };
+  const labelOf = function(e) { return ((e.querySelector('.evt-label') || {}).textContent || '').replace(/★.*$/, '').trim(); };
+  const dayOf = function(e) { const blk = e.closest('.day-block'); const t = blk ? ((blk.querySelector('.day-lbl') || {}).textContent || '') : ''; const m = t.match(/—\s*([^·]+)/); return m ? m[1].trim() : ''; };
+  const kiwiHome = 'https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '.checklist&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/');
+  const groups = [];
   // Flights
-  const fl = evts.filter(function(e) { return has(e, 'dot-flight'); });
-  if (fl.length) items.push({ k: 'flights', lbl: fl.length > 1 ? 'Flights booked' : 'Flight booked', sub: fl.length > 1 ? fl.length + ' flights on this trip' : '', href: bookHref(fl[0]) || ('https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '.checklist&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/')), btn: 'Find flights' });
-  // Each stay
+  const fl = evts.filter(function(e) { return has(e, 'dot-flight'); }).map(function(e, i) {
+    return { k: 'fl:' + i + ':' + labelOf(e).slice(0, 60), lbl: labelOf(e).replace(/^Fly\s+/i, ''), sub: dayOf(e), href: bookHref(e) || kiwiHome, btn: 'Find flights' };
+  });
+  if (fl.length) groups.push({ k: 'flights', lbl: 'Flights booked', kids: fl });
+  // Accommodation, one per stay
   const seen = {};
+  const st = [];
   evts.forEach(function(e) {
     if (!has(e, 'dot-hotel')) return;
-    const lab = ((e.querySelector('.evt-label') || {}).textContent || '').replace(/★.*$/, '').trim();
+    const lab = labelOf(e);
     if (!lab || /check[- ]?out/i.test(lab)) return;
     const name = e.getAttribute('data-pl-name') || lab.replace(/^\s*(check[- ]?in|stay|arrive|arrival|hotel)\s*(—|–|-|:|at)\s*/i, '');
     if (seen[name]) return; seen[name] = 1;
-    const blk = e.closest('.day-block'); const dl = blk ? ((blk.querySelector('.day-lbl') || {}).textContent || '').replace(/·.*$/, '').trim() : '';
-    items.push({ k: 'stay:' + name, lbl: 'Stay booked: ' + name, sub: [e.dataset.city, dl.replace(/^Day \d+\s*—\s*/, 'from ')].filter(Boolean).join(' · '), href: bookHref(e), btn: 'Book stay' });
+    st.push({ k: 'st:' + name.slice(0, 60), lbl: name, sub: [e.dataset.city, dayOf(e) ? 'from ' + dayOf(e) : ''].filter(Boolean).join(' · '), href: bookHref(e), btn: 'Book' });
   });
-  // Transfers
-  const tr = evts.filter(function(e) { const a = e.querySelector('a.evt-book'); return a && /welcomepickups|c627\.travelpayouts/.test(a.href); });
-  if (tr.length) items.push({ k: 'transfers', lbl: 'Airport transfers booked', sub: tr.length + ' transfer' + (tr.length > 1 ? 's' : '') + ' on this trip', href: bookHref(tr[0]), btn: 'Book transfer' });
-  items.push({ k: 'insurance', lbl: 'Travel insurance', sub: 'Cover for medical, cancellations and lost bags', act: "showPage('tours');scrollToSection('tours-insurance')", btn: 'Compare cover' });
+  if (st.length) groups.push({ k: 'accommodation', lbl: 'Accommodation booked', kids: st });
+  // Airport transfers
+  const tr = evts.filter(function(e) { const a = e.querySelector('a.evt-book'); return a && /welcomepickups|c627\.travelpayouts/.test(a.href); }).map(function(e, i) {
+    return { k: 'tr:' + i + ':' + labelOf(e).slice(0, 60), lbl: labelOf(e), sub: dayOf(e), href: bookHref(e), btn: 'Book transfer' };
+  });
+  if (tr.length) groups.push({ k: 'transfers', lbl: 'Airport transfers booked', kids: tr });
+  groups.push({ k: 'insurance', lbl: 'Travel insurance', sub: 'Cover for medical, cancellations and lost bags', act: "showPage('tours');scrollToSection('tours-insurance')", btn: 'Compare cover' });
   if (intl) {
-    items.push({ k: 'esim', lbl: 'eSIM for mobile data', sub: 'Online the moment you land, no roaming fees', href: HOLAFLY_URL, btn: 'Get an eSIM', sponsored: true });
-    items.push({ k: 'entry', lbl: 'Visas & entry requirements sorted', sub: 'See Specific Country Entry Requirements below', act: "document.getElementById('ibx-entry-block').scrollIntoView({behavior:'smooth',block:'start'})", btn: 'Check' });
-    items.push({ k: 'passport', lbl: 'Passport valid for 6+ months after you return', sub: 'Many countries require it' });
-    items.push({ k: 'money', lbl: 'Cards and cash sorted for overseas', sub: 'Tell your bank, and have a card without foreign fees' });
+    groups.push({ k: 'esim', lbl: 'eSIM for mobile data', sub: 'Online the moment you land, no roaming fees', href: HOLAFLY_URL, btn: 'Get an eSIM' });
+    groups.push({ k: 'entry', lbl: 'Visas & entry requirements sorted', sub: 'See Specific Country Entry Requirements below', act: "document.getElementById('ibx-entry-block').scrollIntoView({behavior:'smooth',block:'start'})", btn: 'Check' });
+    groups.push({ k: 'passport', lbl: 'Passport valid for 6+ months after you return', sub: 'Many countries require it' });
+    groups.push({ k: 'money', lbl: 'Cards and cash sorted for overseas', sub: 'Tell your bank, and have a card without foreign fees' });
   }
   const tick = _chkLoad(itin.id);
-  const draw = function() {
-    const done = items.filter(function(it) { return tick[it.k]; }).length;
-    document.getElementById('ibx-check-prog').textContent = done + ' of ' + items.length + ' done';
+  const isDone = function(g) { return g.kids ? g.kids.every(function(c) { return tick[c.k]; }) : !!tick[g.k]; };
+  const btnHtml = function(it) {
+    if (it.href) return '<a class="chk-act" href="' + tmEsc(it.href) + '" target="_blank" rel="noopener noreferrer sponsored">' + it.btn + ' ↗</a>';
+    if (it.act) return '<button type="button" class="chk-act" onclick="' + it.act + '">' + it.btn + '</button>';
+    return '';
   };
-  body.innerHTML = items.map(function(it, i) {
-    const id = 'chk-' + i;
-    const btn = it.href ? '<a class="chk-act" href="' + tmEsc(it.href) + '" target="_blank" rel="noopener noreferrer' + (it.sponsored || /travelpayouts|sjv\.io|trip\.com|kiwi/.test(it.href) ? ' sponsored' : '') + '">' + it.btn + ' ↗</a>'
-      : it.act ? '<button type="button" class="chk-act" onclick="' + it.act + '">' + it.btn + '</button>' : '';
-    return '<div class="chk-row' + (tick[it.k] ? ' done' : '') + '" data-k="' + tmEsc(it.k) + '"><input type="checkbox" id="' + id + '"' + (tick[it.k] ? ' checked' : '') + '>' +
-      '<label class="chk-txt" for="' + id + '"><div class="chk-lbl">' + tmEsc(it.lbl) + '</div>' + (it.sub ? '<div class="chk-sub">' + tmEsc(it.sub) + '</div>' : '') + '</label>' + btn + '</div>';
+  let n = 0;
+  body.innerHTML = groups.map(function(g) {
+    const id = 'chk-' + (n++);
+    const done = isDone(g);
+    if (!g.kids) {
+      return '<div class="chk-row' + (done ? ' done' : '') + '" data-k="' + tmEsc(g.k) + '"><input type="checkbox" id="' + id + '"' + (done ? ' checked' : '') + '>' +
+        '<label class="chk-txt" for="' + id + '"><div class="chk-lbl">' + tmEsc(g.lbl) + '</div>' + (g.sub ? '<div class="chk-sub">' + tmEsc(g.sub) + '</div>' : '') + '</label>' + btnHtml(g) + '</div>';
+    }
+    const left = g.kids.filter(function(c) { return !tick[c.k]; }).length;
+    return '<details class="chk-grp" data-g="' + tmEsc(g.k) + '"><summary class="chk-row' + (done ? ' done' : '') + '"><input type="checkbox" class="chk-parent" id="' + id + '"' + (done ? ' checked' : '') + '>' +
+      '<span class="chk-txt"><span class="chk-lbl">' + tmEsc(g.lbl) + '</span><span class="chk-sub">' + (done ? 'All ' + g.kids.length + ' done' : (g.kids.length - left) + ' of ' + g.kids.length + ' done') + '</span></span><span class="chk-chev">▾</span></summary>' +
+      '<div class="chk-kids">' + g.kids.map(function(c) {
+        const cid = 'chk-' + (n++);
+        return '<div class="chk-row chk-kid' + (tick[c.k] ? ' done' : '') + '" data-k="' + tmEsc(c.k) + '"><input type="checkbox" id="' + cid + '"' + (tick[c.k] ? ' checked' : '') + '>' +
+          '<label class="chk-txt" for="' + cid + '"><div class="chk-lbl">' + tmEsc(c.lbl) + '</div>' + (c.sub ? '<div class="chk-sub">' + tmEsc(c.sub) + '</div>' : '') + '</label>' + btnHtml(c) + '</div>';
+      }).join('') + '</div></details>';
   }).join('');
-  body.querySelectorAll('.chk-row input').forEach(function(cb) {
+  const draw = function() {
+    let done = 0;
+    groups.forEach(function(g) {
+      const ok = isDone(g); if (ok) done++;
+      if (!g.kids) return;
+      const det = body.querySelector('details[data-g="' + g.k + '"]'); if (!det) return;
+      const sm = det.querySelector('summary'), pc = det.querySelector('.chk-parent');
+      pc.checked = ok; sm.classList.toggle('done', ok);
+      const got = g.kids.filter(function(c) { return tick[c.k]; }).length;
+      pc.indeterminate = got > 0 && !ok;
+      sm.querySelector('.chk-sub').textContent = ok ? 'All ' + g.kids.length + ' done' : got + ' of ' + g.kids.length + ' done';
+    });
+    document.getElementById('ibx-check-prog').textContent = done + ' of ' + groups.length + ' done';
+  };
+  body.querySelectorAll('.chk-row:not(summary) > input').forEach(function(cb) {
     cb.addEventListener('change', function() {
       const row = cb.closest('.chk-row'); const k = row.getAttribute('data-k');
       if (cb.checked) tick[k] = 1; else delete tick[k];
       row.classList.toggle('done', cb.checked); _chkSave(itin.id, tick); draw();
     });
   });
+  // Main box of a group: ticks (or unticks) everything under it, without opening/closing the drop-down.
+  body.querySelectorAll('.chk-parent').forEach(function(pc) {
+    pc.addEventListener('click', function(ev) { ev.stopPropagation(); });
+    pc.addEventListener('change', function() {
+      const det = pc.closest('details'); const g = groups.find(function(x) { return x.k === det.getAttribute('data-g'); });
+      g.kids.forEach(function(c) { if (pc.checked) tick[c.k] = 1; else delete tick[c.k]; });
+      det.querySelectorAll('.chk-kid').forEach(function(r) { r.classList.toggle('done', pc.checked); r.querySelector('input').checked = pc.checked; });
+      _chkSave(itin.id, tick); draw();
+    });
+  });
   draw();
-  block.style.display = items.length ? '' : 'none';
+  block.style.display = groups.length ? '' : 'none';
+}
+// ── For venues enquiry (2026-10-26) ───────────────────────────
+async function submitVenueEnquiry() {
+  const v = function(id) { return (document.getElementById(id).value || '').trim(); };
+  const msg = document.getElementById('ven-msg'), btn = document.getElementById('ven-submit');
+  const name = v('ven-name'), email = v('ven-email');
+  msg.className = 'ven-msg';
+  if (!name) { msg.className = 'ven-msg err'; msg.textContent = 'Please add your venue name.'; return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.className = 'ven-msg err'; msg.textContent = 'Please add a valid email so we can reply.'; return; }
+  const ints = Array.from(document.querySelectorAll('#ven-form-box .ven-ints input:checked')).map(function(c) { return c.value; });
+  btn.disabled = true; msg.textContent = 'Sending…';
+  let uid = null;
+  try { const { data: { session } } = await sb.auth.getSession(); if (session && session.user && !session.user.is_anonymous) uid = session.user.id; } catch (e) {}
+  const row = { venue_name: name.slice(0, 160), city: v('ven-city').slice(0, 120) || null, venue_type: v('ven-type') || null, contact_name: v('ven-contact').slice(0, 120) || null,
+    email: email.slice(0, 200), phone: v('ven-phone').slice(0, 40) || null, online_presence: v('ven-online').slice(0, 300) || null, interests: ints, message: v('ven-message').slice(0, 2000) || null, user_id: uid };
+  const { error } = await sb.from('venue_enquiries').insert(row);
+  btn.disabled = false;
+  if (error) { console.error('venue enquiry failed', error); msg.className = 'ven-msg err'; msg.textContent = 'That didn\'t send just then. Please try again, or email hello@tripmade.co.'; return; }
+  try { if (window.posthog) posthog.capture('venue_enquiry', { interests: ints.join(','), venue_type: row.venue_type || '' }); } catch (e) {}
+  document.getElementById('ven-form-box').innerHTML = '<h2>Thanks, ' + tmEsc(name) + '!</h2><p>We\'ve got your enquiry and we\'ll be in touch at ' + tmEsc(email) + ' soon.</p>';
 }
 // ── One-click unsubscribe (2026-10-18) ──────────────────────────
 // Marketing emails link to tripmade.co/?unsubscribe=<user id>.<token>. Works
