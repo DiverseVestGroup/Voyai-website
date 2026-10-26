@@ -55,13 +55,24 @@
   .tip-bulk { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 12px; }
   .tip-bulk span { font-size:12.5px; color:var(--muted); }
   .tip-card a { color:var(--teal); font-size:12.5px; word-break:break-all; }
+  /* 2026-10-26: venues TripMade recommends */
+  .ven-tools { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:0 0 10px; }
+  .ven-tools input { flex:1; min-width:200px; font:inherit; font-size:14px; border:1.5px solid #DDD; border-radius:8px; padding:8px 10px; }
+  .ven-tbl { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.06); font-size:13.5px; }
+  .ven-tbl th { text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:#FAFAFA; padding:9px 12px; border-bottom:1px solid #EEE; }
+  .ven-tbl td { padding:9px 12px; border-bottom:1px solid #F1F1F1; vertical-align:middle; }
+  .ven-tbl tr:last-child td { border-bottom:none; }
+  .ven-tbl a { color:var(--teal); font-weight:600; text-decoration:none; white-space:nowrap; }
+  .ven-type { font-size:10.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:10px; background:#EEF6F5; color:var(--teal); }
+  .ven-more { margin-top:10px; }
+  @media (max-width:640px) { .ven-tbl .hide-sm { display:none; } }
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>✈ Itinerary requests</h1>
-    <button class="ghost" onclick="load(); loadTips();">Refresh</button>
+    <button class="ghost" onclick="load(); loadTips(); loadVenues();">Refresh</button>
   </header>
   <p class="sub" id="sub">Loading…</p>
   <!-- 2026-10-14: TripMade local knowledge. Tips only reach customers once
@@ -70,6 +81,16 @@
   <p class="sub" id="tips-sub">Loading…</p>
   <div class="tabs" id="tip-tabs"></div>
   <div id="tips"></div>
+  <!-- 2026-10-26: every venue TripMade has recommended (own itinerary data).
+       "Google Maps" opens the listing so you can check their website, menu
+       and contact details by hand. -->
+  <h2>🍽 Venues we recommend</h2>
+  <p class="sub" id="ven-sub">Loading…</p>
+  <div class="ven-tools">
+    <input type="search" id="ven-q" placeholder="Search venue or city…" oninput="renderVenues()">
+    <div class="tabs" id="ven-tabs" style="margin:0;"></div>
+  </div>
+  <div id="venues"></div>
   <h2>⚠️ Not delivered (older than 15 minutes)</h2>
   <div id="stuck"></div>
   <h2>Latest requests</h2>
@@ -121,6 +142,43 @@ async function rerun(id, alreadyDelivered, btn) {
   } catch (e) { btn.disabled = false; btn.textContent = 'Re-run'; toast('Couldn\'t send — nothing went out. Try again in a minute.'); }
 }
 load();
+// ── Venues we recommend (2026-10-26) ─────────────────────────────────
+let _venues = [], _venTab = 'all', _venShow = 50;
+const VEN_TABS = { all: 'All', food: 'Restaurants & bars', activity: 'Experiences', hotel: 'Hotels' };
+async function loadVenues() {
+  const sub = document.getElementById('ven-sub');
+  if (!KEY) { sub.textContent = ''; return; }
+  sub.textContent = 'Loading…';
+  try {
+    const res = await fetch(API + '?key=' + encodeURIComponent(KEY) + '&venues=1');
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.error || 'failed');
+    _venues = d.venues || [];
+    renderVenues();
+  } catch (e) { sub.innerHTML = '<span class="err">Couldn\'t load venues. Hit Refresh to try again.</span>'; }
+}
+function venTab(t) { _venTab = t; _venShow = 50; renderVenues(); }
+function renderVenues() {
+  const q = (document.getElementById('ven-q').value || '').trim().toLowerCase();
+  document.getElementById('ven-tabs').innerHTML = Object.keys(VEN_TABS).map(t => {
+    const n = t === 'all' ? _venues.length : _venues.filter(v => v.type === t).length;
+    return '<button class="' + (t === _venTab ? 'on' : '') + '" onclick="venTab(\'' + t + '\')">' + VEN_TABS[t] + ' (' + n + ')</button>';
+  }).join('');
+  const list = _venues.filter(v => (_venTab === 'all' || v.type === _venTab) && (!q || (v.name + ' ' + v.city).toLowerCase().includes(q)));
+  const multi = _venues.filter(v => v.trips >= 2).length;
+  document.getElementById('ven-sub').textContent = _venues.length + ' venues recommended in the last 12 months · ' + multi + ' in 2+ trips. Most-recommended first. Tap Google Maps to check their website, menu and contact details.';
+  if (!list.length) { document.getElementById('venues').innerHTML = '<div class="empty">No venues match.</div>'; return; }
+  const type = { food: 'Food', activity: 'Experience', hotel: 'Hotel' };
+  const rows = list.slice(0, _venShow).map(v => {
+    const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.name + (v.city ? ', ' + v.city : '')) + (v.place_id ? '&query_place_id=' + encodeURIComponent(v.place_id) : '');
+    const last = v.last ? new Date(v.last).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }) : '';
+    return '<tr><td><b>' + esc(v.name) + '</b></td><td>' + esc(v.city) + '</td><td class="hide-sm"><span class="ven-type">' + (type[v.type] || esc(v.type)) + '</span></td>' +
+      '<td>' + v.trips + ' trip' + (v.trips === 1 ? '' : 's') + '</td><td class="hide-sm">' + esc(last) + '</td><td><a href="' + esc(maps) + '" target="_blank" rel="noopener">Google Maps ↗</a></td></tr>';
+  }).join('');
+  document.getElementById('venues').innerHTML = '<table class="ven-tbl"><thead><tr><th>Venue</th><th>City</th><th class="hide-sm">Type</th><th>Recommended</th><th class="hide-sm">Last</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' +
+    (list.length > _venShow ? '<div class="ven-more"><button class="ghost" onclick="_venShow += 100; renderVenues();">Show more (' + (list.length - _venShow) + ' left)</button></div>' : '');
+}
+loadVenues();
 // ── Local tips review (2026-10-14) ───────────────────────────────────
 const TIPS_API = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/local-tips-admin';
 let _tips = [], _tipTab = 'draft';
