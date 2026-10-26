@@ -4800,7 +4800,7 @@ function onFormCurrencyChange(code) {
 const PARTNER_GROUPS = [
   // 2026-10-26 (Lachy): Kiwi.com added (via Travelpayouts, same tracking as the itinerary flight links).
   { label: 'Flights', partners: [
-    { name: 'Kiwi.com', logo: null, href: 'https://c111.travelpayouts.com/click?shmarker=774757.partners&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/') }
+    { name: 'Kiwi.com', logo: null, img: 'https://images.kiwi.com/common/kiwicom-logo.svg', imgStyle: 'max-height:96%;max-width:60%;', href: 'https://c111.travelpayouts.com/click?shmarker=774757.partners&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/') }
   ]},
   { label: 'Stays', partners: [
     { name: 'Trip.com', logo: 'Trip.com', href: 'https://www.trip.com/?Allianceid=10472680&SID=330559720&trip_sub1=&trip_sub3=D19724084' }
@@ -4814,8 +4814,8 @@ const PARTNER_GROUPS = [
     { name: 'Holafly', logo: 'Holafly', href: 'https://holafly.sjv.io/c/7745282/3856277/24764' }
   ]},
   { label: 'Transport', partners: [
-    { name: 'Omio', logo: null, href: 'https://omio.sjv.io/c/7683555/3963000/7385' },
-    { name: 'Ferryhopper', logo: null, href: 'https://www.ferryhopper.com/?aff_uid=tpmdco' }
+    { name: 'Omio', logo: null, img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 168.94"%3E%3Cpath fill="%23132968" d="M443.7 38.21h-36.32a2 2 0 0 0-2 2v123.4a2 2 0 0 0 2 2h36.32a2 2 0 0 0 2-2V40.23a2 2 0 0 0-2-2m85.74 94.14c-19.31 0-29.51-14.31-29.51-30.44 0-16.4 10.2-30.45 29.51-30.45s29.76 14 29.76 30.45c0 16.130-10.45 30.44-29.76 30.44m0-97.45c-40.74 0-70.31 28.18-70.31 67s29.57 67 70.31 67c41.55 0 70.56-27.55 70.56-67s-29-67-70.56-67M388.81 90c0-31.920-24.32-55.09-57.84-55.09-15.49 0-28.71 7.12-35.55 14.44a2.66 2.66 0 0 1-3.91 0c-6.67-7.3-19.9-14.41-35.73-14.41-33.4 0-57.65 23.17-57.65 55.09v73.62a2 2 0 0 0 2 2h36.46a2 2 0 0 0 2-2v-72c0-9.41 5.89-18.93 17.16-18.93 11.52 0 17.55 9.52 17.55 18.93v72a2 2 0 0 0 2 2h36.5a2 2 0 0 0 2-2v-72c0-9.41 5.88-18.93 17.15-18.93 11.53 0 17.55 9.52 17.55 18.93v72a2 2 0 0 0 2 2h36.3a2 2 0 0 0 2-2zm-272.46 42.37c-19.31 0-29.75-14.31-29.75-30.44 0-16.4 10.44-30.45 29.75-30.450s29.51 14 29.51 30.45c0 16.13-10.2 30.44-29.51 30.44m0-97.45c-41.54 0-70.56 27.55-70.56 67s29 67 70.56 67c40.74 0 70.31-28.18 70.31-67s-29.57-67-70.31-67"/%3E%3Cpath fill="%23f96b6b" d="M30 0a29 29 0 0 1 29.15 26.69A29.42 29.42 0 0 1 32.31 58.4l-2.66.12A29.49 29.49 0 0 1 .12 31.85C-1.31 15.51 10.59 1.57 27.21.12 28.13 0 29.05 0 30 0"/%3E%3C/svg%3E', href: 'https://omio.sjv.io/c/7683555/3963000/7385' },
+    { name: 'Ferryhopper', logo: null, img: 'https://cdn1.ferryhopper.com/img/ferryhopper-logo-small.svg', href: 'https://www.ferryhopper.com/?aff_uid=tpmdco' }
   ]}
 ];
 function buildPartnersStrip() {
@@ -4855,6 +4855,17 @@ function makePartnerTile(p) {
       const logoWrap = img ? img.closest('.tour-provider-logo-wrap') : null;
       if (logoWrap) {
         a.appendChild(logoWrap.cloneNode(true));
+      } else if (p.img) {
+        // 2026-10-26 (Lachy): real logos for partners with no tile elsewhere on
+        // the page (Kiwi.com, Omio, Ferryhopper). Falls back to the name if the
+        // logo can't load.
+        const w = document.createElement('div');
+        w.className = 'tour-provider-logo-wrap';
+        const im = document.createElement('img');
+        im.src = p.img; im.alt = p.name; im.loading = 'lazy'; if (p.imgStyle) im.style.cssText = p.imgStyle;
+        im.onerror = function() { w.innerHTML = ''; const t = document.createElement('span'); t.className = 'partner-tile-text'; t.textContent = p.name; w.appendChild(t); };
+        w.appendChild(im);
+        a.appendChild(w);
       } else {
         const t = document.createElement('span');
         t.className = 'partner-tile-text';
