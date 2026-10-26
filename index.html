@@ -349,6 +349,29 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .ibx-ic svg { width:17px; height:17px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 @media (max-width:600px) { #page-inbox-detail .itin-hdr { padding:12px 16px; } #page-inbox-detail .itin-title { font-size:16px; } .ibx-ic { width:28px; height:28px; } .ibx-ic svg { width:15px; height:15px; } }
 .entry-body { padding:16px 22px 18px; }
+/* 2026-10-26: one line per country (name + visa status); details drop down. */
+details.entry-c > summary { list-style:none; cursor:pointer; margin-bottom:0; }
+details.entry-c > summary::-webkit-details-marker { display:none; }
+details.entry-c > summary .entry-more { margin-left:auto; font-size:12.5px; font-weight:600; color:var(--accent); white-space:nowrap; }
+details.entry-c > summary .entry-more::after { content:' ▾'; display:inline-block; transition:transform .15s; }
+details.entry-c[open] > summary .entry-more { font-size:0; }
+details.entry-c[open] > summary .entry-more::after { content:'Less ▴'; font-size:12.5px; }
+details.entry-c[open] > summary { margin-bottom:8px; }
+details.entry-gen-d > summary .entry-c-name { font-size:15px; }
+/* 2026-10-26: trip checklist */
+.chk-body { padding:6px 22px 14px; }
+.chk-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+.chk-row:last-child { border-bottom:none; }
+.chk-row input { width:20px; height:20px; accent-color:var(--accent); flex:none; cursor:pointer; margin:0; }
+.chk-txt { flex:1; min-width:0; cursor:pointer; }
+.chk-lbl { font-size:14px; font-weight:600; color:var(--text); line-height:1.35; }
+.chk-sub { font-size:12px; color:var(--text-dim); margin-top:1px; }
+.chk-row.done .chk-lbl { color:var(--text-dim); text-decoration:line-through; }
+.chk-act { flex:none; font-size:12.5px; font-weight:700; color:var(--accent); text-decoration:none; border:1.5px solid var(--accent-mid); border-radius:20px; padding:5px 12px; white-space:nowrap; background:white; cursor:pointer; font-family:inherit; }
+.chk-act:hover { background:var(--accent-light); }
+.chk-row.done .chk-act { opacity:.55; }
+.chk-prog { font-size:12.5px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:4px 11px; border-radius:20px; white-space:nowrap; }
+@media (max-width:600px) { .chk-body { padding:4px 16px 12px; } .chk-act { padding:5px 10px; font-size:12px; } }
 .entry-loading { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-muted); }
 .entry-loading i { width:16px; height:16px; border:2px solid var(--accent-mid); border-top-color:var(--accent); border-radius:50%; animation:entrySpin .8s linear infinite; flex:none; }
 @keyframes entrySpin { to { transform:rotate(360deg); } }
@@ -4216,6 +4239,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div id="ibx-bookings-list" class="bk-list"></div>
       <div class="bk-tip">Tip: forward any booking confirmation email to <a id="bk-fwd-addr" href="mailto:bookings@tripmade.co">bookings@tripmade.co</a> from the email you use for TripMade, and we'll file it here automatically.</div>
     </div>
+    <!-- 2026-10-26 (Lachy): trip checklist with tick boxes (eSIM moved here from beside the first flight). -->
+    <div class="itin-block" id="ibx-check-block" style="display:none;">
+      <div class="itin-hdr">
+        <div class="itin-hdr-l"><span class="ibx-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 10 2 2 4-4M8 16h8"/></svg></span><div><div class="itin-title">Trip checklist</div><div class="itin-sub" id="ibx-check-sub">Tick things off as you go</div></div></div>
+        <div class="chk-prog" id="ibx-check-prog"></div>
+      </div>
+      <div id="ibx-check-body" class="chk-body"></div>
+    </div>
     <!-- 2026-10-18: visa / entry requirements for the viewer's passport (entry-info function). -->
     <div class="itin-block" id="ibx-entry-block" style="display:none;">
       <div class="itin-hdr">
@@ -5704,12 +5735,13 @@ function setEntryTitle(countries) {
 function paintEntry(body, d, passport) {
   const rows = d.countries.map(function(c) {
     const b = ENTRY_BADGE[c.status] || ENTRY_BADGE.unknown;
-    return '<div class="entry-c"><div class="entry-c-top"><span class="entry-c-name">' + tmEsc(c.country) + '</span><span class="entry-badge ' + b[0] + '">' + b[1] + '</span></div>' +
+    // 2026-10-26 (Lachy): just the country and its visa status; the rest drops down under "More".
+    return '<details class="entry-c"><summary class="entry-c-top"><span class="entry-c-name">' + tmEsc(c.country) + '</span><span class="entry-badge ' + b[0] + '">' + b[1] + '</span><span class="entry-more">More</span></summary>' +
       '<div class="entry-head">' + tmEsc(c.headline) + '</div>' +
       (c.details && c.details.length ? '<ul>' + c.details.map(function(x) { return '<li>' + tmEsc(x) + '</li>'; }).join('') + '</ul>' : '') +
-      (c.official_url ? '<a class="entry-src" href="' + tmEsc(c.official_url) + '" target="_blank" rel="noopener noreferrer">Official info' + (c.source_name ? ' (' + tmEsc(c.source_name) + ')' : '') + ' →</a>' : '') + '</div>';
+      (c.official_url ? '<a class="entry-src" href="' + tmEsc(c.official_url) + '" target="_blank" rel="noopener noreferrer">Official info' + (c.source_name ? ' (' + tmEsc(c.source_name) + ')' : '') + ' →</a>' : '') + '</details>';
   }).join('');
-  const gen = d.general && d.general.length ? '<div class="entry-gen">' + d.general.map(tmEsc).join('<br>') + '</div>' : '';
+  const gen = d.general && d.general.length ? '<details class="entry-c entry-gen-d"><summary class="entry-c-top"><span class="entry-c-name">Good to know for this trip</span><span class="entry-more">More</span></summary><div class="entry-gen">' + d.general.map(tmEsc).join('<br>') + '</div></details>' : '';
   const when = d.checked_at ? new Date(d.checked_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
   const advice = /australia/i.test(passport) ? ' Also see <a href="https://www.smartraveller.gov.au/destinations" target="_blank" rel="noopener">Smartraveller</a>.' : '';
   body.innerHTML = rows + gen + '<div class="entry-foot">' + (when ? 'Checked ' + when + '. ' : '') + 'Entry rules can change, so always confirm on the official site before you book or fly.' + advice +
@@ -5717,8 +5749,70 @@ function paintEntry(body, d, passport) {
 }
 (function() {
   const orig = renderInboxDetail;
-  renderInboxDetail = function(itin) { const r = orig.apply(this, arguments); try { renderEntryInfo(itin); } catch (e) { console.warn(e); } return r; };
+  renderInboxDetail = function(itin) { const r = orig.apply(this, arguments); try { renderEntryInfo(itin); } catch (e) { console.warn(e); } try { renderTripChecklist(itin); } catch (e) { console.warn(e); } return r; };
 })();
+// ── Trip checklist (2026-10-26, Lachy) ──────────────────────────
+// Tick boxes for the things to sort before the trip: flights, each stay,
+// transfers, insurance, eSIM, visas, passport. Each row has a button to the
+// right partner/link. Ticks are remembered in this browser, per trip.
+const TM_DOMESTIC_RE = /australia|sydney|melbourne|brisbane|gold coast|sunshine coast|noosa|byron|perth|adelaide|hobart|tasmania|cairns|port douglas|whitsunday|darwin|canberra|uluru|alice springs|newcastle|hunter valley|blue mountains|margaret river|barossa|great ocean road|jervis bay/i;
+function _chkLoad(id) { try { return JSON.parse(localStorage.getItem('tm_check_' + id) || '{}') || {}; } catch (e) { return {}; } }
+function _chkSave(id, v) { try { localStorage.setItem('tm_check_' + id, JSON.stringify(v)); } catch (e) {} }
+function renderTripChecklist(itin) {
+  const block = document.getElementById('ibx-check-block'), body = document.getElementById('ibx-check-body');
+  if (!block || !body || !itin || !itin.id) return;
+  const days = document.getElementById('ibx-days');
+  const intl = !TM_DOMESTIC_RE.test(itin.destination || '');
+  const evts = days ? Array.from(days.querySelectorAll('.evt')) : [];
+  const has = function(e, cls) { const d = e.querySelector('.evt-dot'); return d && d.classList.contains(cls); };
+  const bookHref = function(e) { const a = e && e.querySelector('a.evt-book:not(.evt-pl-btn)'); return a ? a.href : ''; };
+  const items = [];
+  // Flights
+  const fl = evts.filter(function(e) { return has(e, 'dot-flight'); });
+  if (fl.length) items.push({ k: 'flights', lbl: fl.length > 1 ? 'Flights booked' : 'Flight booked', sub: fl.length > 1 ? fl.length + ' flights on this trip' : '', href: bookHref(fl[0]) || ('https://c111.travelpayouts.com/click?shmarker=' + TP_MARKER + '.checklist&promo_id=3791&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.kiwi.com/en/')), btn: 'Find flights' });
+  // Each stay
+  const seen = {};
+  evts.forEach(function(e) {
+    if (!has(e, 'dot-hotel')) return;
+    const lab = ((e.querySelector('.evt-label') || {}).textContent || '').replace(/★.*$/, '').trim();
+    if (!lab || /check[- ]?out/i.test(lab)) return;
+    const name = e.getAttribute('data-pl-name') || lab.replace(/^\s*(check[- ]?in|stay|arrive|arrival|hotel)\s*(—|–|-|:|at)\s*/i, '');
+    if (seen[name]) return; seen[name] = 1;
+    const blk = e.closest('.day-block'); const dl = blk ? ((blk.querySelector('.day-lbl') || {}).textContent || '').replace(/·.*$/, '').trim() : '';
+    items.push({ k: 'stay:' + name, lbl: 'Stay booked: ' + name, sub: [e.dataset.city, dl.replace(/^Day \d+\s*—\s*/, 'from ')].filter(Boolean).join(' · '), href: bookHref(e), btn: 'Book stay' });
+  });
+  // Transfers
+  const tr = evts.filter(function(e) { const a = e.querySelector('a.evt-book'); return a && /welcomepickups|c627\.travelpayouts/.test(a.href); });
+  if (tr.length) items.push({ k: 'transfers', lbl: 'Airport transfers booked', sub: tr.length + ' transfer' + (tr.length > 1 ? 's' : '') + ' on this trip', href: bookHref(tr[0]), btn: 'Book transfer' });
+  items.push({ k: 'insurance', lbl: 'Travel insurance', sub: 'Cover for medical, cancellations and lost bags', act: "showPage('tours');scrollToSection('tours-insurance')", btn: 'Compare cover' });
+  if (intl) {
+    items.push({ k: 'esim', lbl: 'eSIM for mobile data', sub: 'Online the moment you land, no roaming fees', href: HOLAFLY_URL, btn: 'Get an eSIM', sponsored: true });
+    items.push({ k: 'entry', lbl: 'Visas & entry requirements sorted', sub: 'See Specific Country Entry Requirements below', act: "document.getElementById('ibx-entry-block').scrollIntoView({behavior:'smooth',block:'start'})", btn: 'Check' });
+    items.push({ k: 'passport', lbl: 'Passport valid for 6+ months after you return', sub: 'Many countries require it' });
+    items.push({ k: 'money', lbl: 'Cards and cash sorted for overseas', sub: 'Tell your bank, and have a card without foreign fees' });
+  }
+  const tick = _chkLoad(itin.id);
+  const draw = function() {
+    const done = items.filter(function(it) { return tick[it.k]; }).length;
+    document.getElementById('ibx-check-prog').textContent = done + ' of ' + items.length + ' done';
+  };
+  body.innerHTML = items.map(function(it, i) {
+    const id = 'chk-' + i;
+    const btn = it.href ? '<a class="chk-act" href="' + tmEsc(it.href) + '" target="_blank" rel="noopener noreferrer' + (it.sponsored || /travelpayouts|sjv\.io|trip\.com|kiwi/.test(it.href) ? ' sponsored' : '') + '">' + it.btn + ' ↗</a>'
+      : it.act ? '<button type="button" class="chk-act" onclick="' + it.act + '">' + it.btn + '</button>' : '';
+    return '<div class="chk-row' + (tick[it.k] ? ' done' : '') + '" data-k="' + tmEsc(it.k) + '"><input type="checkbox" id="' + id + '"' + (tick[it.k] ? ' checked' : '') + '>' +
+      '<label class="chk-txt" for="' + id + '"><div class="chk-lbl">' + tmEsc(it.lbl) + '</div>' + (it.sub ? '<div class="chk-sub">' + tmEsc(it.sub) + '</div>' : '') + '</label>' + btn + '</div>';
+  }).join('');
+  body.querySelectorAll('.chk-row input').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      const row = cb.closest('.chk-row'); const k = row.getAttribute('data-k');
+      if (cb.checked) tick[k] = 1; else delete tick[k];
+      row.classList.toggle('done', cb.checked); _chkSave(itin.id, tick); draw();
+    });
+  });
+  draw();
+  block.style.display = items.length ? '' : 'none';
+}
 // ── One-click unsubscribe (2026-10-18) ──────────────────────────
 // Marketing emails link to tripmade.co/?unsubscribe=<user id>.<token>. Works
 // without signing in; the email-prefs function checks the token.
@@ -8032,6 +8126,7 @@ const WELCOME_VAGUE_PLACE = /^\s*$|\b(home|house|residence|your (place|address|a
 function welcomeEndKnown(name, lat, lng) {
   return !WELCOME_VAGUE_PLACE.test(String(name || '')) && !isNaN(lat) && !isNaN(lng);
 }
+const WELCOME_VAN_TYPE = { 'buenos-aires': 'type_3' };
 function welcomeTransferLink(t, citySlug, dateIso, time, pax) {
   if (!citySlug || !t) return null;
   const nums = ['from_lat', 'from_lng', 'to_lat', 'to_lng'].map(function(k) { return parseFloat(t[k]); });
@@ -8044,7 +8139,12 @@ function welcomeTransferLink(t, citySlug, dateIso, time, pax) {
   // 2026-10-25 (Lachy): open with the Comfort Minivan (Welcome's type_2) chosen
   // instead of the Standard Sedan — more room for luggage. The customer can still
   // switch on Welcome's page. Groups over 6 are left to Welcome (they need a minibus).
-  if ((pax || 2) <= 6) { q.set('fixed_car_type', 'type_2'); q.set('car_type', 'type_2'); }
+  // 2026-10-26: Welcome numbers its vehicles per city: in most (Rome, Rio,
+  // Cancún…) type_2 is the van, but some cities list a Maxi Sedan second and the
+  // van third (Buenos Aires). If the type isn't offered on that route Welcome
+  // falls back to its default sedan, so add a city here when its van is type_3.
+  const vanType = WELCOME_VAN_TYPE[citySlug] || 'type_2';
+  if ((pax || 2) <= 6) { q.set('fixed_car_type', vanType); q.set('car_type', vanType); }
   const types = ['airport', 'hotel', 'port', 'train_station', 'address'];
   const fromKnown = welcomeEndKnown(t.from_name, nums[0], nums[1]);
   const toKnown = welcomeEndKnown(t.to_name, nums[2], nums[3]);
@@ -8087,6 +8187,7 @@ const TRIP_CITY_ALIASES = {"belas":"belas-1","viana":"viana-2","jennings":"jenni
 function decorateItineraryAffiliates(root, tripStart, ctx) {
   ctx = ctx || {};
   if (!root) return;
+  setTimeout(function() { watchItinRatings(root); }, 0);
   let added = 0;
   let firstTravelEvt = null;
   const flightPlan = planFlightJourneys(root);
@@ -8099,6 +8200,16 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
     for (const cls in EVT_DOT_TO_CATEGORY) if (dotEl.classList.contains(cls)) category = EVT_DOT_TO_CATEGORY[cls];
     const kind = itinAffiliateKind(category, labelEl.textContent);
     const aff = kind && ITIN_AFFILIATES[kind];
+    // 2026-10-26 (Lachy): hotels get their Google rating too.
+    if (category === 'hotel' && !evt.hasAttribute('data-pl-q') && !/check[- ]?out/i.test(labelEl.textContent)) {
+      const hn = String(labelEl.textContent || '').replace(/^\s*(check[- ]?in|stay|arrive|arrival|hotel)\s*(—|–|-|:|at)\s*/i, '').split(/\s+[—–]\s+|,|\(/)[0].trim();
+      if (hn.length >= 3) {
+        const hc = String(evt.dataset.city || ctx.destination || '').split(',')[0].trim();
+        evt.setAttribute('data-pl-cat', 'hotel');
+        evt.setAttribute('data-pl-name', hn);
+        evt.setAttribute('data-pl-q', hn + (hc ? ', ' + hc : ''));
+      }
+    }
     if (!aff) {
       // 2026-10-16 per Lachy: restaurants/cafes/bars get a Map link (upgraded
       // to Menu + Google rating when the day is expanded); experiences get a
@@ -8228,20 +8339,8 @@ function decorateItineraryAffiliates(root, tripStart, ctx) {
   // the first flight's booking button (or the first hotel if there's no flight).
   // Skipped for trips within Australia, where an eSIM isn't needed.
   const domestic = /australia|sydney|melbourne|brisbane|gold coast|sunshine coast|noosa|byron|perth|adelaide|hobart|tasmania|cairns|port douglas|whitsunday|darwin|canberra|uluru|alice springs|newcastle|hunter valley|blue mountains|margaret river|barossa|great ocean road|jervis bay/i.test(ctx.destination || '');
-  if (firstTravelEvt && !domestic && !root.querySelector('.evt-esim')) {
-    const s = document.createElement('a');
-    s.className = 'evt-book evt-esim';
-    s.href = HOLAFLY_URL;
-    s.target = '_blank';
-    s.rel = 'noopener noreferrer sponsored';
-    s.innerHTML = 'Get<span class="evt-book-kind"> an</span> eSIM ↗';
-    s.setAttribute('aria-label', 'Get a Holafly eSIM for this trip');
-    s.title = 'Holafly eSIM: mobile data from the moment you land';
-    s.addEventListener('click', function(e) { e.stopPropagation(); });
-    firstTravelEvt.head.appendChild(s);
-    firstTravelEvt.head.classList.add('evt-head-2');
-    added++;
-  }
+  // 2026-10-26 (Lachy): the eSIM button no longer sits beside the first flight;
+  // it's in the Trip checklist instead (renderTripChecklist).
   // One short disclosure line per itinerary (ACCC/FTC), only if links exist.
   if (added && !root.querySelector('.aff-note')) {
     const note = document.createElement('div');
@@ -9275,6 +9374,23 @@ function toggleInboxDayExtend(dayId) {
   _openInboxDayId = nowOpen ? dayId : null;
   if (nowOpen && block) enrichItinDay(block);
 }
+// 2026-10-26 (Lachy): ratings (and the Menu link) used to load only when a day
+// was expanded, so most customers never saw them. Now each day loads them when
+// it scrolls into view, collapsed or expanded, locked or not. Lazy so a long
+// trip doesn't look up every place at once (Google charges per lookup).
+let _itinRatingObs = null;
+function watchItinRatings(root) {
+  // Real trips only: not the sample itinerary on the homepage (its static day
+  // blocks have ids like day-block-1), so a normal visit costs no lookups.
+  if (!root || root.querySelector('[id^="day-block-"]')) return;
+  const blocks = Array.from(root.querySelectorAll('.day-block'));
+  if (!blocks.length) return;
+  if (!('IntersectionObserver' in window)) { blocks.forEach(function(b) { enrichItinDay(b); }); return; }
+  if (!_itinRatingObs) _itinRatingObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(en) { if (en.isIntersecting) { _itinRatingObs.unobserve(en.target); enrichItinDay(en.target); } });
+  }, { rootMargin: '200px 0px' });
+  blocks.forEach(function(b) { if (!b.hasAttribute('data-pl-watch')) { b.setAttribute('data-pl-watch', '1'); _itinRatingObs.observe(b); } });
+}
 // 2026-10-16: an expanded day's restaurants and experiences get their Google
 // rating next to the name (links to the place on Google Maps), the Menu link
 // on the right for food, and a warning if the place is closed at that time.
@@ -9305,11 +9421,21 @@ async function enrichItinDay(block) {
     }
     const btn = e.querySelector('.evt-pl-btn');
     if (btn && e.getAttribute('data-pl-cat') !== 'activity') {
-      if (r.website && e.getAttribute('data-pl-cat') === 'food') { btn.href = r.website; btn.textContent = 'Menu ↗'; btn.setAttribute('aria-label', 'Menu and website for ' + r.name); }
-      else if (r.maps_url) btn.href = r.maps_url;
+      // 2026-10-26 (Lachy): restaurants show both Map and Menu (same Google lookup, no extra cost).
+      if (r.maps_url) btn.href = r.maps_url;
+      if (r.website && e.getAttribute('data-pl-cat') === 'food' && !e.querySelector('.evt-menu-btn')) {
+        const mb = document.createElement('a');
+        mb.className = 'evt-book evt-menu-btn';
+        mb.href = r.website; mb.target = '_blank'; mb.rel = 'noopener noreferrer';
+        mb.textContent = 'Menu ↗';
+        mb.setAttribute('aria-label', 'Menu and website for ' + r.name);
+        mb.addEventListener('click', function(ev) { ev.stopPropagation(); });
+        btn.insertAdjacentElement('beforebegin', mb);
+        const hd = btn.closest('.evt-head'); if (hd) hd.classList.add('evt-head-2');
+      }
     }
     const day = (e.getAttribute('data-pl-date') ? new Date(e.getAttribute('data-pl-date') + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long' }) : 'that day');
-    const warn = r.status === 'CLOSED_PERMANENTLY' ? 'Google lists this place as permanently closed.'
+    const warn = e.getAttribute('data-pl-cat') === 'hotel' ? '' : r.status === 'CLOSED_PERMANENTLY' ? 'Google lists this place as permanently closed.'
       : r.status === 'CLOSED_TEMPORARILY' ? 'Google lists this place as temporarily closed.'
       : r.open_then === false ? (r.hours_today && /closed/i.test(r.hours_today) ? 'Google shows it closed on ' + day + 's.'
           : 'Google shows it closed at ' + (e.getAttribute('data-pl-time') || 'this time') + ' on ' + day + (r.hours_today ? ' (open ' + r.hours_today + ')' : '') + '.') : '';
