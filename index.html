@@ -397,6 +397,33 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 .ks-card h4 span { font-family:inherit; font-size:10px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; background:#FFF3DC; color:#8A5A00; padding:2px 7px; border-radius:10px; }
 .ks-card p { font-size:13.5px; color:var(--text-muted); line-height:1.5; margin:0 0 12px; flex:1; }
 .ks-card button { align-self:flex-start; }
+.ks-card h4 span.free { background:#E3F5EC; color:#0F6E56; }
+.ks-paid { margin-top:12px; font-size:12.5px; color:var(--text-muted); line-height:1.45; border-top:1px dashed var(--accent-mid); padding-top:10px; }
+.ks-paid b { color:var(--text); font-weight:600; } .ks-paid a { color:var(--accent); font-weight:700; } .ks-ok { color:#0F6E56; font-weight:700; }
+.ph-drop { cursor:pointer; border:2px dashed var(--accent-mid) !important; transition:background .15s; } .ph-drop:hover { background:var(--accent-light); }
+.jr-dragover { outline:3px dashed var(--accent) !important; outline-offset:-3px; background:var(--accent-light) !important; }
+.ksv { position:fixed; inset:0; background:rgba(8,10,14,.92); z-index:10000; display:flex; align-items:center; justify-content:center; padding:16px; }
+.ksv-box { width:min(100%,1100px); }
+.ksv canvas { width:100%; height:auto; display:block; border-radius:12px; background:#0E1116; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+.ksv-prog { height:4px; background:rgba(255,255,255,.15); border-radius:2px; margin:10px 0 8px; overflow:hidden; } .ksv-prog i { display:block; height:100%; background:var(--accent-mid); width:0; }
+.ksv-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.ksv-bar button { background:rgba(255,255,255,.12); color:#fff; border:0; border-radius:8px; padding:9px 14px; font:600 14px 'DM Sans',sans-serif; cursor:pointer; }
+.ksv-bar button.ksv-buy { background:var(--accent); } .ksv-bar button:disabled { opacity:.7; cursor:default; }
+.ksv-note { color:rgba(255,255,255,.6); font-size:12.5px; margin-top:8px; }
+.ksb { position:fixed; inset:0; background:#E9E6E0; z-index:10000; overflow:auto; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+.ksb-bar { position:sticky; top:0; z-index:2; display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:12px 16px; background:#fff; border-bottom:1px solid var(--border,#e5e5e5); }
+.ksb-pages { padding:24px 16px 60px; display:flex; flex-direction:column; align-items:center; gap:22px; }
+.ksb-pg { position:relative; width:min(100%,640px); aspect-ratio:1/1.3; background:#fff; box-shadow:0 6px 24px rgba(0,0,0,.12); padding:6% 7%; display:flex; flex-direction:column; overflow:hidden; }
+.ksb-wm::after { content:''; position:absolute; inset:0; pointer-events:none; z-index:3; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='160'%3E%3Ctext x='130' y='90' text-anchor='middle' transform='rotate(-24 130 80)' font-family='Arial' font-weight='700' font-size='30' fill='rgba(13,115,119,0.16)'%3ETripMade preview%3C/text%3E%3C/svg%3E"); }
+.ksb-img { background:#eee center/cover no-repeat; border-radius:4px; min-height:0; }
+.ksb-cover { padding:0; justify-content:flex-end; } .ksb-cover .ksb-img.cover { position:absolute; inset:0; border-radius:0; }
+.ksb-cover .ksb-ct { position:relative; z-index:2; padding:8% 7%; color:#fff; background:linear-gradient(transparent,rgba(0,0,0,.65)); }
+.ksb-ct h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,6vw,44px); margin:0 0 6px; } .ksb-ct p { margin:0 0 6px; font-size:16px; } .ksb-ct small { opacity:.8; letter-spacing:.06em; text-transform:uppercase; font-size:11px; }
+.ksb-end { justify-content:center; text-align:center; background:var(--accent-light); } .ksb-end h2 { font-family:'Syne',sans-serif; font-size:34px; margin:0 0 8px; }
+.ksb-hd { display:flex; gap:10px; align-items:baseline; margin-bottom:10px; } .ksb-hd b { font-family:'Syne',sans-serif; font-size:22px; } .ksb-hd span { color:var(--text-muted); font-size:13px; }
+.ksb-hl { font-style:italic; font-size:16px; margin:0 0 8px; color:var(--accent); } .ksb-body { font-size:13px; line-height:1.55; margin:0 0 12px; color:#333; max-height:30%; overflow:hidden; }
+.ksb-grid { flex:1; display:grid; gap:8px; min-height:0; } .ksb-grid.n1 { grid-template-columns:1fr; } .ksb-grid.n2 { grid-template-rows:1fr 1fr; } .ksb-grid.n3 { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; } .ksb-grid.n3 .ksb-img:first-child { grid-column:1/3; } .ksb-grid.n4 { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+@media print { .ksb, .ksv { display:none !important; } }
 .ks-card button.done { background:#E3F5EC; color:#0F6E56; border-color:#E3F5EC; cursor:default; }
 @media (max-width:640px) { .ks-grid { grid-template-columns:1fr; } }
 .day-jr-link { border:none; background:none; color:var(--accent); font-weight:700; font-size:12px; cursor:pointer; font-family:inherit; padding:0 8px; white-space:nowrap; }
@@ -6058,12 +6085,42 @@ function _jrResize(file, max, q) {
 }
 document.addEventListener('DOMContentLoaded', function() {
   const f = document.getElementById('jr-file'); if (!f) return;
-  f.addEventListener('change', async function() {
-    const itin = _currentInboxItinerary, uid = _jrUid(); if (!itin || !uid || !f.files.length) return;
+  f.addEventListener('change', function() { jrUploadFiles(f.files); });
+  jrSetupDrop();
+});
+// Drag and drop photos onto the Photos tab (uses the city picker) or onto a
+// Journal day (files go to that day). (2026-10-26, Lachy)
+function jrSetupDrop() {
+  const wrap = document.getElementById('page-inbox-detail'); if (!wrap || wrap._jrDrop) return; wrap._jrDrop = true;
+  const target = function(e) { return e.target.closest && e.target.closest('#ibx-photos-panel, #ibx-journal-panel .jr-day'); };
+  const hasFiles = function(e) { return e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') > -1; };
+  let over = null;
+  const clear = function() { if (over) over.classList.remove('jr-dragover'); over = null; };
+  wrap.addEventListener('dragover', function(e) {
+    if (!hasFiles(e)) return; const t = target(e); if (!t) return clear();
+    e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
+    if (over !== t) { clear(); over = t; t.classList.add('jr-dragover'); }
+  });
+  wrap.addEventListener('dragleave', function(e) { if (over && !over.contains(e.relatedTarget)) clear(); });
+  wrap.addEventListener('drop', function(e) {
+    const t = target(e); clear(); if (!t || !hasFiles(e)) return; e.preventDefault();
+    const itin = _currentInboxItinerary; if (!itin) return;
+    if (t.classList.contains('jr-day')) {
+      const n = +t.getAttribute('data-day'), d = (itin.days || []).find(function(x) { return x.day_number === n; });
+      _jr.uploadDay = n; _jr.uploadCity = d ? _jrDayCity(itin, d) : '';
+    } else { const sel = document.getElementById('ph-city'); _jr.uploadDay = null; _jr.uploadCity = sel ? sel.value : ''; }
+    const files = Array.from(e.dataTransfer.files || []).filter(function(x) { return /^image\//.test(x.type) || /\.(jpe?g|png|webp|heic|heif)$/i.test(x.name); });
+    if (!files.length) { tmToast('Drop photo files (JPEG, PNG or WebP).'); return; }
+    jrUploadFiles(files);
+  });
+}
+async function jrUploadFiles(list) {
+  {
+    const itin = _currentInboxItinerary, uid = _jrUid(); if (!itin || !uid || !list || !list.length) return;
     const mine = _jr.photos.filter(function(x) { return x.user_id === uid; }).length;
-    const files = Array.from(f.files).slice(0, Math.max(0, JR_MAX - mine));
+    const files = Array.from(list).slice(0, Math.max(0, JR_MAX - mine));
     if (!files.length) { tmToast('You\'ve reached the ' + JR_MAX + ' photo limit for this trip.'); return; }
-    if (files.length < f.files.length) tmToast('Only ' + files.length + ' more photo' + (files.length === 1 ? '' : 's') + ' fit in this trip (' + JR_MAX + ' max).');
+    if (files.length < list.length) tmToast('Only ' + files.length + ' more photo' + (files.length === 1 ? '' : 's') + ' fit in this trip (' + JR_MAX + ' max).');
     let ok = 0, fail = '';
     for (let i = 0; i < files.length; i++) {
       tmToast('Uploading photo ' + (i + 1) + ' of ' + files.length + '…');
@@ -6086,8 +6143,8 @@ document.addEventListener('DOMContentLoaded', function() {
     await jrSign(_jr.photos.map(function(x) { return x.thumb_path || x.path; }));
     tmToast(fail ? (ok ? ok + ' added. ' : '') + fail : ok + ' photo' + (ok === 1 ? '' : 's') + ' added ✓');
     if (_jr.tab === 'journal') renderJournal(); else renderPhotos();
-  });
-});
+  }
+}
 function renderPhotos() {
   const itin = _currentInboxItinerary, el = document.getElementById('ibx-photos-panel'); if (!itin || !el) return;
   const uid = _jrUid(), cities = _jrCities(itin);
@@ -6101,9 +6158,9 @@ function renderPhotos() {
   }).join('');
   el.innerHTML = '<div class="ph-top"><select id="ph-city">' + cities.map(function(c) { return '<option>' + tmEsc(c) + '</option>'; }).join('') + '<option value="">Other</option></select>' +
     '<button type="button" class="btn-primary" style="padding:9px 16px;font-size:14px;" onclick="jrPick(null, document.getElementById(\'ph-city\').value)">📷 Add photos</button>' +
-    '<button type="button" class="btn-secondary ph-slideshow" title="Coming soon" disabled>▶ Create slideshow (soon)</button>' +
+    '<button type="button" class="btn-secondary ph-slideshow" onclick="ksVideo()">▶ Play slideshow</button>' +
     '<span class="ph-count">' + mine + ' of ' + JR_MAX + ' photos used</span></div>' +
-    (body || '<div class="ph-empty">No photos yet. Add photos here, or from a day in your Journal, and they\'ll be grouped by destination. Your photos are private unless you share them.</div>') + keepsakesHtml();
+    (body || '<div class="ph-empty ph-drop" onclick="jrPick(null, document.getElementById(\'ph-city\').value)"><div style="font-size:30px;margin-bottom:6px;">📷</div><b>Drag and drop photos here</b><br>or tap to choose them. You can also add photos from a day in your Journal. They\'ll be grouped by destination and stay private unless you share them.</div>') + keepsakesHtml();
 }
 async function jrOpenPhoto(id) {
   const list = _jr.photos; let i = list.findIndex(function(p) { return p.id === id; }); if (i < 0) return;
@@ -6140,35 +6197,251 @@ async function jrOpenPhoto(id) {
   document.body.appendChild(lb);
   show(i);
 }
-// ── Trip keepsakes: video + printed photo book (2026-10-26, Lachy) ──
-// Shown at the end of the Journal and Photos tabs. Both are "coming soon":
-// the button records interest (site_feedback, page 'keepsake: video|book')
-// so we know demand before building them.
+// ── Trip keepsakes: video + photo book (2026-10-26, Lachy) ──────
+// Shown at the end of the Journal and Photos tabs.
+// FREE: a watermarked preview of each, played/viewed in the browser only
+// (no save/download button; printing the book preview is blocked).
+// PAID: the full video (no watermark, downloadable) and the printed
+// hardcover book. Checkout isn't connected yet, so those buttons record
+// interest in site_feedback (page 'keepsake: video|book') for now.
 const KEEPSAKES = {
-  video: { ic: '🎬', title: 'Your trip video', text: 'We\'ll turn your photos and journal into a video of your whole trip, with music, a map of your route and your captions. Ready to watch and share.' },
-  book: { ic: '📖', title: 'Printed photo book', text: 'A hardcover book of your trip\'s best photos and journal notes, printed and delivered to your door.' }
+  video: { ic: '🎬', title: 'Your trip video', text: 'Your photos and journal highlights played as a video of your trip, with day titles, captions and music.',
+    btn: '▶ Watch free preview', fn: 'ksVideo()', paid: 'Full HD video with no watermark, yours to download and share' },
+  book: { ic: '📖', title: 'Your photo book', text: 'A page for each day of your trip with your photos, highlights and notes.',
+    btn: '📖 Preview my photo book', fn: 'ksBook()', paid: 'Printed hardcover book, delivered to your door' }
 };
 function _ksKey(kind) { return 'tm_ks_' + kind + '_' + (_currentInboxItinerary ? _currentInboxItinerary.id : ''); }
 function keepsakesHtml() {
   const card = function(kind) {
     const k = KEEPSAKES[kind]; let done = false; try { done = localStorage.getItem(_ksKey(kind)) === '1'; } catch (e) {}
-    return '<div class="ks-card"><div class="ks-ic">' + k.ic + '</div><h4>' + k.title + ' <span>Coming soon</span></h4><p>' + k.text + '</p>' +
-      (done ? '<button type="button" class="btn-secondary done" disabled>✓ We\'ll let you know</button>'
-            : '<button type="button" class="btn-secondary" onclick="keepsakeInterest(\'' + kind + '\', this)">Notify me when it\'s ready</button>') + '</div>';
+    return '<div class="ks-card"><div class="ks-ic">' + k.ic + '</div><h4>' + k.title + ' <span class="free">Free preview</span></h4><p>' + k.text + '</p>' +
+      '<button type="button" class="btn-primary" onclick="' + k.fn + '">' + k.btn + '</button>' +
+      '<div class="ks-paid"><b>' + k.paid + '.</b> Coming soon. ' +
+        (done ? '<span class="ks-ok">✓ We\'ll let you know</span>' : '<a href="#" onclick="keepsakeInterest(\'' + kind + '\', this); return false;">Notify me</a>') + '</div></div>';
   };
   return '<div class="ks-wrap"><h3>Relive your trip</h3><p>Turn your photos and journal into something to keep.</p><div class="ks-grid">' + card('video') + card('book') + '</div></div>';
 }
 async function keepsakeInterest(kind, btn) {
   const u = getUser(), itin = _currentInboxItinerary;
-  btn.disabled = true;
+  if (btn.disabled || btn.getAttribute('data-busy')) return;
+  btn.setAttribute('data-busy', '1');
   try {
     const { error } = await sb.from('site_feedback').insert({ user_id: u ? u.id : null, name: (u && u.name) || null, email: (u && u.email) || null,
-      page: 'keepsake: ' + kind, rating: null, message: 'Wants the ' + (kind === 'video' ? 'trip video' : 'printed photo book') + ' for trip ' + (itin ? itin.id + ' (' + (itin.destination || '') + ')' : ''),
+      page: 'keepsake: ' + kind, rating: null, message: 'Wants the ' + (kind === 'video' ? 'full trip video (no watermark)' : 'printed photo book') + ' for trip ' + (itin ? itin.id + ' (' + (itin.destination || '') + ')' : ''),
       user_agent: navigator.userAgent.slice(0, 300) });
     if (error) throw error;
     try { localStorage.setItem(_ksKey(kind), '1'); } catch (e) {}
-    btn.className = 'btn-secondary done'; btn.textContent = '✓ We\'ll let you know';
-  } catch (e) { console.error('keepsake interest failed', e); btn.disabled = false; tmToast('That didn\'t go through, please try again.'); }
+    document.querySelectorAll('.ks-paid a[onclick*="\'' + kind + '\'"]').forEach(function(a) { a.outerHTML = '<span class="ks-ok">✓ We\'ll let you know</span>'; });
+    const fb = document.querySelector('.ksv-bar [data-a="notify"]'); if (fb && kind === 'video') { fb.textContent = '✓ We\'ll let you know'; fb.disabled = true; }
+  } catch (e) { console.error('keepsake interest failed', e); btn.removeAttribute('data-busy'); tmToast('That didn\'t go through, please try again.'); }
+}
+function _ksPhotos() {
+  return _jr.photos.slice().sort(function(a, b) { return (a.day_number || 999) - (b.day_number || 999) || String(a.created_at).localeCompare(String(b.created_at)); });
+}
+function _ksDates(itin) {
+  const start = _jrStart(itin), n = (itin.days || []).length;
+  return [formatTripDayDate(start, 1), n > 1 ? formatTripDayDate(start, n) : ''].filter(Boolean).join(' – ');
+}
+function _ksMine(n) { const uid = _jrUid(); return _jr.entries.find(function(x) { return x.user_id === uid && x.day_number === n; }) || {}; }
+
+// Soft generated background music (Web Audio, no licensing needed).
+function _ksMusic(ac) {
+  const master = ac.createGain(); master.gain.value = 0; master.connect(ac.destination);
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1500; lp.connect(master);
+  const chords = [[57, 60, 64, 69], [53, 57, 60, 65], [48, 52, 55, 60], [55, 59, 62, 67]];
+  const hz = function(m) { return 440 * Math.pow(2, (m - 69) / 12); };
+  let step = 0; const len = 2.6;
+  const play = function() {
+    const t0 = ac.currentTime + 0.05, ch = chords[step++ % 4];
+    ch.forEach(function(m, k) {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = k ? 'triangle' : 'sine'; o.frequency.value = hz(k ? m : m - 12);
+      g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(k ? 0.05 : 0.09, t0 + 0.7); g.gain.linearRampToValueAtTime(0.0001, t0 + len + 0.6);
+      o.connect(g); g.connect(lp); o.start(t0); o.stop(t0 + len + 0.7);
+    });
+    [0, 2, 1, 3].forEach(function(k, j) {
+      const t = t0 + j * (len / 4), o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine'; o.frequency.value = hz(ch[k] + 12);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.035, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+      o.connect(g); g.connect(lp); o.start(t); o.stop(t + 1);
+    });
+  };
+  play(); const timer = setInterval(play, len * 1000);
+  master.gain.linearRampToValueAtTime(0.8, ac.currentTime + 1.2);
+  return { stop: function() { clearInterval(timer); try { master.gain.setTargetAtTime(0, ac.currentTime, 0.2); } catch (e) {} setTimeout(function() { ac.close && ac.close(); }, 800); } };
+}
+
+async function ksVideo() {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  let ac = null; try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  await jrLoad();
+  const ph = _ksPhotos();
+  if (!ph.length) { if (ac && ac.close) ac.close(); tmToast('Add some photos first, then watch your trip video.'); ibxTab('photos'); return; }
+  tmToast('Getting your photos ready…');
+  await jrSign(ph.map(function(p) { return p.path; }));
+  const imgs = await Promise.all(ph.map(function(p) {
+    return new Promise(function(res) { const im = new Image(); im.onload = function() { res(im); }; im.onerror = function() { res(null); }; im.src = _jr.urls[p.path] || _jr.urls[p.thumb_path]; });
+  }));
+  const start = _jrStart(itin);
+  const slides = [{ type: 'title', a: itin.destination || 'Our trip', b: _ksDates(itin) }];
+  let lastDay = 'x', dir = 0;
+  ph.forEach(function(p, i) {
+    if (!imgs[i]) return;
+    const d = p.day_number || null;
+    const day = d ? (itin.days || []).find(function(x) { return x.day_number === d; }) : null;
+    const city = p.city || (day ? _jrDayCity(itin, day) : '');
+    if (d !== lastDay) {
+      lastDay = d;
+      if (d) slides.push({ type: 'card', a: 'Day ' + d, b: [formatTripDayDate(start, d), city].filter(Boolean).join(' · '), c: _ksMine(d).highlight || '' });
+      else slides.push({ type: 'card', a: 'More memories', b: '', c: '' });
+    }
+    slides.push({ type: 'photo', img: imgs[i], label: [d ? 'Day ' + d : '', city].filter(Boolean).join(' · '), dir: dir++ % 4 });
+  });
+  slides.push({ type: 'end' });
+  const DUR = { title: 3.4, card: 2.8, photo: 3.6, end: 3.4 }, XF = 0.7;
+  const starts = [], durs = []; let acc = 0;
+  slides.forEach(function(s, i) { durs.push(DUR[s.type]); starts.push(acc); acc += DUR[s.type] - XF; });
+  const total = starts[starts.length - 1] + durs[durs.length - 1];
+
+  const ov = document.createElement('div'); ov.className = 'ksv';
+  ov.innerHTML = '<div class="ksv-box"><canvas width="1280" height="720"></canvas>' +
+    '<div class="ksv-prog"><i></i></div>' +
+    '<div class="ksv-bar"><button type="button" data-a="play">⏸ Pause</button><button type="button" data-a="restart">↺ Restart</button>' +
+    '<button type="button" data-a="music">🔊 Music on</button><span style="flex:1"></span>' +
+    '<button type="button" class="ksv-buy" data-a="notify">Full video, no watermark: notify me</button><button type="button" data-a="close">Close</button></div>' +
+    '<div class="ksv-note">Free preview. The full video with no watermark, ready to download and share, is coming soon.</div></div>';
+  document.body.appendChild(ov);
+  const cv = ov.querySelector('canvas'), ctx = cv.getContext('2d'), W = 1280, H = 720;
+  cv.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+  const accent = (getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#0D7377').trim() || '#0D7377';
+  let t = 0, playing = true, last = performance.now(), raf = 0, music = ac ? _ksMusic(ac) : null, musicOn = !!ac;
+  if (ac && ac.state === 'suspended') ac.resume();
+
+  const wrap = function(text, maxW) {
+    const words = String(text).split(/\s+/), lines = []; let cur = '';
+    words.forEach(function(w) { const tst = cur ? cur + ' ' + w : w; if (ctx.measureText(tst).width > maxW && cur) { lines.push(cur); cur = w; } else cur = tst; });
+    if (cur) lines.push(cur); return lines.slice(0, 3);
+  };
+  const ease = function(x) { return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); };
+  const drawText = function(s, lt) {
+    const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#0E1116'); g.addColorStop(1, accent);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const k = ease(lt / 0.9), rise = (1 - k) * 24;
+    ctx.save(); ctx.globalAlpha *= k; ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+    if (s.type === 'end') {
+      ctx.font = '700 64px Syne, sans-serif'; ctx.fillText('What a trip.', W / 2, H / 2 - 10 + rise);
+      ctx.font = '500 26px "DM Sans", sans-serif'; ctx.globalAlpha *= 0.85; ctx.fillText('Planned with TripMade · tripmade.co', W / 2, H / 2 + 50 + rise);
+    } else {
+      ctx.font = '700 ' + (s.type === 'title' ? 78 : 70) + 'px Syne, sans-serif';
+      wrap(s.a, W - 200).forEach(function(l, j, arr) { ctx.fillText(l, W / 2, H / 2 - 30 - (arr.length - 1 - j) * 82 + rise); });
+      ctx.font = '500 28px "DM Sans", sans-serif'; ctx.globalAlpha *= 0.85;
+      if (s.b) ctx.fillText(s.b, W / 2, H / 2 + 30 + rise);
+      if (s.c) { ctx.font = 'italic 500 30px "DM Sans", sans-serif'; wrap('“' + s.c + '”', W - 260).forEach(function(l, j) { ctx.fillText(l, W / 2, H / 2 + 100 + j * 42 + rise); }); }
+    }
+    ctx.restore();
+  };
+  const drawPhoto = function(s, lt, dur) {
+    const im = s.img, p = Math.min(1, Math.max(0, lt / dur)), z = 1.04 + 0.1 * p;
+    const sc = Math.max(W / im.naturalWidth, H / im.naturalHeight) * z, w = im.naturalWidth * sc, h = im.naturalHeight * sc;
+    const px = [[-1, 0], [1, 0], [0, -1], [0, 1]][s.dir], ox = (w - W) / 2, oy = (h - H) / 2;
+    ctx.fillStyle = '#0E1116'; ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(im, -ox + px[0] * ox * (p - 0.5), -oy + px[1] * oy * (p - 0.5), w, h);
+    if (s.label) {
+      const g = ctx.createLinearGradient(0, H - 140, 0, H); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.6)');
+      ctx.fillStyle = g; ctx.fillRect(0, H - 140, W, 140);
+      ctx.save(); ctx.fillStyle = '#fff'; ctx.font = '600 26px "DM Sans", sans-serif'; ctx.textAlign = 'left'; ctx.fillText(s.label, 40, H - 40); ctx.restore();
+    }
+  };
+  const drawSlide = function(s, lt, dur) { if (s.type === 'photo') drawPhoto(s, lt, dur); else drawText(s, lt); };
+  const watermark = function() {
+    ctx.save(); ctx.globalAlpha = 1;
+    ctx.translate(W / 2, H / 2); ctx.rotate(-0.42);
+    ctx.font = '800 58px Syne, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(255,255,255,.22)'; ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 2;
+    for (let y = -600; y <= 600; y += 170) for (let x = -1100; x <= 1100; x += 420) {
+      const xx = x + ((y / 170) % 2 ? 210 : 0); ctx.strokeText('TripMade', xx, y); ctx.fillText('TripMade', xx, y);
+    }
+    ctx.restore();
+    ctx.save(); ctx.font = '700 22px "DM Sans", sans-serif'; ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(255,255,255,.9)';
+    ctx.fillText('PREVIEW · tripmade.co', W - 30, 44); ctx.restore();
+  };
+  const frame = function(tt) {
+    ctx.globalAlpha = 1;
+    let i = 0; while (i + 1 < starts.length && starts[i + 1] <= tt) i++;
+    if (i > 0 && tt < starts[i - 1] + durs[i - 1]) { drawSlide(slides[i - 1], tt - starts[i - 1], durs[i - 1]); ctx.globalAlpha = Math.min(1, (tt - starts[i]) / XF); }
+    drawSlide(slides[i], tt - starts[i], durs[i]);
+    ctx.globalAlpha = 1; watermark();
+    ov.querySelector('.ksv-prog i').style.width = (100 * tt / total).toFixed(2) + '%';
+  };
+  const setPlay = function(on) {
+    playing = on; ov.querySelector('[data-a="play"]').textContent = on ? '⏸ Pause' : '▶ Play';
+    if (ac) { if (on && musicOn) ac.resume(); else ac.suspend(); }
+  };
+  const loop = function(now) {
+    const dt = Math.min(0.1, (now - last) / 1000); last = now;
+    if (playing) { t += dt; if (t >= total) { t = total; setPlay(false); } }
+    frame(t); raf = requestAnimationFrame(loop);
+  };
+  raf = requestAnimationFrame(loop);
+  const close = function() { cancelAnimationFrame(raf); if (music) music.stop(); ov.remove(); document.removeEventListener('keydown', key); };
+  const key = function(e) { if (e.key === 'Escape') close(); if (e.key === ' ') { e.preventDefault(); setPlay(!playing); } };
+  document.addEventListener('keydown', key);
+  ov.addEventListener('click', function(e) {
+    const a = e.target.getAttribute && e.target.getAttribute('data-a');
+    if (e.target === ov || a === 'close') return close();
+    if (a === 'play') { if (!playing && t >= total) t = 0; setPlay(!playing); }
+    if (a === 'restart') { t = 0; setPlay(true); }
+    if (a === 'music' && ac) { musicOn = !musicOn; e.target.textContent = musicOn ? '🔊 Music on' : '🔇 Music off'; if (musicOn && playing) ac.resume(); else ac.suspend(); }
+    if (a === 'notify') keepsakeInterest('video', e.target);
+  });
+  if (!ac) { const mb = ov.querySelector('[data-a="music"]'); if (mb) mb.remove(); }
+  let done = false; try { done = localStorage.getItem(_ksKey('video')) === '1'; } catch (e) {}
+  if (done) { const nb = ov.querySelector('[data-a="notify"]'); nb.textContent = '✓ We\'ll let you know'; nb.disabled = true; }
+}
+
+async function ksBook() {
+  const itin = _currentInboxItinerary; if (!itin) return;
+  await jrLoad();
+  const ph = _ksPhotos(), start = _jrStart(itin), days = Array.isArray(itin.days) ? itin.days : [];
+  const hasNotes = days.some(function(d) { const m = _ksMine(d.day_number); return m.body || m.highlight; });
+  if (!ph.length && !hasNotes) { tmToast('Add some photos or journal notes first, then preview your book.'); ibxTab('journal'); return; }
+  tmToast('Laying out your book…');
+  await jrSign(ph.map(function(p) { return p.path; }));
+  const img = function(p, cls) { const u = _jr.urls[p.path] || _jr.urls[p.thumb_path]; return u ? '<div class="ksb-img ' + (cls || '') + '" style="background-image:url(\'' + tmEsc(u).replace(/'/g, '%27') + '\')"></div>' : ''; };
+  const pages = [];
+  pages.push('<div class="ksb-pg ksb-cover">' + (ph[0] ? img(ph[0], 'cover') : '') + '<div class="ksb-ct"><h1>' + tmEsc(itin.destination || 'Our trip') + '</h1><p>' + tmEsc(_ksDates(itin)) + '</p><small>A TripMade photo book</small></div></div>');
+  days.forEach(function(d) {
+    const n = d.day_number, m = _ksMine(n), dp = ph.filter(function(p) { return p.day_number === n; });
+    if (!dp.length && !m.body && !m.highlight) return;
+    const head = '<div class="ksb-hd"><b>Day ' + n + '</b><span>' + tmEsc([formatTripDayDate(start, n), _jrDayCity(itin, d)].filter(Boolean).join(' · ')) + '</span></div>';
+    const txt = (m.highlight ? '<p class="ksb-hl">“' + tmEsc(m.highlight) + '”</p>' : '') + (m.body ? '<p class="ksb-body">' + tmEsc(m.body).replace(/\n/g, '<br>') + '</p>' : '');
+    for (let i = 0; i === 0 || i < dp.length; i += 4) {
+      const chunk = dp.slice(i, i + 4);
+      pages.push('<div class="ksb-pg">' + head + (i === 0 ? txt : '') + (chunk.length ? '<div class="ksb-grid n' + chunk.length + '">' + chunk.map(function(p) { return img(p); }).join('') + '</div>' : '') + '</div>');
+    }
+  });
+  const loose = ph.filter(function(p) { return !p.day_number; });
+  for (let i = 0; i < loose.length; i += 4) {
+    const chunk = loose.slice(i, i + 4);
+    pages.push('<div class="ksb-pg"><div class="ksb-hd"><b>More memories</b></div><div class="ksb-grid n' + chunk.length + '">' + chunk.map(function(p) { return img(p); }).join('') + '</div></div>');
+  }
+  pages.push('<div class="ksb-pg ksb-end"><div class="ksb-ct"><h2>What a trip.</h2><small>Planned with TripMade · tripmade.co</small></div></div>');
+  let done = false; try { done = localStorage.getItem(_ksKey('book')) === '1'; } catch (e) {}
+  const ov = document.createElement('div'); ov.className = 'ksb';
+  ov.innerHTML = '<div class="ksb-bar"><b>📖 Photo book preview</b><span style="flex:1"></span>' +
+    (done ? '<span class="ks-ok">✓ We\'ll tell you when printed books are ready</span>' : '<button type="button" class="btn-primary" data-a="notify">Printed hardcover: notify me</button>') +
+    '<button type="button" class="btn-secondary" data-a="close">Close</button></div>' +
+    '<div class="ksb-pages">' + pages.map(function(p) { return p.replace('class="ksb-pg', 'class="ksb-pg ksb-wm'); }).join('') + '</div>';
+  document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+  ov.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+  const close = function() { ov.remove(); document.body.style.overflow = ''; document.removeEventListener('keydown', key); };
+  const key = function(e) { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', key);
+  ov.addEventListener('click', function(e) {
+    const a = e.target.getAttribute && e.target.getAttribute('data-a');
+    if (a === 'close') close();
+    if (a === 'notify') { keepsakeInterest('book', e.target); e.target.outerHTML = '<span class="ks-ok">✓ We\'ll tell you when printed books are ready</span>'; }
+  });
 }
 // ── Fold-away trip page sections (2026-10-26, Lachy) ────────────
 // My Bookings, Trip checklist and Entry requirements start closed; tap the
