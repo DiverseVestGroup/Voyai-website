@@ -9206,9 +9206,20 @@ async function renderInboxPage() {
     const end = parseTripStart(it.return_date) || parseTripStart((it.summary || {}).checkout_date);
     return !!(end && end < today);
   };
-  const upcoming = [], past = [], archived = [];
+  // 2026-10-26 (Lachy): Current trips = started on or before today and not
+  // finished yet (today is between the first and last day, inclusive). Uses the
+  // viewer's own calendar date.
+  const now = new Date();
+  const todayLocal = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  const isCurrent = function(it) {
+    const start = parseTripStart(it.depart_date) || parseTripStart((it.summary || {}).checkin_date);
+    const end = parseTripStart(it.return_date) || parseTripStart((it.summary || {}).checkout_date) || start;
+    return !!(start && end && start <= todayLocal && end >= todayLocal);
+  };
+  const current = [], upcoming = [], past = [], archived = [];
   itins.forEach(function(it) {
     if (archivedIds.indexOf(it.id) !== -1) archived.push(it);
+    else if (isCurrent(it)) current.push(it);
     else if (isPast(it)) past.push(it);
     else upcoming.push(it);
   });
@@ -9233,9 +9244,10 @@ async function renderInboxPage() {
       '</div>';
   };
   let html = '';
-  if (upcoming.length) html += (past.length || archived.length ? '<div class="inbox-group-hd">Upcoming trips</div>' : '') + upcoming.map(function(it) { return row(it, false); }).join('');
+  if (current.length) html += '<div class="inbox-group-hd">' + (current.length > 1 ? 'Current trips' : 'Current trip') + ' <span style="background:#E3F5EC;color:#0F6E56;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;margin-left:6px;letter-spacing:.04em;">ON NOW</span></div>' + current.map(function(it) { return row(it, false); }).join('');
+  if (upcoming.length) html += (current.length || past.length || archived.length ? '<div class="inbox-group-hd">Upcoming trips</div>' : '') + upcoming.map(function(it) { return row(it, false); }).join('');
   if (past.length) html += '<div class="inbox-group-hd">Past trips</div>' + past.map(function(it) { return row(it, false); }).join('');
-  if (archived.length) html += '<details class="inbox-archived"' + (upcoming.length || past.length ? '' : ' open') + '><summary>Archived (' + archived.length + ')</summary>' + archived.map(function(it) { return row(it, true); }).join('') + '</details>';
+  if (archived.length) html += '<details class="inbox-archived"' + (current.length || upcoming.length || past.length ? '' : ' open') + '><summary>Archived (' + archived.length + ')</summary>' + archived.map(function(it) { return row(it, true); }).join('') + '</details>';
   list.innerHTML = html;
 }
 async function setTripArchived(id, archive) {
