@@ -4397,6 +4397,8 @@ footer p { font-size:13px; color:var(--text-dim); }
       <span id="ibx-share-who" class="ibx-share-who"></span>
       <button type="button" class="btn-secondary ibx-share-btn" onclick="openShareModal()">Share trip</button>
     </div>
+    <!-- 2026-10-28: phone reminders for this trip (filled by renderPushBar). -->
+    <div class="ibx-keep" id="ibx-push"></div>
     <!-- 2026-10-26 (Lachy): Itinerary | Journal | Photos tabs. -->
     <div class="ibx-tabs ibx-keep" id="ibx-tabs" role="tablist">
       <button type="button" data-tab="itinerary" onclick="ibxTab('itinerary')">🗺️ Itinerary</button>
@@ -6004,6 +6006,7 @@ function _jrCities(itin) {
   return out;
 }
 function setupTripTabs(itin) {
+  try { renderPushBar(); } catch (e) {}
   const wrap = document.querySelector('#page-inbox-detail .itin-wrap');
   if (!wrap || !itin) return;
   if (_jr.id !== itin.id) {
@@ -9960,10 +9963,10 @@ async function renderInboxPage() {
       (shared ? '<span style="background:#EEF2FF;color:#3730A3;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">SHARED WITH YOU</span>' : '') +
       (it.kind === 'manual' ? '<span style="background:#F4F6F5;color:#555;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:8px;">YOUR PLAN</span>' : '');
     return '' +
-      '<div class="saved-chat-row">' +
+      '<div class="saved-chat-row inbox-row">' +
         '<div class="saved-chat-main">' +
-          '<div class="saved-chat-title">' + dest + badge + '</div>' +
-          '<div class="saved-chat-meta">' + (dateStr ? dateStr + ' · ' : '') + dayCount + (dayCount === 1 ? ' day' : ' days') + '</div>' +
+          '<div class="saved-chat-title"><span class="inbox-dest">' + dest + '</span>' + (badge ? '<span class="inbox-badges">' + badge + '</span>' : '') + '</div>' +
+          '<div class="saved-chat-meta">' + (dateStr ? '<span class="inbox-dates">📅 ' + dateStr + '</span> · ' : '') + '<span class="inbox-dates">' + dayCount + (dayCount === 1 ? ' day' : ' days') + '</span></div>' +
         '</div>' +
         '<div class="saved-chat-actions">' +
           (jr ? '<button type="button" class="inbox-jr-btn" onclick="openTripJournal(' + jsStrAttr(it.id) + ')">📝 Journal</button>' : '') +
@@ -11157,6 +11160,22 @@ async function sendFeedback() {
 .inbox-archived summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:10px;}
 .inbox-archive-btn{background:none;border:1.5px solid var(--border-mid);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;font-family:inherit;}
 .inbox-archive-btn:hover{color:var(--accent);border-color:var(--accent);}
+/* 2026-10-28 (Lachy): Inbox rows show the full trip name (wraps instead of "Euro…"),
+   dates on one tidy line, and smaller, evenly sized buttons underneath on phones. */
+.inbox-row .saved-chat-title { white-space:normal; overflow:visible; text-overflow:clip; line-height:1.3; }
+.inbox-row .inbox-badges { display:inline-flex; flex-wrap:wrap; gap:4px; vertical-align:2px; }
+.inbox-row .inbox-badges span { margin-left:6px !important; }
+.inbox-row .saved-chat-meta { margin-top:4px; }
+.inbox-row .inbox-dates { white-space:nowrap; }
+@media (max-width:640px) {
+  .inbox-row { flex-direction:column; align-items:stretch; gap:12px; padding:14px 16px; }
+  .inbox-row .saved-chat-title { font-size:15.5px; }
+  .inbox-row .inbox-badges { display:flex; margin-top:6px; }
+  .inbox-row .inbox-badges span { margin-left:0 !important; }
+  .inbox-row .saved-chat-actions { justify-content:flex-end; gap:6px; border-top:1px solid var(--border); padding-top:10px; }
+  .inbox-row .saved-chat-actions button { font-size:12px; padding:6px 11px; border-radius:999px; }
+  .inbox-row .saved-chat-actions .saved-chat-open { margin-left:auto; }
+}
 .bk-card.bk-cancelled .bk-title{text-decoration:line-through;color:var(--text-muted);}
 .bk-cancel-pill{display:inline-block;background:#FDECEA;color:#B3261E;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:8px;text-decoration:none;vertical-align:middle;}
 .bk-acts{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
@@ -11964,6 +11983,103 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   }, 1500);
 })();
 </script>
+<script>
+// ── Trip reminders on the phone (2026-10-28, Lachy) ──────────────
+// "Turn on" asks the phone for permission, creates a push subscription and
+// sends it to the trip-reminders function, which then sends: the night
+// before a trip starts (6pm) and each trip morning (7am), in the phone's
+// own time zone. Works on Android, desktop, and iPhones (iOS 16.4+) once
+// TripMade is added to the home screen.
+const PUSH_FN = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/trip-reminders';
+async function pushCall(body) {
+  let auth = {};
+  try { const { data: { session } } = await sb.auth.getSession(); if (session) auth = { Authorization: 'Bearer ' + session.access_token }; } catch (e) {}
+  const r = await fetch(PUSH_FN, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, auth), body: JSON.stringify(body) });
+  return r.json();
+}
+function pushSupported() { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+function _pushTz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Australia/Sydney'; } catch (e) { return 'Australia/Sydney'; } }
+function _b64ToBytes(b64) {
+  const s = (b64 + '='.repeat((4 - b64.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(s); const out = new Uint8Array(raw.length); for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i); return out;
+}
+function _pushBar(ic, text, btns) {
+  return '<div class="push-bar"><span class="push-ic">' + ic + '</span><span class="push-txt">' + text + '</span>' + (btns ? '<span class="push-btns">' + btns + '</span>' : '') + '</div>';
+}
+async function renderPushBar() {
+  const el = document.getElementById('ibx-push'); if (!el) return;
+  const itin = typeof _currentInboxItinerary !== 'undefined' ? _currentInboxItinerary : null;
+  el.innerHTML = '';
+  if (!itin || !getUser()) return;
+  // Only for trips that haven't finished.
+  const start = _jrStart(itin), n = Array.isArray(itin.days) ? itin.days.length : 0;
+  if (start) {
+    const end = new Date(start.getTime() + Math.max(0, n - 1) * 86400000), now = new Date();
+    if (end < new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()))) return;
+  }
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (!pushSupported()) {
+    if (ios && !standalone) el.innerHTML = _pushBar('🔔', '<b>Want trip reminders on your phone?</b> Add TripMade to your home screen first (tap Share, then Add to Home Screen), open it from there and turn them on here.', '');
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    el.innerHTML = _pushBar('🔕', 'Notifications are blocked for TripMade. To get trip reminders, allow notifications for TripMade in your phone or browser settings.', '');
+    return;
+  }
+  let sub = null;
+  try { const reg = await navigator.serviceWorker.getRegistration(); sub = reg ? await reg.pushManager.getSubscription() : null; } catch (e) {}
+  if (sub && Notification.permission === 'granted') {
+    el.innerHTML = _pushBar('🔔', '<b>Trip reminders are on.</b> We\'ll send a note the night before you leave and each morning with the day\'s plan.',
+      '<button type="button" data-a="test">Send a test</button><button type="button" data-a="off">Turn off</button>');
+    // Keep the time zone current (e.g. once they've landed overseas).
+    pushCall({ action: 'subscribe', subscription: sub.toJSON(), tz: _pushTz() }).catch(function() {});
+  } else {
+    el.innerHTML = _pushBar('🔔', '<b>Get trip reminders on this ' + (/android|iphone|ipad|ipod/i.test(navigator.userAgent) ? 'phone' : 'device') + '</b>: the night before you leave, and each morning with the day\'s plan.',
+      '<button type="button" class="on" data-a="on">Turn on</button>');
+  }
+  el.querySelectorAll('button[data-a]').forEach(function(b) { b.addEventListener('click', function() { pushAction(b.getAttribute('data-a'), b); }); });
+}
+async function pushAction(a, btn) {
+  btn.disabled = true;
+  try {
+    if (a === 'on') {
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') { renderPushBar(); return; }
+      const reg = (await navigator.serviceWorker.getRegistration()) || (await navigator.serviceWorker.register('/sw.js'));
+      await navigator.serviceWorker.ready;
+      const k = await pushCall({ action: 'key' });
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: _b64ToBytes(k.publicKey) });
+      const r = await pushCall({ action: 'subscribe', subscription: sub.toJSON(), tz: _pushTz(), welcome: true });
+      if (!r || !r.ok) throw new Error((r && r.error) || 'subscribe failed');
+      try { if (window.tmTrack) tmTrack('trip_reminders_on'); } catch (e) {}
+      tmToast('Trip reminders are on ✅', 'You should get a confirmation notification now.');
+    } else if (a === 'off') {
+      const reg = await navigator.serviceWorker.getRegistration(); const sub = reg && await reg.pushManager.getSubscription();
+      if (sub) { await pushCall({ action: 'unsubscribe', endpoint: sub.endpoint }); await sub.unsubscribe(); }
+      try { if (window.tmTrack) tmTrack('trip_reminders_off'); } catch (e) {}
+      tmToast('Trip reminders turned off');
+    } else if (a === 'test') {
+      const r = await pushCall({ action: 'test' });
+      tmToast(r && r.sent ? 'Test sent 📱' : 'Couldn\'t send a test just then', r && r.sent ? 'It should arrive in a few seconds.' : 'Try turning reminders off and on again.');
+    }
+  } catch (e) {
+    console.error('reminders', e);
+    tmToast('That didn\'t work just then', 'Please try again in a moment.');
+  }
+  renderPushBar();
+}
+</script>
+<style>
+.push-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:12px; padding:10px 12px; margin:0 0 14px; font-size:13.5px; color:var(--text); }
+.push-ic { font-size:18px; }
+.push-txt { flex:1; min-width:200px; line-height:1.45; }
+.push-btns { display:flex; gap:6px; }
+.push-btns button { border:1.5px solid var(--accent-mid); background:#fff; color:var(--accent); border-radius:9px; padding:7px 12px; font:700 13px 'DM Sans',sans-serif; cursor:pointer; }
+.push-btns button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.push-btns button:disabled { opacity:.6; cursor:default; }
+</style>
 <style>
 #a2hs { position:fixed; left:12px; right:12px; bottom:14px; z-index:9000; display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid var(--accent-mid); border-radius:14px; padding:10px 10px 10px 12px; box-shadow:0 10px 30px rgba(0,0,0,.18); font-size:13px; max-width:520px; margin:0 auto; }
 #a2hs img { width:40px; height:40px; border-radius:10px; flex-shrink:0; }
@@ -11975,4 +12091,3 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 </style>
 </body>
 </html>
-
