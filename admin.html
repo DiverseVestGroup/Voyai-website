@@ -63,6 +63,7 @@
   .ven-tbl td { padding:9px 12px; border-bottom:1px solid #F1F1F1; vertical-align:middle; }
   .ven-tbl tr:last-child td { border-bottom:none; }
   .ven-tbl a { color:var(--teal); font-weight:600; text-decoration:none; white-space:nowrap; }
+  .ven-bd { font-size:11.5px; color:#667; margin-top:3px; }
   .ven-type { font-size:10.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:10px; background:#EEF6F5; color:var(--teal); }
   .ven-more { margin-top:10px; }
   @media (max-width:640px) { .ven-tbl .hide-sm { display:none; } }
@@ -166,16 +167,23 @@ function renderVenues() {
   }).join('');
   const list = _venues.filter(v => (_venTab === 'all' || v.type === _venTab) && (!q || (v.name + ' ' + v.city).toLowerCase().includes(q)));
   const multi = _venues.filter(v => v.trips >= 2).length;
-  document.getElementById('ven-sub').textContent = _venues.length + ' venues recommended in the last 12 months · ' + multi + ' in 2+ trips. Most-recommended first. Tap Google Maps to check their website, menu and contact details.';
+  const views = _venues.reduce((a, v) => a + (v.shown || 0), 0), taps = _venues.reduce((a, v) => a + (v.clicks || 0), 0);
+  document.getElementById('ven-sub').textContent = _venues.length + ' venues recommended in the last 12 months · ' + multi + ' in 2+ trips. ' +
+    (views ? views.toLocaleString('en-AU') + ' views and ' + taps.toLocaleString('en-AU') + ' taps in the last 90 days (trip pages + Ask TripMade). ' : 'Views and taps start counting once the latest site is live. ') +
+    'Most-recommended first. Tap a venue\'s numbers for the breakdown.';
   if (!list.length) { document.getElementById('venues').innerHTML = '<div class="empty">No venues match.</div>'; return; }
   const type = { food: 'Food', activity: 'Experience', hotel: 'Hotel' };
   const rows = list.slice(0, _venShow).map(v => {
     const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.name + (v.city ? ', ' + v.city : '')) + (v.place_id ? '&query_place_id=' + encodeURIComponent(v.place_id) : '');
     const last = v.last ? new Date(v.last).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }) : '';
     return '<tr><td><b>' + esc(v.name) + '</b></td><td>' + esc(v.city) + '</td><td class="hide-sm"><span class="ven-type">' + (type[v.type] || esc(v.type)) + '</span></td>' +
-      '<td>' + v.trips + ' trip' + (v.trips === 1 ? '' : 's') + '</td><td class="hide-sm">' + esc(last) + '</td><td><a href="' + esc(maps) + '" target="_blank" rel="noopener">Google Maps ↗</a></td></tr>';
+      '<td>' + (v.ask_only ? '<span class="ven-type">Ask only</span>' : v.trips + ' trip' + (v.trips === 1 ? '' : 's')) + '</td>' +
+      '<td title="' + esc('Map ' + (v.map || 0) + ' · Menu ' + (v.menu || 0) + ' · Website ' + (v.website || 0) + ' · Book ' + (v.book || 0) + ' · Rating ' + (v.rating || 0)) + '" onclick="this.querySelector(\'.ven-bd\').hidden = !this.querySelector(\'.ven-bd\').hidden" style="cursor:pointer;">' +
+        '<b>' + (v.shown || 0) + '</b> views · <b>' + (v.clicks || 0) + '</b> taps' +
+        '<div class="ven-bd" hidden>Map ' + (v.map || 0) + ' · Menu ' + (v.menu || 0) + ' · Website ' + (v.website || 0) + ' · Book ' + (v.book || 0) + ' · Rating ' + (v.rating || 0) + '</div></td>' +
+      '<td class="hide-sm">' + esc(last) + '</td><td><a href="' + esc(maps) + '" target="_blank" rel="noopener">Google Maps ↗</a></td></tr>';
   }).join('');
-  document.getElementById('venues').innerHTML = '<table class="ven-tbl"><thead><tr><th>Venue</th><th>City</th><th class="hide-sm">Type</th><th>Recommended</th><th class="hide-sm">Last</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' +
+  document.getElementById('venues').innerHTML = '<table class="ven-tbl"><thead><tr><th>Venue</th><th>City</th><th class="hide-sm">Type</th><th>Recommended</th><th>Seen (90 days)</th><th class="hide-sm">Last</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' +
     (list.length > _venShow ? '<div class="ven-more"><button class="ghost" onclick="_venShow += 100; renderVenues();">Show more (' + (list.length - _venShow) + ' left)</button></div>' : '');
 }
 loadVenues();
