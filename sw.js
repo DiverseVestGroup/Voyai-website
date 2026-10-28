@@ -3,7 +3,7 @@
 // Pages are always fetched fresh when online (so a new upload of index.html
 // shows straight away); the last good copy is used only when offline.
 // Supabase, Make, partner sites and photos are never cached here.
-const CACHE = 'tm-shell-v1';
+const CACHE = 'tm-shell-v2';
 const SHELL = ['/', '/manifest.json', '/favicon-192.png', '/logo-512.png', '/apple-touch-icon.png', '/favicon.ico'];
 const LIBS = [
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js',
@@ -51,4 +51,25 @@ self.addEventListener('fetch', (e) => {
     })));
   }
   // Everything else (Supabase, Make, partners, photos): straight to the network.
+});
+
+// ── Trip reminders (2026-10-28) ─────────────────────────────────
+// Sent by the trip-reminders function: the night before a trip and each
+// trip morning. Tapping one opens that trip.
+self.addEventListener('push', (e) => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_err) { d = { body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'TripMade', {
+    body: d.body || '', icon: '/favicon-192.png', badge: '/favicon-192.png', tag: d.tag || undefined, data: { url: d.url || '/inbox' }
+  }));
+});
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || '/inbox';
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+    for (const c of list) {
+      if (c.url.indexOf(self.location.origin) === 0 && 'focus' in c) { return c.focus().then((w) => (w && 'navigate' in w ? w.navigate(url) : null)); }
+    }
+    return self.clients.openWindow(url);
+  }));
 });
