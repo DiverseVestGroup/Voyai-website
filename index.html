@@ -791,7 +791,8 @@ details.chk-grp[open] .chk-chev { transform:rotate(180deg); }
 .ask-stay-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:18px; display:flex; flex-direction:column; gap:10px; }
 .ask-stay-name { font-size:15.5px; font-weight:700; }
 .ask-stay-desc { font-size:13px; line-height:1.5; color:var(--text-muted); flex:1; }
-.ask-stay-foot { display:flex; align-items:center; justify-content:space-between; margin-top:2px; gap:8px; }
+.ask-stay-foot { display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:2px; gap:8px; flex-wrap:wrap; }
+.ask-stay-foot .ask-stay-cta { max-width:100%; overflow:hidden; text-overflow:ellipsis; }
 .ask-stay-price { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; }
 .ask-stay-price span { font-weight:400; color:var(--text-dim); font-size:11.5px; }
 .ask-stay-cta { font-size:12.5px; font-weight:700; color:var(--accent); border:1.5px solid var(--accent-mid); border-radius:999px; padding:6px 12px; background:var(--accent-light); white-space:nowrap; }
@@ -817,6 +818,18 @@ details.chk-grp[open] .chk-chev { transform:rotate(180deg); }
 .pl-maplink { font-size:12.5px; font-weight:600; color:var(--accent); text-decoration:none; }
 .pl-foot { flex-wrap:wrap; }
 .ask-stay-cta.pl-map { background:transparent; }
+.pl-photos.pl-none { align-items:center; justify-content:center; background:linear-gradient(135deg,var(--accent-light) 0%,var(--accent-mid) 100%); font-size:40px; animation:none; }
+.rt-grid { grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
+.rt-top { display:flex; align-items:center; justify-content:space-between; }
+.rt-ic { font-size:26px; line-height:1; }
+.rt-tag { font-size:10.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#0F6E56; background:#E3F5EC; padding:3px 8px; border-radius:20px; }
+.rt-card.rt-car { border:1.5px solid var(--accent); box-shadow:0 8px 22px rgba(13,115,119,.14); }
+.rt-card.rt-car .rt-tag { color:#fff; background:var(--accent); }
+.rt-card.rt-car .ask-stay-cta { background:var(--accent); color:#fff; border-color:var(--accent); }
+.rt-meta { font-size:13px; color:var(--text-muted); margin-top:-4px; }
+.rt-meta b { color:var(--text); }
+.rt-partner { font-size:11px; color:var(--text-dim); }
+.rt-fine { font-size:11.5px; color:var(--text-dim); margin-top:10px; }
 .pl-attr { font-size:10px; color:var(--text-dim); text-align:right; margin-top:-4px; }
 .ask-crosssell { margin-top:20px; display:flex; align-items:center; justify-content:space-between; gap:16px; background:var(--accent-light); border:1px solid var(--accent-mid); border-radius:var(--radius); padding:16px 20px; }
 .ask-crosssell p { margin:0; font-size:14px; color:var(--text); }
@@ -1129,6 +1142,8 @@ footer p { font-size:13px; color:var(--text-dim); }
 .ven-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:52px; }
 .ven-card { background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:22px 20px; }
 .ven-card .ven-ic { font-size:24px; margin-bottom:10px; }
+.ven-tag { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; background:#E3F5EC; color:#0F6E56; padding:2px 7px; border-radius:10px; vertical-align:middle; margin-left:4px; }
+.ven-tag.soon { background:#FFF3DC; color:#8A5A00; }
 .ven-card h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-bottom:6px; }
 .ven-card p { font-size:14px; color:var(--text-muted); line-height:1.55; margin:0; }
 .ven-form-box { background:#fff; border:1.5px solid var(--border); border-radius:16px; padding:32px; max-width:720px; margin:0 auto; }
@@ -4543,19 +4558,19 @@ footer p { font-size:13px; color:var(--text-dim); }
 <div id="page-venues" class="page">
   <div class="ven-hero">
     <div class="ven-kicker">For restaurants, bars, hotels &amp; tour operators</div>
-    <h1>Travellers are already finding you through TripMade</h1>
-    <p>TripMade builds day-by-day itineraries for travellers around the world, and we recommend real places: restaurants, bars, stays and experiences. If your venue is one of them, we'd love to help more of those travellers book with you.</p>
+    <h1>Get your venue in front of travellers planning their trip</h1>
+    <p>TripMade builds day-by-day itineraries and answers travellers' questions about where to eat, drink, stay and explore. Our recommendations are always picked on merit, so places can't pay to be in them. Here's how you can work with us.</p>
   </div>
   <div class="ven-wrap">
     <div class="ven-grid">
+      <div class="ven-card"><div class="ven-ic">✅</div><h3>Get listed free <span class="ven-tag">Free</span></h3><p>Add your photos, menu, opening hours and booking link, so travellers who are recommended your venue see the right details and can book with you directly. Moved or changed your hours? Tell us any time.</p></div>
+      <div class="ven-card"><div class="ven-ic">⭐</div><h3>Featured spots <span class="ven-tag soon">Coming soon</span></h3><p>A clearly labelled "Featured" card shown to travellers planning a trip to your area, next to our recommendations. Venues that sign up now get a founding rate when featured spots open.</p></div>
+      <div class="ven-card"><div class="ven-ic">🎁</div><h3>Member offers <span class="ven-tag soon">Coming soon</span></h3><p>Offer TripMade members a perk, like a free drink or 10% off. We'll show it on their trip for the day they're near you, and you only give it when they walk in.</p></div>
       <div class="ven-card"><div class="ven-ic">🌐</div><h3>A website for your venue</h3><p>No website, or one that's out of date? We'll build you a simple, mobile-friendly site with your menu, hours and photos, for a small one-off fee.</p></div>
-      <div class="ven-card"><div class="ven-ic">⭐</div><h3>A featured spot</h3><p>Be recommended more often to travellers whose trip matches what you do best, in the itineraries we build every day.</p></div>
-      <div class="ven-card"><div class="ven-ic">📅</div><h3>Direct bookings</h3><p>Add a booking or reservation link so travellers can lock in a table, room or tour straight from their itinerary.</p></div>
-      <div class="ven-card"><div class="ven-ic">✏️</div><h3>Keep your details right</h3><p>Moved, renamed or changed your hours? Tell us and we'll make sure travellers get the right information. Free.</p></div>
     </div>
     <div class="ven-form-box" id="ven-form-box">
-      <h2>Tell us about your venue</h2>
-      <p>Pick what you're interested in and we'll be in touch to talk it through. There's no obligation.</p>
+      <h2>Get listed free</h2>
+      <p>Tell us about your venue and tick anything else you're interested in. We'll be in touch. There's no obligation.</p>
       <div class="ven-row"><input type="text" id="ven-name" placeholder="Venue name *" maxlength="160"><input type="text" id="ven-city" placeholder="City / town" maxlength="120"></div>
       <div class="ven-row">
         <select id="ven-type"><option value="">Type of venue</option><option>Restaurant</option><option>Café</option><option>Bar</option><option>Hotel / stay</option><option>Tour / experience</option><option>Other</option></select>
@@ -4565,13 +4580,14 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="ven-row" style="grid-template-columns:1fr;"><input type="text" id="ven-online" placeholder="Website, Instagram or Facebook page (if you have one)" maxlength="300"></div>
       <div class="ven-int-lbl">I'm interested in</div>
       <div class="ven-ints">
+        <label><input type="checkbox" value="listing" checked> A free listing</label>
+        <label><input type="checkbox" value="featured"> Featured spots (founding rate)</label>
+        <label><input type="checkbox" value="member_offer"> A member offer</label>
         <label><input type="checkbox" value="website"> A website for my venue</label>
-        <label><input type="checkbox" value="featured"> A featured spot</label>
-        <label><input type="checkbox" value="booking_link"> Direct bookings</label>
         <label><input type="checkbox" value="update_details"> Updating my details</label>
       </div>
       <textarea id="ven-message" placeholder="Anything else we should know? (optional)" maxlength="2000"></textarea>
-      <button type="button" class="btn-primary" id="ven-submit" onclick="submitVenueEnquiry()">Send enquiry →</button>
+      <button type="button" class="btn-primary" id="ven-submit" onclick="submitVenueEnquiry()">Get listed →</button>
       <div class="ven-msg" id="ven-msg"></div>
       <div class="ven-fine">We'll only use your details to reply to this enquiry. See our <a href="javascript:void(0)" onclick="showPage('privacy');return false;" style="color:var(--accent);">Privacy policy</a>.</div>
     </div>
@@ -8150,7 +8166,7 @@ async function runAskTripMade() {
   }
   try {
     const askCurrency = (_currentUser && _currentUser.currency) || _currentCurrency || 'AUD';
-    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery, currency: askCurrency } });
+    const { data, error } = await sb.functions.invoke('ask-tripmade', { body: { query: apiQuery, currency: askCurrency, features: ['route'] } });
     if (error) throw error;
     if (data && (data.code === 'members_only' || data.error === 'members_only')) {
       _askGuestQuery = query; bodyEl.innerHTML = askPlaceholderHtml(); lockAskTurn(turnEl); turnEl.dataset.guestPlaceholder = '1'; _pendingClarification = null;
@@ -8279,6 +8295,10 @@ function renderAskTurnBody(bodyEl, data) {
     renderAskDining(bodyEl, data);
     return;
   }
+  if (data.type === 'route') {
+    renderAskRoute(bodyEl, data);
+    return;
+  }
   renderAskResults(bodyEl, data);
 }
 // ── Google Places details (2026-10-16 per Lachy) ─────────────────────
@@ -8305,6 +8325,29 @@ async function fetchPlaceInfo(items, photos) {
   }
   return out;
 }
+function _plNoPhoto(card, ph) {
+  if (!ph) return;
+  ph.className = 'pl-photos pl-none'; ph.innerHTML = '📍';
+}
+// 2026-10-28 (Lachy): per-venue numbers for the "For venues" pitch. Every
+// time a real (Google-matched) venue is shown to a traveller we log
+// venue_shown, and every tap on its Map / Menu / rating / Book link logs
+// venue_click, both in PostHog with the venue name and where it appeared.
+function tmVenueProps(el) {
+  const c = el && el.closest ? el.closest('[data-pl-name]') : null;
+  if (!c) return null;
+  const pg = c.closest('.page');
+  return {
+    venue: String(c.getAttribute('data-pl-name') || '').slice(0, 120),
+    search: String(c.getAttribute('data-pl-q') || '').slice(0, 200),
+    category: c.getAttribute('data-pl-cat') || (c.getAttribute('data-pl-kind') === 'area' ? 'area' : (c.classList.contains('pl-card') ? 'ask' : '')),
+    page: pg && pg.id ? pg.id.replace(/^page-/, '') : '',
+    trip_id: (pg && pg.id === 'page-inbox-detail' && typeof _currentInboxItinerary !== 'undefined' && _currentInboxItinerary) ? _currentInboxItinerary.id : undefined
+  };
+}
+function tmVenueShown(el) {
+  try { const p = tmVenueProps(el); if (p && p.venue && window.tmTrack) tmTrack('venue_shown', p); } catch (e) {}
+}
 function _plCount(n) { return n == null ? '' : Number(n).toLocaleString('en-AU'); }
 function _plTodayIso() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function _plStatusHtml(r, when) {
@@ -8326,15 +8369,37 @@ async function enrichPlaceCards(root, photos) {
   cards.forEach(function(c, i) {
     const r = res[i];
     const ph = c.querySelector('.pl-photos');
-    if (!r || !r.found) { if (ph) ph.remove(); return; }
+    const isArea = c.getAttribute('data-pl-kind') === 'area';
+    if (r && r.found) tmVenueShown(c);
+    if (!r || !r.found) {
+      // 2026-10-28 (Lachy): an area Google couldn't match still gets the
+      // same look as the others: a placeholder banner and a map link.
+      if (isArea) {
+        _plNoPhoto(c, ph);
+        const m = c.querySelector('.pl-meta'), q = c.getAttribute('data-pl-q');
+        if (m && q) m.innerHTML = '<a class="pl-maplink" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + '" target="_blank" rel="noopener noreferrer">📍 See this area on the map ↗</a>';
+      } else if (ph) ph.remove();
+      return;
+    }
     if (ph) {
       if (r.photos && r.photos.length) {
         ph.classList.remove('pl-loading');
         ph.innerHTML = r.photos.map(function(p) {
-          return '<div class="pl-ph"><img src="' + tmEsc(p.url) + '" alt="' + tmEsc(r.name) + '" loading="lazy" referrerpolicy="no-referrer">' +
-            (p.author ? '<a class="pl-credit" href="' + tmEsc(p.author_url || r.maps_url || '#') + '" target="_blank" rel="noopener noreferrer">Photo: ' + tmEsc(p.author) + '</a>' : '') + '</div>';
+          // Some Google credits are junk ("Photos are copyrighted by…"): show "Google Maps" instead.
+          const who = p.author && !/copyright|^photos? /i.test(p.author) ? p.author : 'Google Maps';
+          return '<div class="pl-ph"><img src="' + tmEsc(p.url) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' +
+            '<a class="pl-credit" href="' + tmEsc(p.author_url || r.maps_url || '#') + '" target="_blank" rel="noopener noreferrer">Photo: ' + tmEsc(who) + '</a></div>';
         }).join('') + (r.photos.length > 1 ? '<span class="pl-count">' + r.photos.length + ' photos ›</span>' : '');
-      } else ph.remove();
+        // A photo that fails to load is dropped; if none are left, fall back.
+        ph.querySelectorAll('.pl-ph img').forEach(function(img) {
+          img.addEventListener('error', function() {
+            const cell = img.closest('.pl-ph'); if (cell) cell.remove();
+            const left = ph.querySelectorAll('.pl-ph').length, cnt = ph.querySelector('.pl-count');
+            if (cnt) { if (left > 1) cnt.textContent = left + ' photos ›'; else cnt.remove(); }
+            if (!left) { if (isArea) _plNoPhoto(c, ph); else ph.remove(); }
+          });
+        });
+      } else if (isArea) _plNoPhoto(c, ph); else ph.remove();
     }
     const meta = c.querySelector('.pl-meta');
     if (meta) {
@@ -8492,11 +8557,52 @@ function askNextSteps(kind, data) {
       '<button type="button" onclick="goToBookingSection(\'tours-flights\')">Search flights →</button>'));
     cards.push(askCard('ask-crosssell-stay', '🎟️ Things to do in ' + tmEsc(short), 'Tours, day trips and experiences you can book ahead.',
       askCardLink(viatorSearchLink(short, 'ask_stays'), 'See experiences →')));
+  } else if (kind === 'route') {
+    cards.push(hotelCard(short, 'ask_route'));
+    cards.push(askCard('ask-crosssell-stay', '🎟️ Things to do in ' + tmEsc(short), 'Tours, boat trips and experiences you can book ahead.',
+      askCardLink(viatorSearchLink(short, 'ask_route'), 'See experiences →')));
   } else if (kind === 'flights' || kind === 'tours' || kind === 'ferries') {
     cards.push(hotelCard(short, 'ask_' + kind));
     if (kind !== 'ferries') cards.push(planCard());
   }
   return cards.join('');
+}
+// ── Getting from A to B (2026-10-28, Lachy) ──────────────────────
+// "Naples to Sorrento / the Amalfi Coast" and every question like it: one
+// card for each way that really runs on the route (bus/train via Omio, ferry
+// via Ferryhopper, flight via Kiwi.com), always plus a private car (the
+// upsell, Welcome Pickups pre-filled with both ends). Cheapest first.
+const ROUTE_ICON = { bus: '🚌', train: '🚆', ferry: '⛴️', flight: '✈️', private_car: '🚘' };
+function askRouteCarUrl(data) {
+  const t = data.transfer, tag = 'ask_route';
+  const slug = welcomeCitySlugFor(data.from_city, data.to_city, data.from, data.to);
+  let url = null;
+  if (slug && t) url = welcomeTransferLink(t, slug, null, null, 2);
+  if (!url && slug) url = 'https://c627.travelpayouts.com/click?shmarker=' + TP_MARKER + '.' + tag + '&promo_id=8951&source_type=customlink&type=click&custom_url=' + encodeURIComponent('https://www.welcomepickups.com/' + slug + '/airport-transfer/');
+  if (!url) url = ITIN_AFFILIATES.transfer.url;
+  return withTmCurrency(url, tag);
+}
+function renderAskRoute(bodyEl, data) {
+  const cards = (data.options || []).map(function(o, i) {
+    const car = o.mode === 'private_car';
+    const url = car ? askRouteCarUrl(data) : (o.cta && /^https:\/\//.test(o.cta.url || '') ? withTmCurrency(o.cta.url, 'ask_route') : '');
+    const partner = o.cta && o.cta.partner ? o.cta.partner : '';
+    return '<div class="ask-stay-card rt-card' + (car ? ' rt-car' : '') + '">' +
+      '<div class="rt-top"><span class="rt-ic">' + (ROUTE_ICON[o.mode] || '🧭') + '</span>' + (o.tag ? '<span class="rt-tag">' + tmEsc(o.tag) + '</span>' : '') + '</div>' +
+      '<div class="ask-stay-name">' + tmEsc(o.title) + '</div>' +
+      '<div class="rt-meta">' + [o.duration ? '⏱ ' + tmEsc(o.duration) : '', '<b>' + tmEsc(o.price_level || '') + '</b>'].filter(Boolean).join(' <span class="pl-sub">·</span> ') + '</div>' +
+      '<div class="ask-stay-desc">' + tmEsc(o.how) + '</div>' +
+      '<div class="ask-stay-foot">' + (partner ? '<span class="rt-partner">via ' + tmEsc(partner) + '</span>' : '<span></span>') +
+        (url ? '<a class="ask-stay-cta" href="' + tmEsc(url) + '" target="_blank" rel="noopener noreferrer sponsored">' + tmEsc((o.cta && o.cta.label) || 'Book →') + '</a>' : '') +
+      '</div></div>';
+  }).join('');
+  const from = _askPlace(data.from_city || data.from).split(',')[0], to = _askPlace(data.to_city || data.to).split(',')[0];
+  bodyEl.innerHTML =
+    '<div class="ask-results-hd"><h3>' + tmEsc(from) + ' to ' + tmEsc(to) + ': your options</h3></div>' +
+    (data.summary ? '<div class="ask-results-note">' + tmEsc(data.summary) + '</div>' : '') +
+    '<div class="ask-results-grid rt-grid">' + cards + '</div>' +
+    '<div class="rt-fine">Times are typical and change with the season. Check the live timetable when you book.</div>' +
+    askNextSteps('route', { destination: data.to_city || data.destination });
 }
 function renderAskResults(bodyEl, data) {
   const dirLabel = data.budget_direction === 'min' ? 'over ' : data.budget_direction === 'max' ? 'under ' : data.budget_direction === 'around' ? '~' : '';
@@ -8816,6 +8922,8 @@ function withTmCurrency(url, tag) {
       u.searchParams.set('custom_url', k.toString());
       return u.toString();
     }
+    // 2026-10-28: keep the SubID on other Travelpayouts links too (e.g. Welcome Pickups).
+    if (tag && u.searchParams.has('shmarker')) return u.toString();
   } catch (e) {}
   return url;
 }
@@ -10222,6 +10330,7 @@ async function enrichItinDay(block) {
     const r = res[i];
     if (!r || !r.found) return;
     any = true;
+    tmVenueShown(e);
     const label = e.querySelector('.evt-label');
     if (label && r.rating && !label.querySelector('.evt-rating')) {
       const a = document.createElement('a');
@@ -11630,6 +11739,18 @@ var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kan
   document.addEventListener('click', function(e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
     if (a) track(a.href, a);
+    // Taps on a venue's own links (Map, Menu, rating, Book) for venue reports.
+    try {
+      var vp = a && typeof tmVenueProps === 'function' ? tmVenueProps(a) : null;
+      if (vp && vp.venue) {
+        var h = String(a.href || '');
+        vp.action = /google\.[a-z.]+\/maps|maps\.google|goo\.gl\/maps/i.test(h) ? (a.classList.contains('evt-rating') || a.classList.contains('pl-stars') ? 'rating' : 'map')
+          : (a.classList.contains('evt-menu-btn') || /menu/i.test(a.textContent || '')) ? 'menu'
+          : partnerFor(h) ? 'book' : 'website';
+        vp.url = h.slice(0, 300);
+        tmTrack('venue_click', vp);
+      }
+    } catch (err) {}
   }, true);
   var _open = window.open;
   window.open = function(url) {
