@@ -5977,8 +5977,8 @@ function setupTripTabs(itin) {
   if (!wrap || !itin) return;
   if (_jr.id !== itin.id) {
     _jr = { id: itin.id, entries: [], photos: [], urls: {}, tab: null, uploadDay: null, uploadCity: '', loaded: false };
-    let t = window._ibxOpenTab || null;
-    if (!t) { const st = _jrStart(itin); const now = new Date(); const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())); t = st && st <= today ? 'journal' : 'itinerary'; }
+    // Always open on the Itinerary; only the "📝 Journal" button opens the Journal (Lachy, 28 Oct).
+    const t = window._ibxOpenTab || 'itinerary';
     window._ibxOpenTab = null;
     ibxTab(t);
   } else ibxTab(_jr.tab || 'itinerary');
