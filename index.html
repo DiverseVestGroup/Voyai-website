@@ -32,6 +32,13 @@
 ]}
 </script>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<!-- 2026-10-28: installable app (Add to Home Screen). manifest.json and sw.js sit next to index.html. -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0D7377">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TripMade">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -5263,8 +5270,12 @@ async function hydrateCurrentUser(authUser) {
     renderAuthNav();
     return;
   }
-  let { data: profile } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
-  if (!profile) {
+  let { data: profile, error: profErr } = await sb.from('profiles').select('*').eq('id', authUser.id).maybeSingle();
+  // 2026-10-28: offline (or the lookup failed), use the last saved copy and
+  // never try to create a profile — only a real "no row" means a new person.
+  if (profErr) { try { profile = JSON.parse(localStorage.getItem('tm_profile_' + authUser.id) || 'null'); } catch (e) {} }
+  else if (profile) { try { localStorage.setItem('tm_profile_' + authUser.id, JSON.stringify(profile)); } catch (e) {} }
+  if (!profile && !profErr) {
     const meta = authUser.user_metadata || {};
     const seed = {
       id: authUser.id,
@@ -8345,8 +8356,21 @@ function tmVenueProps(el) {
     trip_id: (pg && pg.id === 'page-inbox-detail' && typeof _currentInboxItinerary !== 'undefined' && _currentInboxItinerary) ? _currentInboxItinerary.id : undefined
   };
 }
+// Also counted in our own database (venue_stats, daily totals per venue) so
+// the admin page can show each venue's views and taps. Each venue's "shown"
+// counts once per page visit, however often the page re-draws.
+const _venueSeen = new Set();
+function tmVenueCount(p, action) {
+  try { if (typeof sb !== 'undefined' && sb && p && p.venue) sb.rpc('track_venue', { p_name: p.venue, p_search: p.search || '', p_category: p.category || '', p_action: action }).then(function() {}, function() {}); } catch (e) {}
+}
 function tmVenueShown(el) {
-  try { const p = tmVenueProps(el); if (p && p.venue && window.tmTrack) tmTrack('venue_shown', p); } catch (e) {}
+  try {
+    const p = tmVenueProps(el); if (!p || !p.venue) return;
+    const k = (p.venue + '|' + p.search + '|' + p.page).toLowerCase();
+    if (_venueSeen.has(k)) return; _venueSeen.add(k);
+    if (window.tmTrack) tmTrack('venue_shown', p);
+    tmVenueCount(p, 'shown');
+  } catch (e) {}
 }
 function _plCount(n) { return n == null ? '' : Number(n).toLocaleString('en-AU'); }
 function _plTodayIso() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
@@ -9881,9 +9905,14 @@ async function renderInboxPage() {
   if (emptyText) emptyText.textContent = "You don't have any itineraries yet.";
   if (emptyBtn) { emptyBtn.textContent = 'Get my free itinerary →'; emptyBtn.setAttribute('onclick', "requireAccount(function(){showPage('form');})"); }
   // RLS returns the visitor's own trips plus any shared with them (2026-09-28).
-  const { data: itins, error } = await sb.from('itineraries')
+  let { data: itins, error } = await sb.from('itineraries')
     .select('*').order('created_at', { ascending: false });
-  if (error) { console.error('Loading inbox failed:', error); return; }
+  // 2026-10-28: keep a copy on the device so trips still open with no signal.
+  if (error) {
+    const saved = tmOfflineGet('tm_off_inbox_' + currentUser.id);
+    if (!saved) { console.error('Loading inbox failed:', error); return; }
+    itins = saved; tmOfflineNote();
+  } else tmOfflineSave('tm_off_inbox_' + currentUser.id, itins || []);
   renderUnfiledBookings(itins || []);
   if (!itins || itins.length === 0) {
     list.style.display = 'none';
@@ -9965,7 +9994,13 @@ function backToInboxList() {
 async function openInboxItinerary(id, justUnlocked) {
   requireAccount(async function() {
     const currentUser = getUser();
-    const { data: itin, error } = await sb.from('itineraries').select('*').eq('id', id).maybeSingle();
+    let { data: itin, error } = await sb.from('itineraries').select('*').eq('id', id).maybeSingle();
+    if (error) {
+      // Offline: use the copy saved on this device (2026-10-28).
+      const saved = tmOfflineGet('tm_off_inbox_' + currentUser.id);
+      const hit = saved && saved.find(function(x) { return x.id === id; });
+      if (hit) { itin = hit; error = null; tmOfflineNote(); }
+    }
     if (error || !itin) { console.error('Opening itinerary failed:', error); showPage('inbox'); renderInboxPage(); return; }
     _currentInboxItinerary = itin;
     if (!_currentInboxItinerary || _ibxEditTripId !== itin.id) { _ibxEdit = false; _teMsg = null; }
@@ -11749,6 +11784,7 @@ var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kan
           : partnerFor(h) ? 'book' : 'website';
         vp.url = h.slice(0, 300);
         tmTrack('venue_click', vp);
+        if (typeof tmVenueCount === 'function') tmVenueCount(vp, vp.action);
       }
     } catch (err) {}
   }, true);
@@ -11875,5 +11911,68 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
+<script>
+// ── Installable app + offline (2026-10-28, Lachy) ──────────────────
+// sw.js keeps a copy of the site so it opens with no signal; the Inbox list
+// (with every trip's days) is saved on the device each time it loads, and
+// My bookings already keeps its own copy. A small banner offers "Add to
+// Home Screen" once someone has a trip, on phones only.
+// Kept under ~1.5 MB so it never crowds out the sign-in session; if the full
+// list is bigger, the newest trips that fit are kept.
+function tmOfflineSave(key, val) {
+  try {
+    let list = Array.isArray(val) ? val.slice() : val, j = JSON.stringify(list);
+    while (Array.isArray(list) && j.length > 1500000 && list.length > 1) { list = list.slice(0, Math.ceil(list.length / 2)); j = JSON.stringify(list); }
+    if (j.length <= 1500000) localStorage.setItem(key, j); else localStorage.removeItem(key);
+  } catch (e) {}
+}
+function tmOfflineGet(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
+function tmOfflineNote() {
+  if (window._tmOffNoted) return; window._tmOffNoted = true;
+  try { tmToast('You\'re offline', 'Showing the copy saved on this phone.'); } catch (e) {}
+}
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', function() { navigator.serviceWorker.register('/sw.js').catch(function(e) { console.warn('sw', e); }); });
+}
+(function() {
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  if (standalone) { try { if (window.tmTrack) tmTrack('app_opened_installed'); } catch (e) {} return; }
+  const phone = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !/crios|fxios|edgios/i.test(navigator.userAgent);
+  let deferred = null;
+  const dismissed = function() { try { return localStorage.getItem('tm_a2hs_off') === '1'; } catch (e) { return false; } };
+  window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferred = e; });
+  window.addEventListener('appinstalled', function() { try { if (window.tmTrack) tmTrack('app_installed'); localStorage.setItem('tm_a2hs_off', '1'); } catch (e) {} const b = document.getElementById('a2hs'); if (b) b.remove(); });
+  window.tmShowInstall = function(force) {
+    if (!force && (!phone || dismissed() || document.getElementById('a2hs'))) return;
+    if (!force && !deferred && !ios) return;
+    const b = document.createElement('div'); b.id = 'a2hs';
+    b.innerHTML = '<img src="/favicon-192.png" alt=""><div><b>Add TripMade to your home screen</b><span>' +
+      (deferred ? 'Open your trips and bookings in one tap, even with no signal.' : 'Tap the Share button <svg viewBox="0 0 24 24" width="14" height="14" style="vertical-align:-2px"><path fill="currentColor" d="M12 3l4 4h-3v7h-2V7H8l4-4zm-7 9h2v7h10v-7h2v9H5v-9z"/></svg> then <b>Add to Home Screen</b>. Your trips and bookings open in one tap, even with no signal.') +
+      '</span></div>' + (deferred ? '<button type="button" data-a="add">Add</button>' : '') + '<button type="button" data-a="x" aria-label="Close">×</button>';
+    b.addEventListener('click', async function(e) {
+      const a = e.target.getAttribute && e.target.getAttribute('data-a');
+      if (a === 'x') { try { localStorage.setItem('tm_a2hs_off', '1'); } catch (er) {} b.remove(); }
+      if (a === 'add' && deferred) { deferred.prompt(); try { const c = await deferred.userChoice; if (window.tmTrack) tmTrack('app_install_prompt', { outcome: c && c.outcome }); } catch (er) {} deferred = null; b.remove(); }
+    });
+    document.body.appendChild(b);
+  };
+  // Offer it once someone is looking at a trip (the moment it's useful).
+  const iv = setInterval(function() {
+    const d = document.getElementById('page-inbox-detail');
+    if (d && d.classList.contains('active')) { clearInterval(iv); setTimeout(function() { window.tmShowInstall(); }, 4000); }
+  }, 1500);
+})();
+</script>
+<style>
+#a2hs { position:fixed; left:12px; right:12px; bottom:14px; z-index:9000; display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid var(--accent-mid); border-radius:14px; padding:10px 10px 10px 12px; box-shadow:0 10px 30px rgba(0,0,0,.18); font-size:13px; max-width:520px; margin:0 auto; }
+#a2hs img { width:40px; height:40px; border-radius:10px; flex-shrink:0; }
+#a2hs b { display:block; font-size:14px; color:var(--text); }
+#a2hs span { color:var(--text-muted); line-height:1.4; display:block; }
+#a2hs span b { display:inline; font-size:inherit; }
+#a2hs button[data-a="add"] { background:var(--accent); color:#fff; border:0; border-radius:9px; padding:9px 14px; font:700 13.5px 'DM Sans',sans-serif; cursor:pointer; flex-shrink:0; }
+#a2hs button[data-a="x"] { background:none; border:0; font-size:22px; color:var(--text-dim); cursor:pointer; padding:0 4px; flex-shrink:0; }
+</style>
 </body>
 </html>
+
