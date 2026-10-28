@@ -147,6 +147,10 @@ nav {
   }
   .nav-saved-link { padding:8px 0; }
   #nav-account { width:100%; }
+  /* Phone/tablet: the account menu opens inside the hamburger panel at full
+     size instead of floating below it (it was being cut off). (Lachy, 28 Oct) */
+  #nav-account #profile-menu { position:static !important; width:100% !important; min-width:0 !important; margin-top:10px; box-shadow:none !important; }
+  #nav-account > div > button { width:100%; justify-content:flex-start; }
   .nav-cta#nav-waitlist-btn { width:100%; text-align:center; }
 }
 @media(max-width:640px){
