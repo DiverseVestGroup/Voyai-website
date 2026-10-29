@@ -10800,6 +10800,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window._departPicker = flatpickr('#f-depart', {
       dateFormat: 'd-m-Y',
       minDate: 'today',
+      // 2026-10-29 (first live users): on phones flatpickr normally swaps in
+      // the phone's own date picker, which can't do a linked range, so the
+      // Return date box did nothing. Always use flatpickr's calendar instead.
+      disableMobile: true,
       plugins: [new rangePlugin({ input: '#f-return' })],
       onChange: updateTripLength
     });
