@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
- {"@type":"Organization","@id":"https://tripmade.co/#org","name":"TripMade","legalName":"TripMade Pty Ltd","url":"https://tripmade.co/","logo":{"@type":"ImageObject","url":"https://tripmade.co/logo-512.png","width":512,"height":512},"image":"https://tripmade.co/logo-512.png","email":"hello@tripmade.co","description":"Australian travel planning company based in Sydney, NSW, building personalised day-by-day travel itineraries.","address":{"@type":"PostalAddress","addressLocality":"Sydney","addressRegion":"NSW","addressCountry":"AU"},"areaServed":"Worldwide","sameAs":["https://www.instagram.com/mytripmade/","https://www.tiktok.com/@tripmade8"]},
+ {"@type":"Organization","@id":"https://tripmade.co/#org","name":"TripMade","legalName":"TripMade Pty Ltd","url":"https://tripmade.co/","logo":{"@type":"ImageObject","url":"https://tripmade.co/logo-512.png","width":512,"height":512},"image":"https://tripmade.co/logo-512.png","email":"hello@tripmade.co","description":"Australian travel planning company based in Sydney, NSW, building personalised day-by-day travel itineraries.","address":{"@type":"PostalAddress","addressLocality":"Sydney","addressRegion":"NSW","addressCountry":"AU"},"areaServed":"Worldwide","sameAs":["https://www.instagram.com/tripmade.co/","https://www.tiktok.com/@tripmade8"]},
  {"@type":"WebSite","@id":"https://tripmade.co/#website","name":"TripMade","alternateName":"TripMade — My trip. Made.","url":"https://tripmade.co/","inLanguage":"en-AU","publisher":{"@id":"https://tripmade.co/#org"}}
 ]}
 </script>
@@ -162,6 +162,12 @@ nav {
 }
 @media(max-width:640px){
   nav{padding:0 16px}
+}
+/* 2026-10-29 (phone check): iPhones zoom the whole page in when you tap a text
+   box whose text is smaller than 16px, and it stays zoomed. Every box on the
+   site was 12-15px, so on phones they're all 16px now. */
+@media (max-width:640px) {
+  input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=hidden]), select, textarea { font-size:16px !important; }
 }
 /* ── PAGE SECTIONS ──────────────────────────────────────── */
 .page { display:none; }
@@ -462,6 +468,16 @@ button.sum-card.open .sum-more svg { transform:rotate(180deg); }
 #page-inbox-detail .sum-card { padding:10px 10px; }
 #page-inbox-detail .trip-price-note { margin-bottom:12px; }
 @media (max-width:600px) { #page-inbox-detail .ibx-coll > .itin-hdr { padding:9px 14px; } #page-inbox-detail .ibx-coll .itin-sub { display:none; } }
+/* 2026-10-29 (phone check): on phones the "+ Add booking" button sat on top of
+   the "My Bookings" title, so tapping the title opened Add booking instead of
+   the section. Shorter button, no "None yet" pill, and the title can't spill. */
+@media (max-width:600px) {
+  #page-inbox-detail #ibx-bookings-block > .itin-hdr .btn-primary { font-size:0 !important; padding:7px 12px !important; flex:none; }
+  #page-inbox-detail #ibx-bookings-block > .itin-hdr .btn-primary::before { content:'+ Add'; font-size:13px; }
+  #page-inbox-detail #ibx-bookings-block > .itin-hdr .ibx-count.zero { display:none; }
+  #page-inbox-detail #ibx-bookings-block > .itin-hdr .itin-hdr-l { overflow:hidden; }
+  #page-inbox-detail #ibx-bookings-block > .itin-hdr .itin-title { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+}
 .ibx-ic { width:32px; height:32px; flex:none; border-radius:8px; background:var(--accent-light); display:inline-flex; align-items:center; justify-content:center; }
 .ibx-ic svg { width:17px; height:17px; fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 @media (max-width:600px) { #page-inbox-detail .itin-hdr { padding:12px 16px; } #page-inbox-detail .itin-title { font-size:16px; } .ibx-ic { width:28px; height:28px; } .ibx-ic svg { width:15px; height:15px; } }
@@ -1245,7 +1261,7 @@ footer p { font-size:13px; color:var(--text-dim); }
 .hero-photo-wrap .btn-secondary { background:rgba(255,255,255,.95); border-color:transparent; }
 @media (max-width:760px) { .hero-photo-wrap .hero { padding-top:72px; padding-bottom:64px; } }
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
 <style>
   .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background:#0D7377; border-color:#0D7377; }
   .flatpickr-day.inRange { background:#E1F5EE; box-shadow:-5px 0 0 #E1F5EE, 5px 0 0 #E1F5EE; border-color:#E1F5EE; }
@@ -1535,12 +1551,12 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- ROME -->
     <div class="itin-block">
       <div class="itin-hdr sight">
-        <div class="itin-hdr-l"><div><div class="itin-title">Rome, Italy &mdash; 10&ndash;14 September</div><div class="itin-sub">Sightseeing &middot; Efficient routing &middot; Skip-the-line throughout</div></div></div>
+        <div class="itin-hdr-l"><div><div class="itin-title">Rome, Italy &mdash; 10&ndash;14 September 2027</div><div class="itin-sub">Sightseeing &middot; Efficient routing &middot; Skip-the-line throughout</div></div></div>
         <div class="all-booked">ALL BOOKED</div>
       </div>
       <div class="day-block" id="day-block-1">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 1 &mdash; Wed 11th Sep &middot; Arrival</div>
+          <div class="day-lbl">Day 1 &mdash; Sat 11th Sep &middot; Arrival</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-1" onclick="toggleDayExtend('1')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1583,7 +1599,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-2">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 2 &mdash; Thu 12th Sep &middot; Vatican &amp; Trastevere</div>
+          <div class="day-lbl">Day 2 &mdash; Sun 12th Sep &middot; Vatican &amp; Trastevere</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-2" onclick="toggleDayExtend('2')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1634,7 +1650,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-3">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 3 &mdash; Fri 13th Sep &middot; Ancient Rome &amp; Hidden gems</div>
+          <div class="day-lbl">Day 3 &mdash; Mon 13th Sep &middot; Ancient Rome &amp; Hidden gems</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-3" onclick="toggleDayExtend('3')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1677,7 +1693,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-4">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 4 &mdash; Sat 14th Sep &middot; Final morning then fly to Ibiza</div>
+          <div class="day-lbl">Day 4 &mdash; Tue 14th Sep &middot; Final morning then fly to Ibiza</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-4" onclick="toggleDayExtend('4')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1732,12 +1748,12 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- IBIZA -->
     <div class="itin-block">
       <div class="itin-hdr party">
-        <div class="itin-hdr-l"><div><div class="itin-title">Ibiza, Spain &mdash; 14&ndash;18 September</div><div class="itin-sub">Party &middot; Club bookings &middot; Pre-events &middot; Recovery built in</div></div></div>
+        <div class="itin-hdr-l"><div><div class="itin-title">Ibiza, Spain &mdash; 14&ndash;17 September 2027</div><div class="itin-sub">Party &middot; Club bookings &middot; Pre-events &middot; Recovery built in</div></div></div>
         <div class="all-booked">ALL BOOKED</div>
       </div>
       <div class="day-block" id="day-block-5">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 5 &mdash; Sat 14th Sep &middot; Arrival &amp; first night out</div>
+          <div class="day-lbl">Day 5 &mdash; Tue 14th Sep &middot; Arrival &amp; first night out</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-5" onclick="toggleDayExtend('5')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1772,7 +1788,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-6">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 6 &mdash; Sun 15th Sep &middot; Pool day &amp; Pacha</div>
+          <div class="day-lbl">Day 6 &mdash; Wed 15th Sep &middot; Pool day &amp; Pacha</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-6" onclick="toggleDayExtend('6')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1785,7 +1801,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             </div>
           </div>
           <div class="evt">
-            <div class="evt-time">15:30</div>
+            <div class="evt-time">17:30</div>
             <div class="evt-dot-col"><div class="evt-dot dot-activity"></div></div>
             <div class="evt-body">
               <div class="evt-label">Sunset catamaran &mdash; 3hr, open bar</div>
@@ -1815,7 +1831,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-7">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 7 &mdash; Mon 16th Sep &middot; Beach &amp; DC10</div>
+          <div class="day-lbl">Day 7 &mdash; Thu 16th Sep &middot; Beach &amp; DC10</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-7" onclick="toggleDayExtend('7')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1858,7 +1874,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-8">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 8 &mdash; Tue 17th Sep &middot; Final day &amp; departure</div>
+          <div class="day-lbl">Day 8 &mdash; Fri 17th Sep &middot; Final day &amp; departure</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-8" onclick="toggleDayExtend('8')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1967,7 +1983,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div id="wl-step-code" style="display:none;max-width:280px;margin:0 auto;">
           <input id="wl-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
         </div>
-        <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email and phone.</p>
+        <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email, phone and country.</p>
         <button type="submit" class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
         </form>
       </div>
@@ -4507,7 +4523,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div id="su-step-code" style="display:none;flex-direction:column;gap:12px;">
       <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
-    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email and phone.</p>
+    <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email, phone and country.</p>
     <button type="submit" class="btn-primary" id="su-submit-btn" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a code →</button>
     </form>
     <button style="width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-size:13px;padding:8px;" onclick="closeSignupModal()">Cancel</button>
@@ -4667,7 +4683,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <ul style="margin:0 0 0 20px;padding:0;">
           <li style="margin-bottom:6px;"><b>Earning.</b> You earn points for: signing up (100), booking through a tracked TripMade link (1 point for every A$5 spent), inviting a friend who signs up and makes a trip (500, up to 10 friends a year), leaving a review that we approve (100, once per trip), forwarding a booking confirmation to bookings@tripmade.co (25, up to 10 a month) and sharing a trip with a friend (25, once per trip). We may change these amounts as set out below.</li>
           <li style="margin-bottom:6px;"><b>Bookings.</b> Only bookings made through a tagged TripMade link while you're signed in, and reported to us by our booking partner, earn booking points. They show as pending until your trip has finished, then become available to spend. If the partner tells us the booking was cancelled or refunded, the points are removed.</li>
-          <li style="margin-bottom:6px;"><b>Spending.</b> You can use points instead of paying by card for TripMade features, at 100 points per A$1: unlocking a day (100), unlocking all remaining days (90 per day), one more AI trip change (100), unlimited AI changes on a trip (1,000) and extra Ask TripMade questions (20 each, once your free questions for the month are used). Features bought with points can't be refunded as points or cash.</li>
+          <li style="margin-bottom:6px;"><b>Spending.</b> You can use points instead of paying by card for TripMade features, at 100 points per A$1: unlocking a day (100), unlocking all remaining days (90 per day), one more trip change (100), unlimited changes on a trip (1,000) and extra Ask TripMade questions (20 each, once your free questions for the month are used). Features bought with points can't be refunded as points or cash.</li>
           <li style="margin-bottom:6px;"><b>Ask TripMade.</b> Ask TripMade answers are for account holders. Each account gets 5 free questions a month; after that, each question uses 20 points.</li>
           <li style="margin-bottom:6px;"><b>No cash value.</b> Points have no cash value. They can't be bought, sold, transferred to another person or account, combined between accounts, or exchanged for money. Buying a feature with a card doesn't earn points.</li>
           <li style="margin-bottom:6px;"><b>Expiry.</b> Points expire if your account has no points activity (earning or spending) for 18 months. We'll email you a reminder about 30 days before they expire.</li>
@@ -4753,8 +4769,8 @@ footer p { font-size:13px; color:var(--text-dim); }
     <a href="https://www.tiktok.com/@tripmade8" target="_blank" rel="noopener">TikTok</a>
   </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/plugins/rangePlugin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const sb = supabase.createClient(
@@ -5651,8 +5667,8 @@ function paintPointsModal() {
     '<div><h4>Spend points</h4><ul>' +
       '<li><b>' + tmPts(pr.unlock_day) + '</b> unlock a day of your trip</li>' +
       '<li><b>' + tmPts(pr.unlock_all_per_day) + '</b> per day to unlock all remaining days</li>' +
-      '<li><b>' + tmPts(pr.edit_one) + '</b> one more AI trip change</li>' +
-      '<li><b>' + tmPts(pr.edit_unlimited) + '</b> unlimited AI changes on a trip</li>' +
+      '<li><b>' + tmPts(pr.edit_one) + '</b> one more trip change</li>' +
+      '<li><b>' + tmPts(pr.edit_unlimited) + '</b> unlimited changes on a trip</li>' +
       '<li><b>' + tmPts(p.ask_cost) + '</b> extra Ask TripMade question</li></ul></div></div>' +
     (link ? '<div class="pts-ref"><h4>Invite friends, get ' + tmPts(e.referral) + ' points each</h4><p class="pts-muted">Share your link. When a friend signs up and makes their first trip, you get ' + tmPts(e.referral) + ' points and they get ' + tmPts(e.signup) + ' to start.</p><div class="pts-ref-row"><input type="text" readonly value="' + tmEsc(link) + '" aria-label="Your invite link" onclick="this.select()"><button type="button" class="pts-btn" onclick="copyReferralLink(this)">Copy link</button></div></div>' : '') +
     '<h4 class="pts-hist-h">History</h4><div class="pts-hist">' + hist + '</div>' +
@@ -6514,6 +6530,7 @@ function ibxBookingCount() {
   const n = (typeof _tripBookings !== 'undefined' && Array.isArray(_tripBookings)) ? _tripBookings.length : 0;
   if (!pill) { pill = document.createElement('span'); pill.className = 'ibx-count'; const ch = hdr.querySelector('.ibx-chev'); hdr.insertBefore(pill, ch); }
   pill.textContent = n ? n + ' saved' : 'None yet';
+  pill.classList.toggle('zero', !n);
 }
 // ── Trip checklist (2026-10-26, Lachy) ──────────────────────────
 // Tick boxes for the things to sort before the trip: flights, each stay,
@@ -7049,9 +7066,21 @@ async function submitSignup() {
   const heardFrom = document.getElementById('su-heard-from').value;
   const marketingOptIn = document.getElementById('su-marketing-optin').checked;
   const errorEl   = document.getElementById('su-error');
-  if (!name || !email || !email.includes('@') || !phone) {
+  // 2026-10-30: country is now required too (some sign-ups had none), the email
+  // must look like a real address, and the phone needs at least 6 digits.
+  const missing = [];
+  if (!name) missing.push('name');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) missing.push('a valid email');
+  if ((phone.match(/\d/g) || []).length < 6) missing.push('phone number');
+  if (!country) missing.push('country');
+  ['su-name','su-email','su-phone','su-country'].forEach(function (id) { var f = document.getElementById(id); if (f) f.style.borderColor = ''; });
+  if (missing.length) {
+    if (!name) document.getElementById('su-name').style.borderColor = 'var(--accent)';
+    if (missing.indexOf('a valid email') > -1) document.getElementById('su-email').style.borderColor = 'var(--accent)';
+    if (missing.indexOf('phone number') > -1) document.getElementById('su-phone').style.borderColor = 'var(--accent)';
+    if (!country) document.getElementById('su-country').style.borderColor = 'var(--accent)';
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = 'Please fill in your name, email and phone.';
+    errorEl.textContent = 'Please add your ' + (missing.length > 1 ? missing.slice(0, -1).join(', ') + ' and ' + missing[missing.length - 1] : missing[0]) + '.';
     errorEl.style.display = 'block';
     return;
   }
@@ -7127,9 +7156,11 @@ async function submitLogin() {
   const submitBtn = document.getElementById('li-submit-btn');
   if (submitBtn) { submitBtn.textContent = 'Sending code...'; submitBtn.disabled = true; }
   try {
+    // 2026-10-30: log in only works for existing accounts. Before, an unknown
+    // email here quietly created a blank account (no name, phone or country).
     const { error } = await sb.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: window.location.origin + window.location.pathname }
+      options: { shouldCreateUser: false, emailRedirectTo: window.location.origin + window.location.pathname }
     });
     if (error) throw error;
     document.getElementById('li-step-email').style.display = 'none';
@@ -7145,7 +7176,9 @@ async function submitLogin() {
   } catch (err) {
     console.error('Login failed:', err);
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = friendlyAuthError(err);
+    errorEl.textContent = /signups not allowed|user not found/i.test((err && err.message) || '')
+      ? 'There\'s no TripMade account for that email yet. Close this and tap Sign up to create one.'
+      : friendlyAuthError(err);
     errorEl.style.display = 'block';
     if (submitBtn) { submitBtn.textContent = 'Email me a code →'; submitBtn.disabled = false; }
   }
@@ -7477,9 +7510,21 @@ async function submitWaitlistFull(btn) {
   const heardFrom = document.getElementById('wl-heard-from').value;
   const marketingOptIn = document.getElementById('wl-marketing-optin').checked;
   const errorEl   = document.getElementById('wl-error');
-  if (!name || !email || !email.includes('@') || !phone) {
+  // 2026-10-30: country is now required too (some sign-ups had none), the email
+  // must look like a real address, and the phone needs at least 6 digits.
+  const missing = [];
+  if (!name) missing.push('name');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) missing.push('a valid email');
+  if ((phone.match(/\d/g) || []).length < 6) missing.push('phone number');
+  if (!country) missing.push('country');
+  ['wl-name','wl-email','wl-phone','wl-country'].forEach(function (id) { var f = document.getElementById(id); if (f) f.style.borderColor = ''; });
+  if (missing.length) {
+    if (!name) document.getElementById('wl-name').style.borderColor = 'var(--accent)';
+    if (missing.indexOf('a valid email') > -1) document.getElementById('wl-email').style.borderColor = 'var(--accent)';
+    if (missing.indexOf('phone number') > -1) document.getElementById('wl-phone').style.borderColor = 'var(--accent)';
+    if (!country) document.getElementById('wl-country').style.borderColor = 'var(--accent)';
     errorEl.style.color = 'var(--accent)';
-    errorEl.textContent = 'Please fill in your name, email and phone.';
+    errorEl.textContent = 'Please add your ' + (missing.length > 1 ? missing.slice(0, -1).join(', ') + ' and ' + missing[missing.length - 1] : missing[0]) + '.';
     errorEl.style.display = 'block';
     return;
   }
@@ -10281,7 +10326,11 @@ async function downloadInboxItineraryPdf() {
   const itin = _currentInboxItinerary;
   const btn = document.getElementById('ibx-pdf-link');
   if (!itin || !btn) return;
-  const pdfTab = window.open('', '_blank');
+  // 2026-10-29 (phone check): in the installed app (home-screen icon) iPhones
+  // won't let us steer a pre-opened tab, which left a blank page. There, the
+  // button turns into an "Open your PDF" link once it's ready instead.
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  const pdfTab = standalone ? null : window.open('', '_blank');
   const { data: sessionData } = await sb.auth.getSession();
   const token = sessionData && sessionData.session && sessionData.session.access_token;
   if (!token) { if (pdfTab) pdfTab.close(); requireAccount(function() {}); return; }
@@ -10302,6 +10351,15 @@ async function downloadInboxItineraryPdf() {
       return;
     }
     if (pdfTab) { pdfTab.location.href = data.download_url; }
+    else if (standalone) {
+      const a = document.createElement('a');
+      a.href = data.download_url; a.target = '_blank'; a.rel = 'noopener';
+      a.className = btn.className; a.id = 'ibx-pdf-ready'; a.textContent = 'Open your PDF ↗';
+      a.style.cssText = 'display:inline-block;text-decoration:none;margin-left:8px;';
+      const old = document.getElementById('ibx-pdf-ready'); if (old) old.remove();
+      btn.insertAdjacentElement('afterend', a);
+      try { tmToast('Your PDF is ready', 'Tap "Open your PDF" to view or save it.'); } catch (e) {}
+    }
     else { window.open(data.download_url, '_blank'); }
   } catch (e) {
     console.error('PDF generation failed:', e);
@@ -11004,6 +11062,9 @@ window.showPage = function(id, linkEl, opts) {
 .fb-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
 .fb-actions button{border:none;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
 @media (max-width:480px){#fb-btn{left:12px;bottom:12px;padding:9px 13px;font-size:12px}}
+/* 2026-10-29 (phone check): the Feedback pill covered buttons and prices at the
+   bottom of the screen on phones. On phones it's now a small round icon. */
+@media (max-width:640px){#fb-btn{width:40px;height:40px;padding:0;border-radius:50%;font-size:0;left:10px;bottom:10px;opacity:.92;display:flex;align-items:center;justify-content:center}#fb-btn::before{content:'💬';font-size:18px;line-height:1}}
 </style>
 <button id="fb-btn" type="button" onclick="openFeedback()" aria-label="Send feedback">Feedback</button>
 <div id="fb-modal" onclick="if(event.target===this)closeFeedback()">
@@ -11916,9 +11977,36 @@ var HERO_SLIDES = [{"cap": "Lake Oeschinensee, Switzerland", "imgs": [{"n": "kan
 <!--Start of Tawk.to Script (live chat, added 17 Oct 2026)-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+// 2026-10-30 (Lachy): on phones the chat kept popping open / showing its
+// greeting over the page, so taps landed on the chat instead of the site.
+// On phones we now hide Tawk completely and show our own small round Help
+// button (bottom right). The chat only opens when that button is tapped, and
+// it goes back to the button when they close it. A red dot shows if we reply.
+var TM_CHAT_PHONE = window.matchMedia('(max-width:640px)').matches;
+var tmChatWanted = false;
+function tmChatBtn(){ return document.getElementById('tm-help-btn'); }
+function tmChatToButton(){
+  tmChatWanted = false;
+  try { Tawk_API.hideWidget(); } catch (e) {}
+  var b = tmChatBtn(); if (b) b.style.display = 'flex';
+}
+function tmOpenHelp(){
+  tmChatWanted = true;
+  var b = tmChatBtn(); if (b) { b.style.display = 'none'; b.classList.remove('unread'); }
+  try { Tawk_API.showWidget(); Tawk_API.maximize(); } catch (e) {}
+}
+if (TM_CHAT_PHONE) {
+  Tawk_API.onBeforeLoad = function(){ try { Tawk_API.hideWidget(); } catch (e) {} };
+  // Opened by Tawk itself (greeting / trigger), not by them: put it away.
+  Tawk_API.onChatMaximized = function(){ if (!tmChatWanted) { try { Tawk_API.minimize(); } catch (e) {} tmChatToButton(); } };
+  Tawk_API.onChatMinimized = function(){ tmChatToButton(); };
+  Tawk_API.onChatHidden = function(){ if (!tmChatWanted) { var b = tmChatBtn(); if (b) b.style.display = 'flex'; } };
+  Tawk_API.onUnreadCountChanged = function(n){ var b = tmChatBtn(); if (b) b.classList.toggle('unread', n > 0 && !tmChatWanted); };
+}
 // If the visitor is signed in, fill in their name and email in the chat so
 // they don't have to type it and we know who we're talking to.
 Tawk_API.onLoad = function(){
+  if (TM_CHAT_PHONE) tmChatToButton();
   try {
     var u = window._currentUser || (typeof _currentUser !== 'undefined' ? _currentUser : null);
     if (u && u.email) Tawk_API.setAttributes({ name: u.name || u.email, email: u.email }, function(){});
@@ -11934,6 +12022,13 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
+<style>
+/* Phone-only Help button that opens the live chat (2026-10-30) */
+#tm-help-btn{display:none;position:fixed;right:10px;bottom:10px;z-index:899;width:44px;height:44px;border-radius:50%;border:none;background:var(--accent,#0D7377);color:#fff;font-family:inherit;font-size:21px;font-weight:800;line-height:1;border:2px solid rgba(255,255,255,.85);box-shadow:0 4px 14px rgba(0,0,0,.25);align-items:center;justify-content:center;cursor:pointer;opacity:.95;padding:0}
+#tm-help-btn.unread::after{content:'';position:absolute;top:2px;right:2px;width:11px;height:11px;border-radius:50%;background:#E5484D;border:2px solid #fff}
+@media (min-width:641px){#tm-help-btn{display:none !important}}
+</style>
+<button id="tm-help-btn" type="button" aria-label="Chat with us" title="Chat with us" onclick="tmOpenHelp()">?</button>
 <script>
 // ── Installable app + offline (2026-10-28, Lachy) ──────────────────
 // sw.js keeps a copy of the site so it opens with no signal; the Inbox list
