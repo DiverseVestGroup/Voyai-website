@@ -1527,12 +1527,12 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="route-arrow">→</div>
       <div class="route-stop" style="flex-direction:column;align-items:flex-start;gap:3px;">
         <div style="display:flex;align-items:center;gap:6px;"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Rome, Italy</div><span class="vibe-pill" style="background:#FAEEDA;color:#854F0B;">Sightseeing</span></div>
-        <div class="route-nights">4 nights</div>
+        <div class="route-nights">3 nights</div>
       </div>
       <div class="route-arrow">→</div>
       <div class="route-stop" style="flex-direction:column;align-items:flex-start;gap:3px;">
         <div style="display:flex;align-items:center;gap:6px;"><div class="route-dot" style="background:var(--accent);"></div><div class="route-name">Ibiza, Spain</div><span class="vibe-pill" style="background:var(--accent-light);color:var(--accent);">Party</span></div>
-        <div class="route-nights">4 nights</div>
+        <div class="route-nights">3 nights</div>
       </div>
       <div class="route-arrow">→</div>
       <div class="route-stop"><div class="route-dot" style="background:var(--amber);"></div><div class="route-name">Sydney</div></div>
@@ -1541,7 +1541,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- 2026-10-25: tappable cost breakdowns, same as real trips (sampleCost data in the script). -->
     <div class="sum-grid" id="sample-sum-grid">
       <button type="button" class="sum-card" data-cost="flights" aria-expanded="false" onclick="toggleSampleCost('flights')"><div class="sum-lbl">Flights</div><div class="sum-val">$2,120</div><div class="sum-sub">return + connection</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
-      <button type="button" class="sum-card" data-cost="hotels" aria-expanded="false" onclick="toggleSampleCost('hotels')"><div class="sum-lbl">Hotels</div><div class="sum-val">$2,800</div><div class="sum-sub">8 nights</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
+      <button type="button" class="sum-card" data-cost="hotels" aria-expanded="false" onclick="toggleSampleCost('hotels')"><div class="sum-lbl">Hotels</div><div class="sum-val">$2,800</div><div class="sum-sub">6 nights</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
       <button type="button" class="sum-card" data-cost="activities" aria-expanded="false" onclick="toggleSampleCost('activities')"><div class="sum-lbl">Activities</div><div class="sum-val">$760</div><div class="sum-sub">all booked</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
       <button type="button" class="sum-card" data-cost="food" aria-expanded="false" onclick="toggleSampleCost('food')"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$950</div><div class="sum-sub">all reserved</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
       <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$6,630</div><div class="sum-sub red">$370 under budget</div></div>
@@ -1587,7 +1587,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-hotel"></div></div>
             <div class="evt-body">
               <div class="evt-label">Check-in &mdash; Boutique Hotel Campo de' Fiori, Centro Storico</div>
-              <div class="evt-detail">A boutique hotel two minutes from Campo de' Fiori square itself, and walkable to almost everything on this leg of the trip &mdash; the Pantheon, Piazza Navona and Trastevere are all within about 15 minutes on foot. You're here for 4 nights, so it's worth properly unpacking tonight rather than living out of the suitcase.</div>
+              <div class="evt-detail">A boutique hotel two minutes from Campo de' Fiori square itself, and walkable to almost everything on this leg of the trip &mdash; the Pantheon, Piazza Navona and Trastevere are all within about 15 minutes on foot. You're here for 3 nights, so it's worth properly unpacking tonight rather than living out of the suitcase.</div>
             </div>
           </div>
           <div class="evt">
@@ -1732,7 +1732,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             <div class="evt-dot-col"><div class="evt-dot dot-flight"></div></div>
             <div class="evt-body">
               <div class="evt-label">Fly FCO &rarr; IBZ &mdash; Vueling</div>
-              <div class="evt-detail">A short, easy 2h15 hop across the Mediterranean, landing into Ibiza at 18:35 local time, ready for the next four nights. Vueling's cabin bag allowance is tighter than Emirates', so check yours fits their sizer before you leave the hotel &mdash; paying for a bag online beforehand is much cheaper than at the gate.</div>
+              <div class="evt-detail">A short, easy 2h15 hop across the Mediterranean, landing into Ibiza at 18:35 local time, ready for the next three nights. Vueling's cabin bag allowance is tighter than Emirates', so check yours fits their sizer before you leave the hotel &mdash; paying for a bag online beforehand is much cheaper than at the gate.</div>
             </div>
           </div>
         </div>
@@ -5840,8 +5840,8 @@ var SAMPLE_COSTS = {
     { label: 'IBZ → DXB → SYD · Emirates', detail: 'Ibiza home to Sydney via Dubai · 2 adults', amount: 780, route: 'IBZ → SYD' }
   ],
   hotels: [
-    { label: "Boutique Hotel Campo de' Fiori · Rome", detail: '4 nights · about $280 a night', amount: 1120, q: "Boutique Hotel Campo de' Fiori Rome" },
-    { label: 'Ushuaïa Beach Hotel · Ibiza', detail: '4 nights · about $420 a night', amount: 1680, q: 'Ushuaia Beach Hotel Ibiza' }
+    { label: "Boutique Hotel Campo de' Fiori · Rome", detail: '3 nights · about $373 a night', amount: 1120, q: "Boutique Hotel Campo de' Fiori Rome" },
+    { label: 'Ushuaïa Beach Hotel · Ibiza', detail: '3 nights · about $560 a night', amount: 1680, q: 'Ushuaia Beach Hotel Ibiza' }
   ],
   activities: [
     { label: 'Vatican Museums + Sistine Chapel', detail: 'Skip-the-line entry · 2 adults', amount: 140, q: 'Vatican Museums Sistine Chapel skip the line' },
