@@ -1,9 +1,12 @@
-   {
-     "redirects": [
-       {
-         "source": "/ig",
-         "destination": "https://tripmade.co/?utm_source=instagram&utm_medium=social&utm_campaign=europe2027&utm_content=bio",
-         "permanent": false
-       }
-     ]
-   }
+{
+  "redirects": [
+    {
+      "source": "/ig",
+      "destination": "https://tripmade.co/?utm_source=instagram&utm_medium=social&utm_campaign=europe2027&utm_content=bio",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
