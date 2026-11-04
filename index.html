@@ -1065,6 +1065,9 @@ details.chk-grp[open] .chk-chev { transform:rotate(180deg); }
 .form-back:hover { border-color:var(--text-muted); color:var(--text); }
 .form-next { background:var(--accent); color:white; border:none; padding:13px 32px; border-radius:10px; font-size:14px; font-weight:500; transition:all .2s; box-shadow:0 4px 14px rgba(13,115,119,.25); }
 .form-next:hover { opacity:.9; transform:translateY(-1px); }
+.form-help-line { margin:22px 0 0; text-align:center; font-size:13px; color:var(--text-muted); }
+.form-help-line a { color:var(--accent); font-weight:600; text-decoration:underline; }
+#step-success.active ~ .form-help-line { display:none; }
 .form-skip { font-size:13px; color:var(--text-dim); text-decoration:underline; cursor:pointer; background:none; border:none; }
 .form-success { text-align:center; padding:48px 0; }
 .form-success .success-icon { width:72px; height:72px; background:var(--green-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 20px; }
@@ -1348,6 +1351,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <li><a href="javascript:void(0)" class="nav-page-link nav-link-highlight" onclick="showPage(&#39;tours&#39;,this)">Book your trip</a></li>
     </ul>
     <div class="nav-right">
+      <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;help&#39;,this)">Help</a>
       <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;saved&#39;,this);renderSavedPage()">♡ Saved</a>
       <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;inbox&#39;,this);renderInboxPage()">Inbox<span class="nav-notif-badge" id="nav-notif-badge" style="display:none;"></span></a>
       <span id="nav-account" style="font-size:13px;color:var(--text-muted);"></span>
@@ -3841,6 +3845,9 @@ footer p { font-size:13px; color:var(--text-dim); }
         <button class="btn-secondary" onclick="showPage(&#39;landing&#39;)">Back to home</button>
       </div>
     </div>
+    <!-- Help link (4 Nov 2026). Opens in a new tab so nothing typed in the form is lost,
+         at the help guide for whichever step is showing. Hidden on the "You're all set" screen. -->
+    <p class="form-help-line" id="form-help-line">Questions? <a href="/help" target="_blank" rel="noopener" onclick="var m={step1:'start',step2:'who',step3:'vibe',step4:'existing',step5:'budget',step6:'send'};var s=document.querySelector('#page-form .form-step.active');this.href='/help'+(s&amp;&amp;m[s.id]?'#'+m[s.id]:'');">See our step-by-step help guides</a></p>
   </div>
 </div><!-- end form page -->
 <!-- ══ TOURS & EXPERIENCES PAGE ══════════════════════════
@@ -4752,6 +4759,248 @@ footer p { font-size:13px; color:var(--text-dim); }
     </div>
   </div>
 </div>
+<!-- ══ HELP CENTRE PAGE (added 4 Nov 2026) ═══════════════
+     tripmade.co/help. Step-by-step guides with annotated screenshots.
+     Screenshots live in the /help-img folder in the repo.
+     TO EDIT AN ARTICLE: change its text in the <script id="hc-data"> list
+     below (title, intro, steps, tip). Each step's "calls" are the orange
+     boxes on the screenshot: r = [left %, top %, width %, height %].
+     Link to one article from anywhere with /help#<id>, e.g. /help#add-booking. -->
+<div id="page-help" class="page">
+<style>
+#page-help{--hc-mark:#E8562A;--hc-soft:var(--accent-light);--hc-ink:#0A5C5F}
+#page-help .hc-top{background:var(--bg2);border-bottom:1px solid var(--border)}
+#page-help .hc-top-in{max-width:1180px;margin:0 auto;padding:44px 48px 30px}
+#page-help .hc-top h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,4vw,38px);letter-spacing:-.02em;margin:0 0 6px;color:var(--text)}
+#page-help .hc-top p{margin:0;color:var(--text-muted);font-size:15px}
+#page-help .hc-search{margin-top:20px;position:relative;max-width:640px}
+#page-help .hc-search input{width:100%;box-sizing:border-box;padding:14px 16px 14px 44px;border:1.5px solid var(--border-mid);border-radius:var(--radius);background:var(--bg);font:inherit;font-size:16px;color:var(--text)}
+#page-help .hc-search input:focus{border-color:var(--accent);outline:none}
+#page-help .hc-search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--text-muted);fill:none;stroke-width:2}
+#page-help .hc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#page-help .hc-chip{border:1px solid var(--border-mid);background:var(--bg2);border-radius:99px;padding:5px 12px;font:inherit;font-size:13px;color:var(--text);cursor:pointer;transition:border-color .15s,color .15s}
+#page-help .hc-chip:hover{border-color:var(--accent);color:var(--accent)}
+#page-help .hc-wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;padding:28px 48px 72px;box-sizing:border-box}
+#page-help .hc-side{min-width:0}
+#page-help .hc-side h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin:20px 0 6px;font-weight:700;font-family:'DM Sans',sans-serif}
+#page-help .hc-side h2:first-child{margin-top:0}
+#page-help .hc-list{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+#page-help .hc-list a{display:block;padding:8px 10px;border-radius:var(--radius-sm);color:var(--text);font-size:14.5px;line-height:1.4;text-decoration:none;transition:background .15s}
+#page-help .hc-list a:hover{background:var(--bg2)}
+#page-help .hc-list a.on{background:var(--hc-soft);color:var(--hc-ink);font-weight:600}
+#page-help .hc-none{color:var(--text-muted);font-size:14px;padding:6px 10px;margin:0}
+#page-help .hc-art{min-width:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(18px,3vw,34px);scroll-margin-top:90px}
+#page-help .hc-crumb{font-size:12.5px;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+#page-help .hc-art h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(24px,3.2vw,32px);letter-spacing:-.02em;line-height:1.15;margin:6px 0 10px;color:var(--text)}
+#page-help .hc-intro{color:var(--text-muted);max-width:65ch;margin:0;font-size:15px;line-height:1.6}
+#page-help .hc-steps{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:34px;counter-reset:hcs}
+#page-help .hc-step{counter-increment:hcs;display:grid;grid-template-columns:34px minmax(0,1fr);gap:4px 14px}
+#page-help .hc-step::before{content:counter(hcs);grid-row:1/span 3;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:14px;display:grid;place-items:center;margin-top:1px}
+#page-help .hc-step h3{margin:2px 0 0;font-size:17px;font-weight:700;color:var(--text);font-family:'DM Sans',sans-serif}
+#page-help .hc-step p{margin:2px 0 0;max-width:65ch;font-size:15px;line-height:1.6;color:var(--text)}
+#page-help .hc-shotwrap{position:relative;margin:14px 0 0}
+#page-help .hc-shot{position:relative;margin:0;border:1px solid var(--border-mid);border-radius:10px;background:#fff}
+#page-help .hc-shot img{display:block;width:100%;height:auto;border-radius:10px}
+#page-help .hc-shotwrap svg.hc-ar{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+#page-help .hc-box{position:absolute;border:2px solid var(--hc-mark);border-radius:6px;pointer-events:none}
+#page-help .hc-num{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--hc-mark);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;transform:translate(-70%,-70%);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+#page-help .hc-lab{position:absolute;z-index:3;background:var(--hc-mark);color:#fff;font-size:13px;font-weight:600;padding:4px 10px;border-radius:7px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.15);max-width:70%;overflow:hidden;text-overflow:ellipsis}
+#page-help .hc-lab b{display:inline-block;margin-right:6px;opacity:.85}
+#page-help .hc-legend{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13.5px;color:var(--text-muted)}
+#page-help .hc-legend li{display:flex;align-items:center;gap:7px}
+#page-help .hc-legend b{width:20px;height:20px;border-radius:50%;background:var(--hc-mark);color:#fff;font-size:11.5px;display:grid;place-items:center;flex:none}
+#page-help .hc-tip{margin-top:30px;background:var(--hc-soft);color:var(--text);border-radius:var(--radius);padding:14px 18px;max-width:72ch;font-size:14.5px;line-height:1.6}
+#page-help .hc-tip strong{color:var(--hc-ink)}
+#page-help .hc-related{margin-top:30px;border-top:1px solid var(--border);padding-top:16px;font-size:14px;color:var(--text-muted)}
+#page-help .hc-related a{color:var(--accent);font-weight:600;text-decoration:none;margin-right:16px;display:inline-block}
+#page-help .hc-contact{margin-top:22px;font-size:14px;color:var(--text-muted)}
+#page-help .hc-contact a{color:var(--accent);font-weight:600}
+@media (max-width:860px){
+  #page-help .hc-top-in{padding:30px 16px 22px}
+  #page-help .hc-wrap{grid-template-columns:minmax(0,1fr);padding:20px 16px 56px}
+}
+@media (max-width:640px){#page-help .hc-lab,#page-help .hc-shotwrap svg.hc-ar{display:none}}
+</style>
+  <div class="hc-top">
+    <div class="hc-top-in">
+      <h1>How can we help?</h1>
+      <p>Step-by-step guides for planning your trip, your itinerary and your bookings.</p>
+      <form class="hc-search" id="hc-searchForm" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="hc-q" type="search" placeholder="Search help, e.g. booking reference" autocomplete="off" aria-label="Search help">
+      </form>
+      <div class="hc-chips" id="hc-chips"></div>
+    </div>
+  </div>
+  <div class="hc-wrap">
+    <div class="hc-side" id="hc-side" role="navigation" aria-label="Help topics"></div>
+    <div class="hc-art" id="hc-art" role="main" aria-live="polite"></div>
+  </div>
+<script id="hc-data" type="application/json">[{"id": "add-booking", "section": "Bookings", "title": "Add a booking reference to your trip", "kw": "booking reference ref confirmation number pnr add booking upload booking flight booking hotel booking e-ticket confirmation email forward", "intro": "Keep every booking number for your trip in one place, so you never have to dig through your emails at the airport or hotel desk. You can upload the confirmation, paste the email, or type the reference in yourself.", "steps": [{"h": "Open your Inbox", "text": "Log in, then tap Inbox at the top of any page and open the trip you want to add the booking to.", "img": "home", "w": 800, "hgt": 150, "calls": [{"r": [49.41, 11, 7.78, 20], "label": "Tap Inbox"}]}, {"h": "Open My Bookings and tap + Add booking", "text": "My Bookings sits near the top of your trip. Tap the header to open the list, then tap + Add booking.", "img": "trip_bookings_closed", "w": 1036, "hgt": 88, "calls": [{"r": [74.18, 33.03, 11.48, 33.95], "label": "Tap + Add booking"}, {"r": [93.92, 34.16, 2.7, 31.68], "label": "Tap to open the list"}]}, {"h": "Upload your confirmation (quickest)", "text": "Drag your PDF, e-ticket or screenshot onto the box, or tap it to choose the file. We read the booking reference, dates and details straight away, so there's no extra button to press.", "img": "bk_upload", "w": 512, "hgt": 443, "calls": [{"r": [8.98, 29.8, 26.56, 7.22], "label": "Upload is selected"}, {"r": [8.2, 41.08, 83.59, 33.86], "label": "Drop or choose your file here"}]}, {"h": "Or paste the confirmation email", "text": "Tap Paste, copy the whole confirmation email into the box, then tap Read & add booking.", "img": "bk_paste", "w": 512, "hgt": 436, "calls": [{"r": [36.72, 30.28, 26.56, 7.34], "label": "Tap Paste"}, {"r": [8.2, 41.74, 83.59, 29.82], "label": "Paste the email here"}, {"r": [58.39, 81.42, 33.41, 8.94], "label": "Tap Read & add booking"}]}, {"h": "Or type the booking reference in yourself", "text": "Tap Type it in, choose what kind of booking it is, then enter the booking reference and a short name like 'Emirates EK413 Sydney to Rome'. Add the start date and time, then tap Add booking.", "img": "bk_manual", "w": 512, "hgt": 533, "calls": [{"r": [64.45, 24.77, 26.56, 6.0], "label": "Tap Type it in"}, {"r": [8.2, 34.15, 40.82, 7.5], "label": "Booking type"}, {"r": [50.98, 34.15, 40.82, 7.5], "label": "Booking reference goes here"}, {"r": [8.2, 52.53, 40.82, 7.13], "label": "Start date and time"}, {"r": [67.86, 84.8, 23.94, 7.32], "label": "Tap Add booking"}]}, {"h": "Find it in My Bookings", "text": "Your booking now shows in My Bookings with its reference. Tap Copy to grab the reference when you need it.", "img": "trip_bookings", "w": 1036, "hgt": 391, "calls": [{"r": [3.38, 39.34, 14.74, 7.67], "label": "Your booking reference"}, {"r": [12.88, 40.62, 4.27, 5.11], "label": "Tap Copy"}, {"r": [1.64, 83.45, 96.72, 12.21], "label": "Or forward the email"}]}], "tip": "You can also forward any booking confirmation email to bookings@tripmade.co from the email address you use for TripMade, and we'll file it on your trip for you."}, {"id": "copy-ref", "section": "Bookings", "title": "Copy a booking reference at check-in", "kw": "copy booking reference check-in airport hotel desk find booking number ref", "intro": "Need your booking reference at the airport or hotel desk? It's saved on your trip.", "steps": [{"h": "Open My Bookings on your trip", "text": "Go to Inbox, open your trip and tap the My Bookings header. The number beside it shows how many bookings are saved.", "img": "trip_bookings_closed", "w": 1036, "hgt": 88, "calls": [{"r": [1.64, 19.24, 96.72, 61.53], "label": "Tap here to open"}]}, {"h": "Tap Copy next to the reference", "text": "Each booking shows its reference. Tap Copy and paste it wherever you need it.", "img": "trip_bookings", "w": 1036, "hgt": 391, "calls": [{"r": [3.38, 39.34, 14.74, 7.67], "label": "Booking reference"}, {"r": [12.88, 40.62, 4.27, 5.11], "label": "Tap Copy"}]}], "tip": ""}, {"id": "start", "section": "Planning a trip", "title": "Start your free itinerary", "kw": "get started plan a trip free itinerary new trip destination dates where to go flying from step 1", "intro": "Your itinerary is free. It takes six short steps.", "steps": [{"h": "Tap Get my free itinerary", "text": "You'll find it near the top of the home page.", "img": "hero", "w": 880, "hgt": 543, "calls": [{"r": [26.89, 75.13, 25.61, 8.66], "label": "Tap here to start"}]}, {"h": "Step 1: where and when", "text": "Type a destination and pick it from the list. Add as many stops as you like, for example Rome and then Ibiza. Not sure where to go? Tick the box and we'll choose. Then pick your dates and the city you're flying from, and tap Next.", "img": "step1", "w": 752, "hgt": 807, "calls": [{"r": [6.38, 8.92, 87.23, 3.96], "label": "Your progress through the 6 steps"}, {"r": [6.38, 36.45, 87.23, 9.41], "label": "Add one or more destinations"}, {"r": [6.38, 58.75, 42.69, 5.45], "label": "Departure date"}, {"r": [50.93, 58.75, 42.69, 5.45], "label": "Return date"}, {"r": [6.38, 69.77, 87.23, 5.45], "label": "Your home city or airport"}, {"r": [78.67, 82.78, 14.95, 5.33], "label": "Tap Next"}]}], "tip": ""}, {"id": "who", "section": "Planning a trip", "title": "Tell us who's coming", "kw": "who is coming travellers trip type solo couple friends family age occasion step 2", "intro": "This helps us plan the right pace, stays and nights out for your group.", "steps": [{"h": "Step 2: who's coming", "text": "Choose a trip type, the number of travellers and a rough age range. If there's an occasion, like a 30th birthday or a honeymoon, add it. Then tap Next.", "img": "step2", "w": 752, "hgt": 870, "calls": [{"r": [6.38, 33.98, 87.23, 22.75], "label": "Pick a trip type"}, {"r": [6.38, 61.91, 42.69, 5.06], "label": "How many people"}, {"r": [50.93, 61.91, 42.69, 5.06], "label": "Rough age range"}, {"r": [6.38, 72.13, 87.23, 5.06], "label": "Optional: the occasion"}, {"r": [78.67, 84.2, 14.95, 4.94], "label": "Tap Next"}]}], "tip": ""}, {"id": "vibe", "section": "Planning a trip", "title": "Choose your trip vibe", "kw": "vibe party romantic adventure culture food beach shopping wellness golf must have avoid step 3", "intro": "Tell us what you want the trip to feel like. You can pick more than one vibe, and we'll spread them across your days.", "steps": [{"h": "Step 3: your vibe", "text": "Tap every vibe that fits. Then list anything the trip must have, like a club night in Ibiza or skip-the-line entry to the Colosseum, and anything to avoid. Tap Next.", "img": "step3", "w": 752, "hgt": 1078, "calls": [{"r": [6.38, 27.39, 87.23, 28.01], "label": "Tap one or more vibes"}, {"r": [6.38, 61.7, 87.23, 11.13], "label": "Your must-haves"}, {"r": [6.38, 77.47, 87.23, 4.08], "label": "Optional: anything to avoid"}, {"r": [78.67, 87.21, 14.95, 3.99], "label": "Tap Next"}]}], "tip": ""}, {"id": "existing", "section": "Planning a trip", "title": "Add what you've already booked", "kw": "already booked existing bookings flights hotel booking reference upload spreadsheet confirmation paste skip step 4", "intro": "Already booked a flight or a hotel? Tell us and we'll plan the rest of the trip around it.", "steps": [{"h": "Step 4: what's already booked", "text": "Paste in anything you've locked in, in any format. A booking confirmation, a note to yourself or a sentence like 'we land Saturday morning' all work. You can also upload a spreadsheet, PDF or screenshot. Nothing booked yet? Tap Skip this step.", "img": "step4", "w": 752, "hgt": 924, "calls": [{"r": [8.64, 38.22, 82.71, 16.24], "label": "Paste your bookings here"}, {"r": [6.38, 60.86, 87.23, 8.01], "label": "Or upload a file"}, {"r": [6.38, 73.74, 87.23, 4.76], "label": "Dietary needs, mobility, preferences"}, {"r": [67.05, 86.63, 10.28, 1.62], "label": "Nothing booked? Skip"}, {"r": [78.67, 85.11, 14.95, 4.66], "label": "Tap Next"}]}], "tip": "After your itinerary arrives, add each booking reference to My Bookings so they're all in one place. See 'Add a booking reference to your trip'."}, {"id": "budget", "section": "Planning a trip", "title": "Set your budget, stays and pace", "kw": "budget currency total trip budget accommodation hotel villa boutique pace packed balanced relaxed photo step 5", "intro": "Your budget is for the whole trip and everyone on it, including flights.", "steps": [{"h": "Step 5: budget and travel style", "text": "Drag the slider or tap the amount to type it, and change the currency if you need to. Pick a place-to-stay style for each destination, choose your pace, and add an inspiration photo if you have one. Tap Next.", "img": "step5", "w": 752, "hgt": 1509, "calls": [{"r": [15.1, 21.22, 14.59, 2.39], "label": "Tap to type your budget"}, {"r": [76.2, 21.35, 14.36, 2.32], "label": "Change currency"}, {"r": [9.44, 25.0, 81.12, 0.4], "label": "Or drag the slider"}, {"r": [6.38, 31.3, 87.23, 38.43], "label": "Stay style for each stop"}, {"r": [6.38, 71.18, 87.23, 7.75], "label": "Pick your pace"}, {"r": [6.38, 81.92, 87.23, 4.9], "label": "Optional: an inspiration photo"}, {"r": [78.67, 90.86, 14.95, 2.85], "label": "Tap Next"}]}], "tip": ""}, {"id": "send", "section": "Planning a trip", "title": "Send your trip and what happens next", "kw": "send email name phone step 6 inbox itinerary arrives how long what happens next", "intro": "The last step tells us where to send your itinerary.", "steps": [{"h": "Step 6: your details", "text": "Enter your first name and email. Your phone number is optional. Ticking the travel deals box is optional too, and separate from your itinerary. Tap Send my itinerary.", "img": "step6", "w": 752, "hgt": 915, "calls": [{"r": [6.38, 34.83, 87.23, 4.81], "label": "First name"}, {"r": [6.38, 44.56, 87.23, 4.81], "label": "Email address"}, {"r": [6.38, 54.29, 87.23, 4.81], "label": "Optional phone"}, {"r": [6.38, 72.07, 87.23, 5.74], "label": "Optional: travel deals"}, {"r": [66.23, 84.48, 27.39, 5.14], "label": "Tap Send my itinerary"}]}, {"h": "Your itinerary is on its way", "text": "A TripMade team member checks your plan before it goes out. It lands in your TripMade Inbox, usually within minutes, and we email you when it's there. Check your spam folder just in case.", "img": "success", "w": 688, "hgt": 525, "calls": [{"r": [25.5, 76.57, 26.59, 8.95], "label": "Tap View my Inbox"}]}], "tip": ""}, {"id": "find", "section": "Your itinerary", "title": "Find your itinerary", "kw": "find itinerary inbox where is my trip open trip tabs journal photos", "intro": "Every trip you plan with TripMade is saved in your Inbox.", "steps": [{"h": "Tap Inbox", "text": "Log in, then tap Inbox at the top of any page and open your trip.", "img": "home", "w": 800, "hgt": 150, "calls": [{"r": [49.41, 11, 7.78, 20], "label": "Tap Inbox"}]}, {"h": "Switch between Itinerary, Journal and Photos", "text": "Your trip opens on the Itinerary. Use the tabs to write in your Journal or add Photos as you go. Tap Back to inbox to see your other trips.", "img": "trip_top", "w": 1132, "hgt": 760, "calls": [{"r": [5.65, 7.5, 8.36, 1.97], "label": "Back to all your trips"}, {"r": [6.18, 31.05, 28.86, 4.61], "label": "Your day-by-day plan"}, {"r": [35.57, 31.05, 28.86, 4.61], "label": "Journal"}, {"r": [64.96, 31.05, 28.86, 4.61], "label": "Photos"}]}], "tip": ""}, {"id": "days", "section": "Your itinerary", "title": "Read your day-by-day plan", "kw": "day by day plan expand day costs breakdown book transfer book stay map times", "intro": "Your trip shows the cost summary up top and each day's plan below it.", "steps": [{"h": "Check the costs", "text": "The cards show flights, hotels, activities and food, plus the trip total. Tap Breakdown on any card to see what's included.", "img": "trip_top", "w": 1132, "hgt": 760, "calls": [{"r": [5.65, 38.29, 88.69, 12.11], "label": "Tap Breakdown for details"}]}, {"h": "Open a day", "text": "Each day lists its times and plans. Tap Expand this day for more detail on every stop. Book buttons take you to our travel partners to book that part of the trip.", "img": "trip_days", "w": 1034, "hgt": 330, "calls": [{"r": [1.55, 4.85, 96.91, 45.33], "label": "One day of your trip"}, {"r": [86.67, 8.18, 9.65, 4.24], "label": "Tap Expand this day"}]}], "tip": ""}, {"id": "edit", "section": "Your itinerary", "title": "Change your dates or edit your trip", "kw": "change dates edit trip move dates swap stop add stop change time rework a day", "intro": "Plans change. You can update your trip yourself, and the plan updates right on the page.", "steps": [{"h": "Change your dates", "text": "Tap Change dates under your trip name and pick the new dates.", "img": "trip_top", "w": 1132, "hgt": 760, "calls": [{"r": [44.8, 21.58, 10.41, 3.95], "label": "Tap Change dates"}]}, {"h": "Edit anything else", "text": "Scroll to 'Want to change something?' and tap Edit this trip. You can change a time, swap or add a stop, or ask TripMade to rework a day.", "img": "trip_help", "w": 1036, "hgt": 109, "calls": [{"r": [80.44, 28.44, 15.8, 43.12], "label": "Tap Edit this trip"}]}], "tip": ""}, {"id": "help", "section": "Help", "title": "Get help during your trip", "kw": "help contact message tripmade support emergency problem on trip", "intro": "Something not right, or want a recommendation while you're away? A real person on our team will get back to you.", "steps": [{"h": "Tap Message TripMade", "text": "At the bottom of your trip, tap Message TripMade. It opens an email with your trip details already filled in, or you can email hello@tripmade.co.", "img": "trip_msg", "w": 1036, "hgt": 187, "calls": [{"r": [4.05, 43.39, 17.91, 25.1], "label": "Tap Message TripMade"}, {"r": [1.64, 75.97, 96.72, 14.95], "label": "In an emergency, call local services first"}]}], "tip": "In an emergency, contact local emergency services first: 112 anywhere in Europe, 000 in Australia. Then call your travel insurer."}]</script>
+<script>
+(function(){
+const BASE = JSON.parse(document.getElementById('hc-data').textContent);
+const SECTIONS = ['Planning a trip','Your itinerary','Bookings','Help'];
+const SUGGEST = ['booking reference','change dates','budget','find my itinerary','already booked'];
+const IMG = '/help-img/';
+let current = null, query = '';
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const helpOpen = () => { const p = document.getElementById('page-help'); return p && p.classList.contains('active'); };
+
+function score(a, q){
+  const words = q.toLowerCase().split(/[^a-z0-9-]+/).filter(w => w.length > 1);
+  if (!words.length) return 0;
+  const title = a.title.toLowerCase(), kw = a.kw.toLowerCase();
+  const body = (a.intro + ' ' + a.steps.map(s => s.h + ' ' + s.text).join(' ') + ' ' + a.tip).toLowerCase();
+  let sc = 0, hit = 0;
+  words.forEach(w => { let h = 0;
+    if (title.includes(w)) { sc += 6; h = 1; }
+    if (kw.includes(w)) { sc += 4; h = 1; }
+    if (body.includes(w)) { sc += 1; h = 1; }
+    hit += h; });
+  const ph = q.toLowerCase().trim();
+  if (ph.includes(' ') && (title.includes(ph) || kw.includes(ph))) sc += 10;
+  return hit === words.length ? sc : sc * 0.3;
+}
+const ranked = q => BASE.map(a => [a, score(a, q)]).filter(x => x[1] > 0).sort((x,y) => y[1]-x[1]);
+const item = a => '<li><a href="#' + a.id + '" class="' + (current === a.id ? 'on' : '') + '">' + esc(a.title) + '</a></li>';
+const allTopics = () => SECTIONS.map(s => '<h2>' + esc(s) + '</h2><ul class="hc-list">' + BASE.filter(a => a.section === s).map(item).join('') + '</ul>').join('');
+
+function renderSide(){
+  const side = $('#hc-side');
+  if (query.trim()){
+    const res = ranked(query);
+    side.innerHTML = '<h2>' + res.length + ' result' + (res.length === 1 ? '' : 's') + '</h2>' +
+      (res.length ? '<ul class="hc-list">' + res.map(x => item(x[0])).join('') + '</ul>'
+                  : '<p class="hc-none">No matches. Try "booking", "dates" or "budget".</p>') +
+      '<h2>All topics</h2>' + allTopics();
+  } else side.innerHTML = allTopics();
+}
+function stepHtml(s){
+  let h = '<li class="hc-step"><h3>' + esc(s.h) + '</h3><p>' + esc(s.text) + '</p><div>';
+  if (s.img){
+    h += '<div class="hc-shotwrap"><svg class="hc-ar" aria-hidden="true"></svg>' +
+      s.calls.map((c,j) => '<div class="hc-lab"><b>' + (j+1) + '</b>' + esc(c.label) + '</div>').join('') +
+      '<figure class="hc-shot" style="aspect-ratio:' + s.w + '/' + s.hgt + '">' +
+      '<img src="' + IMG + s.img + '.jpg" width="' + s.w + '" height="' + s.hgt + '" alt="Screenshot: ' + esc(s.h) + '" loading="lazy">' +
+      s.calls.map((c,j) => '<div class="hc-box" style="left:' + c.r[0] + '%;top:' + c.r[1] + '%;width:' + c.r[2] + '%;height:' + c.r[3] + '%"></div>' +
+        '<div class="hc-num" style="left:' + c.r[0] + '%;top:' + c.r[1] + '%">' + (j+1) + '</div>').join('') +
+      '</figure></div>' +
+      '<ol class="hc-legend">' + s.calls.map((c,j) => '<li><b>' + (j+1) + '</b>' + esc(c.label) + '</li>').join('') + '</ol>';
+  }
+  return h + '</div></li>';
+}
+function renderArt(){
+  const a = BASE.find(x => x.id === current) || BASE[0];
+  let h = '<div class="hc-crumb">' + esc(a.section) + '</div><h1>' + esc(a.title) + '</h1><p class="hc-intro">' + esc(a.intro) + '</p>';
+  h += '<ol class="hc-steps">' + a.steps.map(stepHtml).join('') + '</ol>';
+  if (a.tip) h += '<div class="hc-tip"><strong>Tip: </strong>' + esc(a.tip) + '</div>';
+  const rel = BASE.filter(x => x.section === a.section && x.id !== a.id).slice(0,3);
+  if (rel.length) h += '<div class="hc-related">Related: ' + rel.map(x => '<a href="#' + x.id + '">' + esc(x.title) + '</a>').join('') + '</div>';
+  h += '<p class="hc-contact">Still stuck? Email us at <a href="mailto:hello@tripmade.co">hello@tripmade.co</a> and we\'ll help you out.</p>';
+  $('#hc-art').innerHTML = h;
+  document.querySelectorAll('#page-help .hc-shot').forEach(f => { ro.observe(f); layoutShot(f); });
+}
+
+// Labels sit in bands above and below each screenshot with arrows to the
+// orange boxes, so they never cover the screenshot itself. Phones show the
+// numbered list under the screenshot instead.
+let arrowSeq = 0;
+function layoutShot(fig){
+  const wrap = fig.parentElement; if (!wrap || !wrap.classList.contains('hc-shotwrap')) return;
+  const labs = [...wrap.querySelectorAll('.hc-lab')], svg = wrap.querySelector('svg.hc-ar');
+  if (!labs.length || getComputedStyle(labs[0]).display === 'none'){ wrap.style.padding = '0px'; svg.innerHTML = ''; return; }
+  const W = fig.clientWidth, H = fig.clientHeight; if (!W || !H) return;
+  const boxes = [...fig.querySelectorAll('.hc-box')];
+  const ROWGAP = 8, NEAR = 120, LANE = 9;
+  const items = boxes.map((b,j) => ({j, bx:b.offsetLeft, by:b.offsetTop, bw:b.offsetWidth, bh:b.offsetHeight, lab:labs[j], lw:labs[j].offsetWidth}));
+  const lh = labs[0].offsetHeight;
+  items.forEach(it => {
+    it.band = (it.by + it.bh/2) < H/2 ? 'top' : 'bot';
+    const dist = it.band === 'top' ? it.by : H - (it.by + it.bh);
+    it.elbow = dist > NEAR;
+    it.side = it.bx <= W - (it.bx + it.bw) ? 'L' : 'R';
+  });
+  const lanes = {L:0, R:0};
+  ['L','R'].forEach(sd => items.filter(it => it.elbow && it.side === sd)
+    .sort((x,y) => (x.band === 'top' ? x.by : H - x.by) - (y.band === 'top' ? y.by : H - y.by))
+    .forEach((it,k) => { it.lane = k; lanes[sd] = k + 1; }));
+  const padL = lanes.L ? lanes.L * LANE + 10 : 0, padR = lanes.R ? lanes.R * LANE + 10 : 0;
+  const rowsOf = band => {
+    const rows = [];
+    items.filter(it => it.band === band).sort((x,y) => (x.bx + x.bw/2) - (y.bx + y.bw/2)).forEach(it => {
+      const ideal = Math.min(Math.max(it.bx + it.bw/2 - it.lw/2, 0), W - it.lw);
+      const free = (row, x) => !(row || []).some(q => x < q.x + q.w + 12 && x + it.lw + 12 > q.x);
+      let x = ideal, r = 0;
+      for (;; r++) {
+        let found = null;
+        for (let d = 0; d <= W && found === null; d += 8)
+          for (const c of [ideal + d, ideal - d]) if (found === null && c >= 0 && c + it.lw <= W && free(rows[r], c)) found = c;
+        if (found !== null) { x = found; break; }
+        if (r > 20) { x = 0; break; }
+      }
+      (rows[r] = rows[r] || []).push({x, w:it.lw}); it.x = x; it.row = r;
+    });
+    return rows;
+  };
+  const top = rowsOf('top'), bot = rowsOf('bot');
+  const nTopElb = items.filter(i => i.elbow && i.band === 'top').length, nBotElb = items.filter(i => i.elbow && i.band === 'bot').length;
+  const clrT = 22 + nTopElb * 6, clrB = 22 + nBotElb * 6;
+  const topH = top.length ? top.length * (lh + ROWGAP) + clrT : 0;
+  const botH = bot.length ? bot.length * (lh + ROWGAP) + clrB : 0;
+  const want = topH + 'px ' + padR + 'px ' + botH + 'px ' + padL + 'px';
+  if (wrap.style.padding !== want) { wrap.style.padding = want; if (fig.clientWidth !== W) return; }
+  const fullW = padL + W + padR, fullH = topH + H + botH;
+  svg.setAttribute('viewBox', '0 0 ' + fullW + ' ' + fullH);
+  const id = 'hcah' + (++arrowSeq);
+  let paths = '<defs><marker id="' + id + '" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" style="fill:var(--hc-mark)"/></marker></defs>';
+  const st = 'style="fill:none;stroke:var(--hc-mark);stroke-width:2;stroke-linejoin:round" marker-end="url(#' + id + ')"';
+  let tk = 0, bk = 0;
+  items.forEach(it => {
+    const ly = it.band === 'top' ? topH - clrT - (it.row + 1) * (lh + ROWGAP) + ROWGAP : topH + H + clrB + it.row * (lh + ROWGAP);
+    it.lab.style.left = (padL + it.x) + 'px'; it.lab.style.top = ly + 'px';
+    const bx = padL + it.bx, by = topH + it.by;
+    if (!it.elbow) {
+      const sx = Math.min(Math.max(bx + it.bw/2, padL + it.x + 12), padL + it.x + it.lw - 12);
+      const sy = it.band === 'top' ? ly + lh : ly;
+      const ex = Math.min(Math.max(sx, bx + 6), bx + it.bw - 6);
+      const ey = it.band === 'top' ? by - 3 : by + it.bh + 3;
+      paths += '<path d="M' + sx + ' ' + sy + ' L' + ex + ' ' + ey + '" ' + st + '/>';
+      return;
+    }
+    const sx = padL + it.x + it.lw/2;
+    const sy = it.band === 'top' ? ly + lh : ly;
+    const runY = it.band === 'top' ? topH - 10 - (tk++) * 6 : topH + H + 10 + (bk++) * 6;
+    const laneX = it.side === 'L' ? padL - 6 - it.lane * LANE : padL + W + 6 + it.lane * LANE;
+    const midY = by + it.bh/2;
+    const ex = it.side === 'L' ? bx - 3 : bx + it.bw + 3;
+    paths += '<path d="M' + sx + ' ' + sy + ' L' + sx + ' ' + runY + ' L' + laneX + ' ' + runY + ' L' + laneX + ' ' + midY + ' L' + ex + ' ' + midY + '" ' + st + '/>';
+  });
+  svg.innerHTML = paths;
+}
+const ro = new ResizeObserver(es => es.forEach(e => layoutShot(e.target)));
+
+// /help#<article id> opens that article.
+function route(scroll){
+  const id = location.hash.replace('#','');
+  const next = BASE.some(a => a.id === id) ? id : (current || BASE[0].id);
+  current = next; renderSide(); renderArt();
+  if (scroll && helpOpen() && window.innerWidth <= 860) $('#hc-art').scrollIntoView({block:'start'});
+}
+window.addEventListener('hashchange', () => { if (helpOpen()) route(true); });
+function jumpToBest(){ const best = ranked(query)[0]; if (best) { if (location.hash === '#' + best[0].id) route(true); else location.hash = best[0].id; } }
+$('#hc-q').addEventListener('input', e => { query = e.target.value; renderSide(); });
+$('#hc-searchForm').addEventListener('submit', e => { e.preventDefault(); jumpToBest(); });
+$('#hc-chips').innerHTML = SUGGEST.map(s => '<button type="button" class="hc-chip">' + esc(s) + '</button>').join('');
+$('#hc-chips').addEventListener('click', e => { const b = e.target.closest('.hc-chip'); if (!b) return;
+  $('#hc-q').value = query = b.textContent; renderSide(); jumpToBest(); });
+current = BASE.some(a => a.id === location.hash.replace('#','')) ? location.hash.replace('#','') : 'start';
+route(false);
+})();
+</script>
+</div><!-- end help page -->
+
 <!-- 2026-10-17: slim one-row "Our partners" strip, shown on every page just
      above the footer (replaces the big grouped strip that was only on Book
      your trip). Filled by buildPartnersStrip() from PARTNER_GROUPS. -->
@@ -4773,6 +5022,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
   <div class="footer-links">
     <a href="javascript:void(0)" onclick="showPage(&#39;about&#39;, navLinkFor(&#39;about&#39;));return false;">About</a>
+    <a href="javascript:void(0)" onclick="showPage(&#39;help&#39;, navLinkFor(&#39;help&#39;));return false;">Help</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;privacy&#39;);return false;">Privacy</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;terms&#39;);return false;">Terms</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;venues&#39;);return false;">For venues</a>
@@ -4801,7 +5051,7 @@ const sb = supabase.createClient(
 const PAGE_PATHS = {
   landing: '/', about: '/about', inspo: '/inspiration', tours: '/book',
   ask: '/ask', form: '/plan', saved: '/saved', inbox: '/inbox',
-  privacy: '/privacy', terms: '/terms', venues: '/venues'
+  privacy: '/privacy', terms: '/terms', venues: '/venues', help: '/help'
 };
 // Extra spellings that open the same page. '/review' is special: it opens
 // the homepage reviews section and the "Leave a review" form.
@@ -4810,6 +5060,7 @@ const PATH_ALIASES = {
   '/inspo': 'inspo', '/trips': 'inspo', '/tours': 'tours', '/booking': 'tours',
   '/book-your-trip': 'tours', '/itinerary': 'form', '/get-started': 'form',
   '/review': 'review', '/reviews': 'review', '/leave-a-review': 'review',
+  '/faq': 'help', '/support': 'help', '/help-centre': 'help', '/help-center': 'help',
   '/for-venues': 'venues', '/partners': 'venues', '/restaurants': 'venues', '/business': 'venues'
 };
 function pageIdFromPath(pathname) {
