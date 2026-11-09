@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-AU"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TripMade — My trip. Made.</title>
+<title>TripMade — My Trip... Made.</title>
 <!-- 2026-10-01: Google's AI overview was describing TripMade as based in
      Busan, South Korea. These tags + the Organization address below state
      plainly that TripMade is an Australian business based in Sydney. -->
@@ -10,7 +10,7 @@
 <meta name="geo.placename" content="Sydney">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TripMade">
-<meta property="og:title" content="TripMade — My trip. Made.">
+<meta property="og:title" content="TripMade — My Trip... Made.">
 <meta property="og:description" content="Australian travel planning company based in Sydney. Free personalised day-by-day itineraries.">
 <meta property="og:url" content="https://tripmade.co/">
 <meta property="og:image" content="https://tripmade.co/logo-512.png">
@@ -28,7 +28,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
  {"@type":"Organization","@id":"https://tripmade.co/#org","name":"TripMade","legalName":"TripMade Pty Ltd","url":"https://tripmade.co/","logo":{"@type":"ImageObject","url":"https://tripmade.co/logo-512.png","width":512,"height":512},"image":"https://tripmade.co/logo-512.png","email":"hello@tripmade.co","description":"Australian travel planning company based in Sydney, NSW, building personalised day-by-day travel itineraries.","address":{"@type":"PostalAddress","addressLocality":"Sydney","addressRegion":"NSW","addressCountry":"AU"},"areaServed":"Worldwide","sameAs":["https://www.instagram.com/mytripmade/","https://www.tiktok.com/@tripmade8"]},
- {"@type":"WebSite","@id":"https://tripmade.co/#website","name":"TripMade","alternateName":"TripMade — My trip. Made.","url":"https://tripmade.co/","inLanguage":"en-AU","publisher":{"@id":"https://tripmade.co/#org"}}
+ {"@type":"WebSite","@id":"https://tripmade.co/#website","name":"TripMade","alternateName":"TripMade — My Trip... Made.","url":"https://tripmade.co/","inLanguage":"en-AU","publisher":{"@id":"https://tripmade.co/#org"}}
 ]}
 </script>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -3901,6 +3901,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-insurance')">Travel Insurance</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-ferries')">Transport</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-esim')">eSIM</button>
+      <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-travelcard')">Travel Card</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-experiences')">Tours &amp; Experiences</button>
       <button type="button" class="tour-jump-tab" onclick="scrollToSection('tours-deals')">Deals</button>
     </div>
@@ -4126,6 +4127,25 @@ footer p { font-size:13px; color:var(--text-dim); }
           <div class="tour-provider-name">Holafly</div>
           <div class="tour-provider-desc">Travel eSIMs for 200+ destinations with unlimited data plans. Install it on your phone before you fly and you're online as soon as you land.</div>
           <div class="tour-provider-cta">Get a Holafly eSIM →</div>
+        </div>
+      </a>
+    </div>
+    <!-- Travel Card (2026-11-09): Wise via Partnerize (wise.prf.hn short link).
+         Text wordmark in the logo slot until Jai sends the real Wise logo -
+         swap the <span> for an <img> like the Holafly tile above. -->
+    <div class="category-heading-wrap" id="tours-travelcard">
+      <h3>Travel Card</h3>
+      <p>Spend and withdraw overseas without the bank's foreign transaction fees and poor exchange rates.</p>
+    </div>
+    <div class="tour-provider-grid">
+      <a class="tour-provider-card" href="https://wise.prf.hn/l/ZZjpy1Y/" target="_blank" rel="noopener noreferrer sponsored">
+        <div class="tour-provider-logo-wrap" style="background:#9FE870;border-bottom:1.5px solid var(--border);">
+          <span style="font-size:44px;font-weight:800;letter-spacing:-1px;color:#163300;">Wise</span>
+        </div>
+        <div class="tour-provider-body">
+          <div class="tour-provider-name">Wise</div>
+          <div class="tour-provider-desc">A multi-currency account and debit card. Hold and spend euros, pounds and more at the mid-market exchange rate, with low fees shown upfront. Order it a few weeks before you fly so the card arrives in time.</div>
+          <div class="tour-provider-cta">Get a Wise card →</div>
         </div>
       </a>
     </div>
@@ -5348,6 +5368,9 @@ const PARTNER_GROUPS = [
   ]},
   { label: 'eSIM', partners: [
     { name: 'Holafly', logo: 'Holafly', href: 'https://holafly.sjv.io/c/7745282/3856277/24764' }
+  ]},
+  { label: 'Travel card', partners: [
+    { name: 'Wise', logo: null, href: 'https://wise.prf.hn/l/ZZjpy1Y/' }
   ]},
   { label: 'Transport', partners: [
     { name: 'Omio', logo: null, img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 168.94"%3E%3Cpath fill="%23132968" d="M443.7 38.21h-36.32a2 2 0 0 0-2 2v123.4a2 2 0 0 0 2 2h36.32a2 2 0 0 0 2-2V40.23a2 2 0 0 0-2-2m85.74 94.14c-19.31 0-29.51-14.31-29.51-30.44 0-16.4 10.2-30.45 29.51-30.45s29.76 14 29.76 30.45c0 16.130-10.45 30.44-29.76 30.44m0-97.45c-40.74 0-70.31 28.18-70.31 67s29.57 67 70.31 67c41.55 0 70.56-27.55 70.56-67s-29-67-70.56-67M388.81 90c0-31.920-24.32-55.09-57.84-55.09-15.49 0-28.71 7.12-35.55 14.44a2.66 2.66 0 0 1-3.91 0c-6.67-7.3-19.9-14.41-35.73-14.41-33.4 0-57.65 23.17-57.65 55.09v73.62a2 2 0 0 0 2 2h36.46a2 2 0 0 0 2-2v-72c0-9.41 5.89-18.93 17.16-18.93 11.52 0 17.55 9.52 17.55 18.93v72a2 2 0 0 0 2 2h36.5a2 2 0 0 0 2-2v-72c0-9.41 5.88-18.93 17.15-18.93 11.53 0 17.55 9.52 17.55 18.93v72a2 2 0 0 0 2 2h36.3a2 2 0 0 0 2-2zm-272.46 42.37c-19.31 0-29.75-14.31-29.75-30.44 0-16.4 10.44-30.45 29.75-30.450s29.51 14 29.51 30.45c0 16.13-10.2 30.44-29.51 30.44m0-97.45c-41.54 0-70.56 27.55-70.56 67s29 67 70.56 67c40.74 0 70.31-28.18 70.31-67s-29.57-67-70.31-67"/%3E%3Cpath fill="%23f96b6b" d="M30 0a29 29 0 0 1 29.15 26.69A29.42 29.42 0 0 1 32.31 58.4l-2.66.12A29.49 29.49 0 0 1 .12 31.85C-1.31 15.51 10.59 1.57 27.21.12 28.13 0 29.05 0 30 0"/%3E%3C/svg%3E', href: 'https://omio.sjv.io/c/7683555/3963000/7385' },
