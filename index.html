@@ -1526,7 +1526,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div class="itin-wrap">
     <div class="itin-intro">
       <h2>A sample TripMade itinerary</h2>
-      <p>Rome + Ibiza — 8 days — Multi-vibe — $7,000 AUD budget · Departing Sydney</p>
+      <p>Rome + Ibiza — 7 days — Multi-vibe — $7,000 AUD budget · Departing Sydney</p>
     </div>
     <!-- Route bar -->
     <div class="route-bar">
@@ -1766,12 +1766,12 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-5">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 5 &mdash; Tue 14th Sep &middot; Arrival &amp; first night out</div>
+          <div class="day-lbl">Day 4 &mdash; Tue 14th Sep (evening) &middot; Arrival &amp; first night out</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-5" onclick="toggleDayExtend('5')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
           <div class="evt" data-city="Ibiza">
-            <div class="evt-time">18:35</div>
+            <div class="evt-time">19:15</div>
             <div class="evt-dot-col"><div class="evt-dot dot-hotel"></div></div>
             <div class="evt-body">
               <div class="evt-label">Check-in &mdash; Ushua&iuml;a Beach Hotel, Playa d'en Bossa</div>
@@ -1801,7 +1801,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-6">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 6 &mdash; Wed 15th Sep &middot; Pool day &amp; Pacha</div>
+          <div class="day-lbl">Day 5 &mdash; Wed 15th Sep &middot; Pool day &amp; Pacha</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-6" onclick="toggleDayExtend('6')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1844,7 +1844,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-7">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 7 &mdash; Thu 16th Sep &middot; Beach &amp; DC10</div>
+          <div class="day-lbl">Day 6 &mdash; Thu 16th Sep &middot; Beach &amp; DC10</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-7" onclick="toggleDayExtend('7')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1873,7 +1873,7 @@ footer p { font-size:13px; color:var(--text-dim); }
             </div>
           </div>
           <div class="evt">
-            <div class="evt-time">23:30</div>
+            <div class="evt-time">00:00</div>
             <div class="evt-dot-col"><div class="evt-dot dot-event"></div></div>
             <div class="evt-body">
               <div class="evt-label">DC10 &mdash; late-night party (check the lineup for your dates)</div>
@@ -1887,7 +1887,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="day-block" id="day-block-8">
         <div class="day-lbl-row">
-          <div class="day-lbl">Day 8 &mdash; Fri 17th Sep &middot; Final day &amp; departure</div>
+          <div class="day-lbl">Day 7 &mdash; Fri 17th Sep &middot; Final day &amp; departure</div>
           <button type="button" class="day-extend-btn" id="day-extend-btn-8" onclick="toggleDayExtend('8')">Expand this day <span class="chev">&rarr;</span></button>
         </div>
         <div class="evt-list">
@@ -1974,7 +1974,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <form id="wl-form" onsubmit="return false;" novalidate style="display:contents;">
         <div id="wl-step-details" class="wl-form-full">
           <input type="text" id="wl-name" placeholder="Full name">
-          <input type="email" id="wl-email" placeholder="Email address">
+          <input type="email" id="wl-email" placeholder="Email address" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false">
           <input type="tel" id="wl-phone" placeholder="Phone number">
           <select id="wl-country">
             <option value="">Country</option>
@@ -1994,7 +1994,7 @@ footer p { font-size:13px; color:var(--text-dim); }
           <span style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Yes, send me travel deals and inspiration by email. <span style="opacity:.75;">(Optional — separate from your itinerary or waitlist spot, which you'll get either way.)</span></span>
         </label>
         <div id="wl-step-code" style="display:none;max-width:280px;margin:0 auto;">
-          <input id="wl-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+          <input id="wl-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="6-digit code" style="width:100%;padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
         </div>
         <p id="wl-error" style="display:none;color:var(--accent);font-size:12px;margin-top:2px;">Please fill in your name, email, phone and country.</p>
         <button type="submit" class="btn-primary" id="wl-submit-btn" onclick="submitWaitlistFull(this)" style="margin-top:14px;">Join the waitlist →</button>
@@ -2057,7 +2057,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <p class="inspo-price-note">Prices shown are indicative to dates/trip duration selected.</p>
   <div class="cards-grid">
     <!-- Featured -->
-    <div class="trip-card featured" data-cat="party sightseeing" data-budget="4300" data-dur="8" data-region="Europe" data-group="Couple">
+    <div class="trip-card featured" data-cat="party sightseeing" data-budget="4300" data-dur="7" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&amp;q=80&#39;) center/cover;">
         <div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div>
         <button class="card-save">♡</button>
@@ -2065,7 +2065,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       </div>
       <div class="card-body">
         <div class="card-dest">Rome + Ibiza, Europe</div>
-        <div class="card-sub">8 days · 2 adults · Sightseeing then Party</div>
+        <div class="card-sub">7 days · 2 adults · Sightseeing then Party</div>
         <div class="card-meta">
           <span class="ctag" style="background:var(--amber-light);color:#854F0B;">Sightseeing</span>
           <span class="ctag" style="background:var(--accent-light);color:var(--accent);">Party</span>
@@ -4543,7 +4543,7 @@ footer p { font-size:13px; color:var(--text-dim); }
     <form id="su-form" onsubmit="return false;" novalidate style="display:contents;">
     <div id="su-step-details" style="display:flex;flex-direction:column;gap:12px;">
       <input id="su-name" type="text" placeholder="Full name" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
-      <input id="su-email" type="email" placeholder="Email address" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+      <input id="su-email" type="email" placeholder="Email address" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <input id="su-phone" type="tel" placeholder="Phone number" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
       <select id="su-country" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;background:white;">
         <option value="">Country</option>
@@ -4563,7 +4563,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <span style="font-size:12.5px;color:var(--text-muted);line-height:1.5;">Yes, send me travel deals and inspiration by email. <span style="color:var(--text);opacity:.7;">(Optional — this is separate from your itinerary, which we'll send either way.)</span></span>
     </label>
     <div id="su-step-code" style="display:none;flex-direction:column;gap:12px;">
-      <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+      <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
     <p id="su-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please fill in your name, email, phone and country.</p>
     <button type="submit" class="btn-primary" id="su-submit-btn" style="width:100%;margin-top:18px;" onclick="submitSignup()">Email me a code →</button>
@@ -4605,10 +4605,10 @@ footer p { font-size:13px; color:var(--text-dim); }
     <p id="li-intro" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">No password needed. Enter your email and we&#39;ll send you a 6-digit code — pick up right where you left off, on any device.</p>
     <form id="li-form" onsubmit="return false;" novalidate style="display:contents;">
     <div id="li-step-email" style="display:flex;flex-direction:column;gap:12px;">
-      <input id="li-email" type="email" placeholder="Email address" autocomplete="username" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+      <input id="li-email" type="email" placeholder="Email address" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:14px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
     <div id="li-step-code" style="display:none;flex-direction:column;gap:12px;">
-      <input id="li-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
+      <input id="li-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="6-digit code" style="padding:12px 14px;border:1.5px solid var(--border-mid);border-radius:10px;font-size:20px;font-weight:600;text-align:center;letter-spacing:6px;font-family:&#39;DM Sans&#39;,sans-serif;outline:none;">
     </div>
     <p id="li-error" style="display:none;color:var(--accent);font-size:12px;margin-top:8px;">Please enter a valid email address.</p>
     <button type="submit" class="btn-primary" id="li-submit-btn" style="width:100%;margin-top:18px;" onclick="submitLogin()">Email me a code →</button>
@@ -5544,6 +5544,9 @@ function friendlyAuthError(err) {
   }
   if (/rate limit/i.test(msg)) {
     return 'Too many login emails sent recently — please wait a few minutes and try again.';
+  }
+  if (/expired or is invalid|invalid.*(otp|token)/i.test(msg)) {
+    return 'That code didn\'t work. Use the newest code we sent (older ones stop working), or request a new one.';
   }
   if (/signups not allowed/i.test(msg)) {
     return 'New sign-ups aren\'t open right now — please check back soon.';
@@ -7349,7 +7352,7 @@ function resetLoginModalToEmailStep() {
 // whichever device the email happens to be opened on.
 async function submitSignup() {
   const name      = document.getElementById('su-name').value.trim();
-  const email     = document.getElementById('su-email').value.trim();
+  const email     = document.getElementById('su-email').value.trim().toLowerCase();
   const phone     = document.getElementById('su-phone').value.trim();
   const country   = document.getElementById('su-country').value;
   const heardFrom = document.getElementById('su-heard-from').value;
@@ -7408,7 +7411,7 @@ async function submitSignup() {
 // the existing onAuthStateChange listener takes it from there: hydrates the
 // profile, closes the modal, and resumes whatever was pending.
 async function verifySignupCode(email) {
-  const code    = document.getElementById('su-code').value.trim();
+  const code    = document.getElementById('su-code').value.replace(/\D/g, '').slice(0, 6);
   const errorEl = document.getElementById('su-error');
   if (!code) {
     errorEl.style.color = 'var(--accent)';
@@ -7433,7 +7436,7 @@ async function verifySignupCode(email) {
 // STEP 1 — request a 6-digit code by email (see submitSignup for why a code
 // beats a link: it's typed back into the same device that asked for it).
 async function submitLogin() {
-  const email   = document.getElementById('li-email').value.trim();
+  const email   = document.getElementById('li-email').value.trim().toLowerCase();
   const errorEl = document.getElementById('li-error');
   if (!email || !email.includes('@')) {
     errorEl.style.color = 'var(--accent)';
@@ -7466,7 +7469,7 @@ async function submitLogin() {
     console.error('Login failed:', err);
     errorEl.style.color = 'var(--accent)';
     errorEl.textContent = /signups not allowed|user not found/i.test((err && err.message) || '')
-      ? 'There\'s no TripMade account for that email yet. Close this and tap Sign up to create one.'
+      ? 'There\'s no TripMade account for ' + email + '. Check the spelling, or use the email you signed up with. New here? Close this and tap Sign up.'
       : friendlyAuthError(err);
     errorEl.style.display = 'block';
     if (submitBtn) { submitBtn.textContent = 'Email me a code →'; submitBtn.disabled = false; }
@@ -7496,7 +7499,8 @@ document.addEventListener('input', function(e) {
   const el = e.target;
   const map = { 'li-code': 'li-submit-btn', 'su-code': 'su-submit-btn', 'wl-code': 'wl-submit-btn' };
   if (!el || !map[el.id]) return;
-  const v = String(el.value || '').replace(/\D/g, '');
+  const v = String(el.value || '').replace(/\D/g, '').slice(0, 6);
+  if (el.value !== v) el.value = v;
   if (v.length !== 6 || el.dataset.autoSent === v) return;
   el.dataset.autoSent = v;
   setTimeout(function() {
@@ -7505,7 +7509,7 @@ document.addEventListener('input', function(e) {
   }, 150);
 });
 async function verifyLoginCode(email) {
-  const code    = document.getElementById('li-code').value.trim();
+  const code    = document.getElementById('li-code').value.replace(/\D/g, '').slice(0, 6);
   const errorEl = document.getElementById('li-error');
   if (!code) {
     errorEl.style.color = 'var(--accent)';
@@ -7793,7 +7797,7 @@ function joinWaitlistCTA(btn) {
 // STEP 1 — request a 6-digit code by email.
 async function submitWaitlistFull(btn) {
   const name      = document.getElementById('wl-name').value.trim();
-  const email     = document.getElementById('wl-email').value.trim();
+  const email     = document.getElementById('wl-email').value.trim().toLowerCase();
   const phone     = document.getElementById('wl-phone').value.trim();
   const country   = document.getElementById('wl-country').value;
   const heardFrom = document.getElementById('wl-heard-from').value;
@@ -7856,7 +7860,7 @@ async function submitWaitlistFull(btn) {
 // callback and renderWaitlistCTA() swaps this whole form out for the
 // logged-in button — nothing else to do here.
 async function verifyWaitlistCode(email, btn) {
-  const code    = document.getElementById('wl-code').value.trim();
+  const code    = document.getElementById('wl-code').value.replace(/\D/g, '').slice(0, 6);
   const errorEl = document.getElementById('wl-error');
   if (!code) {
     errorEl.style.color = 'var(--accent)';
