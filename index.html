@@ -5062,6 +5062,21 @@ const sb = supabase.createClient(
   'https://ccdbpyqjlvzusjgedhck.supabase.co',
   'sb_publishable_JObc3raGKOFiP4sW5Ql48Q_RoKtG0YZ'
 );
+// 2026-11-16: the site no longer posts to the Make.com webhook directly (its URL
+// was public, so anyone could trigger itineraries/emails). Everything goes via
+// the site-hook function, which checks the signed-in account, rate limits and
+// the free-itinerary allowance, then forwards to Make with the gate code.
+const SITE_HOOK = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/site-hook';
+async function postSiteHook(payload) {
+  const headers = { 'Content-Type': 'application/json', 'apikey': 'sb_publishable_JObc3raGKOFiP4sW5Ql48Q_RoKtG0YZ' };
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session && session.user && !session.user.is_anonymous) headers['Authorization'] = 'Bearer ' + session.access_token;
+  } catch (e) {}
+  const res = await fetch(SITE_HOOK, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+  if (!res.ok) { let j = {}; try { j = await res.json(); } catch (e) {} console.error('site-hook refused:', res.status, j.error || ''); }
+  return res;
+}
 </script>
 <script>
 // ── PAGE NAVIGATION ─────────────────────────────────────
@@ -5631,10 +5646,7 @@ async function hydrateCurrentUser(authUser) {
       // rebuild" scenario (filtered on source === 'signup_gate'), which is
       // reached via THIS webhook URL — not the old "Integration Webhooks"
       // scenario's URL, which is deprecated and switched off.
-      fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source: 'signup_gate', id: authUser.id, name: seed.name, email: seed.email, phone: seed.phone, country: seed.country, signedUpAt: new Date().toISOString() })
+      postSiteHook({ source: 'signup_gate', id: authUser.id, name: seed.name, email: seed.email, phone: seed.phone, country: seed.country, signedUpAt: new Date().toISOString()
       });
     } else {
       // Someone already exists under this id — the SELECT above just
@@ -7118,10 +7130,7 @@ async function joinWaitlist() {
   // rebuild" scenario (filtered on source === 'waitlist_join'), reached via
   // THIS webhook URL — not the old "Integration Webhooks" scenario's URL,
   // which is deprecated and switched off.
-  fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source: 'waitlist_join', id: _currentUser.id, name: _currentUser.name, email: _currentUser.email, phone: _currentUser.phone, country: _currentUser.country, joinedAt: new Date().toISOString() })
+  postSiteHook({ source: 'waitlist_join', id: _currentUser.id, name: _currentUser.name, email: _currentUser.email, phone: _currentUser.phone, country: _currentUser.country, joinedAt: new Date().toISOString()
   });
 }
 // Reflects join-state everywhere the waitlist CTA appears: the nav button,
@@ -7256,10 +7265,7 @@ async function submitTestimonial() {
     // through the same working Make.com pipeline as signup/itinerary emails
     // (filtered there on source === 'testimonial_submitted'), fire-and-forget
     // same as those other calls.
-    fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: 'testimonial_submitted', name: user.name, email: user.email, rating: _testimonialRating, review_text: text, submittedAt: new Date().toISOString() })
+    postSiteHook({ source: 'testimonial_submitted', name: user.name, email: user.email, rating: _testimonialRating, review_text: text, submittedAt: new Date().toISOString()
     });
     document.getElementById('tm-form-step').style.display = 'none';
     document.getElementById('tm-thanks-step').style.display = 'block';
@@ -7751,10 +7757,7 @@ function submitWaitlist(btn) {
   // the waitlist" button, tagged identically ('waitlist_join') so both paths
   // trigger the same "You're on the waitlist" email — reached via the
   // active webhook, not the old deprecated "Integration Webhooks" one.
-  fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source: 'waitlist_join', email: email, joinedAt: new Date().toISOString() })
+  postSiteHook({ source: 'waitlist_join', email: email, joinedAt: new Date().toISOString()
   }).catch(err => console.error('Waitlist signup failed to send:', err));
 }
 // Opens the same Quick Sign Up modal used by "Get my free itinerary" — pre-fills
@@ -11111,11 +11114,7 @@ async function submitForm() {
   console.log('Itinerary request:', formData);
   // TEMPORARY: pointed at the "Integration Webhooks — PDF rebuild" test scenario
   // while we build the new PDF pipeline. Swap back to the original webhook once done.
-  fetch('https://hook.eu1.make.com/fmp9yuocl5tb87qdiamdjuapxpruh1me', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-  });
+  postSiteHook(formData);
   // Also keep a queryable copy in Supabase — this form captures the richest
   // signal we have of real travel intent (destination, dates, budget, trip
   // vibe, party composition), and until now it only ever left the site via
