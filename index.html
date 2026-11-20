@@ -1224,6 +1224,11 @@ footer p { font-size:13px; color:var(--text-dim); }
 .dlp-media { display:block; position:relative; aspect-ratio:1200/628; overflow:hidden; border-radius:10px; margin:-6px -6px 4px; background:var(--accent-light); }
 .dlp-media iframe { position:absolute; top:0; left:0; width:1200px; height:628px; border:0; transform-origin:0 0; }
 .dlp-media img { width:100%; height:100%; object-fit:cover; display:block; }
+.dlp-head { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:34px; }
+.dlp-logo { display:flex; align-items:center; height:34px; max-width:150px; }
+.dlp-logo img { max-height:30px; max-width:150px; object-fit:contain; display:block; }
+.dlp-logo img[src^="data:image/webp"] { border-radius:7px; }
+.dlp-brand-txt { font-size:15px; font-weight:800; color:var(--text); }
 .deal-type { align-self:flex-start; font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; background:var(--accent-light); color:var(--accent); padding:3px 9px; border-radius:10px; }
 .dlp-card h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; line-height:1.3; margin:0; }
 .dlp-card p { font-size:14px; color:var(--text-muted); line-height:1.5; margin:0; }
@@ -5245,11 +5250,16 @@ document.addEventListener('DOMContentLoaded', function() {
 //   banner   (optional) Trip.com banner ID from the Affiliate Platform banner tool, e.g. 'TD21383287'
 //            (make banners at 1200x628 so the tiles line up). Shown across the top of the card.
 //   image    (optional) a plain picture link instead of a banner, also 1200x628
+//   brand    (required for promotions) the company, e.g. 'Trip.com', 'GigSky'. Its logo shows at the
+//            top of the card. Partners already on the site (Trip.com, Viator, Klook, Holafly...) use
+//            their existing logo automatically; for anyone else add logo: '<logo picture link>'.
+//            With no logo found, the company name shows in its place.
 // Example (copy, fill in and remove the // at the start):
-//   { country: 'Italy', city: 'Rome', type: 'Hotels', title: '10% off Rome hotels', detail: 'Stays from 1 May to 30 Sep 2027.', code: 'CODE10', url: 'https://www.trip.com/w/...', banner: 'TD12345678', expires: '2027-01-31' },
+//   { brand: 'Trip.com', country: 'Italy', city: 'Rome', type: 'Hotels', title: '10% off Rome hotels', detail: 'Stays from 1 May to 30 Sep 2027.', code: 'CODE10', url: 'https://www.trip.com/w/...', banner: 'TD12345678', expires: '2027-01-31' },
 // While the list is empty the page shows a "deals are on the way" message.
 const DEALS = [
-  { country: 'Worldwide', type: 'eSIM', title: '15% off GigSky eSIM data', detail: '15% off any GigSky eSIM plan, including plans for Europe. Excludes inflight and North Sea plans. Minimum order $4, one order per person.', url: 'https://gigsky.tpk.mx/Ab7zI5Tb', expires: '2027-02-28' },
+  { brand: 'GigSky', country: 'Worldwide', type: 'eSIM', title: '15% off GigSky eSIM data', detail: '15% off any GigSky eSIM plan, including plans for Europe. Excludes inflight and North Sea plans. Minimum order $4, one order per person.', url: 'https://gigsky.tpk.mx/Ab7zI5Tb', expires: '2027-02-28',
+    logo: 'data:image/webp;base64,UklGRhQEAABXRUJQVlA4IAgEAABQGACdASpgAGAAPlEkj0UjoiEUCc14OAUEoA1bXAur/xv45exjWf61tQqAet38b9uXvp9SHKweo7zAfrJ64voA9AD+if3T0bvYi/W72GvLL/aT4VP25/bv2cP//nAH8Am+/7RmTsdZ/leMDS1zEfJz9S/8v1YP+H6wHrm9E/9cjTl8vl8omyH7cvnvUgQ/y9oqxzXNv047oZDlBKZPQhVWfQzmo/Bt4IOMdP6SLx0N0lYWXr3FNf9xGqLOb9T1HH5o41VE9r52Xfo1AAD++3sX/3y/99L++l/jy/+PrUdAtfSdgBUSkJSah/rYvwEuCXZ6CtlJ/chZ8C80OEKYz0M7K6ZuIuT+afy3/JETiA79q8y1RdT/pG4/1/ShAUb+G74BvqlphTqRKANn3fnvJF5HlZR7N1WrNSpftmCTYbsOH69Y5SoN/3r8iyLSn9kv/aePvWR8+6gTedHOgfkwv/HP1+et1YZUId1x+6Q93CLO8r/WYnCW/idgRQCQqZyo7ipi+oPPH/xoLFxX9wEjWOpNBDP5cpHfXfZ7K9uYnDYPZCsERRYQepGF/otGMIxKS+VVmPcXpp9Snz9UwHDvDtn6ZWvyzr+P3TqvPAy+z+hYAd3YK4unqZzSAU+y9XZ0F3p5p/L7hBrEE9PZeB6LmGJ5yX/BovzygN2ax2Ly2bSQFjgYn2LBu2A7f/b3h0Yf1iqEdsknxBNWuB1n4gATeDE6hUcFTNKMcryx/Rxcfm9//7ErGk0/WfH0hrrhg+6+CoabloM6cNvwOa8isWeOvK+YX8djuMwMo0eYEIUpL2i1wR285nVKqd++3FRScSDm92Tl7EYy3HGNohcoNtdPzs/Pt53VxQxYo5NHgZUatb4BBWRUFL3yHrRYgkWixAh1oOXEWIc8m8qtWXQxxUE/Aq5Rdx4gKnHiP0poEKE3BLSC3mnNmfyZGpcASDFtCXIPoimQb/PBuNfvj91K/29lBeVNVJtaIMBajReZdL7c90ivyh4CHLDF8v22uEJ26bDv/wa+CYUHd/Jn99FHhzLhf43aHEwzuWGds/esW3r2mAMcABX9pFUqGzkVs9t5RzuHnAmDd8rTtIGvSvzuAR6l17C7F/WVFAsOiIRBUgj0G6QLoKNb0yUf0r7m0LVuXRDyGQ/2WIajLS7zgvQph5gRePB8KWfmCNOOQLL+amJNOsIsgjcXrWDJZTQ0GhQEfZcZ2Y2Dmuzc4UNc2M3LIz0w6AKYV7kmWTcs681gM+OdBOjQ4nWtuTGfMkP7QUlgWkWQ7E4Zjd2LL/mSD34d76yH9Y3ofpkUVm5nDorkdOrcSOJZtxM3kzUoyZCKcRff/eMJR5gl4muP+9NTCaSoeUAFGEVxaAj0YUAAAAA=' },
 ];
 let _dealsCountry = 'All';
 function _dealsToday() {
@@ -5264,6 +5274,22 @@ function _dealsExpiry(s) {
   const p = String(s || '').split('-'); if (p.length !== 3) return '';
   const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(p[1]) - 1];
   return m ? 'Ends ' + Number(p[2]) + ' ' + m + ' ' + p[0] : '';
+}
+// Company logo for a deal: its own logo link, else the logo already used for
+// that partner elsewhere on the site, else the company name as text.
+function _dealsLogo(d) {
+  if (!d.brand) return '<span></span>';
+  let src = d.logo || '';
+  if (!src) {
+    const im = document.querySelector('#page-tours .tour-provider-card img[alt="' + String(d.brand).replace(/"/g, '') + '"]');
+    if (im) src = im.getAttribute('src');
+  }
+  if (!src && typeof PARTNER_GROUPS !== 'undefined') {
+    PARTNER_GROUPS.forEach(function(g) { g.partners.forEach(function(p) { if (!src && p.img && p.name.toLowerCase() === String(d.brand).toLowerCase()) src = p.img; }); });
+  }
+  const name = '<span class="dlp-brand-txt">' + tmEsc(d.brand) + '</span>';
+  if (!src) return '<div class="dlp-logo">' + name + '</div>';
+  return '<div class="dlp-logo"><img src="' + tmEsc(src) + '" alt="' + tmEsc(d.brand) + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'inline\'"><span class="dlp-brand-txt" style="display:none;">' + tmEsc(d.brand) + '</span></div>';
 }
 function dealsPickCountry(c) { _dealsCountry = c; renderDeals(); }
 function dealsCopy(btn, code) {
@@ -5308,7 +5334,8 @@ function renderDeals() {
     const d = x.d;
     const media = d.banner ? '<div class="dlp-media"><iframe src="https://www.trip.com/partners/ad/' + encodeURIComponent(String(d.banner)) + '?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=deals" title="' + tmEsc(d.title) + '" loading="lazy" scrolling="no" frameborder="0"></iframe></div>'
       : d.image ? '<a class="dlp-media" href="' + tmEsc(d.url) + '" target="_blank" rel="noopener noreferrer sponsored" onclick="dealsClicked(' + x.i + ')"><img src="' + tmEsc(d.image) + '" alt="' + tmEsc(d.title) + '" loading="lazy"></a>' : '';
-    return '<div class="dlp-card">' + media + (d.type ? '<span class="deal-type">' + tmEsc(d.type) + '</span>' : '') +
+    const head = (d.brand || d.type) ? '<div class="dlp-head">' + _dealsLogo(d) + (d.type ? '<span class="deal-type">' + tmEsc(d.type) + '</span>' : '') + '</div>' : '';
+    return '<div class="dlp-card">' + media + head +
       '<h3>' + tmEsc(d.title) + '</h3>' + (d.detail ? '<p>' + tmEsc(d.detail) + '</p>' : '') +
       (d.code ? '<div class="deal-code"><b>' + tmEsc(d.code) + '</b><button type="button" onclick="dealsCopy(this, ' + tmEsc(JSON.stringify(String(d.code))) + ')">Copy code</button></div>' : '<div class="deal-nocode">No code needed</div>') +
       (d.expires ? '<div class="deal-exp">' + _dealsExpiry(d.expires) + '</div>' : '') +
