@@ -117,6 +117,17 @@ nav {
 .nav-collapse { display:flex; align-items:center; justify-content:space-between; flex:1; margin-left:32px; }
 .nav-right { display:flex; align-items:center; gap:16px; }
 .nav-hamburger { display:none; }
+/* 2026-11-20: with the Deals link added, keep the desktop nav on one line
+   between 1101px and 1440px wide by tightening the padding. */
+@media (min-width:1101px) and (max-width:1440px){
+  nav { padding:0 24px; }
+  .nav-collapse { margin-left:18px; }
+  .nav-links { gap:0; }
+  .nav-links a, .nav-saved-link { padding:7px 9px; white-space:nowrap; }
+  .nav-divider { margin:0 4px; }
+  .nav-right { gap:2px; }
+  .nav-cta { padding:10px 16px; white-space:nowrap; margin-left:6px; }
+}
 /* ── MOBILE NAV (hamburger dropdown) ─────────────────────────────
    Breakpoint is 1100px, not 640px — logo + 5 links + divider + Saved +
    account + Join waitlist genuinely need ~1140px on one line before they
@@ -1063,6 +1074,15 @@ details.chk-grp[open] .chk-chev { transform:rotate(180deg); }
 .form-opt.multi.selected::after { content:'\2713'; position:absolute; top:6px; right:8px; width:18px; height:18px; border-radius:50%; background:var(--accent); color:#fff; font-size:11px; font-weight:800; line-height:18px; text-align:center; }
 .form-opt.selected { border-color:var(--accent); background:var(--accent-light); }
 .form-opt .opt-icon { font-size:24px; margin-bottom:6px; }
+/* Teal circle icons (teal line icon on a light teal circle) used instead of emojis, 2026-11-20 */
+.tm-ic { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--accent-light); color:var(--accent); flex:none; vertical-align:middle; }
+.tm-ic svg { width:55%; height:55%; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.tm-ic.sm { width:1.6em; height:1.6em; margin-right:.35em; vertical-align:middle; position:relative; top:-.08em; }
+.form-opt.selected .tm-ic, .pl-none .tm-ic, .ibx-tabs button.on .tm-ic { background:#fff; }
+.form-opt .opt-icon .tm-ic { width:40px; height:40px; }
+.fb-faces button .tm-ic { width:32px; height:32px; }
+.fb-faces button .tm-ic svg { width:75%; height:75%; stroke-width:2.2; }
+.fb-faces button.on .tm-ic { background:var(--accent); color:#fff; }
 .form-opt .opt-label { font-size:12px; font-weight:600; color:var(--text); }
 .form-opt .opt-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
 .form-nav { display:flex; align-items:center; justify-content:space-between; margin-top:36px; padding-top:24px; border-top:1px solid var(--border); }
@@ -1182,6 +1202,45 @@ footer p { font-size:13px; color:var(--text-dim); }
 .ven-tag.soon { background:#FFF3DC; color:#8A5A00; }
 .ven-card h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-bottom:6px; }
 .ven-card p { font-size:14px; color:var(--text-muted); line-height:1.55; margin:0; }
+/* Deals page (tripmade.co/deals), 2026-11-20 */
+.deals-hero { background:linear-gradient(135deg,var(--accent) 0%,#0B4F4C 100%); color:#fff; padding:64px 24px 56px; text-align:center; }
+.deals-hero .deals-kicker { font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.8; margin-bottom:12px; }
+.deals-hero h1 { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(30px,5vw,44px); letter-spacing:-.02em; line-height:1.1; max-width:760px; margin:0 auto 14px; }
+.deals-hero p { max-width:600px; margin:0 auto; font-size:16px; line-height:1.6; opacity:.92; }
+.deals-wrap { max-width:1000px; margin:0 auto; padding:36px 24px 72px; }
+.deals-tools { display:flex; flex-direction:column; gap:12px; margin-bottom:26px; }
+.deals-search { width:100%; max-width:420px; border:1.5px solid var(--border); border-radius:10px; padding:11px 14px; font-size:15px; font-family:inherit; background:#fff; }
+.deals-search:focus { outline:none; border-color:var(--accent); }
+.deals-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.deals-chip { border:1.5px solid var(--border); background:#fff; color:var(--text); font-family:inherit; font-size:13.5px; font-weight:600; padding:7px 14px; border-radius:20px; cursor:pointer; }
+.deals-chip span { color:var(--text-muted); font-weight:500; margin-left:4px; }
+.deals-chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+.deals-chip.on span { color:#fff; opacity:.8; }
+.deals-country { margin-bottom:34px; }
+.deals-country h2 { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; letter-spacing:-.01em; margin:0 0 4px; }
+.deals-city { font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:16px 0 10px; }
+.dlp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:14px; }
+.dlp-card { background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:8px; }
+.dlp-media { display:block; position:relative; aspect-ratio:1200/628; overflow:hidden; border-radius:10px; margin:-6px -6px 4px; background:var(--accent-light); }
+.dlp-media iframe { position:absolute; top:0; left:0; width:1200px; height:628px; border:0; transform-origin:0 0; }
+.dlp-media img { width:100%; height:100%; object-fit:cover; display:block; }
+.deal-type { align-self:flex-start; font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; background:var(--accent-light); color:var(--accent); padding:3px 9px; border-radius:10px; }
+.dlp-card h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; line-height:1.3; margin:0; }
+.dlp-card p { font-size:14px; color:var(--text-muted); line-height:1.5; margin:0; }
+.deal-code { display:flex; align-items:center; gap:8px; border:1.5px dashed var(--accent-mid); background:#F5F5F5; border-radius:10px; padding:8px 8px 8px 12px; }
+.deal-code b { flex:1; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:15px; letter-spacing:.06em; }
+.deal-code button { border:none; background:var(--accent); color:#fff; font-family:inherit; font-size:12.5px; font-weight:700; padding:7px 12px; border-radius:8px; cursor:pointer; }
+.deal-nocode { font-size:13px; font-weight:600; color:var(--text-muted); }
+.deal-exp { font-size:12.5px; color:var(--text-muted); }
+.deal-go { margin-top:auto; display:block; text-align:center; background:var(--accent); color:#fff; font-weight:700; font-size:14px; padding:11px 14px; border-radius:10px; text-decoration:none; }
+.deal-go:hover { background:#0B5F62; }
+.deals-empty { text-align:center; background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:40px 24px; }
+.deals-empty h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin:12px 0 8px; }
+.deals-empty p { max-width:480px; margin:0 auto 18px; color:var(--text-muted); font-size:15px; line-height:1.55; }
+.deals-empty .deals-empty-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.deals-empty .deals-empty-btns button { border:none; border-radius:10px; padding:11px 18px; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; background:var(--accent); color:#fff; }
+.deals-empty .deals-empty-btns button.alt { background:transparent; color:var(--accent); border:1.5px solid var(--accent-mid); }
+.deals-note { font-size:12.5px; color:var(--text-muted); margin-top:30px; line-height:1.5; }
 .ven-form-box { background:#fff; border:1.5px solid var(--border); border-radius:16px; padding:32px; max-width:720px; margin:0 auto; }
 .ven-form-box h2 { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; letter-spacing:-.01em; margin-bottom:6px; }
 .ven-form-box > p { font-size:14.5px; color:var(--text-muted); margin-bottom:22px; }
@@ -1354,6 +1413,7 @@ footer p { font-size:13px; color:var(--text-dim); }
       <li class="nav-divider" aria-hidden="true"></li>
       <li><a href="javascript:void(0)" class="nav-page-link nav-link-highlight" onclick="showPage(&#39;ask&#39;,this)">Ask TripMade</a></li>
       <li><a href="javascript:void(0)" class="nav-page-link nav-link-highlight" onclick="showPage(&#39;tours&#39;,this)">Book your trip</a></li>
+      <li><a href="javascript:void(0)" class="nav-page-link nav-link-highlight" onclick="showPage(&#39;deals&#39;,this)">Deals</a></li>
     </ul>
     <div class="nav-right">
       <a href="javascript:void(0)" class="nav-page-link nav-saved-link" onclick="showPage(&#39;help&#39;,this)">Help</a>
@@ -1528,7 +1588,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <div class="itin-wrap">
     <div class="itin-intro">
       <h2>A sample TripMade itinerary</h2>
-      <p>Rome + Ibiza — 7 days — Multi-vibe — $7,000 AUD budget · Departing Sydney</p>
+      <p>Rome + Ibiza — 7 days — Multi-vibe — $12,000 AUD budget · Departing Sydney</p>
     </div>
     <!-- Route bar -->
     <div class="route-bar">
@@ -1549,11 +1609,11 @@ footer p { font-size:13px; color:var(--text-dim); }
     <!-- Summary -->
     <!-- 2026-10-25: tappable cost breakdowns, same as real trips (sampleCost data in the script). -->
     <div class="sum-grid" id="sample-sum-grid">
-      <button type="button" class="sum-card" data-cost="flights" aria-expanded="false" onclick="toggleSampleCost('flights')"><div class="sum-lbl">Flights</div><div class="sum-val">$2,120</div><div class="sum-sub">return + connection</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
-      <button type="button" class="sum-card" data-cost="hotels" aria-expanded="false" onclick="toggleSampleCost('hotels')"><div class="sum-lbl">Hotels</div><div class="sum-val">$2,800</div><div class="sum-sub">6 nights</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
+      <button type="button" class="sum-card" data-cost="flights" aria-expanded="false" onclick="toggleSampleCost('flights')"><div class="sum-lbl">Flights</div><div class="sum-val">$5,180</div><div class="sum-sub">return + connection</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
+      <button type="button" class="sum-card" data-cost="hotels" aria-expanded="false" onclick="toggleSampleCost('hotels')"><div class="sum-lbl">Hotels</div><div class="sum-val">$4,570</div><div class="sum-sub">6 nights</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
       <button type="button" class="sum-card" data-cost="activities" aria-expanded="false" onclick="toggleSampleCost('activities')"><div class="sum-lbl">Activities</div><div class="sum-val">$760</div><div class="sum-sub">all booked</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
       <button type="button" class="sum-card" data-cost="food" aria-expanded="false" onclick="toggleSampleCost('food')"><div class="sum-lbl">Food &amp; dining</div><div class="sum-val">$950</div><div class="sum-sub">all reserved</div><div class="sum-more">Breakdown <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></button>
-      <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$6,630</div><div class="sum-sub red">$370 under budget</div></div>
+      <div class="sum-card total"><div class="sum-lbl red">Total</div><div class="sum-val red">$11,460</div><div class="sum-sub red">$540 under budget</div></div>
     </div>
     <div class="cost-panel" id="sample-cost-panel" style="display:none;"></div>
     <div class="legend">
@@ -1757,7 +1817,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         <div class="conn-title">Rome FCO &rarr; Ibiza IBZ &mdash; Vueling VY6241</div>
         <div class="conn-sub">Tuesday 14 Sep &middot; Departs 16:20 &middot; Arrives 18:35 &middot; 2h 15m direct</div>
       </div>
-      <div class="conn-price">$230pp</div>
+      <div class="conn-price">$150pp</div>
       <div class="conn-badge">Booked</div>
     </div>
     <!-- IBIZA -->
@@ -2059,7 +2119,7 @@ footer p { font-size:13px; color:var(--text-dim); }
   <p class="inspo-price-note">Prices are indicative and depend on the dates and trip length you choose.</p>
   <div class="cards-grid">
     <!-- Featured -->
-    <div class="trip-card featured" data-cat="party sightseeing" data-budget="4300" data-dur="7" data-region="Europe" data-group="Couple">
+    <div class="trip-card featured" data-cat="party sightseeing" data-budget="5730" data-dur="7" data-region="Europe" data-group="Couple">
       <div class="card-img" style="background:url(&#39;https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&amp;q=80&#39;) center/cover;">
         <div class="card-img-bg" style="background:rgba(0,0,0,0.15);"></div>
         <button class="card-save">♡</button>
@@ -2076,7 +2136,7 @@ footer p { font-size:13px; color:var(--text-dim); }
         </div>
       </div>
       <div class="card-footer">
-        <div class="card-price">$4,300 <span>per person from SYD</span></div>
+        <div class="card-price">$5,730 <span>per person from SYD</span></div>
         <button class="card-btn" onclick="bookTrip(this.closest(&#39;.trip-card&#39;))">Book this trip →</button>
       </div>
     </div>
@@ -3623,10 +3683,10 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Trip type</label>
         <div class="form-options two-col">
-          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon">🧍</div><div class="opt-label">Solo</div><div class="opt-sub">Just me</div></div>
-          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon">💑</div><div class="opt-label">Couple</div><div class="opt-sub">2 of us</div></div>
-          <div class="form-opt selected" onclick="selectTripType(this)"><div class="opt-icon">🧑‍🤝‍🧑</div><div class="opt-label">Friends group</div><div class="opt-sub">3–12 people</div></div>
-          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon">👨‍👩‍👧‍👦</div><div class="opt-label">Family</div><div class="opt-sub">Kids included</div></div>
+          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></span></div><div class="opt-label">Solo</div><div class="opt-sub">Just me</div></div>
+          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"/></svg></span></div><div class="opt-label">Couple</div><div class="opt-sub">2 of us</div></div>
+          <div class="form-opt selected" onclick="selectTripType(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/><path d="M7 20v-1a5 5 0 0 1 10 0v1M2 20v-.5a3.5 3.5 0 0 1 4-3.4M22 20v-.5a3.5 3.5 0 0 0-4-3.4"/></svg></span></div><div class="opt-label">Friends group</div><div class="opt-sub">3–12 people</div></div>
+          <div class="form-opt" onclick="selectTripType(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="6" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 21v-2a5 5 0 0 1 10 0v2M14 21v-1a3 3 0 0 1 6 0v1"/></svg></span></div><div class="opt-label">Family</div><div class="opt-sub">Kids included</div></div>
         </div>
       </div>
       <div class="form-row">
@@ -3664,15 +3724,15 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group">
         <label class="form-label">Trip vibe <span>— select all that apply</span></label>
         <div class="form-options">
-          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🎉</div><div class="opt-label">Party</div><div class="opt-sub">Clubs, events, nights out</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">💕</div><div class="opt-label">Romantic</div><div class="opt-sub">Intimate, luxe, couple</div></div>
-          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🧗</div><div class="opt-label">Adventure</div><div class="opt-sub">Hikes, thrills, outdoors</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🏛️</div><div class="opt-label">Culture</div><div class="opt-sub">History, art, museums</div></div>
-          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🍷</div><div class="opt-label">Food &amp; drink</div><div class="opt-sub">Restaurants, markets, wine</div></div>
-          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon">🏖️</div><div class="opt-label">Beach &amp; relax</div><div class="opt-sub">Sun, swim, unwind</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🛍️</div><div class="opt-label">Shopping</div><div class="opt-sub">Markets, fashion, finds</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">🧘</div><div class="opt-label">Wellness</div><div class="opt-sub">Spa, yoga, slow travel</div></div>
-          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon">⛳</div><div class="opt-label">Sport &amp; golf</div><div class="opt-sub">Golf, surf, dive, ski</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span></div><div class="opt-label">Party</div><div class="opt-sub">Clubs, events, nights out</div></div>
+          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span></div><div class="opt-label">Romantic</div><div class="opt-sub">Intimate, luxe, couple</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg></span></div><div class="opt-label">Adventure</div><div class="opt-sub">Hikes, thrills, outdoors</div></div>
+          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l8 5H4z"/></svg></span></div><div class="opt-label">Culture</div><div class="opt-sub">History, art, museums</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 22h8M7 10h10M12 15v7M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg></span></div><div class="opt-label">Food &amp; drink</div><div class="opt-sub">Restaurants, markets, wine</div></div>
+          <div class="form-opt multi selected" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span></div><div class="opt-label">Beach &amp; relax</div><div class="opt-sub">Sun, swim, unwind</div></div>
+          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18M16 10a4 4 0 0 1-8 0"/></svg></span></div><div class="opt-label">Shopping</div><div class="opt-sub">Markets, fashion, finds</div></div>
+          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10ZM2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span></div><div class="opt-label">Wellness</div><div class="opt-sub">Spa, yoga, slow travel</div></div>
+          <div class="form-opt multi" onclick="toggleVibe(this)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 22V3M5 3l12 4.5L5 12"/></svg></span></div><div class="opt-label">Sport &amp; golf</div><div class="opt-sub">Golf, surf, dive, ski</div></div>
         </div>
         <p class="vibe-multi-note">✓ Select multiple — we'll weave them across your days</p>
       </div>
@@ -3777,9 +3837,9 @@ footer p { font-size:13px; color:var(--text-dim); }
       <div class="form-group" style="margin-top:8px;">
         <label class="form-label">Trip pace</label>
         <div class="form-options">
-          <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">⚡</div><div class="opt-label">Packed</div><div class="opt-sub">See everything, always on the go</div></div>
-          <div class="form-opt selected" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">⚖️</div><div class="opt-label">Balanced</div><div class="opt-sub">Good mix of activity &amp; downtime</div></div>
-          <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon">🛋️</div><div class="opt-label">Relaxed</div><div class="opt-sub">Slow mornings, no rush</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span></div><div class="opt-label">Packed</div><div class="opt-sub">See everything, always on the go</div></div>
+          <div class="form-opt selected" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0L5 7zM19 7l-3 7a3 3 0 0 0 6 0l-3-7z"/></svg></span></div><div class="opt-label">Balanced</div><div class="opt-sub">Good mix of activity &amp; downtime</div></div>
+          <div class="form-opt" onclick="selectOpt(this,&#39;pace&#39;)"><div class="opt-icon"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0zM4 18v2M20 18v2"/></svg></span></div><div class="opt-label">Relaxed</div><div class="opt-sub">Slow mornings, no rush</div></div>
         </div>
       </div>
       <div class="form-group" style="margin-top:8px;">
@@ -4461,9 +4521,9 @@ footer p { font-size:13px; color:var(--text-dim); }
     <div class="ibx-keep" id="ibx-push"></div>
     <!-- 2026-10-26 (Lachy): Itinerary | Journal | Photos tabs. -->
     <div class="ibx-tabs ibx-keep" id="ibx-tabs" role="tablist">
-      <button type="button" data-tab="itinerary" onclick="ibxTab('itinerary')">🗺️ Itinerary</button>
-      <button type="button" data-tab="journal" onclick="ibxTab('journal')">📝 Journal</button>
-      <button type="button" data-tab="photos" onclick="ibxTab('photos')">📷 Photos</button>
+      <button type="button" data-tab="itinerary" onclick="ibxTab('itinerary')"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg></span>Itinerary</button>
+      <button type="button" data-tab="journal" onclick="ibxTab('journal')"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>Journal</button>
+      <button type="button" data-tab="photos" onclick="ibxTab('photos')"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span>Photos</button>
     </div>
     <div id="ibx-journal-panel" class="ibx-panel"></div>
     <div id="ibx-photos-panel" class="ibx-panel"></div>
@@ -4624,6 +4684,25 @@ footer p { font-size:13px; color:var(--text-dim); }
      Story copy written by Lachy & Jai (2026-09-25). -->
 <!-- 2026-10-26 (Lachy): For venues page (tripmade.co/venues), linked from the
      footer only. Enquiries go to public.venue_enquiries. -->
+<!-- ══ DEALS PAGE (tripmade.co/deals) ══════════════════════
+     Trip.com deals and promo codes, grouped by country then city.
+     The deals themselves live in the DEALS list in the script (search
+     "const DEALS"); add, change or remove them there. -->
+<div id="page-deals" class="page">
+  <div class="deals-hero">
+    <div class="deals-kicker">Deals &amp; promo codes</div>
+    <h1>Travel deals, sorted by destination</h1>
+    <p>Hotel, flight and activity deals from our booking partners, with promo codes where we have them. Pick a country to see what's on.</p>
+  </div>
+  <div class="deals-wrap">
+    <div class="deals-tools" id="deals-tools" style="display:none;">
+      <input type="search" class="deals-search" id="deals-search" placeholder="Search a country or city" aria-label="Search deals by country or city" oninput="renderDeals()">
+      <div class="deals-chips" id="deals-chips"></div>
+    </div>
+    <div id="deals-list"></div>
+    <p class="deals-note">Deals and codes are set by our booking partners and can change or sell out. Check the final price and terms before you book. We may earn a commission when you book through these links, at no extra cost to you.</p>
+  </div>
+</div>
 <div id="page-venues" class="page">
   <div class="ven-hero">
     <div class="ven-kicker">For restaurants, bars, hotels &amp; tour operators</div>
@@ -4632,10 +4711,10 @@ footer p { font-size:13px; color:var(--text-dim); }
   </div>
   <div class="ven-wrap">
     <div class="ven-grid">
-      <div class="ven-card"><div class="ven-ic">✅</div><h3>Get listed <span class="ven-tag">Free</span></h3><p>Add your photos, menu, opening hours and booking link, so travellers who are recommended your venue see the right details and can book with you directly. Moved or changed your hours? Tell us any time.</p></div>
-      <div class="ven-card"><div class="ven-ic">⭐</div><h3>Featured spots <span class="ven-tag soon">Coming soon</span></h3><p>A clearly labelled "Featured" card shown to travellers planning a trip to your area, next to our recommendations. Venues that sign up now get a founding rate when featured spots open.</p></div>
-      <div class="ven-card"><div class="ven-ic">🎁</div><h3>Member offers <span class="ven-tag soon">Coming soon</span></h3><p>Offer TripMade members a perk, like a free drink or 10% off. We'll show it on their trip for the day they're near you, and you only give it when they walk in.</p></div>
-      <div class="ven-card"><div class="ven-ic">🌐</div><h3>A website for your venue</h3><p>No website, or one that's out of date? We'll build you a simple, mobile-friendly site with your menu, hours and photos, for a small one-off fee.</p></div>
+      <div class="ven-card"><div class="ven-ic"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span></div><h3>Get listed <span class="ven-tag">Free</span></h3><p>Add your photos, menu, opening hours and booking link, so travellers who are recommended your venue see the right details and can book with you directly. Moved or changed your hours? Tell us any time.</p></div>
+      <div class="ven-card"><div class="ven-ic"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span></div><h3>Featured spots <span class="ven-tag soon">Coming soon</span></h3><p>A clearly labelled "Featured" card shown to travellers planning a trip to your area, next to our recommendations. Venues that sign up now get a founding rate when featured spots open.</p></div>
+      <div class="ven-card"><div class="ven-ic"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span></div><h3>Member offers <span class="ven-tag soon">Coming soon</span></h3><p>Offer TripMade members a perk, like a free drink or 10% off. We'll show it on their trip for the day they're near you, and you only give it when they walk in.</p></div>
+      <div class="ven-card"><div class="ven-ic"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span></div><h3>A website for your venue</h3><p>No website, or one that's out of date? We'll build you a simple, mobile-friendly site with your menu, hours and photos, for a small one-off fee.</p></div>
     </div>
     <div class="ven-form-box" id="ven-form-box">
       <h2>Get listed free</h2>
@@ -5050,6 +5129,7 @@ route(false);
     <a href="javascript:void(0)" onclick="showPage(&#39;help&#39;, navLinkFor(&#39;help&#39;));return false;">Help</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;privacy&#39;);return false;">Privacy</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;terms&#39;);return false;">Terms</a>
+    <a href="javascript:void(0)" onclick="showPage(&#39;deals&#39;, navLinkFor(&#39;deals&#39;));return false;">Deals</a>
     <a href="javascript:void(0)" onclick="showPage(&#39;venues&#39;);return false;">For venues</a>
     <a href="mailto:hello@tripmade.co">hello@tripmade.co</a>
     <a href="https://www.instagram.com/mytripmade" target="_blank" rel="noopener">Instagram</a>
@@ -5091,7 +5171,8 @@ async function postSiteHook(payload) {
 const PAGE_PATHS = {
   landing: '/', about: '/about', inspo: '/inspiration', tours: '/book',
   ask: '/ask', form: '/plan', saved: '/saved', inbox: '/inbox',
-  privacy: '/privacy', terms: '/terms', venues: '/venues', help: '/help'
+  privacy: '/privacy', terms: '/terms', venues: '/venues', help: '/help',
+  deals: '/deals'
 };
 // Extra spellings that open the same page. '/review' is special: it opens
 // the homepage reviews section and the "Leave a review" form.
@@ -5101,7 +5182,8 @@ const PATH_ALIASES = {
   '/book-your-trip': 'tours', '/itinerary': 'form', '/get-started': 'form',
   '/review': 'review', '/reviews': 'review', '/leave-a-review': 'review',
   '/faq': 'help', '/support': 'help', '/help-centre': 'help', '/help-center': 'help',
-  '/for-venues': 'venues', '/partners': 'venues', '/restaurants': 'venues', '/business': 'venues'
+  '/for-venues': 'venues', '/partners': 'venues', '/restaurants': 'venues', '/business': 'venues',
+  '/deal': 'deals', '/promo': 'deals', '/promos': 'deals', '/promo-codes': 'deals', '/offers': 'deals'
 };
 function pageIdFromPath(pathname) {
   const path = (pathname || '/').toLowerCase().replace(/\/+$/, '') || '/';
@@ -5152,6 +5234,107 @@ window.addEventListener('popstate', function() {
 document.addEventListener('DOMContentLoaded', function() {
   if (window.location.pathname !== '/') routeFromPath();
 });
+// ── DEALS PAGE (tripmade.co/deals), 2026-11-20 ──────────────────
+// Add each deal as one line in DEALS. Fields:
+//   country  (required) e.g. 'Italy'       city   (optional) e.g. 'Rome'
+//   type     (optional) e.g. 'Hotels', 'Flights', 'Activities'
+//   title    (required) short headline      detail (optional) one or two lines
+//   code     (optional) promo code; leave out if no code is needed
+//   url      (required) the Trip.com deal link (with our affiliate tag)
+//   expires  (optional) last day, 'YYYY-MM-DD'; the deal hides itself after that day
+//   banner   (optional) Trip.com banner ID from the Affiliate Platform banner tool, e.g. 'TD21383287'
+//            (make banners at 1200x628 so the tiles line up). Shown across the top of the card.
+//   image    (optional) a plain picture link instead of a banner, also 1200x628
+// Example (copy, fill in and remove the // at the start):
+//   { country: 'Italy', city: 'Rome', type: 'Hotels', title: '10% off Rome hotels', detail: 'Stays from 1 May to 30 Sep 2027.', code: 'CODE10', url: 'https://www.trip.com/w/...', banner: 'TD12345678', expires: '2027-01-31' },
+// While the list is empty the page shows a "deals are on the way" message.
+const DEALS = [
+  { country: 'Worldwide', type: 'eSIM', title: '15% off GigSky eSIM data', detail: '15% off any GigSky eSIM plan, including plans for Europe. Excludes inflight and North Sea plans. Minimum order $4, one order per person.', url: 'https://gigsky.tpk.mx/Ab7zI5Tb', expires: '2027-02-28' },
+];
+let _dealsCountry = 'All';
+function _dealsToday() {
+  try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Sydney' }).format(new Date()); }
+  catch (e) { return new Date().toISOString().slice(0, 10); }
+}
+function _dealsLive() {
+  const today = _dealsToday();
+  return DEALS.filter(function(d) { return d && d.country && d.title && d.url && (!d.expires || d.expires >= today); });
+}
+function _dealsExpiry(s) {
+  const p = String(s || '').split('-'); if (p.length !== 3) return '';
+  const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(p[1]) - 1];
+  return m ? 'Ends ' + Number(p[2]) + ' ' + m + ' ' + p[0] : '';
+}
+function dealsPickCountry(c) { _dealsCountry = c; renderDeals(); }
+function dealsCopy(btn, code) {
+  const done = function() { btn.textContent = 'Copied'; setTimeout(function() { btn.textContent = 'Copy code'; }, 1800); };
+  try { if (window.tmTrack) tmTrack('deal_code_copied', { code: code }); } catch (e) {}
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done, done);
+  else { const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); done(); }
+}
+function dealsClicked(i) {
+  const d = _dealsLive()[i]; if (!d) return;
+  try { if (window.tmTrack) tmTrack('deal_clicked', { country: d.country, city: d.city || '', title: d.title }); } catch (e) {}
+}
+function renderDeals() {
+  const list = document.getElementById('deals-list'); if (!list) return;
+  const tools = document.getElementById('deals-tools');
+  const live = _dealsLive();
+  if (!live.length) {
+    tools.style.display = 'none';
+    list.innerHTML = '<div class="deals-empty"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><path d="M7.5 7.5h.01"/></svg></span><h2>New deals are on the way</h2>' +
+      '<p>We\'re adding hotel, flight and activity deals for cities across Europe and beyond. Check back soon, or start planning your trip now.</p>' +
+      '<div class="deals-empty-btns"><button type="button" onclick="showPage(\'form\', navLinkFor(\'form\'))">Plan my trip</button>' +
+      '<button type="button" class="alt" onclick="showPage(\'tours\', navLinkFor(\'tours\'))">Book your trip</button></div></div>';
+    return;
+  }
+  tools.style.display = '';
+  const counts = {};
+  live.forEach(function(d) { counts[d.country] = (counts[d.country] || 0) + 1; });
+  const countries = Object.keys(counts).sort();
+  if (_dealsCountry !== 'All' && !counts[_dealsCountry]) _dealsCountry = 'All';
+  document.getElementById('deals-chips').innerHTML = ['All'].concat(countries).map(function(c) {
+    const n = c === 'All' ? live.length : counts[c];
+    return '<button type="button" class="deals-chip' + (c === _dealsCountry ? ' on' : '') + '" onclick="dealsPickCountry(' + tmEsc(JSON.stringify(c)) + ')">' + tmEsc(c) + '<span>' + n + '</span></button>';
+  }).join('');
+  const q = (document.getElementById('deals-search').value || '').trim().toLowerCase();
+  const shown = live.map(function(d, i) { return { d: d, i: i }; }).filter(function(x) {
+    if (_dealsCountry !== 'All' && x.d.country !== _dealsCountry) return false;
+    if (q && (x.d.country + ' ' + (x.d.city || '')).toLowerCase().indexOf(q) === -1) return false;
+    return true;
+  });
+  if (!shown.length) { list.innerHTML = '<p style="color:var(--text-muted);">No deals for that search yet. Try another country or city.</p>'; return; }
+  const card = function(x) {
+    const d = x.d;
+    const media = d.banner ? '<div class="dlp-media"><iframe src="https://www.trip.com/partners/ad/' + encodeURIComponent(String(d.banner)) + '?Allianceid=10472680&amp;SID=330559720&amp;trip_sub1=deals" title="' + tmEsc(d.title) + '" loading="lazy" scrolling="no" frameborder="0"></iframe></div>'
+      : d.image ? '<a class="dlp-media" href="' + tmEsc(d.url) + '" target="_blank" rel="noopener noreferrer sponsored" onclick="dealsClicked(' + x.i + ')"><img src="' + tmEsc(d.image) + '" alt="' + tmEsc(d.title) + '" loading="lazy"></a>' : '';
+    return '<div class="dlp-card">' + media + (d.type ? '<span class="deal-type">' + tmEsc(d.type) + '</span>' : '') +
+      '<h3>' + tmEsc(d.title) + '</h3>' + (d.detail ? '<p>' + tmEsc(d.detail) + '</p>' : '') +
+      (d.code ? '<div class="deal-code"><b>' + tmEsc(d.code) + '</b><button type="button" onclick="dealsCopy(this, ' + tmEsc(JSON.stringify(String(d.code))) + ')">Copy code</button></div>' : '<div class="deal-nocode">No code needed</div>') +
+      (d.expires ? '<div class="deal-exp">' + _dealsExpiry(d.expires) + '</div>' : '') +
+      '<a class="deal-go" href="' + tmEsc(d.url) + '" target="_blank" rel="noopener noreferrer sponsored" onclick="dealsClicked(' + x.i + ')">Get this deal &rarr;</a></div>';
+  };
+  const byCountry = {};
+  shown.forEach(function(x) { (byCountry[x.d.country] = byCountry[x.d.country] || []).push(x); });
+  list.innerHTML = Object.keys(byCountry).sort().map(function(c) {
+    const byCity = {};
+    byCountry[c].forEach(function(x) { const k = x.d.city || ''; (byCity[k] = byCity[k] || []).push(x); });
+    const cities = Object.keys(byCity).sort(function(a, b) { return a === '' ? -1 : b === '' ? 1 : a.localeCompare(b); });
+    return '<div class="deals-country"><h2>' + tmEsc(c) + '</h2>' + cities.map(function(city) {
+      return (city ? '<div class="deals-city">' + tmEsc(city) + '</div>' : (cities.length > 1 ? '<div class="deals-city">All of ' + tmEsc(c) + '</div>' : '')) +
+        '<div class="dlp-grid">' + byCity[city].map(card).join('') + '</div>';
+    }).join('') + '</div>';
+  }).join('');
+  dealsFitBanners();
+}
+// Trip.com banners are fixed 1200x628 pages, so shrink each one to fit its tile.
+function dealsFitBanners() {
+  document.querySelectorAll('#deals-list .dlp-media iframe').forEach(function(f) {
+    const w = f.parentNode.clientWidth; if (w) f.style.transform = 'scale(' + (w / 1200) + ')';
+  });
+}
+window.addEventListener('resize', dealsFitBanners);
+document.addEventListener('DOMContentLoaded', renderDeals);
 // ── MOBILE NAV (hamburger dropdown) ──────────────────────
 // Only the CSS toggling changes on mobile (see .nav-mobile-open in the
 // stylesheet) — the same nav-links/nav-right markup is reused for desktop
@@ -5841,7 +6024,7 @@ function renderAuthNav() {
               '<option value="SGD">SGD (S$)</option><option value="JPY">JPY (¥)</option>' +
             '</select>' +
           '</div>' +
-          '<button type="button" class="pts-menu" style="display:none;" onclick="openPointsModal()"><span>⭐ <b class="pts-bal">0</b> points</span><span class="pts-menu-sub">View &amp; earn →</span></button>' +
+          '<button type="button" class="pts-menu" style="display:none;" onclick="openPointsModal()"><span><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span><b class="pts-bal">0</b> points</span><span class="pts-menu-sub">View &amp; earn →</span></button>' +
           '<button type="button" onclick="openAccountModal()" style="width:100%;margin-top:2px;margin-bottom:6px;padding:9px;border:1.5px solid var(--accent);border-radius:8px;background:var(--accent-light);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--accent);">Edit account</button>' +
           '<button onclick="logoutUser()" style="width:100%;margin-top:2px;padding:9px;border:1.5px solid var(--border-mid);border-radius:8px;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text);">Log out</button>' +
         '</div>' +
@@ -5917,7 +6100,7 @@ function tmToast(text, sub) {
   let wrap = document.getElementById('tm-toasts');
   if (!wrap) { wrap = document.createElement('div'); wrap.id = 'tm-toasts'; document.body.appendChild(wrap); }
   const t = document.createElement('div'); t.className = 'tm-toast';
-  t.innerHTML = '<span class="tm-toast-ic">⭐</span><div><b></b>' + (sub ? '<small></small>' : '') + '</div>';
+  t.innerHTML = '<span class="tm-toast-ic"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span></span><div><b></b>' + (sub ? '<small></small>' : '') + '</div>';
   t.querySelector('b').textContent = text; if (sub) t.querySelector('small').textContent = sub;
   wrap.appendChild(t);
   setTimeout(function() { t.classList.add('out'); setTimeout(function() { t.remove(); }, 400); }, 4200);
@@ -6129,13 +6312,13 @@ function paintCostPanel(itin) {
 var _sampleCostOpen = null;
 var SAMPLE_COSTS = {
   flights: [
-    { label: 'SYD → DXB → FCO · Emirates', detail: 'Sydney to Rome via Dubai · 2 adults', amount: 1180, route: 'SYD → FCO' },
-    { label: 'FCO → IBZ · Vueling', detail: 'Rome to Ibiza · 2 adults', amount: 160, route: 'FCO → IBZ' },
-    { label: 'IBZ → DXB → SYD · Emirates', detail: 'Ibiza home to Sydney via Dubai · 2 adults', amount: 780, route: 'IBZ → SYD' }
+    { label: 'SYD → DXB → FCO · Emirates', detail: 'Sydney to Rome via Dubai · 2 adults', amount: 2440, route: 'SYD → FCO' },
+    { label: 'FCO → IBZ · Vueling', detail: 'Rome to Ibiza · 2 adults', amount: 300, route: 'FCO → IBZ' },
+    { label: 'IBZ → DXB → SYD · Emirates', detail: 'Ibiza home to Sydney via Dubai · 2 adults', amount: 2440, route: 'IBZ → SYD' }
   ],
   hotels: [
     { label: "Boutique Hotel Campo de' Fiori · Rome", detail: '3 nights · about $373 a night', amount: 1120, q: "Boutique Hotel Campo de' Fiori Rome" },
-    { label: 'Ushuaïa Beach Hotel · Ibiza', detail: '3 nights · about $560 a night', amount: 1680, q: 'Ushuaia Beach Hotel Ibiza' }
+    { label: 'Ushuaïa Beach Hotel · Ibiza', detail: '3 nights · about $1,150 a night', amount: 3450, q: 'Ushuaia Beach Hotel Ibiza' }
   ],
   activities: [
     { label: 'Vatican Museums + Sistine Chapel', detail: 'Skip-the-line entry · 2 adults', amount: 140, q: 'Vatican Museums Sistine Chapel skip the line' },
@@ -6333,7 +6516,7 @@ function setupTripTabs(itin) {
   if (!wrap || !itin) return;
   if (_jr.id !== itin.id) {
     _jr = { id: itin.id, entries: [], photos: [], urls: {}, tab: null, uploadDay: null, uploadCity: '', loaded: false };
-    // Always open on the Itinerary; only the "📝 Journal" button opens the Journal (Lachy, 28 Oct).
+    // Always open on the Itinerary; only the "Journal" button opens the Journal (Lachy, 28 Oct).
     const t = window._ibxOpenTab || 'itinerary';
     window._ibxOpenTab = null;
     ibxTab(t);
@@ -6342,7 +6525,7 @@ function setupTripTabs(itin) {
   document.querySelectorAll('#ibx-days .day-block').forEach(function(b) {
     const row = b.querySelector('.day-lbl-row'); if (!row || row.querySelector('.day-jr-link')) return;
     const n = b.getAttribute('data-day');
-    const a = document.createElement('button'); a.type = 'button'; a.className = 'day-jr-link'; a.textContent = '📝 Journal';
+    const a = document.createElement('button'); a.type = 'button'; a.className = 'day-jr-link'; a.textContent = 'Journal';
     a.addEventListener('click', function(ev) { ev.stopPropagation(); ibxTab('journal', n); });
     const ext = row.querySelector('.day-extend-btn'); if (ext) row.insertBefore(a, ext); else row.appendChild(a);
   });
@@ -6396,7 +6579,7 @@ function renderJournal() {
         '<textarea class="jr-body" maxlength="8000" placeholder="Notes and memories…">' + tmEsc(mine.body || '') + '</textarea>' +
         (ph.length ? '<div class="ph-strip">' + ph.map(_jrThumb).join('') + '</div>' : '') +
         mates.map(function(m) { return '<div class="jr-mate"><b>A trip mate wrote</b>' + (m.highlight ? '<div><b style="display:inline;color:inherit;">' + tmEsc(m.highlight) + '</b></div>' : '') + (m.body ? tmEsc(m.body).replace(/\n/g, '<br>') : '') + '</div>'; }).join('') +
-        '<div class="jr-foot"><button type="button" class="jr-add" onclick="jrPick(' + n + ')">📷 Add photos</button>' +
+        '<div class="jr-foot"><button type="button" class="jr-add" onclick="jrPick(' + n + ')"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span>Add photos</button>' +
           '<label><input type="checkbox" class="jr-share"' + (mine.shared ? ' checked' : '') + '> Share with trip mates</label><span class="jr-status"></span></div>' +
       '</div>';
     }).join('') + keepsakesHtml();
@@ -6513,10 +6696,10 @@ function renderPhotos() {
       ph.map(function(p) { return '<div class="ph-cell">' + _jrThumb(p) + (p.shared ? '<span class="ph-shared">' + (p.user_id === uid ? 'Shared' : 'Trip mate') + '</span>' : '') + '</div>'; }).join('') + '</div></div>';
   }).join('');
   el.innerHTML = '<div class="ph-top"><select id="ph-city">' + cities.map(function(c) { return '<option>' + tmEsc(c) + '</option>'; }).join('') + '<option value="">Other</option></select>' +
-    '<button type="button" class="btn-primary" style="padding:9px 16px;font-size:14px;" onclick="jrPick(null, document.getElementById(\'ph-city\').value)">📷 Add photos</button>' +
+    '<button type="button" class="btn-primary" style="padding:9px 16px;font-size:14px;" onclick="jrPick(null, document.getElementById(\'ph-city\').value)"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span>Add photos</button>' +
     '<button type="button" class="btn-secondary ph-slideshow" onclick="ksVideo()">▶ Play slideshow</button>' +
     '<span class="ph-count">' + mine + ' of ' + JR_MAX + ' photos used</span></div>' +
-    (body || '<div class="ph-empty ph-drop" onclick="jrPick(null, document.getElementById(\'ph-city\').value)"><div style="font-size:30px;margin-bottom:6px;">📷</div><b>Drag and drop photos here</b><br>or tap to choose them. You can also add photos from a day in your Journal. They\'ll be grouped by destination and stay private unless you share them.</div>') + keepsakesHtml();
+    (body || '<div class="ph-empty ph-drop" onclick="jrPick(null, document.getElementById(\'ph-city\').value)"><div style="margin-bottom:6px;"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span></div><b>Drag and drop photos here</b><br>or tap to choose them. You can also add photos from a day in your Journal. They\'ll be grouped by destination and stay private unless you share them.</div>') + keepsakesHtml();
 }
 async function jrOpenPhoto(id) {
   const list = _jr.photos; let i = list.findIndex(function(p) { return p.id === id; }); if (i < 0) return;
@@ -6561,10 +6744,10 @@ async function jrOpenPhoto(id) {
 // hardcover book. Checkout isn't connected yet, so those buttons record
 // interest in site_feedback (page 'keepsake: video|book') for now.
 const KEEPSAKES = {
-  video: { ic: '🎬', title: 'Your trip video', text: 'Your photos and journal highlights played as a video of your trip, with day titles, captions and music.',
+  video: { ic: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zM16 10l6-4v12l-6-4"/></svg></span>', title: 'Your trip video', text: 'Your photos and journal highlights played as a video of your trip, with day titles, captions and music.',
     btn: '▶ Watch free preview', fn: 'ksVideo()', paid: 'Full HD video with no watermark, yours to download and share' },
-  book: { ic: '📖', title: 'Your photo book', text: 'A page for each day of your trip with your photos, highlights and notes.',
-    btn: '📖 Preview my photo book', fn: 'ksBook()', paid: 'Printed hardcover book, delivered to your door' }
+  book: { ic: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></span>', title: 'Your photo book', text: 'A page for each day of your trip with your photos, highlights and notes.',
+    btn: 'Preview my photo book', fn: 'ksBook()', paid: 'Printed hardcover book, delivered to your door' }
 };
 function _ksKey(kind) { return 'tm_ks_' + kind + '_' + (_currentInboxItinerary ? _currentInboxItinerary.id : ''); }
 function keepsakesHtml() {
@@ -6662,8 +6845,8 @@ async function ksVideo() {
   const ov = document.createElement('div'); ov.className = 'ksv';
   ov.innerHTML = '<div class="ksv-box"><canvas width="1280" height="720"></canvas>' +
     '<div class="ksv-prog"><i></i></div>' +
-    '<div class="ksv-bar"><button type="button" data-a="play">⏸ Pause</button><button type="button" data-a="restart">↺ Restart</button>' +
-    '<button type="button" data-a="music">🔊 Music on</button><span style="flex:1"></span>' +
+    '<div class="ksv-bar"><button type="button" data-a="play">Pause</button><button type="button" data-a="restart">↺ Restart</button>' +
+    '<button type="button" data-a="music">Music on</button><span style="flex:1"></span>' +
     '<button type="button" class="ksv-buy" data-a="notify">Full video, no watermark: notify me</button><button type="button" data-a="close">Close</button></div>' +
     '<div class="ksv-note">Free preview. The full video with no watermark, ready to download and share, is coming soon.</div></div>';
   document.body.appendChild(ov);
@@ -6730,7 +6913,7 @@ async function ksVideo() {
     ov.querySelector('.ksv-prog i').style.width = (100 * tt / total).toFixed(2) + '%';
   };
   const setPlay = function(on) {
-    playing = on; ov.querySelector('[data-a="play"]').textContent = on ? '⏸ Pause' : '▶ Play';
+    playing = on; ov.querySelector('[data-a="play"]').textContent = on ? 'Pause' : 'Play';
     if (ac) { if (on && musicOn) ac.resume(); else ac.suspend(); }
   };
   const loop = function(now) {
@@ -6747,7 +6930,7 @@ async function ksVideo() {
     if (e.target === ov || a === 'close') return close();
     if (a === 'play') { if (!playing && t >= total) t = 0; setPlay(!playing); }
     if (a === 'restart') { t = 0; setPlay(true); }
-    if (a === 'music' && ac) { musicOn = !musicOn; e.target.textContent = musicOn ? '🔊 Music on' : '🔇 Music off'; if (musicOn && playing) ac.resume(); else ac.suspend(); }
+    if (a === 'music' && ac) { musicOn = !musicOn; e.target.textContent = musicOn ? 'Music on' : 'Music off'; if (musicOn && playing) ac.resume(); else ac.suspend(); }
     if (a === 'notify') keepsakeInterest('video', e.target);
   });
   if (!ac) { const mb = ov.querySelector('[data-a="music"]'); if (mb) mb.remove(); }
@@ -6784,7 +6967,7 @@ async function ksBook() {
   pages.push('<div class="ksb-pg ksb-end"><div class="ksb-ct"><h2>What a trip.</h2><small>Planned with TripMade · tripmade.co</small></div></div>');
   let done = false; try { done = localStorage.getItem(_ksKey('book')) === '1'; } catch (e) {}
   const ov = document.createElement('div'); ov.className = 'ksb';
-  ov.innerHTML = '<div class="ksb-bar"><b>📖 Photo book preview</b><span style="flex:1"></span>' +
+  ov.innerHTML = '<div class="ksb-bar"><b>Photo book preview</b><span style="flex:1"></span>' +
     (done ? '<span class="ks-ok">✓ We\'ll tell you when printed books are ready</span>' : '<button type="button" class="btn-primary" data-a="notify">Printed hardcover: notify me</button>') +
     '<button type="button" class="btn-secondary" data-a="close">Close</button></div>' +
     '<div class="ksb-pages">' + pages.map(function(p) { return p.replace('class="ksb-pg', 'class="ksb-pg ksb-wm'); }).join('') + '</div>';
@@ -8258,12 +8441,12 @@ function selectOpt(el, group) {
 let accomStyleByDest = {};
 let accomNotesByDest = {};
 const ACCOM_OPTIONS = [
-  ['🏨', 'Hotel', 'Any star rating'],
-  ['🏡', 'Airbnb / Villa', 'Home away from home'],
-  ['✨', 'Boutique', 'Unique &amp; stylish'],
-  ['🍹', 'Resort', 'All-inclusive vibes'],
-  ['🎒', 'Budget', 'Hostel / cheap &amp; cheerful'],
-  ['🎲', 'Surprise me', 'Best value option'],
+  ['<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg></span>', 'Hotel', 'Any star rating'],
+  ['<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10"/></svg></span>', 'Airbnb / Villa', 'Home away from home'],
+  ['<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/></svg></span>', 'Boutique', 'Unique &amp; stylish'],
+  ['<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 22h8M12 11v11M3 3h18l-9 9z"/></svg></span>', 'Resort', 'All-inclusive vibes'],
+  ['<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M8 21v-5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5"/></svg></span>', 'Budget', 'Hostel / cheap &amp; cheerful'],
+  ['<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h.01M16 8h.01M12 12h.01M8 16h.01M16 16h.01"/></svg></span>', 'Surprise me', 'Best value option'],
 ];
 function selectAccomOpt(el, dest) {
   el.closest('.form-options').querySelectorAll('.form-opt').forEach(o => o.classList.remove('selected'));
@@ -8578,7 +8761,7 @@ function lockAskTurn(turnEl) {
   const body = turnEl.querySelector('.ask-turn-body'); if (!body || turnEl.classList.contains('ask-locked')) return;
   turnEl.classList.add('ask-locked');
   const gate = document.createElement('div'); gate.className = 'ask-gate';
-  gate.innerHTML = '<div class="ask-gate-box"><div class="ask-gate-ic">🔒</div><b>Sign up free to see your answer</b>' +
+  gate.innerHTML = '<div class="ask-gate-box"><div class="ask-gate-ic"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 11h14v10H5zM7 11V7a5 5 0 0 1 10 0v4"/></svg></span></div><b>Sign up free to see your answer</b>' +
     '<p>Your question is saved. Sign up free and we\'ll answer it straight away. Members get ' + ((_tmPoints && _tmPoints.ask_free_per_month) || 5) + ' free questions a month and 100 TripMade Points to start.</p>' +
     '<button type="button" class="ask-gate-btn" onclick="openSignupModal()">Sign up to view</button>' +
     '<button type="button" class="ask-gate-link" onclick="openLoginModal()">Already a member? Log in</button></div>';
@@ -8698,7 +8881,7 @@ async function fetchPlaceInfo(items, photos) {
 }
 function _plNoPhoto(card, ph) {
   if (!ph) return;
-  ph.className = 'pl-photos pl-none'; ph.innerHTML = '📍';
+  ph.className = 'pl-photos pl-none'; ph.innerHTML = '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>';
 }
 // 2026-10-28 (Lachy): per-venue numbers for the "For venues" pitch. Every
 // time a real (Google-matched) venue is shown to a traveller we log
@@ -8761,7 +8944,7 @@ async function enrichPlaceCards(root, photos) {
       if (isArea) {
         _plNoPhoto(c, ph);
         const m = c.querySelector('.pl-meta'), q = c.getAttribute('data-pl-q');
-        if (m && q) m.innerHTML = '<a class="pl-maplink" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + '" target="_blank" rel="noopener noreferrer">📍 See this area on the map ↗</a>';
+        if (m && q) m.innerHTML = '<a class="pl-maplink" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + '" target="_blank" rel="noopener noreferrer"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>See this area on the map ↗</a>';
       } else if (ph) ph.remove();
       return;
     }
@@ -8791,7 +8974,7 @@ async function enrichPlaceCards(root, photos) {
       if (r.rating) bits.push('<a class="pl-stars" href="' + tmEsc(r.maps_url || '#') + '" target="_blank" rel="noopener noreferrer">★ ' + r.rating.toFixed(1) + '</a> <span class="pl-sub">' + _plCount(r.reviews) + ' Google reviews</span>');
       if (r.price && !c.querySelector('.ask-dine-meta')) bits.push('<span class="pl-sub">' + tmEsc(r.price) + '</span>');
       meta.innerHTML = c.getAttribute('data-pl-kind') === 'area'
-        ? (r.maps_url ? '<a class="pl-maplink" href="' + tmEsc(r.maps_url) + '" target="_blank" rel="noopener noreferrer">📍 See this area on the map ↗</a>' : '')
+        ? (r.maps_url ? '<a class="pl-maplink" href="' + tmEsc(r.maps_url) + '" target="_blank" rel="noopener noreferrer"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>See this area on the map ↗</a>' : '')
         : bits.join(' <span class="pl-sub">·</span> ');
     }
     const hrs = c.querySelector('.pl-hours');
@@ -8928,22 +9111,22 @@ function askNextSteps(kind, data) {
     if (kind === 'dining' && data.stay_cta && /^https:\/\/www\.trip\.com\//.test(data.stay_cta.url || '')) {
       try { const u = new URL(data.stay_cta.url); const cid = (typeof tripCityIdFor === 'function') ? (tripCityIdFor(data.destination) || tripCityIdFor(trip)) : null; if (cid) u.searchParams.set('cityId', cid); u.searchParams.set('trip_sub1', tag); u.searchParams.set('curr', tmAffCurrency()); url = u.toString(); } catch (e) {}
     }
-    return askCard('ask-crosssell-stay', '🏨 Where to stay in ' + tmEsc(where), 'Compare hotels on Trip.com, our booking partner.', askCardLink(url, 'See hotels →'));
+    return askCard('ask-crosssell-stay', '<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg></span>Where to stay in ' + tmEsc(where), 'Compare hotels on Trip.com, our booking partner.', askCardLink(url, 'See hotels →'));
   };
   if (kind === 'dining') {
     cards.push(planCard());
     cards.push(hotelCard(area, 'ask_dining'));
-    cards.push(askCard('ask-crosssell-stay', '🍜 Food tours in ' + tmEsc(short), 'Street-food walks, cooking classes and tastings with a local guide.',
+    cards.push(askCard('ask-crosssell-stay', '<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 3 2h2v7"/></svg></span>Food tours in ' + tmEsc(short), 'Street-food walks, cooking classes and tastings with a local guide.',
       askCardLink(viatorSearchLink('food tour ' + short, 'ask_dining'), 'See food tours →')));
   } else if (kind === 'stays') {
     cards.push(planCard());
     cards.push(askCard('ask-crosssell-stay', '✈️ Need flights to ' + tmEsc(short) + ' too?', 'Compare prices across hundreds of airlines.',
       '<button type="button" onclick="goToBookingSection(\'tours-flights\')">Search flights →</button>'));
-    cards.push(askCard('ask-crosssell-stay', '🎟️ Things to do in ' + tmEsc(short), 'Tours, day trips and experiences you can book ahead.',
+    cards.push(askCard('ask-crosssell-stay', '<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM13 5v2M13 17v2M13 11v2"/></svg></span>Things to do in ' + tmEsc(short), 'Tours, day trips and experiences you can book ahead.',
       askCardLink(viatorSearchLink(short, 'ask_stays'), 'See experiences →')));
   } else if (kind === 'route') {
     cards.push(hotelCard(short, 'ask_route'));
-    cards.push(askCard('ask-crosssell-stay', '🎟️ Things to do in ' + tmEsc(short), 'Tours, boat trips and experiences you can book ahead.',
+    cards.push(askCard('ask-crosssell-stay', '<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM13 5v2M13 17v2M13 11v2"/></svg></span>Things to do in ' + tmEsc(short), 'Tours, boat trips and experiences you can book ahead.',
       askCardLink(viatorSearchLink(short, 'ask_route'), 'See experiences →')));
   } else if (kind === 'flights' || kind === 'tours' || kind === 'ferries') {
     cards.push(hotelCard(short, 'ask_' + kind));
@@ -8956,7 +9139,7 @@ function askNextSteps(kind, data) {
 // card for each way that really runs on the route (bus/train via Omio, ferry
 // via Ferryhopper, flight via Kiwi.com), always plus a private car (the
 // upsell, Welcome Pickups pre-filled with both ends). Cheapest first.
-const ROUTE_ICON = { bus: '🚌', train: '🚆', ferry: '⛴️', flight: '✈️', private_car: '🚘' };
+const ROUTE_ICON = { bus: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v12H4V5a2 2 0 0 1 2-2zM4 11h16M8 17v3M16 17v3M8 14h.01M16 14h.01"/></svg></span>', train: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM4 11h16M12 3v8M8 21l2-4M16 21l-2-4M8 14h.01M16 14h.01"/></svg></span>', ferry: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1s1.2 1 2.5 1c2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M19.4 19 21 12.6 12 9 3 12.6 4.6 19M12 9V3M8 6h8v4.5"/></svg></span>', flight: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></span>', private_car: '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2.7-3.6A2 2 0 0 0 13.7 6H6.3a2 2 0 0 0-1.6.8L2 10.5V16c0 .6.4 1 1 1h2M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></span>' };
 function askRouteCarUrl(data) {
   const t = data.transfer, tag = 'ask_route';
   const slug = welcomeCitySlugFor(data.from_city, data.to_city, data.from, data.to);
@@ -8972,9 +9155,9 @@ function renderAskRoute(bodyEl, data) {
     const url = car ? askRouteCarUrl(data) : (o.cta && /^https:\/\//.test(o.cta.url || '') ? withTmCurrency(o.cta.url, 'ask_route') : '');
     const partner = o.cta && o.cta.partner ? o.cta.partner : '';
     return '<div class="ask-stay-card rt-card' + (car ? ' rt-car' : '') + '">' +
-      '<div class="rt-top"><span class="rt-ic">' + (ROUTE_ICON[o.mode] || '🧭') + '</span>' + (o.tag ? '<span class="rt-tag">' + tmEsc(o.tag) + '</span>' : '') + '</div>' +
+      '<div class="rt-top"><span class="rt-ic">' + (ROUTE_ICON[o.mode] || '<span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg></span>') + '</span>' + (o.tag ? '<span class="rt-tag">' + tmEsc(o.tag) + '</span>' : '') + '</div>' +
       '<div class="ask-stay-name">' + tmEsc(o.title) + '</div>' +
-      '<div class="rt-meta">' + [o.duration ? '⏱ ' + tmEsc(o.duration) : '', '<b>' + tmEsc(o.price_level || '') + '</b>'].filter(Boolean).join(' <span class="pl-sub">·</span> ') + '</div>' +
+      '<div class="rt-meta">' + [o.duration ? '<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>' + tmEsc(o.duration) : '', '<b>' + tmEsc(o.price_level || '') + '</b>'].filter(Boolean).join(' <span class="pl-sub">·</span> ') + '</div>' +
       '<div class="ask-stay-desc">' + tmEsc(o.how) + '</div>' +
       '<div class="ask-stay-foot">' + (partner ? '<span class="rt-partner">via ' + tmEsc(partner) + '</span>' : '<span></span>') +
         (url ? '<a class="ask-stay-cta" href="' + tmEsc(url) + '" target="_blank" rel="noopener noreferrer sponsored">' + tmEsc((o.cta && o.cta.label) || 'Book →') + '</a>' : '') +
@@ -10236,7 +10419,7 @@ async function renderTripNotifications() {
   const shown = _notifsOpen ? _notifs : (unread.length ? unread.slice(0, 5) : _notifs.slice(0, 3));
   box.style.display = 'block';
   box.innerHTML =
-    '<div class="notif-hd"><div class="notif-title">🔔 Notifications' + (unread.length ? ' <span class="notif-count">' + unread.length + ' new</span>' : '') + '</div>' +
+    '<div class="notif-hd"><div class="notif-title"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>Notifications' + (unread.length ? ' <span class="notif-count">' + unread.length + ' new</span>' : '') + '</div>' +
     (unread.length ? '<button type="button" class="notif-link" onclick="markNotifsRead()">Mark all as read</button>' : '') + '</div>' +
     shown.map(function(n) {
       return '<button type="button" class="notif-row' + (n.read_at ? '' : ' unread') + '" onclick="openNotif(' + jsStrAttr(n.id) + ',' + jsStrAttr(n.itinerary_id) + ')">' +
@@ -10335,10 +10518,10 @@ async function renderInboxPage() {
       '<div class="saved-chat-row inbox-row">' +
         '<div class="saved-chat-main">' +
           '<div class="saved-chat-title"><span class="inbox-dest">' + dest + '</span>' + (badge ? '<span class="inbox-badges">' + badge + '</span>' : '') + '</div>' +
-          '<div class="saved-chat-meta">' + (dateStr ? '<span class="inbox-dates">📅 ' + dateStr + '</span> · ' : '') + '<span class="inbox-dates">' + dayCount + (dayCount === 1 ? ' day' : ' days') + '</span></div>' +
+          '<div class="saved-chat-meta">' + (dateStr ? '<span class="inbox-dates"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg></span>' + dateStr + '</span> · ' : '') + '<span class="inbox-dates">' + dayCount + (dayCount === 1 ? ' day' : ' days') + '</span></div>' +
         '</div>' +
         '<div class="saved-chat-actions">' +
-          (jr ? '<button type="button" class="inbox-jr-btn" onclick="openTripJournal(' + jsStrAttr(it.id) + ')">📝 Journal</button>' : '') +
+          (jr ? '<button type="button" class="inbox-jr-btn" onclick="openTripJournal(' + jsStrAttr(it.id) + ')"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>Journal</button>' : '') +
           '<button type="button" class="inbox-archive-btn" onclick="setTripArchived(' + jsStrAttr(it.id) + ',' + (isArchived ? 'false' : 'true') + ')">' + (isArchived ? 'Unarchive' : 'Archive') + '</button>' +
           '<button type="button" class="saved-chat-open" onclick="openInboxItinerary(' + jsStrAttr(it.id) + ')">Open →</button>' +
         '</div>' +
@@ -10786,7 +10969,7 @@ async function enrichItinDay(block) {
     if (warn && !e.querySelector('.evt-pl-warn')) {
       const w = document.createElement('div');
       w.className = 'evt-pl-warn';
-      w.textContent = '⚠ ' + warn + ' Ask TripMade to swap it, or check before you go.';
+      w.textContent = warn + ' Ask TripMade to swap it, or check before you go.';
       const head = e.querySelector('.evt-head') || label;
       head.insertAdjacentElement('afterend', w);
     }
@@ -11024,7 +11207,7 @@ function renderItineraryAllowance(a) {
       '<div class="fa-btns"><button type="button" onclick="showPage(\'inbox\')">Go to my trips →</button>' +
       '<a href="mailto:hello@tripmade.co?subject=' + encodeURIComponent('Another itinerary please') + '">Email us</a></div></div>';
   } else {
-    box.innerHTML = '<span class="fa-pill">🎁 ' + a.left + ' of ' + a.limit + ' free itineraries left</span>';
+    box.innerHTML = '<span class="fa-pill"><span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>' + a.left + ' of ' + a.limit + ' free itineraries left</span>';
   }
 }
 function prefillContactStep() {
@@ -11385,7 +11568,7 @@ window.showPage = function(id, linkEl, opts) {
 @media (max-width:480px){#fb-btn{left:12px;bottom:12px;padding:9px 13px;font-size:12px}}
 /* 2026-10-29 (phone check): the Feedback pill covered buttons and prices at the
    bottom of the screen on phones. On phones it's now a small round icon. */
-@media (max-width:640px){#fb-btn{width:40px;height:40px;padding:0;border-radius:50%;font-size:0;left:10px;bottom:10px;opacity:.92;display:flex;align-items:center;justify-content:center}#fb-btn::before{content:'💬';font-size:18px;line-height:1}}
+@media (max-width:640px){#fb-btn{width:40px;height:40px;padding:0;border-radius:50%;font-size:0;left:10px;bottom:10px;opacity:.92;display:flex;align-items:center;justify-content:center}#fb-btn::before{content:'';width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E") center/contain no-repeat}}
 </style>
 <button id="fb-btn" type="button" onclick="openFeedback()" aria-label="Send feedback">Feedback</button>
 <div id="fb-modal" onclick="if(event.target===this)closeFeedback()">
@@ -11393,7 +11576,7 @@ window.showPage = function(id, linkEl, opts) {
     <h3 id="fb-title">Tell us what you think</h3>
     <p class="fb-sub">We're in early days — anything that's broken, confusing or you'd love to see, we want to hear it. It goes straight to Lachlan &amp; Jai.</p>
     <div class="fb-faces" id="fb-faces">
-      <button type="button" data-r="1" aria-label="Very unhappy">😞</button><button type="button" data-r="2" aria-label="Unhappy">🙁</button><button type="button" data-r="3" aria-label="Okay">😐</button><button type="button" data-r="4" aria-label="Happy">🙂</button><button type="button" data-r="5" aria-label="Love it">😍</button>
+      <button type="button" data-r="1" aria-label="Very unhappy"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 9h.01M15.5 9h.01M16.5 17c-1-1.6-2.6-2.5-4.5-2.5s-3.5.9-4.5 2.5"/></svg></span></button><button type="button" data-r="2" aria-label="Unhappy"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 9h.01M15.5 9h.01M15 16.5c-.8-.7-1.8-1-3-1s-2.2.3-3 1"/></svg></span></button><button type="button" data-r="3" aria-label="Okay"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 9h.01M15.5 9h.01M8 15.5h8"/></svg></span></button><button type="button" data-r="4" aria-label="Happy"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 9h.01M15.5 9h.01M8.5 14.5c.8 1 2 1.5 3.5 1.5s2.7-.5 3.5-1.5"/></svg></span></button><button type="button" data-r="5" aria-label="Love it"><span class="tm-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 9h.01M15.5 9h.01M7.5 13.5h9a4.5 4.5 0 0 1-9 0z"/></svg></span></button>
     </div>
     <textarea id="fb-msg" maxlength="4000" placeholder="What worked, what didn't, what's missing…"></textarea>
     <input id="fb-name" type="text" maxlength="120" placeholder="Your name (optional)">
@@ -12522,22 +12705,22 @@ async function renderPushBar() {
   const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
   if (!pushSupported()) {
-    if (ios && !standalone) el.innerHTML = _pushBar('🔔', '<b>Want trip reminders on your phone?</b> Add TripMade to your home screen first (tap Share, then Add to Home Screen), open it from there and turn them on here.', '');
+    if (ios && !standalone) el.innerHTML = _pushBar('<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>', '<b>Want trip reminders on your phone?</b> Add TripMade to your home screen first (tap Share, then Add to Home Screen), open it from there and turn them on here.', '');
     return;
   }
   if (Notification.permission === 'denied') {
-    el.innerHTML = _pushBar('🔕', 'Notifications are blocked for TripMade. To get trip reminders, allow notifications for TripMade in your phone or browser settings.', '');
+    el.innerHTML = _pushBar('<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.7 3A6 6 0 0 1 18 8a21.3 21.3 0 0 0 .6 5M17 17H3s3-2 3-9a4.67 4.67 0 0 1 .3-1.7M10.3 21a1.94 1.94 0 0 0 3.4 0M2 2l20 20"/></svg></span>', 'Notifications are blocked for TripMade. To get trip reminders, allow notifications for TripMade in your phone or browser settings.', '');
     return;
   }
   let sub = null;
   try { const reg = await navigator.serviceWorker.getRegistration(); sub = reg ? await reg.pushManager.getSubscription() : null; } catch (e) {}
   if (sub && Notification.permission === 'granted') {
-    el.innerHTML = _pushBar('🔔', '<b>Trip reminders are on.</b> We\'ll send a note the night before you leave and each morning with the day\'s plan.',
+    el.innerHTML = _pushBar('<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>', '<b>Trip reminders are on.</b> We\'ll send a note the night before you leave and each morning with the day\'s plan.',
       '<button type="button" data-a="test">Send a test</button><button type="button" data-a="off">Turn off</button>');
     // Keep the time zone current (e.g. once they've landed overseas).
     pushCall({ action: 'subscribe', subscription: sub.toJSON(), tz: _pushTz() }).catch(function() {});
   } else {
-    el.innerHTML = _pushBar('🔔', '<b>Get trip reminders on this ' + (/android|iphone|ipad|ipod/i.test(navigator.userAgent) ? 'phone' : 'device') + '</b>: the night before you leave, and each morning with the day\'s plan.',
+    el.innerHTML = _pushBar('<span class="tm-ic sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>', '<b>Get trip reminders on this ' + (/android|iphone|ipad|ipod/i.test(navigator.userAgent) ? 'phone' : 'device') + '</b>: the night before you leave, and each morning with the day\'s plan.',
       '<button type="button" class="on" data-a="on">Turn on</button>');
   }
   el.querySelectorAll('button[data-a]').forEach(function(b) { b.addEventListener('click', function() { pushAction(b.getAttribute('data-a'), b); }); });
@@ -12556,7 +12739,7 @@ async function pushAction(a, btn) {
       const r = await pushCall({ action: 'subscribe', subscription: sub.toJSON(), tz: _pushTz(), welcome: true });
       if (!r || !r.ok) throw new Error((r && r.error) || 'subscribe failed');
       try { if (window.tmTrack) tmTrack('trip_reminders_on'); } catch (e) {}
-      tmToast('Trip reminders are on ✅', 'You should get a confirmation notification now.');
+      tmToast('Trip reminders are on', 'You should get a confirmation notification now.');
     } else if (a === 'off') {
       const reg = await navigator.serviceWorker.getRegistration(); const sub = reg && await reg.pushManager.getSubscription();
       if (sub) { await pushCall({ action: 'unsubscribe', endpoint: sub.endpoint }); await sub.unsubscribe(); }
@@ -12564,7 +12747,7 @@ async function pushAction(a, btn) {
       tmToast('Trip reminders turned off');
     } else if (a === 'test') {
       const r = await pushCall({ action: 'test' });
-      tmToast(r && r.sent ? 'Test sent 📱' : 'Couldn\'t send a test just then', r && r.sent ? 'It should arrive in a few seconds.' : 'Try turning reminders off and on again.');
+      tmToast(r && r.sent ? 'Test sent' : 'Couldn\'t send a test just then', r && r.sent ? 'It should arrive in a few seconds.' : 'Try turning reminders off and on again.');
     }
   } catch (e) {
     console.error('reminders', e);
