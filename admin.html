@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>TripMade — Admin</title>
-<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="https://tripmade.co/favicon.ico" sizes="48x48">
 <!-- Private admin page (2026-09-26). Lists every itinerary request saved from
      the site form, flags the ones that never got an itinerary delivered, and
      lets Lachlan/Jai re-send any request through the Make.com pipeline with
@@ -13,80 +13,100 @@
      function rerun-itinerary-request; access needs the private ?key=… in the
      bookmarked link. -->
 <style>
-  :root { --teal:#0D7377; --text:#1A1A1A; --muted:#6B6B6B; --bg:#F4F6F5; --red:#B3261E; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; padding:24px 16px 60px; }
-  main { max-width:920px; margin:0 auto; }
-  header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
-  h1 { font-size:22px; margin:0; }
-  .sub { color:var(--muted); font-size:14px; margin:4px 0 18px; }
-  h2 { font-size:16px; margin:26px 0 10px; }
-  .card { background:#fff; border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.06); display:flex; gap:12px; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; }
-  .meta { font-size:13px; color:#555; line-height:1.55; flex:1; min-width:240px; }
-  .meta b { color:var(--text); font-size:15px; }
-  .pill { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; margin-left:6px; vertical-align:1px; }
-  .delivered { background:#E3F4EC; color:#0F7A4A; }
-  .submitted { background:#FDECEA; color:var(--red); }
-  .rerun { background:#FFF4D6; color:#8A5A00; }
-  .before_tracking { background:#EEE; color:#666; }
-  button { background:var(--teal); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-weight:700; cursor:pointer; font-size:14px; white-space:nowrap; }
-  button.ghost { background:#fff; color:var(--teal); border:1.5px solid var(--teal); }
-  button:disabled { opacity:.5; cursor:default; }
-  details { margin-top:6px; }
-  summary { cursor:pointer; color:var(--teal); font-weight:600; }
-  pre { white-space:pre-wrap; word-break:break-word; background:#F7F7F7; padding:10px; border-radius:6px; font-size:12px; color:#333; }
-  .empty { background:#E3F4EC; color:#0F7A4A; padding:12px 14px; border-radius:10px; font-size:14px; }
-  .msg { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#1A1A1A; color:#fff; padding:12px 18px; border-radius:10px; font-size:14px; display:none; max-width:90vw; }
-  .err { color:var(--red); }
-  /* 2026-10-14: local knowledge tips review */
-  .tabs { display:flex; gap:8px; margin:6px 0 14px; flex-wrap:wrap; }
-  .tabs button { background:#fff; color:var(--teal); border:1.5px solid var(--teal); padding:7px 14px; }
-  .tabs button.on { background:var(--teal); color:#fff; }
-  .tip-card { background:#fff; border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
-  .tip-card h3 { font-size:15px; margin:0 0 4px; }
-  .tip-meta { font-size:12px; color:var(--muted); margin-bottom:8px; }
-  .tip-kind { display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-right:6px; }
-  .tip-kind.upgrade { background:#FFF4D6; color:#8A5A00; } .tip-kind.insider { background:#E3F4EC; color:#0F7A4A; }
-  .tip-card textarea, .tip-card input { width:100%; font:inherit; font-size:14px; border:1.5px solid #DDD; border-radius:8px; padding:8px 10px; margin:4px 0; }
-  .tip-card textarea { min-height:80px; resize:vertical; }
-  .tip-note { font-size:12.5px; background:#FFF8E6; color:#7A5B00; border-radius:8px; padding:7px 10px; margin:6px 0; }
-  .tip-acts { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-  .tip-acts .reject { background:#fff; color:var(--red); border:1.5px solid var(--red); }
-  .tip-bulk { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 12px; }
-  .tip-bulk span { font-size:12.5px; color:var(--muted); }
-  .tip-card a { color:var(--teal); font-size:12.5px; word-break:break-all; }
-  /* 2026-10-26: venues TripMade recommends */
-  .ven-tools { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:0 0 10px; }
-  .ven-tools input { flex:1; min-width:200px; font:inherit; font-size:14px; border:1.5px solid #DDD; border-radius:8px; padding:8px 10px; }
-  .ven-tbl { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.06); font-size:13.5px; }
-  .ven-tbl th { text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:#FAFAFA; padding:9px 12px; border-bottom:1px solid #EEE; }
-  .ven-tbl td { padding:9px 12px; border-bottom:1px solid #F1F1F1; vertical-align:middle; }
-  .ven-tbl tr:last-child td { border-bottom:none; }
-  .ven-tbl a { color:var(--teal); font-weight:600; text-decoration:none; white-space:nowrap; }
-  .ven-bd { font-size:11.5px; color:#667; margin-top:3px; }
-  .ven-type { font-size:10.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:10px; background:#EEF6F5; color:var(--teal); }
-  .ven-more { margin-top:10px; }
-  @media (max-width:640px) { .ven-tbl .hide-sm { display:none; } }
+:root { --teal: #0D7377; --text: #1A1A1A; --muted: #6B6B6B; --bg: #F4F6F5; --red: #B3261E; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; padding: 24px 16px 60px; }
+main { max-width: 920px; margin: 0 auto; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+h1 { font-size: 22px; margin: 0; }
+.sub { color: var(--muted); font-size: 14px; margin: 4px 0 18px; }
+h2 { font-size: 16px; margin: 26px 0 10px; }
+.card { background: #fff; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); display: flex; gap: 12px; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; }
+.meta { font-size: 13px; color: #555; line-height: 1.55; flex: 1; min-width: 240px; }
+.meta b { color: var(--text); font-size: 15px; }
+.pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: 1px; }
+.delivered { background: #E3F4EC; color: #0F7A4A; }
+.submitted { background: #FDECEA; color: var(--red); }
+.rerun { background: #FFF4D6; color: #8A5A00; }
+.before_tracking { background: #EEE; color: #666; }
+button { background: var(--teal); color: #fff; border: none; border-radius: 8px; padding: 9px 16px; font-weight: 700; cursor: pointer; font-size: 14px; white-space: nowrap; }
+button.ghost { background: #fff; color: var(--teal); border: 1.5px solid var(--teal); }
+button:disabled { opacity: .5; cursor: default; }
+details { margin-top: 6px; }
+summary { cursor: pointer; color: var(--teal); font-weight: 600; }
+pre { white-space: pre-wrap; word-break: break-word; background: #F7F7F7; padding: 10px; border-radius: 6px; font-size: 12px; color: #333; }
+.empty { background: #E3F4EC; color: #0F7A4A; padding: 12px 14px; border-radius: 10px; font-size: 14px; }
+.msg { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: #1A1A1A; color: #fff; padding: 12px 18px; border-radius: 10px; font-size: 14px; display: none; max-width: 90vw; }
+.err { color: var(--red); }
+.tabs { display: flex; gap: 8px; margin: 6px 0 14px; flex-wrap: wrap; }
+.tabs button { background: #fff; color: var(--teal); border: 1.5px solid var(--teal); padding: 7px 14px; }
+.tabs button.on { background: var(--teal); color: #fff; }
+.tip-card { background: #fff; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.tip-card h3 { font-size: 15px; margin: 0 0 4px; }
+.tip-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.tip-kind { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; margin-right: 6px; }
+.tip-kind.upgrade { background: #FFF4D6; color: #8A5A00; }
+.tip-kind.insider { background: #E3F4EC; color: #0F7A4A; }
+.tip-card textarea, .tip-card input { width: 100%; font: inherit; font-size: 14px; border: 1.5px solid #DDD; border-radius: 8px; padding: 8px 10px; margin: 4px 0; }
+.tip-card textarea { min-height: 80px; resize: vertical; }
+.tip-note { font-size: 12.5px; background: #FFF8E6; color: #7A5B00; border-radius: 8px; padding: 7px 10px; margin: 6px 0; }
+.tip-acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.tip-acts .reject { background: #fff; color: var(--red); border: 1.5px solid var(--red); }
+.tip-bulk { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 12px; }
+.tip-bulk span { font-size: 12.5px; color: var(--muted); }
+.tip-card a { color: var(--teal); font-size: 12.5px; word-break: break-all; }
+.ven-tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 10px; }
+.ven-tools input { flex: 1; min-width: 200px; font: inherit; font-size: 14px; border: 1.5px solid #DDD; border-radius: 8px; padding: 8px 10px; }
+.ven-tbl { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); font-size: 13.5px; }
+.ven-tbl th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: #FAFAFA; padding: 9px 12px; border-bottom: 1px solid #EEE; }
+.ven-tbl td { padding: 9px 12px; border-bottom: 1px solid #F1F1F1; vertical-align: middle; }
+.ven-tbl tr:last-child td { border-bottom: none; }
+.ven-tbl a { color: var(--teal); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.ven-bd { font-size: 11.5px; color: #667; margin-top: 3px; }
+.ven-type { font-size: 10.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; background: #EEF6F5; color: var(--teal); }
+.ven-more { margin-top: 10px; }
+/* 2026-11-23: Deals to approve */
+.deal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+.deal-grid label { font-size: 11.5px; color: var(--muted); display: block; margin-top: 4px; }
+.deal-grid .wide { grid-column: 1 / -1; }
+.link-ok { background: #E3F4EC; color: #0F7A4A; }
+.link-bad { background: #FDECEA; color: var(--red); }
+.link-wait { background: #EEE; color: #666; }
+.deal-price { font-size: 13px; margin: 4px 0; }
+.deal-price s { color: var(--muted); }
+.auto-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+@media (max-width: 640px) {
+  .ven-tbl .hide-sm { display: none; }
+  .deal-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>✈ Itinerary requests</h1>
-    <button class="ghost" onclick="load(); loadTips(); loadVenues();">Refresh</button>
+    <button class="ghost" onclick="load(); loadVenues(); loadTips(); loadDeals();">Refresh</button>
   </header>
-  <p class="sub" id="sub">Loading…</p>
+  <p class="sub" id="sub"></p>
+  <!-- 2026-11-23: Deals for tripmade.co/deals. The Deals Scout adds them as
+       pending; only approved ones show on the site (deals edge function,
+       ?admin=1, same access key). -->
+  <h2>🏷 Deals to approve</h2>
+  <p class="sub" id="deals-sub"></p>
+  <div class="auto-row" id="deals-auto"></div>
+  <div class="tabs" id="deal-tabs"></div>
+  <div id="deals"></div>
   <!-- 2026-10-14: TripMade local knowledge. Tips only reach customers once
        approved here (local-tips-admin edge function, same access key). -->
   <h2>💡 Local tips &amp; upgrades</h2>
-  <p class="sub" id="tips-sub">Loading…</p>
+  <p class="sub" id="tips-sub"></p>
   <div class="tabs" id="tip-tabs"></div>
   <div id="tips"></div>
   <!-- 2026-10-26: every venue TripMade has recommended (own itinerary data).
        "Google Maps" opens the listing so you can check their website, menu
        and contact details by hand. -->
   <h2>🍽 Venues we recommend</h2>
-  <p class="sub" id="ven-sub">Loading…</p>
+  <p class="sub" id="ven-sub"></p>
   <div class="ven-tools">
     <input type="search" id="ven-q" placeholder="Search venue or city…" oninput="renderVenues()">
     <div class="tabs" id="ven-tabs" style="margin:0;"></div>
@@ -143,6 +163,148 @@ async function rerun(id, alreadyDelivered, btn) {
   } catch (e) { btn.disabled = false; btn.textContent = 'Re-run'; toast('Couldn\'t send — nothing went out. Try again in a minute.'); }
 }
 load();
+// ── Deals to approve (2026-11-23) ────────────────────────────────────
+const DEALS_API = 'https://ccdbpyqjlvzusjgedhck.supabase.co/functions/v1/deals';
+let _deals = [], _dealTab = 'pending', _dealSettings = {};
+function dealUrl() { return DEALS_API + '?admin=1&key=' + encodeURIComponent(KEY); }
+async function loadDeals() {
+  const sub = document.getElementById('deals-sub');
+  if (!KEY) { sub.textContent = ''; return; }
+  sub.textContent = 'Loading…';
+  try {
+    const res = await fetch(dealUrl());
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.error || 'failed');
+    _deals = d.deals || []; _dealSettings = d.settings || {};
+    sub.textContent = 'Deals found by the Deals Scout. Only approved ones show on tripmade.co/deals. Edit the wording first if you like, then Approve.';
+    renderDeals();
+  } catch (e) { sub.innerHTML = '<span class="err">Couldn\'t load deals. Hit Refresh.</span>'; }
+}
+function dealTab(s) { _dealTab = s; renderDeals(); }
+function linkPill(d) {
+  if (d.affiliate_url && d.link_status !== 'failed') return '<span class="pill link-ok">Partner link ready</span>';
+  if (d.link_status === 'failed') return '<span class="pill link-bad">No partner link</span>';
+  return '<span class="pill link-wait">Link check due on the hour</span>';
+}
+function renderDeals() {
+  const n = s => _deals.filter(d => d.status === s).length;
+  document.getElementById('deal-tabs').innerHTML = [['pending','To approve'],['live','Live'],['rejected','Rejected']]
+    .map(([s,l]) => '<button class="' + (_dealTab === s ? 'on' : '') + '" onclick="dealTab(\'' + s + '\')">' + l + ' (' + n(s) + ')</button>').join('');
+  const on = _dealSettings.auto_publish === true;
+  document.getElementById('deals-auto').innerHTML = '<span>Auto-publish is <b>' + (on ? 'on' : 'off') + '</b>. ' +
+    (on ? 'Pending deals with a working partner link go live within the hour.' : 'Every deal waits for you to approve it.') +
+    '</span><button class="ghost" onclick="dealAuto(' + (!on) + ', this)">' + (on ? 'Turn off auto-publish' : 'Turn on auto-publish') + '</button>';
+  const list = _deals.filter(d => d.status === _dealTab);
+  const ready = list.filter(d => d.affiliate_url && d.link_status !== 'failed');
+  const bulk = _dealTab === 'pending' && ready.length > 1
+    ? '<div class="tip-bulk"><button onclick="dealApproveReady(this)">Approve all ' + ready.length + ' with partner links</button><span>Includes any edits you\'ve typed. Deals without a partner link are left for you to check one by one.</span></div>' : '';
+  document.getElementById('deals').innerHTML = bulk + (list.length ? list.map(d => {
+    const where = [d.city, d.country].filter(Boolean).join(', ');
+    const price = (d.was || d.now) ? '<div class="deal-price">' + (d.was ? '<s>' + esc(d.currency || '') + ' ' + esc(d.was) + '</s> ' : '') + (d.now ? '<b>' + esc(d.currency || '') + ' ' + esc(d.now) + '</b>' : '') + (d.per ? ' ' + esc(d.per) : '') + '</div>' : '';
+    const added = new Date(d.created_at).toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short' });
+    return '<div class="tip-card" id="deal-' + d.id + '">' +
+      '<div class="tip-meta"><span class="tip-kind insider">' + esc(d.brand) + '</span>' + esc(d.type || '') + (where ? ' · ' + esc(where) : '') + ' · added ' + esc(added) + ' by ' + esc(d.found_by || '?') + linkPill(d) + '</div>' +
+      price +
+      '<div class="deal-grid">' +
+        '<div class="wide"><label>Title</label><input data-f="title" value="' + esc(d.title) + '"></div>' +
+        '<div class="wide"><label>Detail</label><textarea data-f="detail">' + esc(d.detail) + '</textarea></div>' +
+        '<div><label>Discount</label><input data-f="discount" value="' + esc(d.discount) + '"></div>' +
+        '<div><label>Promo code</label><input data-f="code" value="' + esc(d.code) + '"></div>' +
+        '<div><label>Ends (YYYY-MM-DD, blank if none)</label><input data-f="expires" value="' + esc(d.expires) + '"></div>' +
+        '<div><label>Type</label><input data-f="type" value="' + esc(d.type) + '"></div>' +
+        '<div><label>Country</label><input data-f="country" value="' + esc(d.country) + '"></div>' +
+        '<div><label>City</label><input data-f="city" value="' + esc(d.city) + '"></div>' +
+      '</div>' +
+      (d.link_note ? '<div class="tip-note">Link: ' + esc(d.link_note) + '</div>' : '') +
+      '<a href="' + esc(d.url) + '" target="_blank" rel="noopener">Deal page: ' + esc(d.url) + '</a>' +
+      (d.source_url && d.source_url !== d.url ? '<br><a href="' + esc(d.source_url) + '" target="_blank" rel="noopener">Where it was found: ' + esc(d.source_url) + '</a>' : '') +
+      (d.approved_by ? '<div class="tip-meta" style="margin-top:6px;">' + esc(d.approved_by) + '</div>' : '') +
+      '<div class="tip-acts">' +
+        (d.status !== 'live' ? '<button onclick="dealApprove(\'' + d.id + '\',this)">Approve</button>' : '<button class="ghost" onclick="dealAct(\'' + d.id + '\',\'offline\',this)">Take offline</button>') +
+        '<button class="ghost" onclick="dealSave(\'' + d.id + '\',this)">Save edits</button>' +
+        (d.status !== 'rejected' ? '<button class="reject" onclick="dealAct(\'' + d.id + '\',\'reject\',this)">Reject</button>' : '') +
+      '</div></div>';
+  }).join('') : '<div class="empty">Nothing here.</div>');
+}
+async function dealPost(body) {
+  const res = await fetch(dealUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const d = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, d };
+}
+function dealFields(id) {
+  const c = document.getElementById('deal-' + id); const o = {};
+  if (!c) return o;
+  c.querySelectorAll('[data-f]').forEach(el => { o[el.dataset.f] = el.value.trim(); });
+  return o;
+}
+function dealReplace(deal) { _deals = _deals.map(x => x.id === deal.id ? deal : x); renderDeals(); }
+async function dealSaveFields(id) {
+  const r = await dealPost(Object.assign({ id, action: 'update' }, dealFields(id)));
+  if (!r.ok) throw new Error(r.d.error || 'failed');
+  return r.d.deal;
+}
+async function dealSave(id, btn) {
+  btn.disabled = true;
+  try { dealReplace(await dealSaveFields(id)); toast('Saved.'); }
+  catch (e) { btn.disabled = false; toast('Couldn\'t save. Try again.'); }
+}
+async function dealApprove(id, btn) {
+  btn.disabled = true;
+  try {
+    await dealSaveFields(id);
+    let r = await dealPost({ id, action: 'approve' });
+    if (r.status === 409 && r.d.error === 'no_partner_link') {
+      const go = confirm('This deal has no partner link, so TripMade earns nothing if people book through it.\n\n' + (r.d.link_note || '') + '\n\nPublish it with the plain link anyway?');
+      if (!go) { await loadDeals(); toast('Not published.'); return; }
+      r = await dealPost({ id, action: 'approve', allow_plain_link: true });
+    }
+    if (!r.ok) throw new Error(r.d.error || 'failed');
+    dealReplace(r.d.deal);
+    toast('Approved. It now shows on tripmade.co/deals.');
+  } catch (e) { btn.disabled = false; toast('Couldn\'t approve. Try again.'); }
+}
+async function dealAct(id, action, btn) {
+  btn.disabled = true;
+  try {
+    if (action === 'reject') await dealSaveFields(id);
+    const r = await dealPost({ id, action });
+    if (!r.ok) throw new Error(r.d.error || 'failed');
+    dealReplace(r.d.deal);
+    toast(action === 'reject' ? 'Rejected.' : 'Taken offline. It\'s back in To approve.');
+  } catch (e) { btn.disabled = false; toast('Couldn\'t update. Try again.'); }
+}
+async function dealApproveReady(btn) {
+  const ids = _deals.filter(d => d.status === 'pending' && d.affiliate_url && d.link_status !== 'failed').map(d => d.id);
+  if (!ids.length) return;
+  if (!confirm('Approve all ' + ids.length + ' deals with partner links? They\'ll show on tripmade.co/deals straight away.')) return;
+  const fields = {}; ids.forEach(id => { fields[id] = dealFields(id); });
+  btn.disabled = true;
+  let done = 0, failed = 0;
+  for (const id of ids) {
+    btn.textContent = 'Approving ' + (done + failed + 1) + ' of ' + ids.length + '…';
+    try {
+      const u = await dealPost(Object.assign({ id, action: 'update' }, fields[id]));
+      if (!u.ok) throw new Error('update');
+      const r = await dealPost({ id, action: 'approve' });
+      if (!r.ok) throw new Error('approve');
+      _deals = _deals.map(x => x.id === r.d.deal.id ? r.d.deal : x);
+      done++;
+    } catch (e) { failed++; }
+  }
+  renderDeals();
+  toast(failed ? 'Approved ' + done + ', ' + failed + ' failed. Try those again.' : 'Approved all ' + done + '. They now show on tripmade.co/deals.');
+}
+async function dealAuto(on, btn) {
+  if (!confirm(on ? 'Turn on auto-publish? From the next hourly check, pending deals with a working partner link go live without you approving them.' : 'Turn off auto-publish? New deals will wait for you to approve them.')) return;
+  btn.disabled = true;
+  try {
+    const r = await dealPost({ action: 'auto_publish', on });
+    if (!r.ok) throw new Error(r.d.error || 'failed');
+    _dealSettings = r.d.settings || {}; renderDeals();
+    toast(on ? 'Auto-publish is on.' : 'Auto-publish is off.');
+  } catch (e) { btn.disabled = false; toast('Couldn\'t change it. Try again.'); }
+}
+loadDeals();
 // ── Venues we recommend (2026-10-26) ─────────────────────────────────
 let _venues = [], _venTab = 'all', _venShow = 50;
 const VEN_TABS = { all: 'All', food: 'Restaurants & bars', activity: 'Experiences', hotel: 'Hotels' };
